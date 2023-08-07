@@ -1,6 +1,4 @@
 import { errorHandler } from '@/utils/errorHandler';
-import { db } from '@/firebase';
-import { doc, collection as col, getDoc } from 'firebase/firestore';
 import { Locales } from '@/plugins/i18n';
 
 export class LocaleService {

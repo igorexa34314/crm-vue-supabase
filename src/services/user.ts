@@ -1,11 +1,9 @@
 import { errorHandler } from '@/utils/errorHandler';
-import { db, storage } from '@/firebase';
-import { doc, collection as col, onSnapshot, setDoc, updateDoc, getDoc } from 'firebase/firestore';
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useInfoStore, UserInfo } from '@/stores/info';
 import { AuthService } from '@/services/auth';
 import { TimestampToDate } from '@/services/record';
 import { v4 as uuidv4 } from 'uuid';
+import { supabase } from '@/supabase';
 import { DEFAULT_BILL, DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/globals';
 
 export interface UserCredentials {
@@ -35,7 +33,7 @@ export class UserService {
 	}
 
 	static async getUserById(uid: UserCredentials['uid']) {
-		return getDoc(doc(col(db, 'users'), uid));
+		return supabase.from('profiles').select().match({ id: uid });
 	}
 
 	static async fetchInfo() {

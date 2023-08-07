@@ -1,9 +1,5 @@
-import { db, storage } from '@/firebase';
-import { doc, collection as col, getDoc, addDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { AuthService } from '@/services/auth';
 import { errorHandler } from '@/utils/errorHandler';
-import { Timestamp } from 'firebase/firestore';
-import { ref as storageRef, uploadBytes, getDownloadURL, getBlob } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
 
 type RecordType = 'income' | 'outcome';

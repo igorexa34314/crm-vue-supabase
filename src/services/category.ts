@@ -1,5 +1,3 @@
-import { db } from '@/firebase';
-import { doc, collection as col, getDoc, getDocs, updateDoc, addDoc } from 'firebase/firestore';
 import { AuthService } from '@/services/auth';
 import { errorHandler } from '@/utils/errorHandler';
 
@@ -31,10 +29,7 @@ export class CategoryService {
 			if (!isEmailVerified) {
 				throw new Error('verify_error');
 			}
-			const newCategoryRef = await addDoc(
-				col(doc(col(db, 'users'), uid), 'categories'),
-				categoryData
-			);
+			const newCategoryRef = await addDoc(col(doc(col(db, 'users'), uid), 'categories'), categoryData);
 			return { ...categoryData, id: newCategoryRef.id as string };
 		} catch (e) {
 			errorHandler(e);

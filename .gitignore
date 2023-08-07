@@ -31,9 +31,3 @@ dist/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-
-coverage/
-
-**/.firebase
-**/.firebaserc
-**/firebase-debug.log
