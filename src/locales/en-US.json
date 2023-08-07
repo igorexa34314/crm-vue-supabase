@@ -1,0 +1,209 @@
+{
+	"date": "Date",
+	"exceeding": "Exceeding",
+	"type": "Type",
+	"create_record": "Create record",
+	"logout": "Logout",
+	"password": "Password",
+	"sign_in_success": "You have successfully signed up",
+	"no_records": "There are no records yet",
+	"limit": "Limit",
+	"create": "Create",
+	"app_rules": "rules",
+	"sign_in": "Sign up",
+	"error_message": "Something went wrong",
+	"no_categories": "There are no categories yet",
+	"upload_avatar": "Upload your avatar",
+	"updatePass_message": "Your password successfully updated",
+	"exchange_rate": "Exchange rate",
+	"edit": "Edit",
+	"change_password": "Change password",
+	"password_current": "Current password",
+	"password_new": "New password",
+	"updateProfile_message": "Data updated successfully",
+	"home_bookkeeping": "Home bookkeeping",
+	"login_success": "You have successfully logged in",
+	"no_account": "Don't have an account",
+	"login_error": "Invalid email or password",
+	"currency_account": "Currency account",
+	"category_created": "Category successfully created",
+	"error_create_category": "Error when creating category",
+	"category_updated": "Category successfully updated",
+	"error_update_category": "Error occurred when updating category",
+	"error_create_record": "Cant create this record",
+	"category_undefined": "Category is undefined",
+	"error_register": "Sorry, we cant register you",
+	"verify_error": "You must verify your email before",
+	"error_update_profile": "Error when updating your profile",
+	"error_update_avatar": "Something was wrong after updating your avatar",
+	"left": "Left",
+	"messages": {
+		"enter_email": "Enter email",
+		"repeat_pass": "Repeat your password",
+		"enter_username": "Enter name",
+		"enter_category_name": "Enter category name",
+		"enter_limit": "Enter limit",
+		"enter_amount": "Enter amount",
+		"enter_pass": "Enter password"
+	},
+	"agree_with": "agree with",
+	"guest": "Guest",
+	"password_repeat": "Password repeat",
+	"create_category": "Create category",
+	"income": "Income",
+	"repeat_password": "Repeat your password",
+	"have_account": "Have an account",
+	"chart_title": "Your spending schedule",
+	"description": "Description",
+	"update": "Update",
+	"login": "Login",
+	"title": "Title",
+	"lack_of_amount": "Insufficient funds on the account",
+	"rate": "Rate",
+	"tabs": {
+		"info": "Information",
+		"security": "Security"
+	},
+	"pageTitles": {
+		"profile": "Profile",
+		"bill": "Your bill",
+		"details": "Record detail",
+		"categories": "Categories",
+		"history": "Records history",
+		"plan": "Planning",
+		"newRecord": "New record",
+		"home": "Home"
+	},
+	"currency": "Currency",
+	"lang": "Language",
+	"$vuetify": {
+		"calendar": { "moreEvents": "{0} more" },
+		"dataIterator": {
+			"loadingText": "Loading items...",
+			"noResultsText": "No matching records found"
+		},
+		"dataFooter": {
+			"firstPage": "First page",
+			"lastPage": "Last page",
+			"nextPage": "Next page",
+			"pageText": "{0}-{1} of {2}",
+			"prevPage": "Previous page",
+			"itemsPerPageAll": "All",
+			"itemsPerPageText": "Items per page:"
+		},
+		"pagination": {
+			"ariaLabel": {
+				"next": "Next page",
+				"last": "Last page",
+				"previous": "Previous page",
+				"root": "Pagination Navigation",
+				"page": "Go to page {0}",
+				"currentPage": "Page {0}, Current page",
+				"first": "First page"
+			}
+		},
+		"rating": { "ariaLabel": { "item": "Rating {0} of {1}" } },
+		"datePicker": {
+			"itemsSelected": "{0} selected",
+			"prevMonthAriaLabel": "Previous month",
+			"nextYearAriaLabel": "Next year",
+			"prevYearAriaLabel": "Previous year",
+			"nextMonthAriaLabel": "Next month"
+		},
+		"loading": "Loading...",
+		"carousel": {
+			"next": "Next visual",
+			"prev": "Previous visual",
+			"ariaLabel": { "delimiter": "Carousel slide {0} of {1}" }
+		},
+		"noDataText": "No data available",
+		"badge": "Badge",
+		"input": {
+			"appendAction": "{0} appended action",
+			"clear": "Clear {0}",
+			"prependAction": "{0} prepended action"
+		},
+		"timePicker": { "am": "AM", "pm": "PM" },
+		"dataTable": {
+			"sortBy": "Sort by",
+			"itemsPerPageText": "Rows per page:",
+			"ariaLabel": {
+				"sortDescending": "Sorted descending.",
+				"sortAscending": "Sorted ascending.",
+				"activateAscending": "Activate to sort ascending.",
+				"activateDescending": "Activate to sort descending.",
+				"activateNone": "Activate to remove sorting.",
+				"sortNone": "Not sorted."
+			}
+		},
+		"fileInput": { "counterSize": "{0} files ({1} in total)", "counter": "{0} files" },
+		"close": "Close"
+	},
+	"email": "Email",
+	"outcome": "Outcome",
+	"amount": "Amount",
+	"error_load_categories": "Error loading categories",
+	"createRecord_success": "Record created successfully",
+	"firebase": {
+		"messages": {
+			"logout": "You have successfully logged out",
+			"auth/email-already-in-use": "User with this email already exists",
+			"auth/user-not-found": "No user found with given email",
+			"auth/wrong-password": "Incorrect password",
+			"login": "Need to sign in",
+			"needToLogout": "You need to logout before"
+		}
+	},
+	"menu": {
+		"bill": "Your bill",
+		"categories": "Categories",
+		"history": "History",
+		"plan": "Planning",
+		"newRecord": "New record"
+	},
+	"select_category": "Choose category",
+	"out_of": "out of",
+	"category": "Category",
+	"user": {
+		"birthday": "Birthday date",
+		"firstName": "First name",
+		"lastName": "Last name",
+		"gender": {
+			"label": "Gender",
+			"female": "Female",
+			"male": "Male",
+			"unknown": "Unknown"
+		},
+		"bio": "Bio",
+		"avatar": "Profile avatar",
+		"username": "User name"
+	},
+	"open": "Open",
+	"currencies": {
+		"EUR": "Euro",
+		"USD": "USA Dollar",
+		"UAH": "Ukrainian hryvnia",
+		"RUB": "Russian ruble"
+	},
+	"record_details": "Record details in files",
+	"upload_details": "Upload record details",
+	"rules": {
+		"lastName": "@:user.lastName name must be between 2 and 64 characters",
+		"amount": "The @:amount cannot be less than 1",
+		"pass": "@:password must be between 6 and 32 characters",
+		"bio": "@:user.bio should be less than 2056 characters",
+		"description": "@:description should contain less than 2056 characters",
+		"agree": "You must agree to the rules",
+		"firstName": "@:user.firstName must be between 2 and 64 characters",
+		"file": "File size must be less than 2 megabytes",
+		"limit": "@:limit must be greater than 100",
+		"category": "@:category name must be between 3 and 20 characters",
+		"email": "Enter correct email",
+		"repeater": "Password mismatch",
+		"username": {
+			"latinic": "@:user.username must contain only latinic characters, numbers or underlines",
+			"limit": "@:user.username must be between 4 and 64 characters"
+		},
+		"details": "Maximum 5 files"
+	}
+}

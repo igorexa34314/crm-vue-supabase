@@ -1,0 +1,8 @@
+@import './scrollbar';
+
+.v-col-xs-12 {
+	@media (max-width: 600px) {
+		flex: 0 0 100% !important;
+		max-width: 100% !important;
+	}
+}
