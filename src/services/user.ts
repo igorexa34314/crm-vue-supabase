@@ -1,11 +1,9 @@
 import { errorHandler } from '@/utils/errorHandler';
 import { useInfoStore, UserInfo } from '@/stores/info';
 import { AuthService } from '@/services/auth';
-import { TimestampToDate } from '@/services/record';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/supabase';
 import { DEFAULT_BILL, DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/globals';
-import { RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import { Tables } from '@/database.types';
 
 export interface UserCredentials {

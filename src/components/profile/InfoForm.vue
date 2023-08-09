@@ -73,7 +73,7 @@ import { CurrencyRates } from '@/services/currency';
 import { currencyKey } from '@/injection-keys';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/globals';
-import { isEqual } from 'lodash';
+import { isEqual, omitBy, isNil, isEmpty } from 'lodash';
 import { Locales } from '@/plugins/i18n';
 
 const props = withDefaults(defineProps<{
@@ -101,7 +101,9 @@ const info = computed(() => infoStore.info);
 
 const form = ref<VForm>();
 
-const formState = ref<Partial<UserInfo> & { avatar: File[] }>({
+type NonUndefinedOrNullObjectFields<T extends { [key: string]: any }> = { [key in keyof T]: Exclude<T[key], null | undefined> };
+
+const formState = ref<Partial<NonUndefinedOrNullObjectFields<UserInfo>> & { avatar: File[] }>({
 	username: '',
 	first_name: '',
 	last_name: '',
@@ -129,7 +131,7 @@ const locales: { title: string; value: Locales }[] = [
 watchEffect(() => {
 	if (info.value && Object.keys(info.value).length) {
 		const { bill, id, avatar_url, ...userdata } = info.value;
-		formState.value = { ...formState.value, ...userdata };
+		formState.value = { ...formState.value, ...omitBy(userdata, isNil) };
 	}
 })
 
@@ -145,6 +147,8 @@ const isInfoEqualsToStore = computed(() => {
 const submitHandler = async () => {
 	const valid = (await form.value?.validate())?.valid;
 	if (valid) {
+		console.log(omitBy(formState.value, isEmpty));
+
 		emit('updateInfo', formState.value);
 		formState.value.avatar = [];
 	}

@@ -1,36 +1,38 @@
 import { AuthService } from '@/services/auth';
 import { errorHandler } from '@/utils/errorHandler';
+import { supabase } from '@/supabase';
+import { Tables } from '@/database.types';
 
-export interface Category {
-	readonly id?: string;
-	title: string;
-	limit: number;
-}
+export type Category = Omit<Tables<'categories'>, 'updated_at' | 'created_at' | 'user_id'>;
 
 export class CategoryService {
 	static async fetchCategories() {
 		try {
-			const categories: Category[] = [];
 			const uid = await AuthService.getUserId();
-			const categoriesSnapshot = await getDocs(col(doc(col(db, 'users'), uid), 'categories'));
-			categoriesSnapshot.forEach(doc => {
-				categories.push({ id: doc.id, ...(doc.data() as Category) });
-			});
+			const categories = await supabase
+				.from('categories')
+				.select('id, limit, title')
+				.eq('user_id', uid)
+				.order('created_at', { ascending: false });
 			return categories;
 		} catch (e) {
 			errorHandler(e);
 		}
 	}
 
-	static async createCategory(categoryData: Category) {
+	static async createCategory(categoryData: Omit<Category, 'id'>) {
 		try {
-			const uid = await AuthService.getUserId();
-			const isEmailVerified = await AuthService.isEmailVerified();
-			if (!isEmailVerified) {
-				throw new Error('verify_error');
-			}
-			const newCategoryRef = await addDoc(col(doc(col(db, 'users'), uid), 'categories'), categoryData);
-			return { ...categoryData, id: newCategoryRef.id as string };
+			// const isEmailVerified = await AuthService.isEmailVerified();
+			// if (!isEmailVerified) {
+			// 	throw new Error('verify_error');
+			// }
+			const { error, data: newCategory } = await supabase
+				.from('categories')
+				.insert(categoryData)
+				.select('id, limit, title')
+				.single();
+			if (error) throw error;
+			return newCategory;
 		} catch (e) {
 			errorHandler(e);
 		}
@@ -39,12 +41,17 @@ export class CategoryService {
 	static async updateCategory(categoryId: string, categoryData: Partial<Category>) {
 		try {
 			const uid = await AuthService.getUserId();
-			const isEmailVerified = await AuthService.isEmailVerified();
-			if (!isEmailVerified) {
-				throw new Error('verify_error');
-			}
-			const categoryRef = doc(col(doc(col(db, 'users'), uid), 'categories'), categoryId);
-			await updateDoc(categoryRef, categoryData);
+			// const isEmailVerified = await AuthService.isEmailVerified();
+			// if (!isEmailVerified) {
+			// 	throw new Error('verify_error');
+			// }
+			const { error, data: category } = await supabase
+				.from('categories')
+				.update(categoryData)
+				.eq('id', categoryId)
+				.select('id, limit, title');
+			if (error) throw error;
+			return category;
 		} catch (e) {
 			errorHandler(e);
 		}
@@ -52,13 +59,15 @@ export class CategoryService {
 
 	static async fetchCategoryById(id: Category['id']) {
 		try {
-			const uid = await AuthService.getUserId();
-			const categoryRef = await doc(col(doc(col(db, 'users'), uid), 'categories'), id);
-			const categoryDoc = await getDoc(categoryRef);
-			if (!categoryDoc.exists()) {
-				throw new Error('Category with this id does not exist');
+			const { error, data: category } = await supabase
+				.from('categories')
+				.select('id, limit, title')
+				.eq('id', id)
+				.single();
+			if (error) {
+				throw error;
 			}
-			return { ...categoryDoc.data(), id } as Category;
+			return category;
 		} catch (e) {
 			errorHandler(e);
 		}

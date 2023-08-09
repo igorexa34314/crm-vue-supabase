@@ -14,4 +14,4 @@ app.use(router).use(i18n).use(pinia).use(createMetaManager()).use(vuetify);
 app.component('app-loader', AppLoader);
 app.mount('#app');
 
-useInfoStore().$subscribeLocale(setI18nLanguage);
+// useInfoStore().$subscribeLocale(setI18nLanguage);

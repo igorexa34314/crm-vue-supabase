@@ -51,7 +51,8 @@ const { xs } = useDisplay();
 const { userCurrency } = storeToRefs(useInfoStore());
 const form = ref<VForm>();
 const loading = ref(false);
-const formState = ref<Category>({
+
+const formState = ref<Omit<Category, 'id'>>({
 	title: '',
 	limit: Math.floor(cf.value(props.defaultLimit) / 100) * 100,
 });

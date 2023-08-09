@@ -5,6 +5,40 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export interface Database {
 	public: {
 		Tables: {
+			categories: {
+				Row: {
+					created_at: string;
+					id: string;
+					limit: number;
+					title: string;
+					updated_at: string | null;
+					user_id: string;
+				};
+				Insert: {
+					created_at?: string;
+					id?: string;
+					limit: number;
+					title: string;
+					updated_at?: string | null;
+					user_id?: string;
+				};
+				Update: {
+					created_at?: string;
+					id?: string;
+					limit?: number;
+					title?: string;
+					updated_at?: string | null;
+					user_id?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: 'categories_user_id_fkey';
+						columns: ['user_id'];
+						referencedRelation: 'users';
+						referencedColumns: ['id'];
+					}
+				];
+			};
 			profiles: {
 				Row: {
 					avatar_url: string | null;
@@ -57,6 +91,46 @@ export interface Database {
 					}
 				];
 			};
+			records: {
+				Row: {
+					category_id: string;
+					created_at: string;
+					description: string;
+					id: string;
+					type: Database['public']['Enums']['record_type'];
+					user_id: string;
+				};
+				Insert: {
+					category_id: string;
+					created_at?: string;
+					description: string;
+					id?: string;
+					type: Database['public']['Enums']['record_type'];
+					user_id?: string;
+				};
+				Update: {
+					category_id?: string;
+					created_at?: string;
+					description?: string;
+					id?: string;
+					type?: Database['public']['Enums']['record_type'];
+					user_id?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: 'records_category_id_fkey';
+						columns: ['category_id'];
+						referencedRelation: 'categories';
+						referencedColumns: ['id'];
+					},
+					{
+						foreignKeyName: 'records_user_id_fkey';
+						columns: ['user_id'];
+						referencedRelation: 'users';
+						referencedColumns: ['id'];
+					}
+				];
+			};
 		};
 		Views: {
 			[_ in never]: never;
@@ -68,6 +142,7 @@ export interface Database {
 			currencies: 'USD' | 'EUR' | 'UAH' | 'RUB';
 			genders: 'male' | 'female' | 'unknown';
 			locales: 'en-US' | 'ru-RU' | 'uk-UA';
+			record_type: 'income' | 'outcome';
 		};
 		CompositeTypes: {
 			[_ in never]: never;
