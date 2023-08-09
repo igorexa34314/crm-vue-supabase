@@ -11,7 +11,8 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vue-tsc && vite build && cp dist/index.html dist/404.html",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"supabase:generate": "supabase gen types typescript --project-id abcdefghijklmnopqrst > database.types.ts"
 	},
 	"dependencies": {
 		"@mdi/js": "^7.2.96",
@@ -38,6 +39,7 @@
 		"@types/uuid": "^9.0.2",
 		"@vitejs/plugin-vue": "^4.2.3",
 		"sass": "^1.64.2",
+		"supabase": "^1.83.7",
 		"typescript": "^5.1.6",
 		"vite": "^4.4.9",
 		"vite-plugin-pages": "^0.31.0",

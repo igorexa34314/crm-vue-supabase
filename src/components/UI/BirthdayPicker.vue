@@ -18,7 +18,7 @@ import { useI18n, DateTimeOptions } from 'vue-i18n';
 import { VSelect } from 'vuetify/components';
 
 const props = withDefaults(defineProps<{
-	modelValue?: Date;
+	modelValue?: Date | string;
 	fromYear?: string | number;
 	order?: 'dd-mmm-yyyy' | 'mmm-dd-yyyy';
 	density?: VSelect['density'];
@@ -46,11 +46,13 @@ const datePickerDateItems = computed(() => ([
 ]));
 
 const datePickerState = ref({
-	month: props.modelValue.getMonth(),
-	day: props.modelValue.getDate(),
-	year: props.modelValue.getFullYear(),
+	month: new Date(props.modelValue).getMonth(),
+	day: new Date(props.modelValue).getDate(),
+	year: new Date(props.modelValue).getFullYear(),
 });
-watch(datePickerState, (newVal) => emit('update:modelValue', new Date(Object.values(newVal).join('-'))), { deep: true });
+watch(datePickerState, (newVal) => {
+	emit('update:modelValue', new Date(Object.values(newVal).join('-')))
+}, { deep: true });
 
 const monthsForLocales = (monthFormat: DateTimeOptions['month'] = 'long') => {
 	const { d } = useI18n({ inheritLocale: true, useScope: 'global' });

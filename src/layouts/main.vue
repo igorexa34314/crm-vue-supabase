@@ -30,12 +30,11 @@ import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useAsyncState } from '@vueuse/core';
 import { currencyKey } from '@/injection-keys';
-import { Unsubscribe } from 'firebase/firestore';
 import { useRouter } from 'vue-router';
 import { AuthService } from '@/services/auth';
 import { useDisplay } from 'vuetify';
 
-let unsub: Unsubscribe | undefined;
+let userInfoChannel: Awaited<ReturnType<typeof UserService.fetchInfo>>;
 const { state: currency, isLoading, isReady, execute: refresh } = useAsyncState(CurrencyService.fetchCurrency, null);
 provide(currencyKey, { currency, isLoading, isReady, refresh });
 
@@ -50,7 +49,7 @@ const { xs, mdAndDown } = useDisplay();
 onMounted(async () => {
 	try {
 		if (!infoStore.info || !Object.keys(infoStore.info).length) {
-			unsub = await UserService.fetchInfo();
+			userInfoChannel = await UserService.fetchAndSubscribeInfo();
 		}
 		await CurrencyService.fetchCurrency();
 	} catch (e) {
@@ -61,12 +60,12 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-	unsub?.();
+	userInfoChannel?.unsubscribe();
 });
 
 const logout = async () => {
 	try {
-		unsub?.();
+		userInfoChannel?.unsubscribe();
 		await AuthService.logout();
 		push({
 			path: '/login',

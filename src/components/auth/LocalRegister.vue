@@ -67,5 +67,3 @@ const submitRegister = async () => {
 	}
 }
 </script>
-
-<style scoped></style>

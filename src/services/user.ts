@@ -5,6 +5,8 @@ import { TimestampToDate } from '@/services/record';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/supabase';
 import { DEFAULT_BILL, DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/globals';
+import { RealtimePostgresChangesPayload } from '@supabase/supabase-js';
+import { Tables } from '@/database.types';
 
 export interface UserCredentials {
 	uid: string;
@@ -13,76 +15,86 @@ export interface UserCredentials {
 }
 
 export class UserService {
-	static async createUser({ uid, displayName, ...user }: UserCredentials & Partial<UserInfo>) {
-		return setDoc(
-			doc(col(db, 'users'), uid),
-			{
-				info: {
-					...user,
-					email: user.email,
-					bill: DEFAULT_BILL,
-					firstName: displayName?.split(' ').at(0) || '',
-					lastName: displayName?.split(' ').at(1) || '',
-					gender: 'unknown',
-					locale: DEFAULT_LOCALE,
-					currency: DEFAULT_CURRENCY
-				} as UserInfo
-			},
-			{ merge: true }
-		);
-	}
+	// static async createUserProfile({ uid, displayName, ...user }: UserCredentials & Partial<UserInfo>) {
+	// 	return supabase.,
+	// 		{
+	// 			info: {
+	// 				...user,
+	// 				email: user.email,
+	// 				bill: DEFAULT_BILL,
+	// 				firstName: displayName?.split(' ').at(0) || '',
+	// 				lastName: displayName?.split(' ').at(1) || '',
+	// 				gender: 'unknown',
+	// 				locale: DEFAULT_LOCALE,
+	// 				currency: DEFAULT_CURRENCY
+	// 			} as UserInfo
+	// 		},
+	// 		{ merge: true }
+	// 	);
+	// }
 
 	static async getUserById(uid: UserCredentials['uid']) {
-		return supabase.from('profiles').select().match({ id: uid });
+		const { error, data } = await supabase.from('profiles').select().eq('id', uid).single();
+		if (error) throw error;
+		const { updated_at, ...user } = data;
+		return user;
 	}
 
-	static async fetchInfo() {
+	static subscribeInfo(uid: UserInfo['id'], cb: (pl: UserInfo) => void) {
+		return supabase
+			.channel('schema-db-changes')
+			.on<Tables<'profiles'>>(
+				'postgres_changes',
+				{
+					event: '*',
+					schema: 'public',
+					table: 'profiles',
+					filter: `id=eq.${uid}`
+				},
+				payload => {
+					console.log(payload);
+					if (Object.keys(payload.new).length) {
+						const { updated_at, ...info } = payload.new as UserInfo & { updated_at: string };
+						cb(info);
+					}
+				}
+			)
+			.subscribe();
+	}
+
+	static async fetchAndSubscribeInfo() {
 		try {
 			const { setInfo } = useInfoStore();
 			const uid = await AuthService.getUserId();
-			if (uid) {
-				return onSnapshot(doc(col(db, 'users'), uid), snapshot => {
-					if (snapshot.exists() && Object.keys(snapshot.data()?.info).length) {
-						const info = snapshot.data().info;
-						if (info.birthdayDate) {
-							info.birthdayDate = TimestampToDate(info.birthdayDate);
-						}
-						setInfo(info);
-					}
-				});
-			}
-		} catch (e) {
-			errorHandler(e);
+			const info = await UserService.getUserById(uid);
+			setInfo(info);
+			return UserService.subscribeInfo(uid, userInfo => {
+				setInfo(userInfo);
+			});
+		} catch (err) {
+			errorHandler(err);
 		}
 	}
 
 	static async updateUser(uid: UserCredentials['uid'], data: Partial<UserInfo>) {
-		updateDoc(
-			doc(col(db, 'users'), uid),
-			Object.assign(
-				{},
-				...Object.keys(data).map(key => ({
-					[`info.${key}`]: data[key as keyof UserInfo]
-				}))
-			)
-		);
+		return supabase.from('profiles').update(data).eq('id', uid);
 	}
 
-	static async updateInfo(toUpdate: Partial<UserInfo>) {
-		try {
-			const uid = await AuthService.getUserId();
-			const isEmailVerified = await AuthService.isEmailVerified();
-			if (!isEmailVerified) {
-				throw new Error('verify_error');
-			}
-			if (uid) {
-				await this.updateUser(uid, toUpdate);
-				await AuthService.updateUserProfile(toUpdate);
-			}
-		} catch (e) {
-			errorHandler(e);
-		}
-	}
+	// static async updateInfo(toUpdate: Partial<UserInfo>) {
+	// 	try {
+	// 		const uid = await AuthService.getUserId();
+	// 		const isEmailVerified = await AuthService.isEmailVerified();
+	// 		if (!isEmailVerified) {
+	// 			throw new Error('verify_error');
+	// 		}
+	// 		if (uid) {
+	// 			await this.updateUser(uid, toUpdate);
+	// 			await AuthService.updateUserProfile(toUpdate);
+	// 		}
+	// 	} catch (e) {
+	// 		errorHandler(e);
+	// 	}
+	// }
 
 	static async updateUserAvatar(files: File[]) {
 		try {
@@ -92,17 +104,16 @@ export class UserService {
 			const avatar = files[0];
 			if (avatar instanceof File) {
 				const uid = await AuthService.getUserId();
-				const avatarRef = storageRef(
-					storage,
-					`userdata/${uid}/avatar/${uuidv4()}.${avatar.name.split('.').at(-1)}`
-				);
-				await uploadBytes(avatarRef, avatar, {
-					contentType: avatar.type
-				});
-				const avatarURL = await getDownloadURL(avatarRef);
-				await updateDoc(doc(col(db, 'users'), uid), {
-					'info.photoURL': avatarURL
-				});
+				const avatarRef = await supabase.storage
+					.from('avatars')
+					.upload(`${uid}/${uuidv4()}.${avatar.name.split('.').at(-1)}`, avatar);
+				console.log(avatarRef.data?.path);
+				const {
+					data: { publicUrl }
+				} = supabase.storage
+					.from('avatars')
+					.getPublicUrl(avatarRef.data?.path || `${uid}/${uuidv4()}.${avatar.name.split('.').at(-1)}`);
+				await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', uid);
 			}
 		} catch (e) {
 			errorHandler(e);

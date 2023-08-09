@@ -2,6 +2,7 @@ import { useInfoStore } from '@/stores/info';
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/supabase';
 import { UserService } from '@/services/user';
+import { DEFAULT_BILL } from '@/globals';
 
 export interface UserCredentials {
 	email: string;
@@ -22,11 +23,14 @@ export class AuthService {
 
 	static async register({ email, password, username }: UserCredentials) {
 		try {
-			const { data, error } = await supabase.auth.signUp({
+			const { error } = await supabase.auth.signUp({
 				email,
 				password,
 				options: {
-					data: { username }
+					data: {
+						username,
+						bill: DEFAULT_BILL
+					}
 				}
 			});
 			if (error) throw error;

@@ -4,16 +4,16 @@
 			:label="t('user.username')" class="mb-5" required />
 
 		<div class="d-flex flex-column items-center mb-4 flex-sm-row">
-			<LocalizedInput v-model="formState.firstName" :rules="validations.firstName" variant="underlined"
+			<LocalizedInput v-model="formState.first_name" :rules="validations.firstName" variant="underlined"
 				:label="t('user.firstName')" class="mr-sm-3" />
 
-			<LocalizedInput v-model="formState.lastName" :rules="validations.lastName" variant="underlined"
+			<LocalizedInput v-model="formState.last_name" :rules="validations.lastName" variant="underlined"
 				:label="t('user.lastName')" class="ml-sm-3" />
 		</div>
 
 		<div class="d-flex flex-column flex-md-row">
 			<div class="flex-fill d-flex flex-column">
-				<BirthdayPicker v-model="formState.birthdayDate" :label="t('user.birthday')" class="flex-fill" />
+				<BirthdayPicker v-model="formState.birthday_date" :label="t('user.birthday')" class="flex-fill" />
 
 				<v-radio-group v-model="formState.gender" :label="t('user.gender.label')" class="text-input">
 					<v-radio v-for="gender in genderItems" :key="gender.value" :label="gender.title" :value="gender.value"
@@ -23,7 +23,7 @@
 			<div :style="{ 'max-width': smAndDown ? 'none' : '40%', width: '100%' }"
 				class="d-flex flex-column pl-4 mt-md-0 my-4">
 				<v-card variant="flat" :max-width="smAndDown ? 200 : 250" class="mb-5" elevation="4">
-					<v-img :lazy-src="avatarPlaceholder" :src="formState.photoURL || avatarPlaceholder" alt="Ваш аватар" cover
+					<v-img :lazy-src="avatarPlaceholder" :src="formState.avatar_url || avatarPlaceholder" alt="Ваш аватар" cover
 						eager>
 						<template #placeholder>
 							<ImageLoader />
@@ -72,8 +72,9 @@ import { VForm } from 'vuetify/components';
 import { CurrencyRates } from '@/services/currency';
 import { currencyKey } from '@/injection-keys';
 import { useDisplay } from 'vuetify';
-import { DEFAULT_CURRENCY } from '@/globals';
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/globals';
 import { isEqual } from 'lodash';
+import { Locales } from '@/plugins/i18n';
 
 const props = withDefaults(defineProps<{
 	loading?: boolean;
@@ -82,7 +83,7 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{
-	updateInfo: [info: Omit<UserInfo, 'bill' | 'email'> & { avatar: File[] }],
+	updateInfo: [info: Partial<UserInfo> & { avatar: File[] }],
 }>();
 
 const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
@@ -100,15 +101,15 @@ const info = computed(() => infoStore.info);
 
 const form = ref<VForm>();
 
-const formState = ref<Omit<UserInfo, 'bill' | 'email'> & { avatar: File[] }>({
+const formState = ref<Partial<UserInfo> & { avatar: File[] }>({
 	username: '',
-	firstName: '',
-	lastName: '',
+	first_name: '',
+	last_name: '',
 	bio: '',
-	birthdayDate: new Date(),
+	birthday_date: '',
 	gender: 'unknown',
-	locale: 'en-US',
-	currency: 'USD',
+	locale: DEFAULT_LOCALE,
+	currency: DEFAULT_CURRENCY,
 	avatar: []
 });
 
@@ -118,7 +119,7 @@ const genderItems = computed<{ title: string, value: UserInfo['gender'] }[]>(() 
 	{ title: t('user.gender.unknown'), value: 'unknown' }
 ]));
 
-const locales = [
+const locales: { title: string; value: Locales }[] = [
 	{ title: 'Русский', value: 'ru-RU' },
 	{ title: 'Українська', value: 'uk-UA' },
 	{ title: 'English', value: 'en-US' },
@@ -127,7 +128,7 @@ const locales = [
 //fillInfo
 watchEffect(() => {
 	if (info.value && Object.keys(info.value).length) {
-		const { bill, ...userdata } = info.value;
+		const { bill, id, avatar_url, ...userdata } = info.value;
 		formState.value = { ...formState.value, ...userdata };
 	}
 })

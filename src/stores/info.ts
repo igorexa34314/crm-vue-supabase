@@ -3,21 +3,10 @@ import { computed, ref, watch } from 'vue';
 import { CurrencyRates } from '@/services/currency';
 import { Locales } from '@/plugins/i18n';
 import { useLocalStorage } from '@vueuse/core';
+import { Tables } from '@/database.types';
 import { DEFAULT_LOCALE, DEFAULT_CURRENCY, LOCALE_KEY } from '@/globals';
 
-export interface UserInfo {
-	email: string;
-	bill: number;
-	locale: Locales;
-	username: string;
-	firstName?: string;
-	photoURL?: string;
-	lastName?: string;
-	birthdayDate?: Date;
-	gender: 'male' | 'female' | 'unknown';
-	bio?: string;
-	currency: CurrencyRates;
-}
+export type UserInfo = Omit<Tables<'profiles'>, 'updated_at'>;
 
 export const useInfoStore = defineStore('info', () => {
 	const info = ref<UserInfo | null>(null);
