@@ -9,11 +9,22 @@ export class CategoryService {
 	static async fetchCategories() {
 		try {
 			const uid = await AuthService.getUserId();
-			const categories = await supabase
+			const { error, data: categories } = await supabase
 				.from('categories')
 				.select('id, limit, title')
 				.eq('user_id', uid)
 				.order('created_at', { ascending: false });
+			if (error) throw error;
+			return categories;
+		} catch (e) {
+			errorHandler(e);
+		}
+	}
+
+	static async fetchCategoriesSpendStats() {
+		try {
+			const { error, data: categories } = await supabase.rpc('calculate_category_spend');
+			if (error) throw error;
 			return categories;
 		} catch (e) {
 			errorHandler(e);
@@ -40,7 +51,6 @@ export class CategoryService {
 
 	static async updateCategory(categoryId: string, categoryData: Partial<Category>) {
 		try {
-			const uid = await AuthService.getUserId();
 			// const isEmailVerified = await AuthService.isEmailVerified();
 			// if (!isEmailVerified) {
 			// 	throw new Error('verify_error');
@@ -49,7 +59,8 @@ export class CategoryService {
 				.from('categories')
 				.update(categoryData)
 				.eq('id', categoryId)
-				.select('id, limit, title');
+				.select('id, limit, title')
+				.single();
 			if (error) throw error;
 			return category;
 		} catch (e) {

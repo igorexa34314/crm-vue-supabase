@@ -2,11 +2,11 @@
 	<v-table class="records-table" :density="xs ? 'comfortable' : 'default'">
 		<thead class="text-title">
 			<tr>
-				<th>#</th>
-				<th v-for="h in tableHeaders" :key="h">
-					<span @click="triggerSort(h as keyof RecordWithCategory)">{{ t(h) }}</span>
-					<v-icon v-if="sortProp === h" :icon="sortType === 'asc' ? mdiMenuUp : mdiMenuDown" size="small" class="ml-1"
-						@click="triggerSort(h as keyof RecordWithCategory)" />
+				<th>{{ '#' }}</th>
+				<th v-for="h in tableHeaders" :key="h.title">
+					<span @click="triggerSort(h.sortValue)">{{ t(h.title) }}</span>
+					<v-icon v-if="sortField === h.sortValue" :icon="sortType === 'asc' ? mdiMenuUp : mdiMenuDown" size="small"
+						class="ml-1" @click="triggerSort(h.sortValue)" />
 				</th>
 			</tr>
 		</thead>
@@ -16,8 +16,8 @@
 					<tr @click="push('/detail/' + rec.id)" class="record" v-bind="props" :class="isHovering ? 'bg-hover' : ''">
 						<td>{{ startIndex + (index + 1) }}</td>
 						<td>{{ n(cf(rec.amount), 'currency', userCurrency) }}</td>
-						<td>{{ d(rec.date, smAndDown ? 'shortdate' : 'short') }}</td>
-						<td class="record-category">{{ rec.category }}</td>
+						<td>{{ d(rec.created_at, smAndDown ? 'shortdate' : 'short') }}</td>
+						<td class="record-category">{{ rec.category?.title }}</td>
 						<td>
 							<span :class="rec.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
 								class="py-2 px-3 text-center text-trend">
@@ -50,21 +50,21 @@ import { mdiOpenInNew, mdiTrendingUp, mdiTrendingDown, mdiMenuUp, mdiMenuDown } 
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useInfoStore } from '@/stores/info';
-import { RecordWithCategory } from '@/views/history.vue';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
+import { RecordWithCategory, SortFields, SortType } from '@/services/record';
 
 const props = withDefaults(defineProps<{
-	records: RecordWithCategory[],
+	records: RecordWithCategory,
 	startIndex?: number,
-	sortProp?: keyof RecordWithCategory,
-	sortType?: 'asc' | 'desc',
+	sortField?: SortFields,
+	sortType?: SortType,
 }>(), {
 	startIndex: 1,
 });
 
 const emit = defineEmits<{
-	sort: [prop: keyof RecordWithCategory]
+	'sort': [field: SortFields]
 }>();
 
 const { t, d, n } = useI18n({ inheritLocale: true, useScope: 'global' });
@@ -73,12 +73,18 @@ const { smAndDown, xs } = useDisplay();
 const { cf } = useCurrencyFilter();
 const { userCurrency } = storeToRefs(useInfoStore());
 
-const triggerSort = (prop: keyof RecordWithCategory) => {
-	if (Object.keys(props.records[0]).includes(prop)) {
-		emit('sort', prop);
+const triggerSort = (field?: SortFields) => {
+	if (field) {
+		emit('sort', field);
 	}
-};
-const tableHeaders = computed(() => (['amount', 'date', 'category', 'type', smAndDown.value ? '' : 'open'].filter(Boolean)));
+}
+const tableHeaders = computed(() => ([
+	{ title: 'amount', sortValue: 'amount' },
+	{ title: 'date', sortValue: 'created_at' },
+	{ title: 'category', sortValue: 'category_id' },
+	{ title: 'type', sortValue: 'type' },
+	{ title: smAndDown.value ? '' : 'open' }
+].filter(h => !!h.title) as { title: string, sortValue?: SortFields }[]));
 </script>
 
 <style lang="scss" scoped>

@@ -45,7 +45,7 @@ const loading = ref(false);
 const updateInfo = async ({ avatar, ...userdata }: Omit<UserInfo, 'bill' | 'email'> & { avatar: File[] }) => {
 	try {
 		loading.value = true;
-		await UserService.updateInfo(userdata);
+		await UserService.updateUserInfo(userdata);
 		if (avatar.length) {
 			await UserService.updateUserAvatar(avatar);
 		}

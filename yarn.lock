@@ -490,10 +490,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.196":
-  version: 4.14.196
-  resolution: "@types/lodash@npm:4.14.196"
-  checksum: 201d17c3e62ae02a93c99ec78e024b2be9bd75564dd8fd8c26f6ac51a985ab280d28ce2688c3bcdfe785b0991cd9814edff19ee000234c7b45d9a697f09feb6a
+"@types/lodash@npm:^4.14.197":
+  version: 4.14.197
+  resolution: "@types/lodash@npm:4.14.197"
+  checksum: 53d7567d1704de76cf33266c78062e0fd722d4b846e5b1417d0b6ef0ee41c0d9c451b92bc34f73d5f1fcc45c7d36511e92f6f47a9279b48157ba60a92ddaa078
   languageName: node
   linkType: hard
 
@@ -504,10 +504,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^20.4.8":
+"@types/node@npm:*":
   version: 20.4.8
   resolution: "@types/node@npm:20.4.8"
   checksum: 86a3963c0c7af3410553d1dfa4b018a20b3cb3ab4d8e8ffe27408b6338c5de0374b0bf379bc705da2205b466daa751ccfe062f453ba9bde34fdb0e5163ca6a68
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.4.9":
+  version: 20.4.9
+  resolution: "@types/node@npm:20.4.9"
+  checksum: 504e3da96274f3865c1251830f4750bb0a8f6ef6f8648902cd3bba33370c5f219235471bfbf55cce726b25c8eacfcc8e2aad0ec3b13e27ea6708b00d4a9a46c8
   languageName: node
   linkType: hard
 
@@ -1115,8 +1122,8 @@ __metadata:
     "@intlify/unplugin-vue-i18n": ^0.12.2
     "@mdi/js": ^7.2.96
     "@supabase/supabase-js": ^2.32.0
-    "@types/lodash": ^4.14.196
-    "@types/node": ^20.4.8
+    "@types/lodash": ^4.14.197
+    "@types/node": ^20.4.9
     "@types/randomcolor": ^0.5.7
     "@types/uuid": ^9.0.2
     "@vitejs/plugin-vue": ^4.2.3
@@ -1125,7 +1132,7 @@ __metadata:
     lodash: ^4.17.21
     pinia: ^2.1.6
     randomcolor: ^0.6.2
-    sass: ^1.64.2
+    sass: ^1.65.1
     supabase: ^1.83.7
     typescript: ^5.1.6
     uuid: ^9.0.0
@@ -1139,7 +1146,7 @@ __metadata:
     vue-meta: ^3.0.0-alpha.10
     vue-router: ^4.2.4
     vue-tsc: ^1.8.8
-    vuetify: ^3.3.11
+    vuetify: ^3.3.12
   languageName: unknown
   linkType: soft
 
@@ -2888,16 +2895,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.64.2":
-  version: 1.64.2
-  resolution: "sass@npm:1.64.2"
+"sass@npm:^1.65.1":
+  version: 1.65.1
+  resolution: "sass@npm:1.65.1"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
     source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 43a5c9b9b3b6ba27feb5c45eba90edc437b15a30fd443f5d2623bbd59fe4a922f2a6a9990296c6a6c2b5bce7f401922c5049357415f50b745952c2d478bc5526
+  checksum: 33e325fc80cd07489992e0814cd4929496f87493ffe78c423c2dbafa5746a574e6f3bde20c2a3e4ea47b16ee3d6bc5afcf1d36b405227b829d6c4c9ddcc7f8e2
   languageName: node
   linkType: hard
 
@@ -3431,9 +3438,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify@npm:^3.3.11":
-  version: 3.3.11
-  resolution: "vuetify@npm:3.3.11"
+"vuetify@npm:^3.3.12":
+  version: 3.3.12
+  resolution: "vuetify@npm:3.3.12"
   peerDependencies:
     typescript: ">=4.7"
     vite-plugin-vuetify: ^1.0.0-alpha.12
@@ -3449,7 +3456,7 @@ __metadata:
       optional: true
     webpack-plugin-vuetify:
       optional: true
-  checksum: e9a90fc8ccab8f509fa20c8351f7d391150dc92cb8a8e33f047cbb1cc8a203904801e056c42bc4147071ec9b884d54ee170af17b2932ce01b41573f81b675a4d
+  checksum: ac237cdb12ded5f4797cc547cbfd273aa95f77ab199558ea4f5abcc82fd91015e4c74cf743a93d61116e6961409ccc6a533332ae7317ef4b3d126e6f1dc41d3d
   languageName: node
   linkType: hard
 

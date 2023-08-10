@@ -11,12 +11,12 @@
 			<router-link to="/categories">{{ t('create_category') }}</router-link>
 		</div>
 
-		<NewRecord v-else v-bind="{ categories, defaultAmount, loading: createLoading }" @create-record="create" />
+		<CreateRecord v-else v-bind="{ categories, defaultAmount, loading: createLoading }" @create-record="create" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import NewRecord from '@/components/record/NewRecord.vue';
+import CreateRecord from '@/components/record/CreateRecord.vue';
 import { ref, computed } from 'vue';
 import { useAsyncState } from '@vueuse/core';
 import { useMeta } from 'vue-meta';
@@ -53,7 +53,7 @@ const create = async (formData: RecordForm) => {
 		const newBill = type === 'income' ?
 			info.value!.bill + amount : info.value!.bill - amount;
 
-		await UserService.updateInfo({ bill: +newBill.toFixed(2) });
+		await UserService.updateUserInfo({ bill: +newBill.toFixed(2) });
 		showMessage(t('createRecord_success'));
 	} catch (e) {
 		if (typeof e === 'string') {

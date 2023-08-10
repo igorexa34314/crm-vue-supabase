@@ -1,7 +1,7 @@
 <template>
-	<v-form ref="form" v-if="formState.categoryId" @submit.prevent="submitHandler" class="record-form mt-8"
+	<v-form ref="form" v-if="formState.category_id" @submit.prevent="submitHandler" class="record-form mt-8"
 		:class="xs ? 'px-2' : 'px-4'">
-		<v-select v-model="formState.categoryId" :items="categories" item-title="title" item-value="id"
+		<v-select v-model="formState.category_id" :items="categories" item-title="title" item-value="id"
 			:label="t('select_category')" variant="underlined" class="text-input" />
 
 		<v-radio-group v-model="formState.type" class="mt-3 text-input">
@@ -74,11 +74,11 @@ const formState = ref<RecordForm>({
 	description: '',
 	type: 'income',
 	details: [],
-	categoryId: props.categories[0].id
+	category_id: props.categories[0].id
 });
 
 watchEffect(() => {
-	formState.value.categoryId = props.categories[0].id;
+	formState.value.category_id = props.categories[0].id;
 	formState.value.amount = Math.round(cf.value(props.defaultAmount) / 10) * 10;
 });
 const canCreateRecord = computed(() => {

@@ -69,7 +69,7 @@ watchEffect(() => {
 	const category = props.categories.find(({ id }) => id === currentCategory.value.id);
 	if (category) {
 		currentCategory.value.title = category.title;
-		currentCategory.value.limit = Math.round(cf.value(props.defaultLimit) / 100) * 100;
+		currentCategory.value.limit = Math.round(cf.value(category.limit) / 100) * 100;
 	};
 });
 
@@ -86,9 +86,11 @@ const submitHandler = async () => {
 		try {
 			const convertedLimit = cf.value(limit, undefined, 'reverse');
 			loading.value = true;
-			await CategoryService.updateCategory(id, { ...categoryData, limit: convertedLimit });
-			showMessage(t('category_updated'));
-			emit('updated', { ...categoryData, id, limit: convertedLimit });
+			const updatedCat = await CategoryService.updateCategory(id, { ...categoryData, limit: convertedLimit });
+			if (updatedCat) {
+				showMessage(t('category_updated'));
+				emit('updated',  updatedCat);
+			}
 		} catch (e) {
 			if (typeof e === 'string') {
 				showMessage(te(e) ? t(e) : e, 'red-darken-3');

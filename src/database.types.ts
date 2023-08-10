@@ -91,8 +91,46 @@ export interface Database {
 					}
 				];
 			};
+			record_details: {
+				Row: {
+					created_at: string;
+					fullname: string;
+					fullpath: string;
+					id: string;
+					public_url: string | null;
+					record_id: string;
+					size: number;
+				};
+				Insert: {
+					created_at?: string;
+					fullname: string;
+					fullpath?: string;
+					id?: string;
+					public_url?: string | null;
+					record_id: string;
+					size: number;
+				};
+				Update: {
+					created_at?: string;
+					fullname?: string;
+					fullpath?: string;
+					id?: string;
+					public_url?: string | null;
+					record_id?: string;
+					size?: number;
+				};
+				Relationships: [
+					{
+						foreignKeyName: 'record_details_record_id_fkey';
+						columns: ['record_id'];
+						referencedRelation: 'records';
+						referencedColumns: ['id'];
+					}
+				];
+			};
 			records: {
 				Row: {
+					amount: number;
 					category_id: string;
 					created_at: string;
 					description: string;
@@ -101,6 +139,7 @@ export interface Database {
 					user_id: string;
 				};
 				Insert: {
+					amount: number;
 					category_id: string;
 					created_at?: string;
 					description: string;
@@ -109,6 +148,7 @@ export interface Database {
 					user_id?: string;
 				};
 				Update: {
+					amount?: number;
 					category_id?: string;
 					created_at?: string;
 					description?: string;
@@ -136,7 +176,18 @@ export interface Database {
 			[_ in never]: never;
 		};
 		Functions: {
-			[_ in never]: never;
+			calculate_category_spend: {
+				Args: {
+					uid?: string;
+				};
+				Returns: {
+					id: string;
+					title: string;
+					limit: number;
+					spend: number;
+					percent: number;
+				}[];
+			};
 		};
 		Enums: {
 			currencies: 'USD' | 'EUR' | 'UAH' | 'RUB';

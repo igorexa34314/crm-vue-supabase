@@ -1,4 +1,4 @@
-import { computed, unref, MaybeRef } from 'vue';
+import { computed, unref, MaybeRef, Ref } from 'vue';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale } from 'chart.js';
 import { useI18n } from 'vue-i18n';
@@ -6,8 +6,13 @@ import { useTheme } from 'vuetify';
 import randomColor from 'randomcolor';
 
 export const useChart = <T extends ChartType = 'pie'>(
-	labels: MaybeRef<ChartData<T>['labels'] | undefined>,
-	data: MaybeRef<ChartData<T>['datasets'][number]['data'] | undefined>
+	inputData: MaybeRef<
+		| {
+				label: string;
+				data: ChartData<T>['datasets'][number]['data'][number];
+		  }[]
+		| undefined
+	>
 ) => {
 	ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 
@@ -43,12 +48,12 @@ export const useChart = <T extends ChartType = 'pie'>(
 	const chartData = computed<ChartData>(
 		() =>
 			({
-				labels: unref(labels) || [],
+				labels: unref(inputData)?.map(d => d.label) || [],
 				datasets: [
 					{
-						data: unref(data || []),
+						data: unref(inputData)?.map(d => d.data),
 						backgroundColor: randomColor({
-							count: unref(data)?.length || 1,
+							count: unref(inputData)?.length || 1,
 							hue: theme.global.current.value.dark ? '#0E5578' : 'random',
 							luminosity: theme.global.current.value.dark ? 'light' : 'bright'
 						}),

@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, watchEffect } from 'vue';
+import { ref, computed, watch, watchEffect, onMounted } from 'vue';
 import { useI18n, DateTimeOptions } from 'vue-i18n';
 import { VSelect } from 'vuetify/components';
 
@@ -46,18 +46,17 @@ const datePickerDateItems = computed(() => ([
 ]));
 
 const datePickerState = ref<Record<'month' | 'day' | 'year', number>>({
-	month: new Date().getMonth(),
-	day: new Date().getMonth(),
-	year: new Date().getMonth(),
+	month: new Date(props.modelValue || new Date()).getMonth(),
+	day: new Date(props.modelValue || new Date()).getDate(),
+	year: new Date(props.modelValue || new Date()).getFullYear(),
 });
-
-watchEffect(() => {
-	datePickerState.value = {
-		month: new Date(props.modelValue || Date.now()).getMonth(),
-		day: new Date(props.modelValue || Date.now()).getDate(),
-		year: new Date(props.modelValue || Date.now()).getFullYear(),
-	};
-})
+// watchEffect(() => {
+// 	datePickerState.value = {
+// 		month: new Date(props.modelValue).getMonth(),
+// 		day: new Date(props.modelValue).getDate(),
+// 		year: new Date(props.modelValue).getFullYear(),
+// 	};
+// })
 watch(datePickerState, (newVal) => {
 	emit('update:modelValue', new Date(Object.values(newVal).join('-')))
 }, { deep: true });

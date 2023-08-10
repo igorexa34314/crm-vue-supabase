@@ -32,7 +32,7 @@ export class UserService {
 	// }
 
 	static async getUserById(uid: UserCredentials['uid']) {
-		const { error, data } = await supabase.from('profiles').select().eq('id', uid).single();
+		const { error, data } = await supabase.from('profiles').select('*').eq('id', uid).single();
 		if (error) throw error;
 		const { updated_at, ...user } = data;
 		return user;
@@ -74,7 +74,8 @@ export class UserService {
 		}
 	}
 
-	static async updateUser(uid: UserCredentials['uid'], data: Partial<UserInfo>) {
+	static async updateUserInfo(data: Partial<UserInfo>) {
+		const uid = await AuthService.getUserId();
 		return supabase.from('profiles').update(data).eq('id', uid);
 	}
 

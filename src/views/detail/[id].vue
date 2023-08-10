@@ -1,32 +1,33 @@
 <template>
 	<div>
 		<app-loader v-if="isLoading" page />
-		<div v-else-if="recordWithCategory">
+		<div v-else-if="record">
 			<v-breadcrumbs :items="breadcrumbs" v-slot:divider>
 				<v-icon :icon="mdiChevronRight" />
 			</v-breadcrumbs>
 
 			<v-row class="mt-4">
 				<v-col cols="6" md="6" sm="10" class="v-col-xs-12">
-					<v-card class="pa-3"
-						:color="recordWithCategory.type === 'outcome' ? 'red-lighten-1' : 'light-green-lighten-1'">
+					<v-card class="pa-3" :color="record.type === 'outcome' ? 'red-lighten-1' : 'light-green-lighten-1'">
 						<v-card-text class="text-subtitle-1 text-primary">
-							<p>{{ t('description') + ': ' + recordWithCategory.description }}</p>
-							<p class="mt-3">{{ t('amount') + ': ' + n(cf((recordWithCategory.amount)), 'currency', userCurrency)
+							<p>{{ t('description') + ': ' + record.description }}</p>
+							<p class="mt-3">{{ t('amount') + ': ' + n(cf((record.amount)), 'currency', userCurrency)
 							}}
 							</p>
 
-							<p class="mt-3 mb-5">{{ t('category') + ': ' + recordWithCategory.category }}</p>
+							<p class="mt-3 mb-5">{{ t('category') + ': ' + record.category?.title }}</p>
 
-							<div v-if="recordWithCategory.details?.length" class="record__details mt-4">
+							<div v-if="record.details?.length" class="record__details mt-4">
 								<p class="mb-4">{{ t('record_details') }}</p>
-								<p v-for="detail in recordWithCategory.details" class="record__detail mb-2 text-fixed">
-									<span @click="downloadDetail(detail)" class="record__detail-download">{{ detail.fullname
-									}}</span>
+								<p v-for="detail in record.details" class="record__detail mb-2 text-fixed">
+									<span @click="downloadDetail(detail.public_url || detail.fullpath)"
+										class="record__detail-download">{{
+											detail.fullname
+										}}</span>
 								</p>
 							</div>
 							<a hidden ref="linkEl" v-bind="{ href: downloadState.href, download: downloadState.download }"></a>
-							<small class="text-right d-block mr-1">{{ d(recordWithCategory.date, 'short')
+							<small class="text-right d-block mr-1">{{ d(record.created_at, 'short')
 							}}</small>
 						</v-card-text>
 					</v-card>
@@ -35,9 +36,9 @@
 		</div>
 		<div v-else class="mt-7 text-center text-primary text-h6">
 			<strong>
-				Записи с id: <span class="text-decoration-underline font-italic">
+				{{ `${t('record_with_id')}:` }} <span class="text-decoration-underline font-italic">
 					{{ route.params.id }}</span>
-				не найдено
+				{{ t('not_found') }}
 			</strong>
 		</div>
 	</div>
@@ -46,12 +47,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { computedAsync } from '@vueuse/core';
+import { useAsyncState } from '@vueuse/core';
 import { useRoute } from 'vue-router';
 import { useMeta } from 'vue-meta';
 import { mdiChevronRight } from '@mdi/js';
-import { CategoryService } from '@/services/category';
-import { RecordService, Record } from '@/services/record';
+import { RecordService } from '@/services/record';
 import { useI18n } from 'vue-i18n';
 import { useInfoStore } from '@/stores/info';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -63,43 +63,35 @@ interface Breadcrumbs {
 	to?: string;
 	disabled?: boolean
 }
-interface RecordWithCategoryName extends Record {
-	category: string;
-}
 
 const route = useRoute();
 const { t, d, n } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { cf } = useCurrencyFilter();
 useMeta({ title: 'pageTitles.details' });
-
 const { userCurrency } = storeToRefs(useInfoStore());
-const isLoading = ref(false);
+
 const breadcrumbs = computed<Breadcrumbs[]>(() => ([
 	{ title: t('menu.history'), to: '/history' },
-	{ title: recordWithCategory.value?.type === 'income' ? 'Доход' : 'Расход', disabled: true }
+	{ title: record.value?.type === 'income' ? 'Доход' : 'Расход', disabled: true }
 ].filter(Boolean)));
 
-const recordWithCategory = computedAsync(async () => {
-	if (route.params.id) {
-		const recById = await RecordService.fetchRecordById(route.params.id as string);
-		const category = await CategoryService.fetchCategoryById(recById?.categoryId);
-		return { ...recById, category: category?.title || '' } as RecordWithCategoryName;
-	}
+const { state: record, isLoading } = useAsyncState(async () => {
+	return RecordService.fetchRecordById(route.params.id as string);
 }, undefined, {
-	evaluating: isLoading,
 	onError: (e) => {
 		console.error(e);
 		const { showMessage } = useSnackbarStore();
 		showMessage('no_record_found');
 	}
 });
+
 const linkEl = ref<HTMLLinkElement>();
 const downloadState = ref({
 	href: '',
 	download: ''
 });
 const downloadDetail = async (detail: RecordDetail) => {
-	await RecordService.downloadRecordDetail(detail);
+	// await RecordService.downloadRecordDetail(detail);
 	downloadState.value = { href: detail.url || detail.downloadURL, download: detail.fullname };
 	linkEl.value?.click();
 }

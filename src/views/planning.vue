@@ -36,15 +36,16 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { CategoryService, Category } from '@/services/category';
-import { RecordService } from '@/services/record';
-import { ref, computed } from 'vue';
+import { CategoryService } from '@/services/category';
+import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useMeta } from 'vue-meta';
+import { useAsyncState } from '@vueuse/core';
 import { useInfoStore } from '@/stores/info';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
+import { DEFAULT_BILL } from '@/globals';
 
 useMeta({ title: 'pageTitles.plan' });
 
@@ -55,37 +56,13 @@ const infoStore = useInfoStore();
 const { userCurrency } = storeToRefs(infoStore);
 const { cf } = useCurrencyFilter();
 
-const bill = computed(() => infoStore.info?.bill || 1000);
-const isLoading = ref(false);
+const bill = computed(() => infoStore.info?.bill || DEFAULT_BILL);
 
-interface CategoryStats extends Category {
-	percent: number;
-	spend: number;
-}
-const catStats = ref<CategoryStats[]>();
-try {
-	isLoading.value = true;
-	const records = await RecordService.fetchRecords();
-	const cats = await CategoryService.fetchCategories();
-	if (cats && records) {
-		catStats.value = cats.map(cat => {
-			const spend = records.filter(r => r.categoryId === cat.id)
-				.filter(r => r.type === 'outcome')
-				.reduce((sum, r) => sum += +r.amount, 0);
-			const percent = ((100 * spend / cat.limit) > 100) ? 100 : (100 * spend / cat.limit);
-			return {
-				...cat,
-				percent,
-				spend,
-			}
-		});
-	}
-} catch (e) {
-	const { showMessage } = useSnackbarStore();
-	showMessage(te(`firebase.messages.${e}`) ? t(`firebase.messages.${e}`) : e as string);
-} finally {
-	isLoading.value = false;
-}
+const { state: catStats, isLoading } = useAsyncState(CategoryService.fetchCategoriesSpendStats, [], {
+	onError: (e) => { 
+		const { showMessage } = useSnackbarStore();
+		showMessage(te(`firebase.messages.${e}`) ? t(`firebase.messages.${e}`) : e as string);
+} });
 </script>
 
 <style lang="scss" scoped>
