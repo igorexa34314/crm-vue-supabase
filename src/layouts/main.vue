@@ -34,7 +34,7 @@ import { useRouter } from 'vue-router';
 import { AuthService } from '@/services/auth';
 import { useDisplay } from 'vuetify';
 
-let userInfoChannel: Awaited<ReturnType<typeof UserService.fetchInfo>>;
+let userInfoChannel: Awaited<ReturnType<typeof UserService.fetchAndSubscribeInfo>>;
 const { state: currency, isLoading, isReady, execute: refresh } = useAsyncState(CurrencyService.fetchCurrency, null);
 provide(currencyKey, { currency, isLoading, isReady, refresh });
 
@@ -72,7 +72,8 @@ const logout = async () => {
 			query: {
 				message: 'logout'
 			}
-		})
+		});
+		infoStore.$reset();
 	} catch (e) {
 		showMessage(te(`firebase.messages.${e}`) ? t(`firebase.messages.${e}`) : e as string);
 	}

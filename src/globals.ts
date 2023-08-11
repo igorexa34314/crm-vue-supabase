@@ -1,5 +1,6 @@
 import { CurrencyRates } from '@/services/currency';
 import { Locales } from '@/plugins/i18n';
+import { SortType } from './services/record';
 
 export const AppTitle = import.meta.env.VITE_APP_TITLE || 'CRM VUE';
 
@@ -22,3 +23,5 @@ export const DEFAULT_THEME =
 
 export const DEFAULT_CATEGORY_LIMIT = 100;
 export const DEFAULT_RECORD_AMOUNT = 20;
+export const DEFAULT_PER_PAGE = 5;
+export const DEFAULT_SORT_TYPE: SortType = 'desc';

@@ -1,7 +1,5 @@
-import { useInfoStore } from '@/stores/info';
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/supabase';
-import { UserService } from '@/services/user';
 import { DEFAULT_BILL } from '@/globals';
 
 export interface UserCredentials {
@@ -33,7 +31,6 @@ export class AuthService {
 					}
 				}
 			});
-			console.log(error);
 			if (error) throw error;
 		} catch (e) {
 			errorHandler(e);
@@ -59,13 +56,18 @@ export class AuthService {
 	// 	}
 	// }
 
-	// static async changeUserPassword(oldPass: string, newPass: string) {
-	// 	try {
-	// 		await supabase.auth.resetPasswordForEmail();
-	// 	} catch (e) {
-	// 		errorHandler(e);
-	// 	}
-	// }
+	static async changeUserPassword(oldPass: string, newPass: string) {
+		try {
+			const { error, data } = await supabase.rpc('change_user_password', {
+				current_password: oldPass,
+				new_password: newPass
+			});
+			if (error) throw new Error('invalid_password');
+			return data;
+		} catch (e) {
+			errorHandler(e);
+		}
+	}
 
 	// static async updateUserProfile(userdata: { displayName?: string; photoURL?: string }) {
 	// 	try {
@@ -88,7 +90,9 @@ export class AuthService {
 	private static async signInWithPopup(provider: any) {
 		return supabase.auth.signInWithOAuth({
 			provider,
-			options: {}
+			options: {
+				// redirectTo: 'http://localhost:3000'
+			}
 		});
 		// const { uid, email, displayName, photoURL } = user;
 		// const isUserExists = (await UserService.getUserById(uid)).exists();
@@ -184,9 +188,8 @@ export class AuthService {
 
 	static async logout() {
 		try {
-			const { $reset } = useInfoStore();
 			const { error } = await supabase.auth.signOut();
-			$reset();
+			if (error) throw error;
 		} catch (err) {
 			errorHandler(err);
 		}

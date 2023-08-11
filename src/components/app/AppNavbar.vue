@@ -3,7 +3,7 @@
 		<template #prepend>
 			<v-app-bar-nav-icon color="primary" @click.stop="emit('click')" />
 		</template>
-		<v-app-bar-title class="app-title mt-1 text-primary">
+		<v-app-bar-title class="app-title d-xs-none mt-1 text-primary">
 			{{ d(date, xs ? 'time' : smAndDown ? 'daytime' : 'long') }}
 		</v-app-bar-title>
 		<v-spacer />
@@ -14,7 +14,7 @@
 					:append-icon="mdiTriangleSmallDown" flat>
 					<div class="text-subtitle-1 font-weight-bold d-flex align-center">
 						<v-img :src="photoURL || avatarPlaceholder" :lazy-src="avatarPlaceholder" aspect-ratio="1"
-							:width="xs ? 32 : 36" alt="User avatar" class="mr-2 mr-md-3" />
+							:width="xs ? 32 : 36" alt="User avatar" class="mr-2 mr-md-3" cover />
 						<span>{{ username }}</span>
 					</div>
 				</v-btn>
@@ -60,7 +60,7 @@ const infoStore = useInfoStore();
 const username = computed(() => infoStore.info ?
 	`${infoStore.info?.username}`
 	: t('guest'));
-const photoURL = computed(() => infoStore.info?.photoURL);
+const photoURL = computed(() => infoStore.info?.avatar_url);
 
 const date = ref(new Date());
 
@@ -70,11 +70,3 @@ onMounted(() => {
 });
 onUnmounted(() => clearInterval(dateInterval));
 </script>
-
-<style lang="scss" scoped>
-.app-title {
-	@media(max-width: 420px) {
-		display: none;
-	}
-}
-</style>

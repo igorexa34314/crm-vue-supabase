@@ -20,10 +20,9 @@
 							<div v-if="record.details?.length" class="record__details mt-4">
 								<p class="mb-4">{{ t('record_details') }}</p>
 								<p v-for="detail in record.details" class="record__detail mb-2 text-fixed">
-									<span @click="downloadDetail(detail.public_url || detail.fullpath)"
-										class="record__detail-download">{{
-											detail.fullname
-										}}</span>
+									<span @click="downloadDetail(detail)" class="record__detail-download">{{
+										detail.fullname
+									}}</span>
 								</p>
 							</div>
 							<a hidden ref="linkEl" v-bind="{ href: downloadState.href, download: downloadState.download }"></a>
@@ -45,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
 import { useRoute } from 'vue-router';
@@ -91,8 +90,9 @@ const downloadState = ref({
 	download: ''
 });
 const downloadDetail = async (detail: RecordDetail) => {
-	// await RecordService.downloadRecordDetail(detail);
-	downloadState.value = { href: detail.url || detail.downloadURL, download: detail.fullname };
+	const downloadURL = await RecordService.downloadRecordDetail(detail);
+	downloadState.value = { href: downloadURL || detail.public_url || '', download: detail.fullname };
+	await nextTick();
 	linkEl.value?.click();
 }
 </script>

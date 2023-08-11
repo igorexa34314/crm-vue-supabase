@@ -1,0 +1,193 @@
+{
+	"date": "Дата",
+	"exceeding": "Превышение на",
+	"error_create_record": "Невозможно создать запись",
+	"rules": {
+		"lastName": "@:user.lastName должна быть в пределах от 2 до 64 символов",
+		"amount": "@:amount не может быть меньше 1",
+		"pass": "@:password должен быть в пределах от 6 до 32 символов",
+		"bio": "Не более 2056 символов",
+		"description": "Максимальная длина описания - 2056 символов",
+		"firstName": "@:user.firstName должно быть в пределах от 2 до 64 символов",
+		"file": "Размер файла должен быть менее 2 мегабайт",
+		"limit": "@:limit должен быть больше 100",
+		"details": "Максимум 5 файлов",
+		"category": "Имя категории должно быть в пределах от 3 до 20 символов",
+		"email": "Введите корректный email",
+		"repeater": "Пароли не совпадают",
+		"username": {
+			"latinic": "@:user.username имя должно содержать только латиницу, цифры или подчеркивание",
+			"limit": "@:user.username имя должно быть в пределах от 4 до 64 символов"
+		}
+	},
+	"warnings": {
+		"logout": "Вы успешно вышли с аккаунта",
+		"login": "Необходимо войти",
+		"needToLogout": "Сначала выйдите из аккаунта"
+	},
+	"type": "Тип",
+	"verify_error": "Сначала подтвердите свою почту",
+	"create_record": "Создать запись",
+	"logout": "Выйти",
+	"password": "Пароль",
+	"error_update_profile": "Ошибка при изменении информации профиля",
+	"sign_in_success": "Вы успешно зарегистрировались",
+	"no_records": "Записей пока нет",
+	"limit": "Лимит",
+	"create": "Создать",
+	"app_rules": "правилами",
+	"sign_in": "Зарегистрироваться",
+	"error_message": "Что-то пошло не так",
+	"no_categories": "Категорий пока нет",
+	"upload_avatar": "Загрузите свой аватар",
+	"exchange_rate": "Курс валют",
+	"edit": "Редактировать",
+	"updateProfile_message": "Данные успешно обновлены",
+	"agree": "Вы должны согласиться с правилами",
+	"home_bookkeeping": "Домашняя бухгалтерия",
+	"login_success": "Вы успешно авторизовались",
+	"no_account": "Нет аккаута",
+	"login_error": "Неправильная почта или пароль",
+	"currency_account": "Счет в валюте",
+	"left": "Осталось",
+	"name": "Имя",
+	"messages": {
+		"enter_email": "Введите email",
+		"repeat_pass": "Повторите свой пароль",
+		"enter_username": "Введите имя",
+		"enter_category_name": "Введите имя категории",
+		"enter_limit": "Введите лимит",
+		"enter_amount": "Введите сумму",
+		"enter_pass": "Введіть пароль"
+	},
+	"agree_with": "согласен с",
+	"guest": "Гость",
+	"password_repeat": "Пароль еще раз",
+	"create_category": "Создать категорию",
+	"income": "Доход",
+	"repeat_password": "Повторите пароль",
+	"have_account": "Есть аккаунт",
+	"upload_details": "Загрузите детали записи в файлах",
+	"chart_title": "График ваших расходов",
+	"description": "Описание",
+	"update": "Обновить",
+	"login": "Войти",
+	"title": "Название",
+	"error_update_avatar": "Ошибка при загрузке аватара",
+	"lack_of_amount": "Недостаточно средств на счете",
+	"rate": "Курс",
+	"error_create_category": "Ошибка при создании категории",
+	"pageTitles": {
+		"profile": "Профиль",
+		"bill": "Ваш счёт",
+		"details": "Детали записи",
+		"categories": "Категории",
+		"history": "История записей",
+		"plan": "Планирование",
+		"newRecord": "Новая запись",
+		"home": "Главная"
+	},
+	"currency": "Валюта",
+	"error_update_category": "Ошибка при обновлении категории",
+	"lang": "Язык",
+	"$vuetify": {
+		"calendar": { "moreEvents": "Еще {0}" },
+		"dataIterator": {
+			"loadingText": "Запись загружается...",
+			"noResultsText": "Не найдено подходящих записей"
+		},
+		"dataFooter": {
+			"firstPage": "Первая страница",
+			"lastPage": "Последняя страница",
+			"nextPage": "Следующая страница",
+			"pageText": "{0}-{1} из {2}",
+			"prevPage": "Предыдущая страница",
+			"itemsPerPageAll": "Все",
+			"itemsPerPageText": "Записей на странице:"
+		},
+		"pagination": {
+			"ariaLabel": {
+				"next": "Следующая страница",
+				"last": "Последняя страница",
+				"previous": "Предыдущая страница",
+				"root": "Навигация по страницам",
+				"page": "Перейти на страницу {0}",
+				"currentPage": "Текущая страница, Страница {0}",
+				"first": "Первая страница"
+			}
+		},
+		"rating": { "ariaLabel": { "item": "Рейтинг {0} из {1}" } },
+		"datePicker": {
+			"itemsSelected": "{0} выбран",
+			"prevMonthAriaLabel": "Прошлый месяц",
+			"nextYearAriaLabel": "Следующий год",
+			"prevYearAriaLabel": "Предыдущий год",
+			"nextMonthAriaLabel": "Следующий месяц"
+		},
+		"loading": "Загрузка...",
+		"carousel": {
+			"next": "Следующий слайд",
+			"prev": "Предыдущий слайд",
+			"ariaLabel": { "delimiter": "Слайд {0} из {1}" }
+		},
+		"noDataText": "Отсутствуют данные",
+		"badge": "знак",
+		"input": {
+			"appendAction": "{0} добавленных действий",
+			"clear": "Очистить {0}",
+			"prependAction": "{0} предварительных действий"
+		},
+		"timePicker": { "am": "AM", "pm": "PM" },
+		"dataTable": {
+			"sortBy": "Сортировать по",
+			"itemsPerPageText": "Строк на странице:",
+			"ariaLabel": {
+				"sortDescending": "Упорядочено по убыванию.",
+				"sortAscending": "Упорядочено по возрастанию.",
+				"activateAscending": "Активируйте для упорядочивания по возрастанию.",
+				"activateDescending": "Активируйте для упорядочивания убыванию.",
+				"activateNone": "Активируйте, чтобы убрать сортировку.",
+				"sortNone": "Не упорядочено."
+			}
+		},
+		"fileInput": { "counterSize": "Файлов: {0} (всего {1})", "counter": "Файлов: {0}" },
+		"close": "Закрыть"
+	},
+	"category_undefined": "Отсутствует категория",
+	"email": "Почта",
+	"outcome": "Расход",
+	"amount": "Сумма",
+	"invalid_password": "Неверный пароль",
+	"error_load_categories": "Ошибка загрузки категорий",
+	"createRecord_success": "Запись успешно создана",
+	"category_created": "Категория успешно создана",
+	"menu": {
+		"bill": "Ваш счёт",
+		"categories": "Категории",
+		"history": "История",
+		"plan": "Планирование",
+		"newRecord": "Новая запись"
+	},
+	"error_register": "Ошибка при регистрации аккаунта",
+	"select_category": "Выберите категорию",
+	"out_of": "из",
+	"category_updated": "Категория успешно обновлена",
+	"category": "Категория",
+	"user": {
+		"birthday": "Дата рождения",
+		"firstName": "Имя",
+		"lastName": "Фамилия",
+		"gender": { "label": "Пол", "female": "Женский", "male": "Мужской", "unknown": "Неизвестно" },
+		"bio": "О себе",
+		"avatar": "Аватар профиля",
+		"username": "Имя пользователся"
+	},
+	"open": "Открыть",
+	"record_details": "Детали записи",
+	"currencies": { "EUR": "Евро", "USD": "Доллар США", "UAH": "Украинская гривна", "RUB": "Российский рубль" },
+	"tabs": { "security": "Безопасность", "info": "Информация" },
+	"change_password": "Изменить пароль",
+	"password_current": "Текущий пароль",
+	"password_new": "Новый пароль",
+	"updatePass_message": "Ваш пароль успешно обновлен"
+}

@@ -1,5 +1,5 @@
 <template>
-	<div :class="{ '_page': page, '_screen': screen }" class="app-loader">
+	<div :class="{ '_page': page, '_screen': screen }" class="app-loader d-inline-block">
 		<div v-for="i in 8" :key="i" :style="cssProps"></div>
 	</div>
 </template>
@@ -26,7 +26,6 @@ const cssProps = computed(() => ({
 
 <style lang="scss" scoped>
 .app-loader {
-	display: inline-block;
 	position: relative;
 	width: 80px;
 	height: 80px;

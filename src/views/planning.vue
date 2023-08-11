@@ -13,7 +13,7 @@
 		<section v-else class="mt-10 px-4">
 			<div v-for="(cat, index) of catStats" :key="cat.id || index" class="mt-8">
 				<p class="d-flex flex-row align-center justify-space-between mb-3">
-					<strong class="category-title font-weight-bold mr-4 text-primary flex-fill">{{ cat.title }}:</strong>
+					<strong class="category-title text-truncate font-weight-bold mr-4 text-primary flex-fill">{{ cat.title }}:</strong>
 					<span class="category-spent mr-sm-4 text-primary text-end">
 						{{
 							n(cf(cat.spend), { key: 'currency', currencyDisplay: xs ? 'narrowSymbol' : 'symbol' }, userCurrency) +
@@ -67,11 +67,6 @@ const { state: catStats, isLoading } = useAsyncState(CategoryService.fetchCatego
 
 <style lang="scss" scoped>
 .category {
-	&-title {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		@media(max-width: 320px) {}
-	}
 	&-spent {
 		@media(max-width: 360px) {
 			flex-basis: 130px;

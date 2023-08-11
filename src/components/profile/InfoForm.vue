@@ -23,7 +23,7 @@
 			<div :style="{ 'max-width': smAndDown ? 'none' : '40%', width: '100%' }"
 				class="d-flex flex-column pl-4 mt-md-0 my-4">
 				<v-card variant="flat" :max-width="smAndDown ? 200 : 250" class="mb-5" elevation="4">
-					<v-img :lazy-src="avatarPlaceholder" :src="formState.avatar_url || avatarPlaceholder" alt="Ваш аватар" cover
+					<v-img :lazy-src="avatarPlaceholder" :src="info?.avatar_url || avatarPlaceholder" alt="Ваш аватар" cover
 						eager>
 						<template #placeholder>
 							<ImageLoader />

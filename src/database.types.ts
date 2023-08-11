@@ -188,6 +188,13 @@ export interface Database {
 					percent: number;
 				}[];
 			};
+			change_user_password: {
+				Args: {
+					current_password: string;
+					new_password: string;
+				};
+				Returns: Json;
+			};
 		};
 		Enums: {
 			currencies: 'USD' | 'EUR' | 'UAH' | 'RUB';

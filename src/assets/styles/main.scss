@@ -6,3 +6,9 @@
 		max-width: 100% !important;
 	}
 }
+
+.d-xs-none {
+	@media (max-width: 420px) {
+		display: none !important;
+	}
+}

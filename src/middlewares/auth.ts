@@ -7,7 +7,8 @@ export const checkAuth = async (
 	next: NavigationGuardNext
 ) => {
 	const {
-		data: { user }
+		data: { user },
+		error
 	} = await supabase.auth.getUser();
 	const requireAuth = to.matched.some(record => record.meta.auth);
 	if (requireAuth && !user) {

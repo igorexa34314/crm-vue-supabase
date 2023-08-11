@@ -5,6 +5,11 @@
 	"create_record": "Create record",
 	"logout": "Logout",
 	"password": "Password",
+	"warnings": {
+		"logout": "You have successfully logged out",
+		"login": "Need to sign in",
+		"needToLogout": "You need to logout before"
+	},
 	"sign_in_success": "You have successfully signed up",
 	"no_records": "There are no records yet",
 	"limit": "Limit",
@@ -14,6 +19,7 @@
 	"error_message": "Something went wrong",
 	"no_categories": "There are no categories yet",
 	"upload_avatar": "Upload your avatar",
+	"invalid_password": "Invalid password",
 	"updatePass_message": "Your password successfully updated",
 	"exchange_rate": "Exchange rate",
 	"edit": "Edit",
@@ -144,16 +150,6 @@
 	"amount": "Amount",
 	"error_load_categories": "Error loading categories",
 	"createRecord_success": "Record created successfully",
-	"firebase": {
-		"messages": {
-			"logout": "You have successfully logged out",
-			"auth/email-already-in-use": "User with this email already exists",
-			"auth/user-not-found": "No user found with given email",
-			"auth/wrong-password": "Incorrect password",
-			"login": "Need to sign in",
-			"needToLogout": "You need to logout before"
-		}
-	},
 	"menu": {
 		"bill": "Your bill",
 		"categories": "Categories",

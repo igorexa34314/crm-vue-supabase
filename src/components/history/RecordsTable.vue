@@ -17,7 +17,7 @@
 						<td>{{ startIndex + (index + 1) }}</td>
 						<td>{{ n(cf(rec.amount), 'currency', userCurrency) }}</td>
 						<td>{{ d(rec.created_at, smAndDown ? 'shortdate' : 'short') }}</td>
-						<td class="record-category">{{ rec.category?.title }}</td>
+						<td class="record-category text-truncate">{{ rec.category?.title }}</td>
 						<td>
 							<span :class="rec.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
 								class="py-2 px-3 text-center text-trend">
@@ -99,8 +99,6 @@ const tableHeaders = computed(() => ([
 	& .record {
 		&-category {
 			max-width: 400px;
-			overflow: hidden;
-			text-overflow: ellipsis;
 			@media(max-width: 1600px) {
 				max-width: 380px;
 			}

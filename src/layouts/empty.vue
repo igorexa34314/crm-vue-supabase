@@ -1,5 +1,5 @@
 <template>
-	<v-layout class="app bg-grey-darken-2 d-flex justify-center align-center">
+	<v-layout class="app bg-grey-darken-2 d-flex justify-center align-center overflow-hidden">
 		<router-view />
 	</v-layout>
 </template>
@@ -35,6 +35,5 @@ onUnmounted(() => {
 <style scoped>
 .app {
 	min-height: 100vh;
-	overflow: hidden;
 }
 </style>
