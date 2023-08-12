@@ -3,7 +3,7 @@ import { AuthService } from '@/services/auth';
 import { supabase } from '@/supabase';
 import { errorHandler } from '@/utils/errorHandler';
 import { v4 as uuidv4 } from 'uuid';
-import { DEFAULT_PER_PAGE } from '@/globals';
+import { DEFAULT_RECORDS_PER_PAGE } from '@/globals';
 
 export type RecordType = Enums<'record_type'>;
 export type Record = Omit<Tables<'records'>, 'user_id'>;
@@ -88,8 +88,8 @@ export class RecordService {
 				.eq('user_id', uid)
 				.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
 				.range(
-					((options?.page || 1) - 1) * (options?.perPage || DEFAULT_PER_PAGE),
-					(options?.page || 1) * (options?.perPage || DEFAULT_PER_PAGE) - 1
+					((options?.page || 1) - 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE),
+					(options?.page || 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE) - 1
 				);
 			if (error) throw error;
 			return records;

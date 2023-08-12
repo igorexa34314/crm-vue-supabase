@@ -1,14 +1,14 @@
 <template>
 	<div>
 		<LocalizedInput v-model="password" :type="passFieldState.showPass ? 'text' : 'password'"
-			v-bind="{ rules, label, placeholder, variant }" required v-slot:append-inner>
+			v-bind="{ rules, label, placeholder, variant }" required #append-inner>
 			<v-icon :icon="passFieldState.showPass ? mdiEye : mdiEyeOff" @mousedown="passFieldState.showPass = true"
 				@mouseup="passFieldState.showPass = false" class="mr-2" style="cursor: pointer" />
 		</LocalizedInput>
 
 		<LocalizedInput v-if="repeater" :type="passFieldState.showRepeater ? 'text' : 'password'"
 			v-bind="{ rules: validations.repeater(password), label: t(repeaterLabel), placeholder: t(repeaterPlaceholder), variant, class: repeaterClass }"
-			class="mt-4" required v-slot:append-inner>
+			class="mt-4" required #append-inner>
 			<v-icon :icon="passFieldState.showRepeater ? mdiEye : mdiEyeOff" @mousedown="passFieldState.showRepeater = true"
 				@mouseup="passFieldState.showRepeater = false" class="mr-2" style="cursor: pointer" />
 		</LocalizedInput>

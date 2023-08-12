@@ -1,5 +1,5 @@
 <template>
-	<v-table class="records-table" :density="xs ? 'comfortable' : 'default'">
+	<v-table class="records-table" :density="xs ? 'comfortable' : 'default'" disabled>
 		<thead class="text-title">
 			<tr>
 				<th>{{ '#' }}</th>
@@ -11,10 +11,10 @@
 			</tr>
 		</thead>
 		<tbody class="text-primary">
-			<template v-for="(rec, index) in records" :key="rec.id">
-				<v-hover v-slot="{ isHovering, props }">
+			<template v-for="rec in records" :key="rec.id">
+				<v-hover #default="{ isHovering, props }">
 					<tr @click="push('/detail/' + rec.id)" class="record" v-bind="props" :class="isHovering ? 'bg-hover' : ''">
-						<td>{{ startIndex + (index + 1) }}</td>
+						<td>{{ rec.index }}</td>
 						<td>{{ n(cf(rec.amount), 'currency', userCurrency) }}</td>
 						<td>{{ d(rec.created_at, smAndDown ? 'shortdate' : 'short') }}</td>
 						<td class="record-category text-truncate">{{ rec.category?.title }}</td>
@@ -30,7 +30,7 @@
 						</td>
 						<td v-if="!smAndDown">
 							<v-tooltip :activator="`#rec-${rec.id}`" text="Посмотреть запись" location="bottom"
-								content-class="bg-tooltip font-weight-medium text-primary" v-slot:activator="{ props }">
+								content-class="bg-tooltip font-weight-medium text-primary" #activator="{ props }">
 								<v-btn :id="`rec-${rec.id}`" color="success" @click="push('/detail/' + rec.id)">
 									<v-icon v-bind="props" :icon="mdiOpenInNew" />
 								</v-btn>
@@ -55,12 +55,12 @@ import { useDisplay } from 'vuetify';
 import { RecordWithCategory, SortFields, SortType } from '@/services/record';
 
 const props = withDefaults(defineProps<{
-	records: RecordWithCategory,
-	startIndex?: number,
+	records: (RecordWithCategory[number] & { index: number })[],
 	sortField?: SortFields,
 	sortType?: SortType,
 }>(), {
-	startIndex: 1,
+	sortField: 'created_at',
+	sortType: 'desc'
 });
 
 const emit = defineEmits<{

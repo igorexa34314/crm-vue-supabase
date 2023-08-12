@@ -12,12 +12,11 @@
 		</div>
 
 		<section v-if="recordsState?.records && recordsState.records.length" class="mt-lg-6">
-			<RecordsTable :records="recordsState.records"
-				v-bind="{ sortField: sortState.field, sortType: sortState.type, startIndex: (page - 1) * perPage }"
+			<RecordsTable :records="recordsState.records" v-bind="{ sortField: sortState.field, sortType: sortState.type }"
 				@sort="sortRecords" />
 
 			<v-pagination v-if="pagesCount > 1" v-model="page" :length="pagesCount" :total-visible="xs ? 3 : 4" class="mt-4"
-				density="comfortable" :size="xs ? 'small' : 'default'" color="primary" />
+				density="comfortable" :size="xs ? 'small' : 'default'" color="primary" :disabled="recLoading" />
 		</section>
 
 		<div v-else-if="!recLoading && (!recordsState?.records || !recordsState?.records.length)"
@@ -42,7 +41,7 @@ import { useDisplay } from 'vuetify';
 import { ref, watchEffect, onUnmounted, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAsyncState } from '@vueuse/core';
-import { DEFAULT_PER_PAGE } from '@/globals';
+import { DEFAULT_RECORDS_PER_PAGE } from '@/globals';
 
 useMeta({ title: 'pageTitles.history' });
 
@@ -64,12 +63,13 @@ const { state: catStats, isLoading: catLoading } = useAsyncState(async () => {
 const { chartData, chartOptions } = useChart(catStats);
 
 // Init Records table pagination
-const perPage = DEFAULT_PER_PAGE;
+const perPage = DEFAULT_RECORDS_PER_PAGE;
 const page = ref(+(route.query.page || 1));
 const pagesCount = computed(() => Math.ceil((recordsState.value?.count || perPage) / perPage));
 
 const { state: recordsState, isLoading: recLoading } = useAsyncState(async () => {
-	return RecordService.fetchRecordsWithCategory({ sortBy: 'created_at', sortType: 'desc', limit: perPage });
+	const result = await RecordService.fetchRecordsWithCategory({ sortBy: 'created_at', sortType: 'desc', limit: perPage });
+	return { records: result?.records.map((r, idx) => ({ ...r, index: (page.value - 1) * perPage + ++idx })) || [], count: result?.count || 0 };
 }, { records: [], count: 0 }, {
 	onError: (e) => {
 		const { showMessage } = useSnackbarStore();
@@ -91,7 +91,7 @@ const sortRecords = async (field: SortFields) => {
 	}
 	const records = await RecordService.loadMoreRecords({ sortBy: field, sortType: sType, page: page.value, perPage });
 	if (records && records.length) {
-		recordsState.value = { records, count: recordsState.value?.count || 0 };
+		recordsState.value.records = records.map((r, idx) => ({ ...r, index: (page.value - 1) * perPage + ++idx }));
 		sortState.value = { field, type: sType };
 	}
 }
@@ -99,14 +99,20 @@ const sortRecords = async (field: SortFields) => {
 watchEffect(async () => {
 	push({ query: { ...route.query, sort: sortState.value.field as string, by: sortState.value.type } });
 });
-
 watch(page, async (newPage) => {
-	const records = await RecordService.loadMoreRecords({ sortBy: sortState.value.field, sortType: sortState.value.type, page: newPage, perPage });
+	try {
+		recLoading.value = true;
+		const records = await RecordService.loadMoreRecords({ sortBy: sortState.value.field, sortType: sortState.value.type, page: newPage, perPage });
 
-	if (records && records.length) {
-		recordsState.value = { records, count: recordsState.value?.count || 0 };
-		push({ query: { ...route.query, page: newPage } });
+		if (records && records.length) {
+			recordsState.value.records = records.map((r, idx) => ({ ...r, index: (page.value - 1) * perPage + ++idx }));
+			push({ query: { ...route.query, page: newPage } });
+		}
+	} catch (err) { }
+	finally {
+		recLoading.value = false;
 	}
+
 }, { immediate: true });
 
 onUnmounted(() => push({ query: undefined }));

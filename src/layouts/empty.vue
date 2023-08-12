@@ -5,30 +5,30 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted, watch } from 'vue';
+import { computed, onUnmounted, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { useInfoStore } from '@/stores/info';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 
 const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
+const route = useRoute();
 const infoStore = useInfoStore();
-const { setLocale, $reset } = infoStore;
 const info = computed(() => infoStore.info);
 const { showMessage } = useSnackbarStore();
-const { query } = useRoute();
 
 if (!info.value?.locale) {
-	setLocale();
+	infoStore.setLocale();
 }
-watch(() => query.message, () => {
-	if (te(`firebase.messages.${query.message}`)) {
-		showMessage(t(`firebase.messages.${query.message}`));
+
+watchEffect(() => {
+	if (te(`warnings.${route.query.message}`)) {
+		showMessage(t(`warnings.${route.query.message}`));
 	}
-}, { deep: true, immediate: true });
+});
 
 onUnmounted(() => {
-	$reset();
+	infoStore.$reset();
 });
 </script>
 

@@ -56,10 +56,10 @@ export class UserService {
 
 	static async updateUserInfo(data: Partial<UserInfo>) {
 		const uid = await AuthService.getUserId();
-		// 		const isEmailVerified = await AuthService.isEmailVerified();
-		// 		if (!isEmailVerified) {
-		// 			throw new Error('verify_error');
-		// 		}
+		// 	const isEmailVerified = await AuthService.isEmailVerified();
+		// 	if (!isEmailVerified) {
+		// 		throw new Error('verify_error');
+		// 	}
 		return supabase.from('profiles').update(data).eq('id', uid);
 	}
 

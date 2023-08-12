@@ -10,7 +10,7 @@
 			:label="t('user.username')" class="mt-5" validate-on="lazy blur" required />
 
 		<v-checkbox v-model="formState.agree" :rules="validations.agree" class="mt-5" validate-on="lazy blur"
-			:density="xs ? 'compact' : 'default'" required v-slot:label>
+			:density="xs ? 'compact' : 'default'" required #label>
 			<p>{{ t('agree_with').charAt(0).toUpperCase() + t('agree_with').slice(1) + ' ' }}<a target="_blank"
 					href="https://old.uinp.gov.ua/publication/derzhavnii-gimn-ukraini">{{ t('app_rules') }}</a>
 			</p>

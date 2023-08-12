@@ -2,7 +2,7 @@
 	<div>
 		<app-loader v-if="isLoading" page />
 		<div v-else-if="record">
-			<v-breadcrumbs :items="breadcrumbs" v-slot:divider>
+			<v-breadcrumbs :items="breadcrumbs" #divider>
 				<v-icon :icon="mdiChevronRight" />
 			</v-breadcrumbs>
 
@@ -25,7 +25,7 @@
 									}}</span>
 								</p>
 							</div>
-							<a hidden ref="linkEl" v-bind="{ href: downloadState.href, download: downloadState.download }"></a>
+							<a hidden ref="linkEl" v-bind="downloadState"></a>
 							<small class="text-right d-block mr-1">{{ d(record.created_at, 'short')
 							}}</small>
 						</v-card-text>

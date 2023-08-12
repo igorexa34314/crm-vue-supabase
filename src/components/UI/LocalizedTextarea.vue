@@ -1,6 +1,6 @@
 <template>
 	<v-textarea v-bind="{ variant }" validate-on="blur lazy" :density="xs ? 'compact' : 'default'" class="text-input"
-		v-slot:message="{ message }">
+		#message="{ message }">
 		{{ t(message) }}
 	</v-textarea>
 </template>

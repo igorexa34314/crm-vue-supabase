@@ -11,7 +11,7 @@
 		</v-main>
 
 		<v-tooltip activator=".fixed-action-btn" :text="t('create_record')"
-			content-class="bg-fixed text-primary font-weight-medium" v-slot:activator="{ props }">
+			content-class="bg-fixed text-primary font-weight-medium" #activator="{ props }">
 			<v-btn color="fixed" :size="xs ? 'default' : mdAndDown ? 'large' : 'x-large'" class="fixed-action-btn"
 				to="/record" position="fixed" :icon="mdiPlus" v-bind="props" />
 		</v-tooltip>
