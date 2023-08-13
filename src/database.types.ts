@@ -39,6 +39,30 @@ export interface Database {
 					}
 				];
 			};
+			locales: {
+				Row: {
+					code: string;
+					name: string;
+					native_name: string;
+					translations: Json | null;
+					updated_at: string | null;
+				};
+				Insert: {
+					code: string;
+					name: string;
+					native_name: string;
+					translations?: Json | null;
+					updated_at?: string | null;
+				};
+				Update: {
+					code?: string;
+					name?: string;
+					native_name?: string;
+					translations?: Json | null;
+					updated_at?: string | null;
+				};
+				Relationships: [];
+			};
 			profiles: {
 				Row: {
 					avatar_url: string | null;
@@ -50,9 +74,9 @@ export interface Database {
 					gender: Database['public']['Enums']['genders'];
 					id: string;
 					last_name: string | null;
-					locale: Database['public']['Enums']['locales'] | null;
+					locale: string | null;
 					updated_at: string | null;
-					username: string | null;
+					username: string;
 				};
 				Insert: {
 					avatar_url?: string | null;
@@ -64,9 +88,9 @@ export interface Database {
 					gender?: Database['public']['Enums']['genders'];
 					id: string;
 					last_name?: string | null;
-					locale?: Database['public']['Enums']['locales'] | null;
+					locale?: string | null;
 					updated_at?: string | null;
-					username?: string | null;
+					username: string;
 				};
 				Update: {
 					avatar_url?: string | null;
@@ -78,9 +102,9 @@ export interface Database {
 					gender?: Database['public']['Enums']['genders'];
 					id?: string;
 					last_name?: string | null;
-					locale?: Database['public']['Enums']['locales'] | null;
+					locale?: string | null;
 					updated_at?: string | null;
-					username?: string | null;
+					username?: string;
 				};
 				Relationships: [
 					{
@@ -88,6 +112,12 @@ export interface Database {
 						columns: ['id'];
 						referencedRelation: 'users';
 						referencedColumns: ['id'];
+					},
+					{
+						foreignKeyName: 'profiles_locale_fkey';
+						columns: ['locale'];
+						referencedRelation: 'locales';
+						referencedColumns: ['code'];
 					}
 				];
 			};
@@ -199,7 +229,6 @@ export interface Database {
 		Enums: {
 			currencies: 'USD' | 'EUR' | 'UAH' | 'RUB';
 			genders: 'male' | 'female' | 'unknown';
-			locales: 'en-US' | 'ru-RU' | 'uk-UA';
 			record_type: 'income' | 'outcome';
 		};
 		CompositeTypes: {

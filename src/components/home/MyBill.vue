@@ -16,14 +16,14 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { Currency, CurrencyRates } from '@/services/currency';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_CURRENCY } from '@/globals';
 
 const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { xs } = useDisplay();
-const infoStore = useInfoStore();
+const infoStore = useUserStore();
 
 const props = defineProps<{
 	rates: Currency['rates'];

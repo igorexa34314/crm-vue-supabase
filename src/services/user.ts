@@ -1,5 +1,5 @@
 import { errorHandler } from '@/utils/errorHandler';
-import { useInfoStore, UserInfo } from '@/stores/info';
+import { useUserStore, UserInfo } from '@/stores/user';
 import { AuthService } from '@/services/auth';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/supabase';
@@ -42,7 +42,7 @@ export class UserService {
 
 	static async fetchAndSubscribeInfo() {
 		try {
-			const { setInfo } = useInfoStore();
+			const { setInfo } = useUserStore();
 			const uid = await AuthService.getUserId();
 			const info = await UserService.getUserById(uid);
 			setInfo(info);

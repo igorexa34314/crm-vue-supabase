@@ -28,7 +28,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import { VForm } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
@@ -48,7 +48,7 @@ const { cf } = useCurrencyFilter();
 const { showMessage } = useSnackbarStore();
 const { xs } = useDisplay();
 
-const { userCurrency } = storeToRefs(useInfoStore());
+const { userCurrency } = storeToRefs(useUserStore());
 const form = ref<VForm>();
 const loading = ref(false);
 

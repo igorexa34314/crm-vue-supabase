@@ -49,7 +49,7 @@ import { useRouter } from 'vue-router';
 import { mdiOpenInNew, mdiTrendingUp, mdiTrendingDown, mdiMenuUp, mdiMenuDown } from '@mdi/js';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
 import { RecordWithCategory, SortFields, SortType } from '@/services/record';
@@ -71,7 +71,7 @@ const { t, d, n } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { push } = useRouter();
 const { smAndDown, xs } = useDisplay();
 const { cf } = useCurrencyFilter();
-const { userCurrency } = storeToRefs(useInfoStore());
+const { userCurrency } = storeToRefs(useUserStore());
 
 const triggerSort = (field?: SortFields) => {
 	if (field) {

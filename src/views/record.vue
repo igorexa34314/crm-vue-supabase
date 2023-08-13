@@ -21,7 +21,7 @@ import { ref, computed } from 'vue';
 import { useAsyncState } from '@vueuse/core';
 import { useMeta } from 'vue-meta';
 import { useI18n } from 'vue-i18n';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { UserService } from '@/services/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { CategoryService } from '@/services/category';
@@ -32,13 +32,13 @@ useMeta({ title: 'pageTitles.newRecord' });
 
 const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { showMessage } = useSnackbarStore();
-const infoStore = useInfoStore();
+const infoStore = useUserStore();
 
 const info = computed(() => infoStore.info);
 
 const { state: categories, isLoading: categoriesLoading } = useAsyncState(CategoryService.fetchCategories, [], {
 	onError: (e) => {
-		showMessage(te(`firebase.messages.${e}`) ? t(`firebase.messages.${e}`) : t('error_load_categories'))
+		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : t('error_load_categories'), 'red-darken-3')
 	}
 });
 
@@ -57,7 +57,7 @@ const create = async (formData: RecordForm) => {
 		showMessage(t('createRecord_success'));
 	} catch (e) {
 		if (typeof e === 'string') {
-			showMessage(te(`firebase.messages.${e}`) ? t(`firebase.messages.${e}`) : e, 'red-darken-3');
+			showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e, 'red-darken-3');
 		}
 		else {
 			showMessage(t('error_create_record'), 'red-darken-3');

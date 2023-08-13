@@ -6,6 +6,7 @@ import Pages from 'vite-plugin-pages';
 import Layouts from 'vite-plugin-vue-layouts';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import { RouteRecordRaw } from 'vue-router';
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
@@ -30,14 +31,14 @@ export default ({ mode }) => {
 			}),
 			Pages({
 				dirs: 'src/views',
-				extendRoute(route) {
-					if (route.path === '/login' || route.path === '/register') {
-						return route;
+				extendRoute(route: RouteRecordRaw) {
+					if (route.name !== 'login' && route.name !== 'register') {
+						route.meta = { auth: true, requiresAuth: true };
 					}
-					return {
-						...route,
-						meta: { auth: true }
-					};
+					if (route.name === 'index') {
+						route.alias = '/home';
+					}
+					return route;
 				}
 			}),
 			Layouts({

@@ -1,5 +1,6 @@
 <template>
-	<v-form ref="form" @submit.prevent="submitHandler" class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
+	<v-form v-if="info && Object.keys(info).length" ref="form" @submit.prevent="submitHandler"
+		class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
 		<LocalizedInput v-model="formState.username" :rules="validations.username" variant="underlined"
 			:label="t('user.username')" class="mb-5" required />
 
@@ -13,7 +14,7 @@
 
 		<div class="d-flex flex-column flex-md-row">
 			<div class="flex-fill d-flex flex-column">
-				<BirthdayPicker v-model="formState.birthday_date" :label="t('user.birthday')" class="flex-fill" />
+				<BirthdayPicker v-model="datePickerDate" :label="t('user.birthday')" class="flex-fill" />
 
 				<v-radio-group v-model="formState.gender" :label="t('user.gender.label')" class="text-input">
 					<v-radio v-for="gender in genderItems" :key="gender.value" :label="gender.title" :value="gender.value"
@@ -41,8 +42,8 @@
 			class="mb-4" />
 
 		<div class="d-flex flex-column items-center mt-4 flex-sm-row">
-			<v-select v-model="formState.locale" :items="locales" :label="t('lang')" item-title="title" item-value="value"
-				variant="underlined" class="mr-sm-4 text-input" />
+			<v-select v-model="formState.locale" :items="locales" :label="t('lang')" item-title="native_name"
+				item-value="code" variant="underlined" class="mr-sm-4 text-input" />
 
 			<v-select v-model="formState.currency" :items="currencies" :label="t('currency')" item-title="title"
 				item-value="value" variant="underlined" class="ml-sm-4 text-input" />
@@ -54,6 +55,8 @@
 			<v-icon :icon="mdiSend" class="ml-3" />
 		</v-btn>
 	</v-form>
+
+	<app-loader v-else page class="mt-5" />
 </template>
 
 <script setup lang="ts">
@@ -65,16 +68,18 @@ import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
 import { ref, computed, watchEffect, inject } from 'vue';
 import { mdiSend } from '@mdi/js';
-import { UserInfo, useInfoStore } from '@/stores/info';
+import { UserInfo, useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
+import { useAsyncState } from '@vueuse/core';
+import { LocaleService } from '@/services/locale';
 import { user as validations } from '@/utils/validations';
 import { VForm } from 'vuetify/components';
 import { CurrencyRates } from '@/services/currency';
 import { currencyKey } from '@/injection-keys';
 import { useDisplay } from 'vuetify';
+import { useSnackbarStore } from '@/stores/snackbar';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/globals';
-import { isEqual, omitBy, isNil, isEmpty } from 'lodash';
-import { Locales } from '@/plugins/i18n';
+import { isEqual, omitBy, isNil } from 'lodash';
 
 const props = withDefaults(defineProps<{
 	loading?: boolean;
@@ -88,7 +93,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { xs, smAndDown } = useDisplay();
-const infoStore = useInfoStore();
+const infoStore = useUserStore();
 
 const { currency } = inject(currencyKey)!;
 
@@ -102,17 +107,27 @@ const info = computed(() => infoStore.info);
 const form = ref<VForm>();
 
 type NonUndefinedOrNullObjectFields<T extends { [key: string]: any }> = { [key in keyof T]: Exclude<T[key], null | undefined> };
-
-const formState = ref<Partial<NonUndefinedOrNullObjectFields<UserInfo>> & { avatar: File[] }>({
+type FormInfo = NonUndefinedOrNullObjectFields<UserInfo>;
+const formState = ref<Partial<Omit<FormInfo, 'birthday_date'>> & { birthday_date: string | null; avatar: File[] }>({
 	username: '',
 	first_name: '',
 	last_name: '',
 	bio: '',
-	birthday_date: '',
+	birthday_date: null,
 	gender: 'unknown',
 	locale: DEFAULT_LOCALE,
 	currency: DEFAULT_CURRENCY,
 	avatar: []
+});
+const datePickerDate = computed({
+	get: () => new Date(formState.value.birthday_date || new Date()),
+	set: (val) => formState.value.birthday_date = val.toDateString(),
+});
+const { state: locales } = useAsyncState(LocaleService.fetchAvailableLocales, [], {
+	onError: (e) => {
+		const { showMessage } = useSnackbarStore();
+		showMessage(t('error_loading_locales'), 'red-darken-3')
+	}
 });
 
 const genderItems = computed<{ title: string, value: UserInfo['gender'] }[]>(() => ([
@@ -120,12 +135,6 @@ const genderItems = computed<{ title: string, value: UserInfo['gender'] }[]>(() 
 	{ title: t('user.gender.female'), value: 'female' },
 	{ title: t('user.gender.unknown'), value: 'unknown' }
 ]));
-
-const locales: { title: string; value: Locales }[] = [
-	{ title: 'Русский', value: 'ru-RU' },
-	{ title: 'Українська', value: 'uk-UA' },
-	{ title: 'English', value: 'en-US' },
-];
 
 //fillInfo
 watchEffect(() => {
@@ -147,8 +156,6 @@ const isInfoEqualsToStore = computed(() => {
 const submitHandler = async () => {
 	const valid = (await form.value?.validate())?.valid;
 	if (valid) {
-		console.log(omitBy(formState.value, isEmpty));
-
 		emit('updateInfo', formState.value);
 		formState.value.avatar = [];
 	}

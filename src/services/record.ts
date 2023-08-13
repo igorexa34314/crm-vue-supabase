@@ -52,7 +52,12 @@ export class RecordService {
 		}
 	}
 
-	static async fetchRecordsWithCategory(options?: { sortBy?: SortFields; sortType?: SortType; limit?: number }) {
+	static async fetchRecordsWithCategory(options?: {
+		sortBy?: SortFields;
+		sortType?: SortType;
+		page?: number;
+		perPage?: number;
+	}) {
 		try {
 			const uid = await AuthService.getUserId();
 			const {
@@ -66,8 +71,13 @@ export class RecordService {
 				})
 				.eq('user_id', uid)
 				.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
-				.range(0, (options?.limit || 1000) - 1);
-			if (error) throw error;
+				.range(
+					((options?.page || 1) - 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE),
+					(options?.page || 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE) - 1
+				);
+			if (error) {
+				throw error;
+			}
 			return { records, count };
 		} catch (e) {
 			errorHandler(e);
@@ -143,9 +153,7 @@ export class RecordService {
 				);
 			}
 		}
-		const details = await Promise.all(uploadPromises).catch(err => {
-			throw err;
-		});
+		const details = await Promise.all(uploadPromises);
 		return details;
 	}
 

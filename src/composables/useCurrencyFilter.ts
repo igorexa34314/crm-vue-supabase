@@ -1,12 +1,12 @@
 import { computed, inject } from 'vue';
 import { currencyKey } from '@/injection-keys';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { CurrencyRates } from '@/services/currency';
 
 export const useCurrencyFilter = () => {
 	const { currency } = inject(currencyKey)!;
 
-	const infoStore = useInfoStore();
+	const infoStore = useUserStore();
 
 	const currencyFilter = computed(
 		() =>

@@ -1,4 +1,4 @@
-import { Ref, InjectionKey } from 'vue';
+import { InjectionKey } from 'vue';
 import { Currency } from '@/services/currency';
 import { UseAsyncStateReturn } from '@vueuse/core';
 

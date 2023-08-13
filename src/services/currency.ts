@@ -16,10 +16,7 @@ export class CurrencyService {
 	static async fetchCurrency() {
 		try {
 			const res = await fetch(
-				import.meta.env.VITE_EXCHANGER_API_URL +
-					`?base=${
-						DEFAULT_CURRENCY
-					}&symbols=EUR%2CUAH%2CUSD%2CRUB`,
+				import.meta.env.VITE_EXCHANGER_API_URL + `?base=${DEFAULT_CURRENCY}&symbols=EUR%2CUAH%2CUSD%2CRUB`,
 				{
 					method: 'GET',
 					redirect: 'follow',
@@ -28,8 +25,8 @@ export class CurrencyService {
 					})
 				}
 			);
-			const { rates, date } = (await res.json()) as Awaited<Currency>;
-			return ({ rates, date } || DEFAULT_CURRENCY_RESPONSE) as Currency;
+			const result = (await res.json()) as Awaited<Currency>;
+			return (result || DEFAULT_CURRENCY_RESPONSE) as Currency;
 		} catch (e) {
 			errorHandler(e);
 		}

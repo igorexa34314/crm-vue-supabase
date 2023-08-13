@@ -32,7 +32,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
 import { VForm } from 'vuetify/components';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { storeToRefs } from 'pinia';
 import { useDisplay } from 'vuetify';
@@ -55,7 +55,7 @@ const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 const { cf } = useCurrencyFilter();
 const { xs } = useDisplay();
-const { userCurrency } = storeToRefs(useInfoStore());
+const { userCurrency } = storeToRefs(useUserStore());
 
 const form = ref<VForm>();
 const loading = ref(false);
@@ -89,7 +89,7 @@ const submitHandler = async () => {
 			const updatedCat = await CategoryService.updateCategory(id, { ...categoryData, limit: convertedLimit });
 			if (updatedCat) {
 				showMessage(t('category_updated'));
-				emit('updated',  updatedCat);
+				emit('updated', updatedCat);
 			}
 		} catch (e) {
 			if (typeof e === 'string') {

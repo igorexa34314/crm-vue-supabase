@@ -21,12 +21,13 @@
 import InfoForm from '@/components/profile/InfoForm.vue';
 import SecurityForm from '@/components/profile/SecurityForm.vue';
 import { AuthService } from '@/services/auth';
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useMeta } from 'vue-meta';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { UserService } from '@/services/user';
-import { UserInfo } from '@/stores/info';
+import { UserInfo } from '@/stores/user';
+import { useRoute } from 'vue-router';
 import { useDisplay } from 'vuetify';
 
 useMeta({ title: 'pageTitles.profile' });
@@ -34,6 +35,7 @@ useMeta({ title: 'pageTitles.profile' });
 const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { xs } = useDisplay();
 const { showMessage } = useSnackbarStore();
+const route = useRoute();
 
 const profileTabs = [
 	{ title: 'info', value: 'info', component: InfoForm },
@@ -52,7 +54,7 @@ const updateInfo = async ({ avatar, ...userdata }: Omit<UserInfo, 'bill' | 'emai
 		showMessage(t('updateProfile_message'));
 	} catch (e) {
 		if (typeof e === 'string') {
-			showMessage(te(`firebase.messages.${e}`) ? t(`firebase.messages.${e}`) : e, 'red-darken-3');
+			showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e, 'red-darken-3');
 		}
 		else {
 			showMessage(t('error_update_profile'), 'red-darken-3');
@@ -75,7 +77,7 @@ const updateCreds = async ({ oldPass, newPass, email }: Partial<{ oldPass: strin
 		// }
 	} catch (e) {
 		if (typeof e === 'string') {
-			showMessage(te(`firebase.messages.${e}`) ? t(`firebase.messages.${e}`) : e, 'red-darken-3');
+			showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e, 'red-darken-3');
 		}
 		else {
 			showMessage(t('error_update_profile'), 'red-darken-3');
@@ -85,4 +87,10 @@ const updateCreds = async ({ oldPass, newPass, email }: Partial<{ oldPass: strin
 		loading.value = false;
 	}
 }
+
+watchEffect(() => {
+	if (te(`${route.query.message}`)) {
+		showMessage(t(`${route.query.message}`));
+	}
+});
 </script>

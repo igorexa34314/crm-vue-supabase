@@ -52,7 +52,7 @@ import { useMeta } from 'vue-meta';
 import { mdiChevronRight } from '@mdi/js';
 import { RecordService } from '@/services/record';
 import { useI18n } from 'vue-i18n';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { RecordDetail } from '@/services/record';
@@ -67,7 +67,7 @@ const route = useRoute();
 const { t, d, n } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { cf } = useCurrencyFilter();
 useMeta({ title: 'pageTitles.details' });
-const { userCurrency } = storeToRefs(useInfoStore());
+const { userCurrency } = storeToRefs(useUserStore());
 
 const breadcrumbs = computed<Breadcrumbs[]>(() => ([
 	{ title: t('menu.history'), to: '/history' },
@@ -80,7 +80,7 @@ const { state: record, isLoading } = useAsyncState(async () => {
 	onError: (e) => {
 		console.error(e);
 		const { showMessage } = useSnackbarStore();
-		showMessage('no_record_found');
+		showMessage('no_record_found', 'red-darken-3');
 	}
 });
 

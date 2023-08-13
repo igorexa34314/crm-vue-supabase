@@ -22,9 +22,8 @@ import PassField from '@/components/UI/PassField.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { ref, computed, watchEffect } from 'vue';
 import { mdiSend } from '@mdi/js';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
-import { UserCredentials } from '@/services/auth';
 import { user as validations } from '@/utils/validations';
 import { VForm } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
@@ -41,9 +40,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { xs } = useDisplay();
-const infoStore = useInfoStore();
-
-const currentEmail = computed(() => infoStore.info?.email);
+const infoStore = useUserStore();
 
 const form = ref<VForm>();
 
@@ -53,11 +50,11 @@ const formState = ref({
 	newPass: '',
 });
 
-watchEffect(() => {
-	if (currentEmail.value) {
-		formState.value = { ...formState.value, email: currentEmail.value };
-	}
-})
+// watchEffect(() => {
+// 	if (currentEmail.value) {
+// 		formState.value = { ...formState.value, email: currentEmail.value };
+// 	}
+// })
 
 const submitHandler = async () => {
 	const valid = (await form.value?.validate())?.valid;

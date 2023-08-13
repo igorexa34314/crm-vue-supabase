@@ -1,15 +1,24 @@
 import { errorHandler } from '@/utils/errorHandler';
-import { Locales } from '@/plugins/i18n';
+import { supabase } from '@/supabase';
 
 export class LocaleService {
-	static async fetchLocale(locale: Locales = 'en-US') {
+	static async fetchLocaleTranslation(locale: string = 'en-US') {
 		try {
-			const localeDoc = await getDoc(doc(col(db, 'locales'), locale));
-			if (localeDoc.exists()) {
-				return localeDoc.data() as { [key: string]: string };
-			}
-		} catch (e) {
-			errorHandler(e);
+			const { error, data } = await supabase.from('locales').select('translations').eq('code', locale).single();
+			if (error) throw error;
+			return data.translations;
+		} catch (err) {
+			errorHandler(err);
+		}
+	}
+
+	static async fetchAvailableLocales() {
+		try {
+			const { error, data: locales } = await supabase.from('locales').select('code, name, native_name');
+			if (error) throw error;
+			return locales;
+		} catch (err) {
+			errorHandler(err);
 		}
 	}
 }

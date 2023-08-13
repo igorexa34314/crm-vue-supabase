@@ -4,7 +4,7 @@
 		<AppNavbar @click="drawer = !drawer" @logout="logout" />
 		<AppSidebar v-model="drawer" />
 
-		<v-main class="app bg-background" style="min-height: 100vh">
+		<v-main class="app bg-background" style="min-height: 100dvh; min-height: 100vh">
 			<div class="app-content pa-sm-5 pa-4">
 				<router-view />
 			</div>
@@ -23,7 +23,7 @@ import AppNavbar from '@/components/app/AppNavbar.vue';
 import AppSidebar from '@/components/app/AppSidebar.vue';
 import { ref, onMounted, provide, onUnmounted } from 'vue';
 import { CurrencyService } from '@/services/currency';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { mdiPlus } from '@mdi/js';
 import { UserService } from '@/services/user';
 import { useI18n } from 'vue-i18n';
@@ -34,26 +34,31 @@ import { useRouter } from 'vue-router';
 import { AuthService } from '@/services/auth';
 import { useDisplay } from 'vuetify';
 
-let userInfoChannel: Awaited<ReturnType<typeof UserService.fetchAndSubscribeInfo>>;
-const { state: currency, isLoading, isReady, execute: refresh } = useAsyncState(CurrencyService.fetchCurrency, null);
-provide(currencyKey, { currency, isLoading, isReady, refresh });
-
-const { push } = useRouter();
+const { push, replace, currentRoute } = useRouter();
 const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { showMessage } = useSnackbarStore();
-const infoStore = useInfoStore();
+const infoStore = useUserStore();
 const drawer = ref(true);
 const loading = ref(false);
 const { xs, mdAndDown } = useDisplay();
+
+const { state: currency, isLoading, isReady, execute: refresh } = useAsyncState(CurrencyService.fetchCurrency, null, {
+	onError: (e) => {
+		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : t('error_loading_currency'), 'red-darken-3')
+	}
+});
+
+provide(currencyKey, { currency, isLoading, isReady, refresh });
+
+let userInfoChannel: Awaited<ReturnType<typeof UserService.fetchAndSubscribeInfo>>;
 
 onMounted(async () => {
 	try {
 		if (!infoStore.info || !Object.keys(infoStore.info).length) {
 			userInfoChannel = await UserService.fetchAndSubscribeInfo();
 		}
-		await CurrencyService.fetchCurrency();
 	} catch (e) {
-		showMessage(te(`firebase.messages.${e}`) ? t(`firebase.messages.${e}`) : e as string);
+		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e as string, 'red-darken-3');
 	} finally {
 		loading.value = false;
 	}
@@ -61,11 +66,11 @@ onMounted(async () => {
 
 onUnmounted(() => {
 	userInfoChannel?.unsubscribe();
+	infoStore.$reset();
 });
 
 const logout = async () => {
 	try {
-		userInfoChannel?.unsubscribe();
 		await AuthService.logout();
 		push({
 			path: '/login',
@@ -73,9 +78,8 @@ const logout = async () => {
 				message: 'logout'
 			}
 		});
-		infoStore.$reset();
 	} catch (e) {
-		showMessage(te(`firebase.messages.${e}`) ? t(`firebase.messages.${e}`) : e as string);
+		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e as string, 'red-darken-3');
 	}
 }
 
@@ -96,3 +100,9 @@ const logout = async () => {
 	z-index: 100;
 }
 </style>
+
+<route lang="yaml">
+meta:
+  auth: true
+  requiresAuth: true
+</route>

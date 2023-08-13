@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
-import { CurrencyRates } from '@/services/currency';
-import { Locales } from '@/plugins/i18n';
-import { useLocalStorage } from '@vueuse/core';
+import { computed, nextTick, ref, watch } from 'vue';
 import { Tables } from '@/database.types';
+import { useSnackbarStore } from '@/stores/snackbar';
 import { DEFAULT_LOCALE, DEFAULT_CURRENCY, LOCALE_KEY } from '@/globals';
 
 export type UserInfo = Omit<Tables<'profiles'>, 'updated_at'>;
 
-export const useInfoStore = defineStore('info', () => {
+export const useUserStore = defineStore('info', () => {
 	const info = ref<UserInfo | null>(null);
+
+	const isLocaleLoading = ref(false);
 
 	const setInfo = (data: UserInfo) => {
 		info.value = data;
@@ -26,12 +26,20 @@ export const useInfoStore = defineStore('info', () => {
 		};
 	};
 
-	const $subscribeLocale = (cb: (locale: Locales) => void) => {
+	const $subscribeLocale = (cb: (locale: string) => Promise<void>) => {
 		return watch(
 			() => info.value?.locale,
-			newVal => {
+			async newVal => {
 				if (newVal) {
-					cb(newVal);
+					try {
+						isLocaleLoading.value = true;
+						await cb(newVal);
+					} catch (err) {
+						const { showMessage } = useSnackbarStore();
+						showMessage('error_loading_locale', 'red-darken-3');
+					} finally {
+						isLocaleLoading.value = false;
+					}
 				}
 			},
 			{ deep: true, immediate: true }
@@ -40,6 +48,7 @@ export const useInfoStore = defineStore('info', () => {
 
 	return {
 		info,
+		isLocaleLoading,
 		userCurrency,
 		setInfo,
 		$reset,

@@ -41,7 +41,7 @@ import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useI18n } from 'vue-i18n';
 import { record as validations } from '@/utils/validations';
 import { Category } from '@/services/category';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_CURRENCY, DEFAULT_RECORD_AMOUNT } from '@/globals';
 
@@ -62,7 +62,7 @@ const emit = defineEmits<{
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { cf } = useCurrencyFilter();
-const infoStore = useInfoStore();
+const infoStore = useUserStore();
 const { xs } = useDisplay();
 
 const info = computed(() => infoStore.info);
@@ -94,7 +94,7 @@ const submitHandler = async () => {
 	}
 	else if (!canCreateRecord.value) {
 		showMessage(t('lack_of_amount') +
-			` (${n(formState.value.amount - cf.value(info.value!.bill), 'currency', info.value?.currency || DEFAULT_CURRENCY)})`);
+			` (${n(formState.value.amount - cf.value(info.value!.bill), 'currency', info.value?.currency || DEFAULT_CURRENCY)})`, 'red-darken-3');
 	}
 }
 const resetForm = () => {

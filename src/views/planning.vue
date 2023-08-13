@@ -7,13 +7,13 @@
 		<v-divider color="black" thickness="1.5" class="bg-white mb-8" />
 		<app-loader v-if="isLoading" class="mt-10" page />
 		<div v-else-if="catStats && !catStats.length" class="mt-10 text-center text-h6">{{
-			t('pageTitles.plan')
-		}}<router-link to="/categories">{{ t('no_categories') + '. ' }}</router-link></div>
+			t('no_categories') + '. ' }}<router-link to="/categories">{{ t('create_category') + '. ' }}</router-link></div>
 
 		<section v-else class="mt-10 px-4">
 			<div v-for="(cat, index) of catStats" :key="cat.id || index" class="mt-8">
 				<p class="d-flex flex-row align-center justify-space-between mb-3">
-					<strong class="category-title text-truncate font-weight-bold mr-4 text-primary flex-fill">{{ cat.title }}:</strong>
+					<strong class="category-title text-truncate font-weight-bold mr-4 text-primary flex-fill">{{ cat.title
+					}}:</strong>
 					<span class="category-spent mr-sm-4 text-primary text-end">
 						{{
 							n(cf(cat.spend), { key: 'currency', currencyDisplay: xs ? 'narrowSymbol' : 'symbol' }, userCurrency) +
@@ -41,7 +41,7 @@ import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useMeta } from 'vue-meta';
 import { useAsyncState } from '@vueuse/core';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
@@ -51,7 +51,7 @@ useMeta({ title: 'pageTitles.plan' });
 
 const { t, n, te } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { xs } = useDisplay();
-const infoStore = useInfoStore();
+const infoStore = useUserStore();
 
 const { userCurrency } = storeToRefs(infoStore);
 const { cf } = useCurrencyFilter();
@@ -59,10 +59,11 @@ const { cf } = useCurrencyFilter();
 const bill = computed(() => infoStore.info?.bill || DEFAULT_BILL);
 
 const { state: catStats, isLoading } = useAsyncState(CategoryService.fetchCategoriesSpendStats, [], {
-	onError: (e) => { 
+	onError: (e) => {
 		const { showMessage } = useSnackbarStore();
-		showMessage(te(`firebase.messages.${e}`) ? t(`firebase.messages.${e}`) : e as string);
-} });
+		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e as string, 'red-darken-3');
+	}
+});
 </script>
 
 <style lang="scss" scoped>

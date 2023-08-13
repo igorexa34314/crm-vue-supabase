@@ -8,7 +8,7 @@
 		</v-app-bar-title>
 		<v-spacer />
 		<DarkmodeToggle class="mr-7" />
-		<v-menu>
+		<v-menu v-if="infoStore.info">
 			<template #activator="{ props }">
 				<v-btn color="profile" variant="text" v-bind="props" class="py-1 d-flex px-sm-3 px-1 mr-md-7"
 					:append-icon="mdiTriangleSmallDown" flat>
@@ -34,15 +34,17 @@
 				</v-list-item>
 			</v-list>
 		</v-menu>
+		<v-skeleton-loader v-else type="list-item-avatar" width="100%" color="navbar" max-width="240px" />
 	</v-app-bar>
 </template>
 
 <script setup lang="ts">
+import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader';
 import avatarPlaceholder from '@/assets/img/avatar-placeholder.jpg';
 import DarkmodeToggle from '@/components/app/DarkmodeToggle.vue';
 import { mdiTriangleSmallDown, mdiAccountCircleOutline, mdiLogout } from '@mdi/js';
 import { ref, onMounted, onUnmounted, computed } from 'vue';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
@@ -55,7 +57,7 @@ const emit = defineEmits<{
 const { t, d } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { xs, smAndDown } = useDisplay();
 const { push } = useRouter();
-const infoStore = useInfoStore();
+const infoStore = useUserStore();
 
 const username = computed(() => infoStore.info ?
 	`${infoStore.info?.username}`
@@ -68,5 +70,6 @@ let dateInterval: NodeJS.Timer;
 onMounted(() => {
 	dateInterval = setInterval(() => date.value = new Date(), 1000 * 20);
 });
+
 onUnmounted(() => clearInterval(dateInterval));
 </script>

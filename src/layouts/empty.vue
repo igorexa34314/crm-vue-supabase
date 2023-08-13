@@ -7,13 +7,13 @@
 <script setup lang="ts">
 import { computed, onUnmounted, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { useInfoStore } from '@/stores/info';
+import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 
 const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
 const route = useRoute();
-const infoStore = useInfoStore();
+const infoStore = useUserStore();
 const info = computed(() => infoStore.info);
 const { showMessage } = useSnackbarStore();
 
@@ -34,6 +34,7 @@ onUnmounted(() => {
 
 <style scoped>
 .app {
+	min-height: 100dvh;
 	min-height: 100vh;
 }
 </style>
