@@ -6,11 +6,11 @@
 			<LocalLogin @success="onLoginSuccess" @error="onLoginError" />
 
 			<div class="providers d-flex align-center mt-6 justify-center">
-				<GoogleProvider @success="onOAuthLoginSuccess" @error="onLoginError" />
+				<GoogleProvider @error="onLoginError" />
 
-				<FacebookProvider @success="onOAuthLoginSuccess" @error="onLoginError" />
+				<FacebookProvider @error="onLoginError" />
 
-				<GithubProvider @success="onOAuthLoginSuccess" @error="onLoginError" />
+				<GithubProvider @error="onLoginError" />
 			</div>
 		</v-card-text>
 
@@ -45,9 +45,6 @@ const { showMessage } = useSnackbarStore();
 const onLoginSuccess = () => {
 	showMessage(t('login_success'));
 	push('/');
-}
-const onOAuthLoginSuccess = () => {
-	showMessage(t('login_success'));
 }
 const onLoginError = (e: unknown) => {
 	showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : t('login_error'), 'red-darken-3');

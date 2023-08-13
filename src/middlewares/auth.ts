@@ -7,6 +7,9 @@ export const checkAuth = async (
 	from: RouteLocationNormalized,
 	next: NavigationGuardNext
 ) => {
+	if (to.name === from.name && from.query.message) {
+		return next();
+	}
 	const {
 		data: { user },
 		error

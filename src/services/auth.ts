@@ -69,7 +69,9 @@ export class AuthService {
 			const { data, error } = await supabase.auth.updateUser(
 				{ email: newEmail },
 				{
-					emailRedirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}/profile?message=password_changed`
+					emailRedirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}${
+						import.meta.env.BASE_URL
+					}profile?message=password_changed`
 				}
 			);
 			if (error) throw error;
@@ -107,7 +109,9 @@ export class AuthService {
 		return supabase.auth.signInWithOAuth({
 			provider,
 			options: {
-				redirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}/profile?message=login_success`,
+				redirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}${
+					import.meta.env.BASE_URL
+				}profile?message=login_success`,
 				...options
 			}
 		});

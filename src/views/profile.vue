@@ -27,7 +27,7 @@ import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { UserService } from '@/services/user';
 import { UserInfo } from '@/stores/user';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 
 useMeta({ title: 'pageTitles.profile' });
@@ -36,6 +36,7 @@ const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { xs } = useDisplay();
 const { showMessage } = useSnackbarStore();
 const route = useRoute();
+const { replace } = useRouter();
 
 const profileTabs = [
 	{ title: 'info', value: 'info', component: InfoForm },
@@ -91,6 +92,7 @@ const updateCreds = async ({ oldPass, newPass, email }: Partial<{ oldPass: strin
 watchEffect(() => {
 	if (te(`${route.query.message}`)) {
 		showMessage(t(`${route.query.message}`));
+		replace({ query: undefined })
 	}
 });
 </script>
