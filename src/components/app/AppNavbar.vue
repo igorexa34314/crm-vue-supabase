@@ -66,7 +66,7 @@ const photoURL = computed(() => infoStore.info?.avatar_url);
 
 const date = ref(new Date());
 
-let dateInterval: NodeJS.Timer;
+let dateInterval: NodeJS.Timeout;
 onMounted(() => {
 	dateInterval = setInterval(() => date.value = new Date(), 1000 * 20);
 });

@@ -108,7 +108,6 @@ watch(page, async (newPage) => {
 		const records = await RecordService.loadMoreRecords({ sortBy: sortState.value.field, sortType: sortState.value.type, page: newPage, perPage });
 		if (records && records.length) {
 			recordsState.value.records = records.map((r, idx) => ({ ...r, index: (page.value - 1) * perPage + ++idx }));
-			// push({ query: { ...route.query, page: newPage } });
 		}
 	} catch (err) {
 		const { showMessage } = useSnackbarStore();

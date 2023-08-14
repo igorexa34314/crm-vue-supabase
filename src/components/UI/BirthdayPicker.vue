@@ -38,6 +38,10 @@ const emit = defineEmits<{
 	'update:modelValue': [date: Date]
 }>();
 
+defineSlots<{
+	label: any
+}>();
+
 const datePickerDateItems = computed(() => ([
 	{ type: 'month', title: 'Месяц', items: monthsForLocales('long').map((title, i) => ({ title, value: ++i })), order: props.order === 'dd-mmm-yyyy' ? 2 : 1 },
 	{ type: 'day', title: 'День', items: Array.from({ length: 31 }, (v, i) => ++i), order: props.order === 'dd-mmm-yyyy' ? 1 : 2 },

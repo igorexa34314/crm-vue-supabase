@@ -42,7 +42,7 @@ export const useUserStore = defineStore('info', () => {
 					}
 				}
 			},
-			{ deep: true, immediate: true }
+			{ deep: true }
 		);
 	};
 

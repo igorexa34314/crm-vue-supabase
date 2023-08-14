@@ -3,10 +3,10 @@
 ### This project is based on Vue 3 Composition API using Vuetify UI library. Bundled with Vite. 
 ### Powered on Supabase SDK
 
-[![crm-vue1.png](https://i.postimg.cc/XJDNFm8H/crm-vue.png)](https://postimg.cc/8JMVgyxM)
-[![crm-vue2.png](https://i.postimg.cc/ryB0PR1h/crm-vue.png)](https://postimg.cc/kDygV4h8)
-[![crm-vue3.png](https://i.postimg.cc/pXQTcGXT/crm-vue.png)](https://postimg.cc/LnX2nVPK)
-[![crm-vue4.png](https://i.postimg.cc/MGLKfgts/crm-vue.png)](https://postimg.cc/kVxdk108)
+[![crm-vue-supabase1.png](https://i.postimg.cc/htpV5nMD/crm-vue-supabase.png)](https://postimg.cc/DS4WSttH)
+[![crm-vue-supabase2.png](https://i.postimg.cc/25pRZpRw/crm-vue-supabase.png)](https://postimg.cc/v4vSJNmg)
+[![crm-vue-supabase3.png](https://i.postimg.cc/BQr4xP2H/crm-vue-supabase.png)](https://postimg.cc/N5k3tMJj)
+[![crm-vue-supabase4.png](https://i.postimg.cc/9FRqmTW7/crm-vue-supabase.png)](https://postimg.cc/jLTjvDnx)
 
 This CRM system allows you to calculate expenses by created categories, as well as view expenses statistics. You can convert watch your bill and history on different currency rates - automatic conversion enabled. There is a built-in support for languages: English Russian, Ukrainian.
 The application contains pages: Your Account, History, Planning, New Entry, Category.
