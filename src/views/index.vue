@@ -26,8 +26,13 @@ import { useI18n } from 'vue-i18n';
 import { currencyKey } from '@/injection-keys';
 import { mdiRefresh } from '@mdi/js';
 import { useTheme } from 'vuetify';
+import { definePage } from 'vue-router/auto';
 
 useMeta({ title: 'pageTitles.bill' });
+
+definePage({
+	alias: ['/home'],
+});
 
 const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
 const theme = useTheme();

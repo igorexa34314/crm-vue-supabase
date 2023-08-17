@@ -1,12 +1,8 @@
-import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
+import { NavigationGuardWithThis } from 'vue-router/auto';
 import { supabase } from '@/supabase';
 import { AuthService } from '@/services/auth';
 
-export const checkAuth = async (
-	to: RouteLocationNormalized,
-	from: RouteLocationNormalized,
-	next: NavigationGuardNext
-) => {
+export const checkAuth: NavigationGuardWithThis<undefined> = async (to, from, next) => {
 	if (to.name === from.name && from.query.message) {
 		return next();
 	}

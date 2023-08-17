@@ -31,7 +31,7 @@ import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { UserService } from '@/services/user';
 import { UserInfo } from '@/stores/user';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router/auto';
 import { useDisplay } from 'vuetify';
 
 useMeta({ title: 'pageTitles.profile' });
@@ -39,7 +39,7 @@ useMeta({ title: 'pageTitles.profile' });
 const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { xs } = useDisplay();
 const { showMessage } = useSnackbarStore();
-const route = useRoute();
+const route = useRoute('/profile');
 const { replace } = useRouter();
 
 const profileTabs = [

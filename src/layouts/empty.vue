@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed, onUnmounted, watchEffect } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router/auto';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';

@@ -49,7 +49,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useChart } from '@/composables/useChart';
 import { useDisplay } from 'vuetify';
 import { onUnmounted, computed, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router/auto';
 import { useAsyncState } from '@vueuse/core';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/globals';
 

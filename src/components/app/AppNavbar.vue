@@ -57,7 +57,7 @@ import { mdiTriangleSmallDown, mdiAccountCircleOutline, mdiLogout } from '@mdi/j
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router/auto';
 import { useDisplay } from 'vuetify';
 
 const emit = defineEmits<{

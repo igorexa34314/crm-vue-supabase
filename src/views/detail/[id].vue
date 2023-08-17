@@ -34,8 +34,8 @@
 		</div>
 		<div v-else class="mt-7 text-center text-primary text-h6">
 			<strong>
-				{{ `${t('record_with_id')}:` }}
-				<span class="text-decoration-underline font-italic"> {{ route.params.id }}</span>
+				{{ `${t('record_with_id')}: ` }}
+				<span class="text-decoration-underline font-italic">{{ route.params.id }}</span>
 				{{ t('not_found') }}
 			</strong>
 		</div>
@@ -46,7 +46,7 @@
 import { ref, computed, nextTick } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { useMeta } from 'vue-meta';
 import { mdiChevronRight } from '@mdi/js';
 import { RecordService } from '@/services/record';
@@ -55,31 +55,33 @@ import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { RecordDetail } from '@/services/record';
+import { RouteNamedMap } from 'vue-router/auto/routes';
 
 interface Breadcrumbs {
 	title: string;
-	to?: string;
+	to?: keyof RouteNamedMap;
 	disabled?: boolean;
 }
-
-const route = useRoute();
+const route = useRoute('/detail/[id]');
 const { t, d, n } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { cf } = useCurrencyFilter();
 useMeta({ title: 'pageTitles.details' });
 const { userCurrency } = storeToRefs(useUserStore());
 
 const breadcrumbs = computed<Breadcrumbs[]>(() =>
-	[
-		{ title: t('menu.history'), to: '/history' },
-		{ title: record.value?.type === 'income' ? 'Доход' : 'Расход', disabled: true },
-	].filter(Boolean)
+	(
+		[
+			{ title: t('menu.history'), to: '/history' },
+			{ title: record.value?.type === 'income' ? 'Доход' : 'Расход', disabled: true },
+		] as Breadcrumbs[]
+	).filter(Boolean)
 );
 
 const { state: record, isLoading } = useAsyncState(
 	async () => {
 		return RecordService.fetchRecordById(route.params.id as string);
 	},
-	undefined,
+	null,
 	{
 		onError: e => {
 			console.error(e);

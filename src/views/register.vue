@@ -17,12 +17,14 @@
 
 <script setup lang="ts">
 import LocalRegister from '@/components/auth/LocalRegister.vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router/auto';
 import { useMeta } from 'vue-meta';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
+import { definePage } from 'vue-router/auto';
 
+definePage({ meta: { layout: 'empty' } });
 useMeta({ title: 'sign_in' });
 
 const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
@@ -42,8 +44,3 @@ const onRegisterError = async (e: unknown) => {
 	}
 };
 </script>
-
-<route lang="yaml">
-meta:
-   layout: empty
-</route>

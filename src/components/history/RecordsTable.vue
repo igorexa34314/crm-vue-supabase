@@ -18,7 +18,7 @@
 			<template v-for="rec in records" :key="rec.id">
 				<v-hover #default="{ isHovering, props }">
 					<tr
-						@click="push('/detail/' + rec.id)"
+						@click="push({ name: '/detail/[id]', params: { id: rec.id } })"
 						class="record"
 						v-bind="props"
 						:class="isHovering ? 'bg-hover' : ''">
@@ -50,7 +50,10 @@
 								location="bottom"
 								content-class="bg-tooltip font-weight-medium text-primary">
 								<template #activator="{ props }">
-									<v-btn :id="`rec-${rec.id}`" color="success" @click="push('/detail/' + rec.id)">
+									<v-btn
+										:id="`rec-${rec.id}`"
+										color="success"
+										@click="push({ name: '/detail/[id]', params: { id: rec.id } })">
 										<v-icon v-bind="props" :icon="mdiOpenInNew" />
 									</v-btn>
 								</template>
@@ -65,7 +68,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router/auto';
 import { mdiOpenInNew, mdiTrendingUp, mdiTrendingDown, mdiMenuUp, mdiMenuDown } from '@mdi/js';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
