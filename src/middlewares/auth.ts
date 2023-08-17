@@ -12,7 +12,6 @@ export const checkAuth = async (
 	}
 	const {
 		data: { user },
-		error
 	} = await supabase.auth.getUser();
 
 	if (user) AuthService.setUser(user);

@@ -10,7 +10,11 @@
 		</v-tabs>
 		<v-window v-model="currentTab">
 			<v-window-item v-for="tab in profileTabs" :key="tab.value" :value="tab.value">
-				<component :is="tab.component" lass="mt-6 mt-sm-8 px-2 px-sm-4" @update-info="updateInfo" :loading="loading"
+				<component
+					:is="tab.component"
+					lass="mt-6 mt-sm-8 px-2 px-sm-4"
+					@update-info="updateInfo"
+					:loading="loading"
 					@change-creds="updateCreds" />
 			</v-window-item>
 		</v-window>
@@ -40,8 +44,8 @@ const { replace } = useRouter();
 
 const profileTabs = [
 	{ title: 'info', value: 'info', component: InfoForm },
-	{ title: 'security', value: 'security', component: SecurityForm }
-]
+	{ title: 'security', value: 'security', component: SecurityForm },
+];
 const currentTab = ref(profileTabs[0]);
 const loading = ref(false);
 
@@ -56,17 +60,18 @@ const updateInfo = async ({ avatar, ...userdata }: Omit<UserInfo, 'bill' | 'emai
 	} catch (e) {
 		if (typeof e === 'string') {
 			showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e, 'red-darken-3');
-		}
-		else {
+		} else {
 			showMessage(t('error_update_profile'), 'red-darken-3');
 		}
-	}
-	finally {
+	} finally {
 		loading.value = false;
 	}
-}
+};
 
-const updateCreds = async ({ oldPass, newPass, email }: Partial<{ oldPass: string, newPass: string, email: string }>) => {
+const updateCreds = async ({
+	oldPass,
+	newPass, // email,
+}: Partial<{ oldPass: string; newPass: string; email: string }>) => {
 	try {
 		loading.value = true;
 		if (oldPass && newPass) {
@@ -79,20 +84,18 @@ const updateCreds = async ({ oldPass, newPass, email }: Partial<{ oldPass: strin
 	} catch (e) {
 		if (typeof e === 'string') {
 			showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e, 'red-darken-3');
-		}
-		else {
+		} else {
 			showMessage(t('error_update_profile'), 'red-darken-3');
 		}
-	}
-	finally {
+	} finally {
 		loading.value = false;
 	}
-}
+};
 
 watchEffect(() => {
 	if (te(`${route.query.message}`)) {
 		showMessage(t(`${route.query.message}`));
-		replace({ query: undefined })
+		replace({ query: undefined });
 	}
 });
 </script>

@@ -1,4 +1,4 @@
-import { computed, unref, MaybeRef, Ref } from 'vue';
+import { computed, unref, MaybeRef } from 'vue';
 import { ChartData, ChartOptions, ChartType } from 'chart.js';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale } from 'chart.js';
 import { useI18n } from 'vue-i18n';
@@ -29,9 +29,9 @@ export const useChart = <T extends ChartType = 'pie'>(
 					boxHeight: 30,
 					font: {
 						weight: 'bold',
-						size: 16
-					}
-				}
+						size: 16,
+					},
+				},
 			},
 			title: {
 				display: true,
@@ -39,13 +39,13 @@ export const useChart = <T extends ChartType = 'pie'>(
 				color: theme.global.current.value.dark ? '#B8C7D3' : '#D50000',
 				font: {
 					size: 22,
-					lineHeight: '1.5'
-				}
-			}
-		}
+					lineHeight: '1.5',
+				},
+			},
+		},
 	}));
 
-	const chartData = computed<ChartData>(
+	const chartData = computed<ChartData<T>>(
 		() =>
 			({
 				labels: unref(inputData)?.map(d => d.label) || [],
@@ -55,12 +55,12 @@ export const useChart = <T extends ChartType = 'pie'>(
 						backgroundColor: randomColor({
 							count: unref(inputData)?.length || 1,
 							hue: theme.global.current.value.dark ? '#0E5578' : 'random',
-							luminosity: theme.global.current.value.dark ? 'light' : 'bright'
+							luminosity: theme.global.current.value.dark ? 'light' : 'bright',
 						}),
-						borderColor: theme.global.current.value.dark ? '#143c53' : '#8D6E63'
-					}
-				]
-			} as unknown as ChartData<T>)
+						borderColor: theme.global.current.value.dark ? '#143c53' : '#8D6E63',
+					},
+				],
+			}) as unknown as ChartData<T>
 	);
 
 	return { chartData, chartOptions };

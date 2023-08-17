@@ -10,10 +10,20 @@
 			</div>
 		</v-main>
 
-		<v-tooltip activator=".fixed-action-btn" :text="t('create_record')"
-			content-class="bg-fixed text-primary font-weight-medium" #activator="{ props }">
-			<v-btn color="fixed" :size="xs ? 'default' : mdAndDown ? 'large' : 'x-large'" class="fixed-action-btn"
-				to="/record" position="fixed" :icon="mdiPlus" v-bind="props" />
+		<v-tooltip
+			activator=".fixed-action-btn"
+			:text="t('create_record')"
+			content-class="bg-fixed text-primary font-weight-medium">
+			<template #activator="{ props }">
+				<v-btn
+					color="fixed"
+					:size="xs ? 'default' : mdAndDown ? 'large' : 'x-large'"
+					class="fixed-action-btn"
+					to="/record"
+					position="fixed"
+					:icon="mdiPlus"
+					v-bind="props" />
+			</template>
 		</v-tooltip>
 	</v-layout>
 </template>
@@ -34,7 +44,7 @@ import { useRouter } from 'vue-router';
 import { AuthService } from '@/services/auth';
 import { useDisplay } from 'vuetify';
 
-const { push, replace, currentRoute } = useRouter();
+const { push } = useRouter();
 const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 const infoStore = useUserStore();
@@ -42,10 +52,18 @@ const drawer = ref(true);
 const loading = ref(false);
 const { xs, mdAndDown } = useDisplay();
 
-const { state: currency, isLoading, isReady, execute: refresh } = useAsyncState(CurrencyService.fetchCurrency, null, {
-	onError: (e) => {
-		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : t('error_loading_currency'), 'red-darken-3')
-	}
+const {
+	state: currency,
+	isLoading,
+	isReady,
+	execute: refresh,
+} = useAsyncState(CurrencyService.fetchCurrency, null, {
+	onError: e => {
+		showMessage(
+			te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : t('error_loading_currency'),
+			'red-darken-3'
+		);
+	},
 });
 
 provide(currencyKey, { currency, isLoading, isReady, refresh });
@@ -58,7 +76,7 @@ onMounted(async () => {
 			userInfoChannel = await UserService.fetchAndSubscribeInfo();
 		}
 	} catch (e) {
-		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e as string, 'red-darken-3');
+		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : (e as string), 'red-darken-3');
 	} finally {
 		loading.value = false;
 	}
@@ -75,14 +93,13 @@ const logout = async () => {
 		push({
 			path: '/login',
 			query: {
-				message: 'logout'
-			}
+				message: 'logout',
+			},
 		});
 	} catch (e) {
-		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e as string, 'red-darken-3');
+		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : (e as string), 'red-darken-3');
 	}
-}
-
+};
 </script>
 
 <style scoped>
@@ -103,6 +120,6 @@ const logout = async () => {
 
 <route lang="yaml">
 meta:
-  auth: true
-  requiresAuth: true
+   auth: true
+   requiresAuth: true
 </route>

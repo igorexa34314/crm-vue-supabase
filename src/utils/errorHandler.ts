@@ -1,4 +1,4 @@
-import { DbResultErr } from '@/database.types';
+// import { DbResultErr } from '@/database.types';
 
 export const errorHandler = (err: unknown, msg?: string) => {
 	if (err instanceof Error) {

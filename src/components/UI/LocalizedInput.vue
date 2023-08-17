@@ -14,14 +14,17 @@ import { useI18n } from 'vue-i18n';
 import { VTextField } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
 
-const props = withDefaults(defineProps<{
-	variant?: VTextField['variant'],
-}>(), {
-	variant: 'underlined',
-});
+const props = withDefaults(
+	defineProps<{
+		variant?: VTextField['variant'];
+	}>(),
+	{
+		variant: 'underlined',
+	}
+);
 
 defineSlots<{
-	'append-inner': any
+	'append-inner': any;
 }>();
 
 const { t } = useI18n({ inheritLocale: true, useScope: 'global' });

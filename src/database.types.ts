@@ -36,7 +36,7 @@ export interface Database {
 						columns: ['user_id'];
 						referencedRelation: 'users';
 						referencedColumns: ['id'];
-					}
+					},
 				];
 			};
 			locales: {
@@ -118,7 +118,7 @@ export interface Database {
 						columns: ['locale'];
 						referencedRelation: 'locales';
 						referencedColumns: ['code'];
-					}
+					},
 				];
 			};
 			record_details: {
@@ -155,7 +155,7 @@ export interface Database {
 						columns: ['record_id'];
 						referencedRelation: 'records';
 						referencedColumns: ['id'];
-					}
+					},
 				];
 			};
 			records: {
@@ -198,7 +198,7 @@ export interface Database {
 						columns: ['user_id'];
 						referencedRelation: 'users';
 						referencedColumns: ['id'];
-					}
+					},
 				];
 			};
 		};

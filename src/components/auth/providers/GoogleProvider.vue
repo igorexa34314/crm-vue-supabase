@@ -9,14 +9,16 @@ import googleProvider from '@/assets/img/google-provider.png';
 import { AuthService } from '@/services/auth';
 
 const emit = defineEmits<{
-	success: [],
-	error: [err: unknown],
+	success: [];
+	error: [err: unknown];
 }>();
 
 const signInWithGoogleProvider = () => {
-	AuthService.signInWithGoogle().then(() => emit('success')).catch(e => {
-		console.error(e);
-		emit('error', e);
-	});
-}
+	AuthService.signInWithGoogle()
+		.then(() => emit('success'))
+		.catch(e => {
+			console.error(e);
+			emit('error', e);
+		});
+};
 </script>

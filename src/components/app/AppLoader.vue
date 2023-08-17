@@ -1,5 +1,5 @@
 <template>
-	<div :class="{ '_page': page, '_screen': screen }" class="app-loader d-inline-block">
+	<div :class="{ _page: page, _screen: screen }" class="app-loader d-inline-block">
 		<div v-for="i in 8" :key="i" :style="cssProps"></div>
 	</div>
 </template>
@@ -10,18 +10,21 @@ import { useTheme } from 'vuetify';
 
 const theme = useTheme();
 
-const props = withDefaults(defineProps<{
-	page?: boolean;
-	screen?: boolean;
-	color?: string;
-}>(), {
-	screen: false,
-	page: false,
-});
+const props = withDefaults(
+	defineProps<{
+		page?: boolean;
+		screen?: boolean;
+		color?: string;
+	}>(),
+	{
+		screen: false,
+		page: false,
+	}
+);
 
 const cssProps = computed(() => ({
-	'--app-loader-color': props.color || (theme.global.current.value.dark ? '#FFFFFF' : '#000000')
-}))
+	'--app-loader-color': props.color || (theme.global.current.value.dark ? '#FFFFFF' : '#000000'),
+}));
 </script>
 
 <style lang="scss" scoped>
@@ -29,7 +32,7 @@ const cssProps = computed(() => ({
 	position: relative;
 	width: 80px;
 	height: 80px;
-	@media(max-width:960px) {
+	@media (max-width: 960px) {
 		transform: scale(0.7);
 		&._screen {
 			transform: none;
@@ -38,7 +41,7 @@ const cssProps = computed(() => ({
 	&._page {
 		left: 50%;
 		transform: translate(-50%);
-		@media(max-width:960px) {
+		@media (max-width: 960px) {
 			transform: translate(-50%) scale(0.7);
 		}
 	}
@@ -47,7 +50,7 @@ const cssProps = computed(() => ({
 		top: 50%;
 		left: 50%;
 		&::before {
-			content: "";
+			content: '';
 			pointer-events: none;
 			position: fixed;
 			display: block;
@@ -56,15 +59,14 @@ const cssProps = computed(() => ({
 			width: 100vw;
 			height: 100vh;
 			z-index: 100;
-			background-color: rgba($color: #FFFFFF, $alpha: .35);
+			background-color: rgba($color: #ffffff, $alpha: 0.35);
 		}
-
 	}
 	& div {
 		animation: loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 		transform-origin: 40px 40px;
 		&:after {
-			content: " ";
+			content: ' ';
 			display: block;
 			position: absolute;
 			width: 7px;

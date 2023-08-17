@@ -6,29 +6,52 @@
 		</div>
 		<v-divider color="black" thickness="1.5" class="bg-white mb-8" />
 		<app-loader v-if="isLoading" class="mt-10" page />
-		<div v-else-if="catStats && !catStats.length" class="mt-10 text-center text-h6">{{
-			t('no_categories') + '. ' }}<router-link to="/categories">{{ t('create_category') + '. ' }}</router-link></div>
+		<div v-else-if="catStats && !catStats.length" class="mt-10 text-center text-h6">
+			{{ t('no_categories') + '. ' }}<router-link to="/categories">{{ t('create_category') + '. ' }}</router-link>
+		</div>
 
 		<section v-else class="mt-10 px-4">
 			<div v-for="(cat, index) of catStats" :key="cat.id || index" class="mt-8">
 				<p class="d-flex flex-row align-center justify-space-between mb-3">
-					<strong class="category-title text-truncate font-weight-bold mr-4 text-primary flex-fill">{{ cat.title
-					}}:</strong>
+					<strong class="category-title text-truncate font-weight-bold mr-4 text-primary flex-fill"
+						>{{ cat.title }}:</strong
+					>
 					<span class="category-spent mr-sm-4 text-primary text-end">
 						{{
-							n(cf(cat.spend), { key: 'currency', currencyDisplay: xs ? 'narrowSymbol' : 'symbol' }, userCurrency) +
-							' ' + (xs ? '/' : t('out_of')) + ' ' +
-							n(cf(cat.limit), { key: 'currency', currencyDisplay: xs ? 'narrowSymbol' : 'symbol' }, userCurrency)
+							n(
+								cf(cat.spend),
+								{ key: 'currency', currencyDisplay: xs ? 'narrowSymbol' : 'symbol' },
+								userCurrency
+							) +
+							' ' +
+							(xs ? '/' : t('out_of')) +
+							' ' +
+							n(
+								cf(cat.limit),
+								{ key: 'currency', currencyDisplay: xs ? 'narrowSymbol' : 'symbol' },
+								userCurrency
+							)
 						}}
 					</span>
 				</p>
-				<v-progress-linear :model-value="cat.percent" :id="`progress-${cat.id}`"
-					:color="cat.percent >= 90 ? 'red' : cat.percent >= 60 ? 'yellow' : 'green'" style="cursor: pointer;" rounded
-					rounded-bar bg-color="progress" />
-				<v-tooltip :activator="`#progress-${cat.id}`" location="bottom"
-					:content-class="(cat.limit - cat.spend) < 0 ? 'bg-deep-orange-darken-3' : 'bg-light-green-darken-1'">
-					{{ ((cat.limit - cat.spend) < 0 ? t('exceeding') : t('left')) + ' ' + n(Math.abs(cf(cat.limit) -
-						cf(cat.spend)), 'currency', userCurrency) }} </v-tooltip>
+				<v-progress-linear
+					:model-value="cat.percent"
+					:id="`progress-${cat.id}`"
+					:color="cat.percent >= 90 ? 'red' : cat.percent >= 60 ? 'yellow' : 'green'"
+					style="cursor: pointer"
+					rounded
+					rounded-bar
+					bg-color="progress" />
+				<v-tooltip
+					:activator="`#progress-${cat.id}`"
+					location="bottom"
+					:content-class="cat.limit - cat.spend < 0 ? 'bg-deep-orange-darken-3' : 'bg-light-green-darken-1'">
+					{{
+						(cat.limit - cat.spend < 0 ? t('exceeding') : t('left')) +
+						' ' +
+						n(Math.abs(cf(cat.limit) - cf(cat.spend)), 'currency', userCurrency)
+					}}
+				</v-tooltip>
 			</div>
 		</section>
 	</div>
@@ -59,17 +82,17 @@ const { cf } = useCurrencyFilter();
 const bill = computed(() => infoStore.info?.bill || DEFAULT_BILL);
 
 const { state: catStats, isLoading } = useAsyncState(CategoryService.fetchCategoriesSpendStats, [], {
-	onError: (e) => {
+	onError: e => {
 		const { showMessage } = useSnackbarStore();
-		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e as string, 'red-darken-3');
-	}
+		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : (e as string), 'red-darken-3');
+	},
 });
 </script>
 
 <style lang="scss" scoped>
 .category {
 	&-spent {
-		@media(max-width: 360px) {
+		@media (max-width: 360px) {
 			flex-basis: 130px;
 		}
 	}

@@ -9,7 +9,7 @@ export interface Currency {
 
 const DEFAULT_CURRENCY_RESPONSE = {
 	rates: { [DEFAULT_CURRENCY]: 1 },
-	date: new Date()
+	date: new Date(),
 };
 
 export class CurrencyService {
@@ -21,8 +21,8 @@ export class CurrencyService {
 					method: 'GET',
 					redirect: 'follow',
 					headers: new Headers({
-						'Content-Type': 'application/json'
-					})
+						'Content-Type': 'application/json',
+					}),
 				}
 			);
 			const result = (await res.json()) as Awaited<Currency>;

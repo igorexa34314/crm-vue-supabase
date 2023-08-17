@@ -17,8 +17,7 @@
 		<v-card-actions class="mt-1 mt-sm-3 justify-center pa-2 pa-sm-4">
 			<div class="text-center text-subtitle-1 text-primary">
 				{{ t('no_account') + '? ' }}
-				<router-link to="/register" tag="a">
-					{{ t('sign_in') }}</router-link>
+				<router-link to="/register"> {{ t('sign_in') }}</router-link>
 			</div>
 		</v-card-actions>
 	</v-card>
@@ -45,13 +44,13 @@ const { showMessage } = useSnackbarStore();
 const onLoginSuccess = () => {
 	showMessage(t('login_success'));
 	push('/');
-}
+};
 const onLoginError = (e: unknown) => {
 	showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : t('login_error'), 'red-darken-3');
-}
+};
 </script>
 
 <route lang="yaml">
 meta:
-  layout: empty
+   layout: empty
 </route>

@@ -5,7 +5,6 @@
 				<v-card-title class="mx-3 mt-3 text-h6 text-sm-h5">{{ t('exchange_rate') }}</v-card-title>
 			</v-card-item>
 			<v-card-text>
-
 				<v-table class="bg-transparent" :density="xs ? 'comfortable' : 'default'">
 					<thead>
 						<tr>
@@ -33,12 +32,15 @@ import { computed } from 'vue';
 import { Currency, CurrencyRates } from '@/services/currency';
 import { useDisplay } from 'vuetify';
 
-const props = withDefaults(defineProps<{
-	rates: Currency['rates'],
-	date?: Currency['date'],
-}>(), {
-	date: () => (new Date()),
-});
+const props = withDefaults(
+	defineProps<{
+		rates: Currency['rates'];
+		date?: Currency['date'];
+	}>(),
+	{
+		date: () => new Date(),
+	}
+);
 
 const { xs } = useDisplay();
 const { t, d } = useI18n({ inheritLocale: true, useScope: 'global' });

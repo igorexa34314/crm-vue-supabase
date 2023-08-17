@@ -15,14 +15,14 @@ export default (i18n: I18n) => {
 		components,
 		directives,
 		locale: {
-			adapter: createVueI18nAdapter({ i18n, useI18n })
+			adapter: createVueI18nAdapter({ i18n, useI18n }),
 		},
 		icons: {
 			defaultSet: 'mdi',
 			aliases,
 			sets: {
-				mdi
-			}
+				mdi,
+			},
 		},
 		theme: {
 			defaultTheme: DEFAULT_THEME,
@@ -50,8 +50,8 @@ export default (i18n: I18n) => {
 						primary: '#E0E0E0',
 						trend: '#E0E0E0',
 						secondary: '#37474F',
-						navbar: '#263238'
-					}
+						navbar: '#263238',
+					},
 				},
 				[vuetifyThemeNames.light]: {
 					dark: false,
@@ -73,10 +73,10 @@ export default (i18n: I18n) => {
 						navbar: '#ECB365',
 						profile: '#261C2C',
 						trend: '#FFFFFF',
-						success: '#4E9F3D'
-					}
-				}
-			}
-		}
+						success: '#4E9F3D',
+					},
+				},
+			},
+		},
 	});
 };

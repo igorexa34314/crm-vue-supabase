@@ -5,11 +5,21 @@
 		</div>
 
 		<v-form ref="form" @submit.prevent="submitHandler">
-			<LocalizedInput v-model="formState.title" :rules="validations.title" variant="underlined" :label="t('title')"
+			<LocalizedInput
+				v-model="formState.title"
+				:rules="validations.title"
+				variant="underlined"
+				:label="t('title')"
 				required />
 
-			<LocalizedInput v-model.number="formState.limit" :rules="validations.limit" variant="underlined" type="number"
-				:label="t('limit') + ` (${userCurrency})`" class="mt-6" required />
+			<LocalizedInput
+				v-model.number="formState.limit"
+				:rules="validations.limit"
+				variant="underlined"
+				type="number"
+				:label="t('limit') + ` (${userCurrency})`"
+				class="mt-6"
+				required />
 
 			<v-btn color="success" type="submit" :class="xs ? 'mt-4' : 'mt-7'" :loading="loading">
 				{{ t('create') }}
@@ -34,13 +44,16 @@ import { VForm } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_CATEGORY_LIMIT } from '@/globals';
 
-const props = withDefaults(defineProps<{
-	defaultLimit?: number
-}>(), {
-	defaultLimit: DEFAULT_CATEGORY_LIMIT
-});
+const props = withDefaults(
+	defineProps<{
+		defaultLimit?: number;
+	}>(),
+	{
+		defaultLimit: DEFAULT_CATEGORY_LIMIT,
+	}
+);
 const emit = defineEmits<{
-	created: [category: Category]
+	created: [category: Category];
 }>();
 
 const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
@@ -67,27 +80,27 @@ const submitHandler = async () => {
 		try {
 			const { limit, ...data } = formState.value;
 			loading.value = true;
-			const category = await CategoryService.createCategory({ ...data, limit: cf.value(limit, undefined, 'reverse') });
+			const category = await CategoryService.createCategory({
+				...data,
+				limit: cf.value(limit, undefined, 'reverse'),
+			});
 			if (category) {
 				emit('created', category);
 				form.value?.reset();
 				formState.value.limit = Math.floor(cf.value(props.defaultLimit) / 100) * 100;
 				showMessage(t('category_created'));
-			}
-			else {
+			} else {
 				throw new Error('category_undefined');
 			}
 		} catch (e) {
 			if (typeof e === 'string') {
 				showMessage(te(e) ? t(e) : e, 'red-darken-3');
-			}
-			else {
+			} else {
 				showMessage('error_create_category', 'red-darken-3');
 			}
-		}
-		finally {
+		} finally {
 			loading.value = false;
 		}
 	}
-}
+};
 </script>

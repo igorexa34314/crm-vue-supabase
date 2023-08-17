@@ -9,7 +9,7 @@
 		<v-card-actions class="justify-center text-subtitle-1">
 			<p class="text-center text-primary">
 				{{ t('have_account') + '? ' }}
-				<router-link to="/login" tag="a">{{ t('login') + '!' }}</router-link>
+				<router-link to="/login">{{ t('login') + '!' }}</router-link>
 			</p>
 		</v-card-actions>
 	</v-card>
@@ -33,18 +33,17 @@ const { showMessage } = useSnackbarStore();
 const onRegisterSuccess = async () => {
 	showMessage(t('sign_in_success'));
 	push('/');
-}
+};
 const onRegisterError = async (e: unknown) => {
 	if (typeof e === 'string') {
 		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e, 'red-darken-3');
-	}
-	else {
+	} else {
 		showMessage(t('error_register'), 'red-darken-3');
 	}
-}
+};
 </script>
 
 <route lang="yaml">
 meta:
-  layout: empty
+   layout: empty
 </route>

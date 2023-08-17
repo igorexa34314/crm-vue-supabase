@@ -63,11 +63,11 @@ export class RecordService {
 			const {
 				error,
 				data: records,
-				count
+				count,
 			} = await supabase
 				.from('records')
 				.select(`id, description, amount, type, created_at, category:categories (id, title, limit)`, {
-					count: 'exact'
+					count: 'exact',
 				})
 				.eq('user_id', uid)
 				.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
@@ -137,14 +137,14 @@ export class RecordService {
 						if (error) throw error;
 						if (data?.path) {
 							const {
-								data: { publicUrl }
+								data: { publicUrl },
 							} = supabase.storage.from('record_details').getPublicUrl(data?.path);
 							const { error } = await supabase.from('record_details').insert({
 								record_id: recordId,
 								public_url: publicUrl,
 								fullname: file.name,
 								size: file.size,
-								fullpath: data.path
+								fullpath: data.path,
 							});
 							if (error) throw error;
 							return { id: fileId, fullpath: data.path, publicUrl };

@@ -6,15 +6,14 @@ import generatedRoutes from '~pages';
 const history = import.meta.env.SSR
 	? createMemoryHistory(import.meta.env.BASE_URL)
 	: createWebHistory(import.meta.env.BASE_URL);
+
 const routes = setupLayouts(generatedRoutes);
 
 const router = createRouter({
 	history,
-	routes
+	routes,
 });
 
-router.beforeEach(async (to, from, next) => {
-	await checkAuth(to, from, next);
-});
+router.beforeEach(checkAuth);
 
 export default router;

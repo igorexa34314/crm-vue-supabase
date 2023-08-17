@@ -5,7 +5,7 @@ export const AppTitle = import.meta.env.VITE_APP_TITLE || 'CRM VUE';
 
 export const vuetifyThemeNames = {
 	dark: 'customDark',
-	light: 'customLight'
+	light: 'customLight',
 } as const;
 
 export const availableLocales = ['ru-RU', 'uk-UA', 'en-US'] as const;

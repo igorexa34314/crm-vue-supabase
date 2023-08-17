@@ -20,6 +20,6 @@ export const useSnackbarStore = defineStore('snackbar', () => {
 
 	return {
 		snackbar,
-		showMessage
+		showMessage,
 	};
 });

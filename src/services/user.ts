@@ -28,7 +28,7 @@ export class UserService {
 					event: '*',
 					schema: 'public',
 					table: 'profiles',
-					filter: `id=eq.${uid}`
+					filter: `id=eq.${uid}`,
 				},
 				payload => {
 					if (Object.keys(payload.new).length) {
@@ -77,7 +77,7 @@ export class UserService {
 				if (error) throw error;
 				if (data.path) {
 					const {
-						data: { publicUrl }
+						data: { publicUrl },
 					} = supabase.storage.from('avatars').getPublicUrl(data.path);
 					await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', uid);
 				}

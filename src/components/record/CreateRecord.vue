@@ -1,24 +1,58 @@
 <template>
-	<v-form ref="form" v-if="formState.category_id" @submit.prevent="submitHandler" class="record-form mt-8"
+	<v-form
+		ref="form"
+		v-if="formState.category_id"
+		@submit.prevent="submitHandler"
+		class="record-form mt-8"
 		:class="xs ? 'px-2' : 'px-4'">
-		<v-select v-model="formState.category_id" :items="categories" item-title="title" item-value="id"
-			:label="t('select_category')" variant="underlined" class="text-input" />
+		<v-select
+			v-model="formState.category_id"
+			:items="categories"
+			item-title="title"
+			item-value="id"
+			:label="t('select_category')"
+			variant="underlined"
+			class="text-input" />
 
 		<v-radio-group v-model="formState.type" class="mt-3 text-input">
-			<v-radio v-for="tp in ['income', 'outcome']" :key="tp" :label="t(tp)" :value="tp" density="comfortable"
+			<v-radio
+				v-for="tp in ['income', 'outcome']"
+				:key="tp"
+				:label="t(tp)"
+				:value="tp"
+				density="comfortable"
 				color="radio" />
 		</v-radio-group>
 
-		<LocalizedInput v-model.number="formState.amount" :rules="validations.amount" type="number" variant="underlined"
-			:label="t('amount') + ` (${info?.currency})`" class="mt-2" required />
+		<LocalizedInput
+			v-model.number="formState.amount"
+			:rules="validations.amount"
+			type="number"
+			variant="underlined"
+			:label="t('amount') + ` (${info?.currency})`"
+			class="mt-2"
+			required />
 
-		<LocalizedTextarea v-model="formState.description" :rules="validations.description" variant="underlined"
-			:label="t('description')" class="mt-2" rows="1" auto-grow />
+		<LocalizedTextarea
+			v-model="formState.description"
+			:rules="validations.description"
+			variant="underlined"
+			:label="t('description')"
+			class="mt-2"
+			rows="1"
+			auto-grow />
 
 		<div class="mt-4">
 			<div class="mb-3 text-subtitle">{{ t('record_details') }}</div>
-			<LocalizedFileInput v-model="formState.details" :label="t('upload_details')" :rules="validations.details"
-				variant="outlined" :placeholder="t('upload_details')" density="compact" style="max-width: 550px;" multiple />
+			<LocalizedFileInput
+				v-model="formState.details"
+				:label="t('upload_details')"
+				:rules="validations.details"
+				variant="outlined"
+				:placeholder="t('upload_details')"
+				density="compact"
+				style="max-width: 550px"
+				multiple />
 		</div>
 
 		<v-btn type="submit" color="success" :loading="loading" :class="xs ? 'mt-4' : 'mt-7'">
@@ -45,19 +79,22 @@ import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_CURRENCY, DEFAULT_RECORD_AMOUNT } from '@/globals';
 
-const props = withDefaults(defineProps<{
-	categories: Category[],
-	defaultAmount?: number,
-	defaultType?: Record['type'],
-	loading?: boolean
-}>(), {
-	defaultAmount: DEFAULT_RECORD_AMOUNT,
-	defaultType: 'outcome',
-	loading: false
-});
+const props = withDefaults(
+	defineProps<{
+		categories: Category[];
+		defaultAmount?: number;
+		defaultType?: Record['type'];
+		loading?: boolean;
+	}>(),
+	{
+		defaultAmount: DEFAULT_RECORD_AMOUNT,
+		defaultType: 'outcome',
+		loading: false,
+	}
+);
 
 const emit = defineEmits<{
-	createRecord: [data: Omit<RecordForm, 'date'>]
+	createRecord: [data: Omit<RecordForm, 'date'>];
 }>();
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n({ inheritLocale: true, useScope: 'global' });
@@ -74,7 +111,7 @@ const formState = ref<RecordForm>({
 	description: '',
 	type: 'income',
 	details: [],
-	category_id: props.categories[0].id
+	category_id: props.categories[0].id,
 });
 
 watchEffect(() => {
@@ -89,17 +126,23 @@ const submitHandler = async () => {
 	const valid = (await form.value?.validate())?.valid;
 	if (valid && canCreateRecord.value) {
 		const { amount, ...data } = formState.value;
-		emit('createRecord', { ...data, amount: cf.value(amount, undefined, 'reverse') })
+		emit('createRecord', { ...data, amount: cf.value(amount, undefined, 'reverse') });
 		resetForm();
+	} else if (!canCreateRecord.value) {
+		showMessage(
+			t('lack_of_amount') +
+				` (${n(
+					formState.value.amount - cf.value(info.value!.bill),
+					'currency',
+					info.value?.currency || DEFAULT_CURRENCY
+				)})`,
+			'red-darken-3'
+		);
 	}
-	else if (!canCreateRecord.value) {
-		showMessage(t('lack_of_amount') +
-			` (${n(formState.value.amount - cf.value(info.value!.bill), 'currency', info.value?.currency || DEFAULT_CURRENCY)})`, 'red-darken-3');
-	}
-}
+};
 const resetForm = () => {
 	formState.value.description = '';
 	formState.value.amount = Math.round(cf.value(props.defaultAmount) / 10) * 10;
 	formState.value.details = [];
-}
+};
 </script>

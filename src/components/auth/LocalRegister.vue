@@ -1,19 +1,47 @@
 <template>
 	<v-form class="card-content" ref="form" @submit.prevent="submitRegister">
-		<LocalizedInput v-model="formState.email" :rules="validations.email" variant="underlined" :label="t('email')"
+		<LocalizedInput
+			v-model="formState.email"
+			:rules="validations.email"
+			variant="underlined"
+			:label="t('email')"
 			required />
 
-		<PassField v-model="formState.password" :rules="validations.password" variant="underlined" :label="t('password')"
-			class="mt-5" validate-on="lazy blur" repeater required />
+		<PassField
+			v-model="formState.password"
+			:rules="validations.password"
+			variant="underlined"
+			:label="t('password')"
+			class="mt-5"
+			validate-on="lazy blur"
+			repeater
+			required />
 
-		<LocalizedInput v-model="formState.username" :rules="validations.username" variant="underlined" :counter="64"
-			:label="t('user.username')" class="mt-5" validate-on="lazy blur" required />
+		<LocalizedInput
+			v-model="formState.username"
+			:rules="validations.username"
+			variant="underlined"
+			:counter="64"
+			:label="t('user.username')"
+			class="mt-5"
+			validate-on="lazy blur"
+			required />
 
-		<v-checkbox v-model="formState.agree" :rules="validations.agree" class="mt-5" validate-on="lazy blur"
-			:density="xs ? 'compact' : 'default'" required #label>
-			<p>{{ t('agree_with').charAt(0).toUpperCase() + t('agree_with').slice(1) + ' ' }}<a target="_blank"
-					href="https://old.uinp.gov.ua/publication/derzhavnii-gimn-ukraini">{{ t('app_rules') }}</a>
-			</p>
+		<v-checkbox
+			v-model="formState.agree"
+			:rules="validations.agree"
+			class="mt-5"
+			validate-on="lazy blur"
+			:density="xs ? 'compact' : 'default'"
+			required>
+			<template #label>
+				<p>
+					{{ t('agree_with').charAt(0).toUpperCase() + t('agree_with').slice(1) + ' '
+					}}<a target="_blank" href="https://old.uinp.gov.ua/publication/derzhavnii-gimn-ukraini">{{
+						t('app_rules')
+					}}</a>
+				</p>
+			</template>
 		</v-checkbox>
 
 		<v-btn type="submit" v-bind="{ appendIcon: mdiSend, loading }" color="success" width="100%" class="mt-4 mt-sm-7">
@@ -34,8 +62,8 @@ import { VForm } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
 
 const emit = defineEmits<{
-	success: [],
-	error: [err: unknown],
+	success: [];
+	error: [err: unknown];
 }>();
 
 const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
@@ -60,10 +88,9 @@ const submitRegister = async () => {
 			emit('success');
 		} catch (e) {
 			emit('error', e);
-		}
-		finally {
+		} finally {
 			loading.value = false;
 		}
 	}
-}
+};
 </script>

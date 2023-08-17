@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { Tables } from '@/database.types';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { DEFAULT_LOCALE, DEFAULT_CURRENCY, LOCALE_KEY } from '@/globals';
@@ -22,7 +22,7 @@ export const useUserStore = defineStore('info', () => {
 	const setLocale = () => {
 		(info.value as Partial<UserInfo>) = {
 			...info.value,
-			locale: JSON.parse(localStorage.getItem(LOCALE_KEY) || 'null') || DEFAULT_LOCALE
+			locale: JSON.parse(localStorage.getItem(LOCALE_KEY) || 'null') || DEFAULT_LOCALE,
 		};
 	};
 
@@ -53,6 +53,6 @@ export const useUserStore = defineStore('info', () => {
 		setInfo,
 		$reset,
 		$subscribeLocale,
-		setLocale
+		setLocale,
 	};
 });

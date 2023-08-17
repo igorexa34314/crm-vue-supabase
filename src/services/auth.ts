@@ -31,9 +31,9 @@ export class AuthService {
 				options: {
 					data: {
 						username,
-						bill: DEFAULT_BILL
-					}
-				}
+						bill: DEFAULT_BILL,
+					},
+				},
 			});
 			if (error) throw error;
 		} catch (e) {
@@ -56,7 +56,7 @@ export class AuthService {
 	static async fetchUserId() {
 		const {
 			data: { user },
-			error
+			error,
 		} = await supabase.auth.getUser();
 		if (error || !user || !user.id) {
 			throw new Error('User unauthenticated');
@@ -71,7 +71,7 @@ export class AuthService {
 				{
 					emailRedirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}${
 						import.meta.env.BASE_URL
-					}profile?message=password_changed`
+					}profile?message=password_changed`,
 				}
 			);
 			if (error) throw error;
@@ -85,7 +85,7 @@ export class AuthService {
 		try {
 			const { error, data } = await supabase.rpc('change_user_password', {
 				current_password: oldPass,
-				new_password: newPass
+				new_password: newPass,
 			});
 			if (error) throw new Error('invalid_password');
 			return data;
@@ -112,8 +112,8 @@ export class AuthService {
 				redirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}${
 					import.meta.env.BASE_URL
 				}profile?message=login_success`,
-				...options
-			}
+				...options,
+			},
 		});
 	}
 
