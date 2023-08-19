@@ -6,6 +6,7 @@ import VueRouter from 'unplugin-vue-router/vite';
 import Layouts from 'vite-plugin-vue-layouts';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
@@ -37,6 +38,7 @@ export default ({ mode }) => {
 				defaultLayout: 'main',
 			}),
 			vuetify(),
+			visualizer({ filename: 'bundle-stats.html' }),
 		],
 	});
 };

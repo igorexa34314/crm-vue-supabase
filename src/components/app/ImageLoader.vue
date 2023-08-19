@@ -15,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+import { VProgressCircular } from 'vuetify/components';
 import { mdiClose } from '@mdi/js';
 
 const props = withDefaults(

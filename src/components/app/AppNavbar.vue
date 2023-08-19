@@ -50,6 +50,8 @@
 </template>
 
 <script setup lang="ts">
+import { VAppBar, VAppBarNavIcon, VAppBarTitle } from 'vuetify/components/VAppBar';
+import { VMenu } from 'vuetify/components';
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader';
 import avatarPlaceholder from '@/assets/img/avatar-placeholder.jpg';
 import DarkmodeToggle from '@/components/app/DarkmodeToggle.vue';

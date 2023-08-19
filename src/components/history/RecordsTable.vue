@@ -75,6 +75,7 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
+import { VTable, VTooltip, VHover } from 'vuetify/components';
 import { RecordWithCategory, SortFields, SortType } from '@/services/record';
 
 const props = withDefaults(

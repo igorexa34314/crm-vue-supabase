@@ -33,6 +33,7 @@ import { UserService } from '@/services/user';
 import { UserInfo } from '@/stores/user';
 import { useRoute, useRouter } from 'vue-router/auto';
 import { useDisplay } from 'vuetify';
+import { VTabs, VTab, VWindow, VWindowItem } from 'vuetify/components';
 
 useMeta({ title: 'pageTitles.profile' });
 

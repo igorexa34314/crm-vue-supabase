@@ -48,6 +48,7 @@ import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useChart } from '@/composables/useChart';
 import { useDisplay } from 'vuetify';
+import { VPagination } from 'vuetify/components';
 import { onUnmounted, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router/auto';
 import { useAsyncState } from '@vueuse/core';

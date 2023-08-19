@@ -56,6 +56,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { RecordDetail } from '@/services/record';
 import { RouteNamedMap } from 'vue-router/auto/routes';
+import { VBreadcrumbs } from 'vuetify/components';
 
 interface Breadcrumbs {
 	title: string;

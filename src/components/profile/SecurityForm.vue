@@ -4,6 +4,7 @@
 			class="mb-5" required /> -->
 
 		<h4 class="text-subtitle-1 text-sm-h5 mb-3">{{ t('change_password') }}</h4>
+
 		<PassField
 			v-model="formState.oldPass"
 			:rules="validations.password"

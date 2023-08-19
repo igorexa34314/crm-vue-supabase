@@ -68,6 +68,7 @@ import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
+import { VProgressLinear, VTooltip } from 'vuetify/components';
 import { DEFAULT_BILL } from '@/globals';
 
 useMeta({ title: 'pageTitles.plan' });

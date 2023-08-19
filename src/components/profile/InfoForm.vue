@@ -125,13 +125,15 @@ import { useI18n } from 'vue-i18n';
 import { useAsyncState } from '@vueuse/core';
 import { LocaleService } from '@/services/locale';
 import { user as validations } from '@/utils/validations';
-import { VForm } from 'vuetify/components';
+import { VForm, VSelect, VRadio, VRadioGroup } from 'vuetify/components';
 import { CurrencyRates } from '@/services/currency';
 import { currencyKey } from '@/injection-keys';
 import { useDisplay } from 'vuetify';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/globals';
-import { isEqual, omitBy, isNil } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import omitBy from 'lodash/omitBy';
+import isNil from 'lodash/isNil';
 
 const props = withDefaults(
 	defineProps<{

@@ -8,11 +8,11 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { VTextField } from 'vuetify/components';
+import { VFileInput } from 'vuetify/components';
 
 const props = withDefaults(
 	defineProps<{
-		variant?: VTextField['variant'];
+		variant?: VFileInput['variant'];
 	}>(),
 	{
 		variant: 'underlined',

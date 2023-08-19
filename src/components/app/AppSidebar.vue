@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import { VNavigationDrawer } from 'vuetify/components';
 import { useI18n } from 'vue-i18n';
 import { useVModel } from '@vueuse/core';
 

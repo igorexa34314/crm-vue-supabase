@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+import { VSwitch } from 'vuetify/components';
 import { mdiWeatherNight, mdiWeatherSunny } from '@mdi/js';
 import { computed } from 'vue';
 import { useDarkModeStore } from '@/stores/darkMode';

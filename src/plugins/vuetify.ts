@@ -2,18 +2,23 @@
 import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
-import * as components from 'vuetify/components';
-import * as directives from 'vuetify/directives';
-import { vuetifyThemeNames, DEFAULT_THEME } from '@/globals';
 
+// Components
+import { VBtn, VImg, VIcon, VDivider } from 'vuetify/components';
+import * as VGrid from 'vuetify/components/VGrid';
+import * as VList from 'vuetify/components/VList';
+import * as VCard from 'vuetify/components/VCard';
+// import * as directives from 'vuetify/directives';
+
+import { vuetifyThemeNames, DEFAULT_THEME } from '@/globals';
 // I18n
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
 import { I18n, useI18n } from 'vue-i18n';
 
 export default (i18n: I18n) => {
 	return createVuetify({
-		components,
-		directives,
+		components: { ...VList, ...VCard, ...VGrid, VBtn, VImg, VIcon, VDivider },
+		directives: {},
 		locale: {
 			adapter: createVueI18nAdapter({ i18n, useI18n }),
 		},

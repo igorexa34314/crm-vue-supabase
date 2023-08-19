@@ -14,7 +14,7 @@
 		"preview": "vite preview",
 		"supabase:generate": "supabase gen types typescript --project-id abcdefghijklmnopqrst > database.types.ts",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-		"format": "prettier --write src/"
+		"format": "prettier --write --cache src/"
 	},
 	"dependencies": {
 		"@mdi/js": "^7.2.96",
@@ -47,6 +47,7 @@
 		"eslint": "^8.47.0",
 		"eslint-plugin-vue": "^9.17.0",
 		"prettier": "^3.0.2",
+		"rollup-plugin-visualizer": "^5.9.2",
 		"sass": "^1.65.1",
 		"supabase": "^1.86.1",
 		"typescript": "^5.1.6",

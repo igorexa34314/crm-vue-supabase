@@ -31,6 +31,7 @@ import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 import { Currency, CurrencyRates } from '@/services/currency';
 import { useDisplay } from 'vuetify';
+import { VTable } from 'vuetify/components';
 
 const props = withDefaults(
 	defineProps<{

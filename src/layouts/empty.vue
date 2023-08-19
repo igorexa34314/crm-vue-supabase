@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+import { VLayout } from 'vuetify/components';
 import { computed, onUnmounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router/auto';
 import { useUserStore } from '@/stores/user';
