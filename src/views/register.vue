@@ -34,11 +34,15 @@ const { showMessage } = useSnackbarStore();
 
 const onRegisterSuccess = async () => {
 	showMessage(t('sign_in_success'));
-	push('/');
+	push('/login');
 };
 const onRegisterError = async (e: unknown) => {
 	if (typeof e === 'string') {
-		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e, 'red-darken-3');
+		if (e.includes('profiles_username_key')) {
+			showMessage(t(`warnings.username_exists`));
+		} else {
+			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64), 'red-darken-3');
+		}
 	} else {
 		showMessage(t('error_register'), 'red-darken-3');
 	}

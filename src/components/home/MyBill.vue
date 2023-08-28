@@ -38,7 +38,7 @@ const currencies = computed(() => Object.keys(props.rates || {}) as CurrencyRate
 const info = computed(() => infoStore.info);
 
 const getCurrency = computed(() => (currency: CurrencyRates) => {
-	const base = info.value?.bill ? info.value.bill / props.rates[DEFAULT_CURRENCY] : 0;
+	const base = info.value ? info.value.bill / props.rates[DEFAULT_CURRENCY] : 0;
 	return Math.floor(base * props.rates[currency]);
 });
 </script>

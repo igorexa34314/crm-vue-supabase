@@ -34,7 +34,7 @@ export interface Database {
 					{
 						foreignKeyName: 'categories_user_id_fkey';
 						columns: ['user_id'];
-						referencedRelation: 'users';
+						referencedRelation: 'profiles';
 						referencedColumns: ['id'];
 					},
 				];
@@ -44,65 +44,65 @@ export interface Database {
 					code: string;
 					name: string;
 					native_name: string;
-					translations: Json | null;
+					translations: Json;
 					updated_at: string | null;
 				};
 				Insert: {
 					code: string;
 					name: string;
 					native_name: string;
-					translations?: Json | null;
+					translations?: Json;
 					updated_at?: string | null;
 				};
 				Update: {
 					code?: string;
 					name?: string;
 					native_name?: string;
-					translations?: Json | null;
+					translations?: Json;
 					updated_at?: string | null;
 				};
 				Relationships: [];
 			};
 			profiles: {
 				Row: {
-					avatar_url: string | null;
+					avatar_url: string;
 					bill: number;
-					bio: string | null;
+					bio: string;
 					birthday_date: string | null;
 					currency: Database['public']['Enums']['currencies'];
-					first_name: string | null;
+					first_name: string;
 					gender: Database['public']['Enums']['genders'];
 					id: string;
-					last_name: string | null;
-					locale: string | null;
+					last_name: string;
+					locale: string;
 					updated_at: string | null;
 					username: string;
 				};
 				Insert: {
-					avatar_url?: string | null;
+					avatar_url?: string;
 					bill?: number;
-					bio?: string | null;
+					bio?: string;
 					birthday_date?: string | null;
 					currency?: Database['public']['Enums']['currencies'];
-					first_name?: string | null;
+					first_name?: string;
 					gender?: Database['public']['Enums']['genders'];
 					id: string;
-					last_name?: string | null;
-					locale?: string | null;
+					last_name?: string;
+					locale?: string;
 					updated_at?: string | null;
 					username: string;
 				};
 				Update: {
-					avatar_url?: string | null;
+					avatar_url?: string;
 					bill?: number;
-					bio?: string | null;
+					bio?: string;
 					birthday_date?: string | null;
 					currency?: Database['public']['Enums']['currencies'];
-					first_name?: string | null;
+					first_name?: string;
 					gender?: Database['public']['Enums']['genders'];
 					id?: string;
-					last_name?: string | null;
-					locale?: string | null;
+					last_name?: string;
+					locale?: string;
 					updated_at?: string | null;
 					username?: string;
 				};
@@ -127,16 +127,16 @@ export interface Database {
 					fullname: string;
 					fullpath: string;
 					id: string;
-					public_url: string | null;
+					public_url: string;
 					record_id: string;
 					size: number;
 				};
 				Insert: {
 					created_at?: string;
-					fullname: string;
-					fullpath?: string;
+					fullname?: string;
+					fullpath: string;
 					id?: string;
-					public_url?: string | null;
+					public_url?: string;
 					record_id: string;
 					size: number;
 				};
@@ -145,7 +145,7 @@ export interface Database {
 					fullname?: string;
 					fullpath?: string;
 					id?: string;
-					public_url?: string | null;
+					public_url?: string;
 					record_id?: string;
 					size?: number;
 				};
@@ -172,7 +172,7 @@ export interface Database {
 					amount: number;
 					category_id: string;
 					created_at?: string;
-					description: string;
+					description?: string;
 					id?: string;
 					type: Database['public']['Enums']['record_type'];
 					user_id?: string;
@@ -196,7 +196,7 @@ export interface Database {
 					{
 						foreignKeyName: 'records_user_id_fkey';
 						columns: ['user_id'];
-						referencedRelation: 'users';
+						referencedRelation: 'profiles';
 						referencedColumns: ['id'];
 					},
 				];
@@ -206,10 +206,8 @@ export interface Database {
 			[_ in never]: never;
 		};
 		Functions: {
-			calculate_category_spend: {
-				Args: {
-					uid?: string;
-				};
+			calculate_category_spend_for_auth_user: {
+				Args: Record<PropertyKey, never>;
 				Returns: {
 					id: string;
 					title: string;

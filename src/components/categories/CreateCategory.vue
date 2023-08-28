@@ -94,7 +94,7 @@ const submitHandler = async () => {
 			}
 		} catch (e) {
 			if (typeof e === 'string') {
-				showMessage(te(e) ? t(e) : e, 'red-darken-3');
+				showMessage(te(e) ? t(e) : e.substring(0, 64), 'red-darken-3');
 			} else {
 				showMessage('error_create_category', 'red-darken-3');
 			}

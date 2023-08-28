@@ -47,7 +47,7 @@
 				<v-card variant="flat" :max-width="smAndDown ? 200 : 250" class="mb-5" elevation="4">
 					<v-img
 						:lazy-src="avatarPlaceholder"
-						:src="info?.avatar_url || avatarPlaceholder"
+						:src="info.avatar_url || avatarPlaceholder"
 						alt="Ваш аватар"
 						cover
 						eager>
@@ -132,8 +132,6 @@ import { useDisplay } from 'vuetify';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/globals';
 import isEqual from 'lodash/isEqual';
-import omitBy from 'lodash/omitBy';
-import isNil from 'lodash/isNil';
 
 const props = withDefaults(
 	defineProps<{
@@ -155,9 +153,7 @@ const infoStore = useUserStore();
 const { currency } = inject(currencyKey)!;
 
 const currencies = computed(() => {
-	const currencyNames = (
-		currency.value?.rates ? Object.keys(currency.value.rates) : [DEFAULT_CURRENCY]
-	) as CurrencyRates[];
+	const currencyNames = (currency.value ? Object.keys(currency.value.rates) : [DEFAULT_CURRENCY]) as CurrencyRates[];
 	return currencyNames.map(c => ({ title: t(`currencies.${c}`) + ` (${c})`, value: c }));
 });
 
@@ -201,7 +197,7 @@ const genderItems = computed<{ title: string; value: UserInfo['gender'] }[]>(() 
 watchEffect(() => {
 	if (info.value && Object.keys(info.value).length) {
 		const { bill, id, avatar_url, ...userdata } = info.value;
-		formState.value = { ...formState.value, ...omitBy(userdata, isNil) };
+		formState.value = { ...formState.value, ...userdata };
 	}
 });
 

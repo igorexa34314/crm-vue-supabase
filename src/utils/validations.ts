@@ -24,9 +24,9 @@ export const user = {
 		(v: string) => !!v || 'messages.enter_pass',
 		(v: string) => (v && v.length >= 6 && v.length <= 32) || 'rules.pass',
 	],
-	repeater: (pass: string) => [
+	repeater: (original: string) => [
 		(v: string) => !!v || 'messages.repeat_pass',
-		(v: string) => (v && v === pass) || 'rules.repeater',
+		(v: string) => (v && v === original) || 'rules.repeater',
 	],
 	agree: [(v: boolean) => !!v || 'rules.agree'],
 	file: [(val: File[]) => val.every(v => v.size <= 1024 * 1024 * 2) || 'rules.file'],

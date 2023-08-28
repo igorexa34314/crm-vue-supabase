@@ -8,9 +8,13 @@
 	"warnings": {
 		"logout": "You have successfully logged out",
 		"login": "Need to sign in",
-		"needToLogout": "You need to logout before"
+		"needToLogout": "You need to logout before",
+		"email_not_confirmed": "You should confirm your email before",
+		"invalid_login_credentials": "Invalid email or password",
+		"username_exists": "This username already exists",
+		"email_rate_limit_exceeded": "Email rate limit exceeded"
 	},
-	"sign_in_success": "You have successfully signed up",
+	"sign_in_success": "You have successfully signed up. Please confirm your email",
 	"no_records": "There are no records yet",
 	"limit": "Limit",
 	"create": "Create",
@@ -30,7 +34,7 @@
 	"home_bookkeeping": "Home bookkeeping",
 	"login_success": "You have successfully logged in",
 	"no_account": "Don't have an account",
-	"login_error": "Invalid email or password",
+	"login_error": "Error when trying to log in",
 	"currency_account": "Currency account",
 	"category_created": "Category successfully created",
 	"error_create_category": "Error when creating category",

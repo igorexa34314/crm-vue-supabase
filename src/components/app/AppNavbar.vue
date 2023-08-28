@@ -72,7 +72,7 @@ const { xs, smAndDown } = useDisplay();
 const { push } = useRouter();
 const infoStore = useUserStore();
 
-const username = computed(() => (infoStore.info ? `${infoStore.info?.username}` : t('guest')));
+const username = computed(() => (infoStore.info ? `${infoStore.info.username}` : t('guest')));
 const photoURL = computed(() => infoStore.info?.avatar_url);
 
 const date = ref(new Date());

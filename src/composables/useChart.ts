@@ -1,9 +1,11 @@
 import { computed, unref, MaybeRef } from 'vue';
 import { ChartData, ChartOptions, ChartType } from 'chart.js/dist/types';
-import { CategoryScale, Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, Title, Tooltip, Legend, ArcElement } from 'chart.js/auto';
 import { useI18n } from 'vue-i18n';
 import { useTheme } from 'vuetify';
 import randomColor from 'randomcolor';
+
+ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 
 export const useChart = <T extends ChartType = 'pie'>(
 	inputData: MaybeRef<
@@ -14,8 +16,6 @@ export const useChart = <T extends ChartType = 'pie'>(
 		| undefined
 	>
 ) => {
-	ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
-
 	const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
 	const theme = useTheme();
 

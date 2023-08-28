@@ -38,7 +38,10 @@ export default ({ mode }) => {
 				defaultLayout: 'main',
 			}),
 			vuetify(),
-			visualizer({ filename: 'bundle-stats.html' }),
+			{
+				...visualizer({ filename: 'bundle-stats.html' }),
+				apply: () => !!process.env.ROLLUP_ANALYZE,
+			},
 		],
 	});
 };

@@ -85,7 +85,7 @@ const bill = computed(() => infoStore.info?.bill || DEFAULT_BILL);
 const { state: catStats, isLoading } = useAsyncState(CategoryService.fetchCategoriesSpendStats, [], {
 	onError: e => {
 		const { showMessage } = useSnackbarStore();
-		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : (e as string), 'red-darken-3');
+		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
 	},
 });
 </script>

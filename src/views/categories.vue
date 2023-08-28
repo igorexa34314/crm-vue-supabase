@@ -44,10 +44,7 @@ const { smAndDown, xs } = useDisplay();
 const { state: categories, isLoading } = useAsyncState(CategoryService.fetchCategories, [], {
 	onError: e => {
 		const { showMessage } = useSnackbarStore();
-		showMessage(
-			te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : t('error_load_categories'),
-			'red-darken-3'
-		);
+		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_load_categories'), 'red-darken-3');
 	},
 });
 

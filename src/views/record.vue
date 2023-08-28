@@ -38,10 +38,7 @@ const info = computed(() => infoStore.info);
 
 const { state: categories, isLoading: categoriesLoading } = useAsyncState(CategoryService.fetchCategories, [], {
 	onError: e => {
-		showMessage(
-			te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : t('error_load_categories'),
-			'red-darken-3'
-		);
+		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_load_categories'), 'red-darken-3');
 	},
 });
 
@@ -59,7 +56,7 @@ const create = async (formData: RecordForm) => {
 		showMessage(t('createRecord_success'));
 	} catch (e) {
 		if (typeof e === 'string') {
-			showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e, 'red-darken-3');
+			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64), 'red-darken-3');
 		} else {
 			showMessage(t('error_create_record'), 'red-darken-3');
 		}

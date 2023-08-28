@@ -14,39 +14,27 @@ let user: User | undefined;
 
 export class AuthService {
 	static async login({ email, password }: UserCredentials) {
-		try {
-			const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-			if (error) throw error;
-			return data.user;
-		} catch (e) {
-			errorHandler(e);
-		}
+		const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+		if (error) return errorHandler(error);
+		return data.user;
 	}
 
 	static async register({ email, password, username }: UserCredentials) {
-		try {
-			const { error } = await supabase.auth.signUp({
-				email,
-				password,
-				options: {
-					data: {
-						username,
-						bill: DEFAULT_BILL,
-					},
+		const { error } = await supabase.auth.signUp({
+			email,
+			password,
+			options: {
+				data: {
+					username,
+					bill: DEFAULT_BILL,
 				},
-			});
-			if (error) throw error;
-		} catch (e) {
-			errorHandler(e);
-		}
+			},
+		});
+		if (error) return errorHandler(error);
 	}
 
 	static async getUserId() {
 		return user?.id ?? (await this.fetchUserId());
-	}
-
-	static async isUserVerified() {
-		return !!user?.email_confirmed_at;
 	}
 
 	static setUser(newUser: User) {
@@ -65,42 +53,26 @@ export class AuthService {
 	}
 
 	static async changeUserEmail(newEmail: string) {
-		try {
-			const { data, error } = await supabase.auth.updateUser(
-				{ email: newEmail },
-				{
-					emailRedirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}${
-						import.meta.env.BASE_URL
-					}profile?message=password_changed`,
-				}
-			);
-			if (error) throw error;
-			return data.user;
-		} catch (e) {
-			errorHandler(e);
-		}
+		const { data, error } = await supabase.auth.updateUser(
+			{ email: newEmail },
+			{
+				emailRedirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}${
+					import.meta.env.BASE_URL
+				}profile?message=password_changed`,
+			}
+		);
+		if (error) return errorHandler(error);
+		return data.user;
 	}
 
 	static async changeUserPassword(oldPass: string, newPass: string) {
-		try {
-			const { error, data } = await supabase.rpc('change_user_password', {
-				current_password: oldPass,
-				new_password: newPass,
-			});
-			if (error) throw new Error('invalid_password');
-			return data;
-		} catch (e) {
-			errorHandler(e);
-		}
+		const { error, data } = await supabase.rpc('change_user_password', {
+			current_password: oldPass,
+			new_password: newPass,
+		});
+		if (error) throw new Error('invalid_password');
+		return data;
 	}
-
-	// static async isEmailVerified() {
-	// 	const user = await getCurrentUser();
-	// 	if (!user || !user.uid) {
-	// 		throw new Error('User unauthenticated');
-	// 	}
-	// 	return user.emailVerified;
-	// }
 
 	private static async signInWithOAuthProvider(
 		provider: (typeof supportedOAuthProviders)[number],
@@ -128,31 +100,19 @@ export class AuthService {
 	}
 
 	static async signInWithFacebook() {
-		try {
-			const { data, error } = await this.signInWithOAuthProvider('facebook');
-			if (error) throw error;
-			return data.url;
-		} catch (err) {
-			errorHandler(err);
-		}
+		const { data, error } = await this.signInWithOAuthProvider('facebook');
+		if (error) return errorHandler(error);
+		return data.url;
 	}
 
 	static async signInWithGithub() {
-		try {
-			const { data, error } = await this.signInWithOAuthProvider('github');
-			if (error) throw error;
-			return data.url;
-		} catch (err) {
-			errorHandler(err);
-		}
+		const { data, error } = await this.signInWithOAuthProvider('github');
+		if (error) return errorHandler(error);
+		return data.url;
 	}
 
 	static async logout() {
-		try {
-			const { error } = await supabase.auth.signOut();
-			if (error) throw error;
-		} catch (err) {
-			errorHandler(err);
-		}
+		const { error } = await supabase.auth.signOut();
+		if (error) return errorHandler(error);
 	}
 }

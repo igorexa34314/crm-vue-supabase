@@ -60,10 +60,7 @@ const {
 	execute: refresh,
 } = useAsyncState(CurrencyService.fetchCurrency, null, {
 	onError: e => {
-		showMessage(
-			te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : t('error_loading_currency'),
-			'red-darken-3'
-		);
+		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_loading_currency'), 'red-darken-3');
 	},
 });
 
@@ -77,7 +74,7 @@ onMounted(async () => {
 			userInfoChannel = await UserService.fetchAndSubscribeInfo();
 		}
 	} catch (e) {
-		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : (e as string), 'red-darken-3');
+		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
 	} finally {
 		loading.value = false;
 	}
@@ -98,7 +95,7 @@ const logout = async () => {
 			},
 		});
 	} catch (e) {
-		showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : (e as string), 'red-darken-3');
+		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
 	}
 };
 </script>

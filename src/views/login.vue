@@ -48,6 +48,6 @@ const onLoginSuccess = () => {
 	push('/');
 };
 const onLoginError = (e: unknown) => {
-	showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : t('login_error'), 'red-darken-3');
+	showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('login_error'), 'red-darken-3');
 };
 </script>

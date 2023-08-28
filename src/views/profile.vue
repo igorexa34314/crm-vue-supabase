@@ -60,7 +60,7 @@ const updateInfo = async ({ avatar, ...userdata }: Omit<UserInfo, 'bill' | 'emai
 		showMessage(t('updateProfile_message'));
 	} catch (e) {
 		if (typeof e === 'string') {
-			showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e, 'red-darken-3');
+			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64), 'red-darken-3');
 		} else {
 			showMessage(t('error_update_profile'), 'red-darken-3');
 		}
@@ -84,7 +84,7 @@ const updateCreds = async ({
 		// }
 	} catch (e) {
 		if (typeof e === 'string') {
-			showMessage(te(`warning.messages.${e}`) ? t(`warning.messages.${e}`) : e, 'red-darken-3');
+			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64), 'red-darken-3');
 		} else {
 			showMessage(t('error_update_profile'), 'red-darken-3');
 		}

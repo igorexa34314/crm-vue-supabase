@@ -22,10 +22,6 @@ export type RecordDetail = Tables<'record_details'>;
 export class RecordService {
 	static async createRecord({ details, ...record }: RecordForm) {
 		try {
-			// const isEmailVerified = await AuthService.isEmailVerified();
-			// if (!isEmailVerified) {
-			// 	throw new Error('verify_error');
-			// }
 			const { error, data: newRecord } = await supabase.from('records').insert(record).select('*').single();
 			if (error) throw error;
 			if (details?.length && newRecord?.id) {
@@ -37,51 +33,35 @@ export class RecordService {
 		}
 	}
 
-	static async fetchRecords() {
-		try {
-			const uid = await AuthService.getUserId();
-			const { error, data: records } = await supabase
-				.from('records')
-				.select('*')
-				.eq('user_id', uid)
-				.order('category_id', { ascending: false });
-			if (error) throw error;
-			return records;
-		} catch (e) {
-			errorHandler(e);
-		}
-	}
-
 	static async fetchRecordsWithCategory(options?: {
 		sortBy?: SortFields;
 		sortType?: SortType;
 		page?: number;
 		perPage?: number;
 	}) {
-		try {
-			const uid = await AuthService.getUserId();
-			const {
-				error,
-				data: records,
-				count,
-			} = await supabase
-				.from('records')
-				.select(`id, description, amount, type, created_at, category:categories (id, title, limit)`, {
-					count: 'exact',
-				})
-				.eq('user_id', uid)
-				.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
-				.range(
-					((options?.page || 1) - 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE),
-					(options?.page || 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE) - 1
-				);
-			if (error) {
-				throw error;
-			}
-			return { records, count };
-		} catch (e) {
-			errorHandler(e);
+		const uid = await AuthService.getUserId();
+		if (!uid) {
+			throw new Error('user_unauthenticated');
 		}
+		const {
+			error,
+			data: records,
+			count,
+		} = await supabase
+			.from('records')
+			.select(
+				`id, description, amount, type, created_at, 
+				category:categories (id, title, limit)`,
+				{ count: 'exact' }
+			)
+			.eq('user_id', uid)
+			.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
+			.range(
+				((options?.page || 1) - 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE),
+				(options?.page || 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE) - 1
+			);
+		if (error) return errorHandler(error);
+		return { records, count };
 	}
 
 	static async loadMoreRecords(options?: {
@@ -90,38 +70,37 @@ export class RecordService {
 		page?: number;
 		perPage?: number;
 	}) {
-		try {
-			const uid = await AuthService.getUserId();
-			const { error, data: records } = await supabase
-				.from('records')
-				.select(`id, description, amount, type, created_at, category:categories (id, title, limit)`)
-				.eq('user_id', uid)
-				.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
-				.range(
-					((options?.page || 1) - 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE),
-					(options?.page || 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE) - 1
-				);
-			if (error) throw error;
-			return records;
-		} catch (e) {
-			errorHandler(e);
+		const uid = await AuthService.getUserId();
+		if (!uid) {
+			throw new Error('user_unauthenticated');
 		}
+		const { error, data: records } = await supabase
+			.from('records')
+			.select(
+				`id, description, amount, type, created_at,
+				category:categories (id, title, limit)`
+			)
+			.eq('user_id', uid)
+			.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
+			.range(
+				((options?.page || 1) - 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE),
+				(options?.page || 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE) - 1
+			);
+		if (error) return errorHandler(error);
+		return records;
 	}
 
 	static async fetchRecordById(recordId: string) {
-		try {
-			const { error, data: record } = await supabase
-				.from('records')
-				.select(
-					'id, description, amount, type, created_at, category:categories (id, title, limit), details:record_details(*)'
-				)
-				.eq('id', recordId)
-				.single();
-			if (error) throw error;
-			return record;
-		} catch (e) {
-			errorHandler(e);
-		}
+		const { error, data: record } = await supabase
+			.from('records')
+			.select(
+				`id, description, amount, type, created_at, 
+				category:categories (id, title, limit), details:record_details(*)`
+			)
+			.eq('id', recordId)
+			.single();
+		if (error) return errorHandler(error);
+		return record;
 	}
 
 	private static async uploadRecordDetails(recordId: string, files: File[]) {
@@ -131,24 +110,23 @@ export class RecordService {
 				uploadPromises.push(
 					(async () => {
 						const fileId = uuidv4();
-						const { error, data } = await supabase.storage
+						const { error: uploadError, data } = await supabase.storage
 							.from('record_details')
 							.upload(`${recordId}/${fileId}.${file.name.split('.').at(-1)}`, file);
-						if (error) throw error;
-						if (data?.path) {
-							const {
-								data: { publicUrl },
-							} = supabase.storage.from('record_details').getPublicUrl(data?.path);
-							const { error } = await supabase.from('record_details').insert({
-								record_id: recordId,
-								public_url: publicUrl,
-								fullname: file.name,
-								size: file.size,
-								fullpath: data.path,
-							});
-							if (error) throw error;
-							return { id: fileId, fullpath: data.path, publicUrl };
-						}
+						if (uploadError) errorHandler(uploadError);
+						if (!data?.path) throw new Error('cant_get_uploaded_file');
+						const {
+							data: { publicUrl },
+						} = supabase.storage.from('record_details').getPublicUrl(data?.path);
+						const { error: insertError } = await supabase.from('record_details').insert({
+							record_id: recordId,
+							public_url: publicUrl,
+							fullname: file.name,
+							size: file.size,
+							fullpath: data.path,
+						});
+						if (insertError) return errorHandler(insertError);
+						return { id: fileId, fullpath: data.path, publicUrl };
 					})()
 				);
 			}
@@ -167,7 +145,7 @@ export class RecordService {
 
 	static async downloadRecordDetail(detail: RecordDetail) {
 		const { error, data: blobFile } = await supabase.storage.from('record_details').download(detail.fullpath);
-		if (error) throw error;
+		if (error) return errorHandler(error);
 		if (blobFile) {
 			return URL.createObjectURL(blobFile);
 		}
