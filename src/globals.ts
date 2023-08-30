@@ -1,7 +1,8 @@
 import { CurrencyRates } from '@/services/currency';
 import { SortType } from './services/record';
 
-export const AppTitle = import.meta.env.VITE_APP_TITLE || 'CRM VUE';
+export const AppTitle: string = import.meta.env.VITE_APP_TITLE || 'CRM VUE';
+export const SITE_KEY = '0x4AAAAAAAJbSXrFU6QhWigO';
 
 export const vuetifyThemeNames = {
 	dark: 'customDark',

@@ -16,11 +16,7 @@
 		"skipLibCheck": true,
 		"noEmit": true,
 		"baseUrl": ".",
-		"types": [
-			"vite-plugin-vue-layouts/client",
-			"vuetify",
-			"@intlify/unplugin-vue-i18n/messages",
-		],
+		"types": ["vite-plugin-vue-layouts/client", "vuetify", "@intlify/unplugin-vue-i18n/messages", "turnstile-types"],
 		"paths": {
 			"@/*": ["src/*"]
 		}
