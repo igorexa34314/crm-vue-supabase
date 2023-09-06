@@ -16,6 +16,7 @@
 					class="mx-auto my-auto"
 					style="opacity: 0.5" />
 			</template> -->
+
 			<div class="card-header d-flex justify-space-between">
 				<v-card-title class="flex-fill d-flex">
 					<div>
@@ -24,25 +25,43 @@
 					<span
 						:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
 						class="ml-3 pb-1 px-2 text-center text-trend">
-						<v-icon :icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp" />
+						<v-icon :icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp" color="title" />
 					</span>
 				</v-card-title>
 				<div class="card-header-actions">
-					<v-btn variant="text" :icon="mdiPencil" color="primary" />
-					<v-btn variant="text" :icon="mdiDelete" color="primary" />
+					<v-btn variant="text" :icon="mdiPencil" color="primary" disabled />
+
+					<v-dialog v-model="confirmationDialog" :transition="VFadeTransition">
+						<template #activator="{ props }">
+							<v-btn variant="text" v-bind="props" :icon="mdiDelete" color="primary" />
+						</template>
+
+						<v-card width="100%" max-width="650px" class="mx-auto pt-4">
+							<v-card-title class="text-h5 text-center">{{ t('delete_record_confirmation') }}</v-card-title>
+							<v-card-actions class="mt-4 mt-sm-6">
+								<v-spacer></v-spacer>
+								<v-btn color="red-darken-1" variant="text" @click="confirmationDialog = false">
+									<span class="text-h6">{{ t('cancel') }}</span>
+								</v-btn>
+								<v-btn color="green-darken-1" variant="text" @click="deleteRecord">
+									<span class="text-h6">{{ t('submit') }}</span></v-btn
+								>
+							</v-card-actions>
+						</v-card>
+					</v-dialog>
 				</div>
 			</div>
 
 			<v-card-text class="mt-4 text-h6 text-primary">
 				<p>{{ t('description') + ': ' + record.description }}</p>
-				<p class="mt-3">
+				<p class="mt-4">
 					{{ t('amount') + ': ' + n(cf(record.amount), { key: 'currency', currency: userCurrency }) }}
 				</p>
 
-				<p class="mt-3 mb-5">{{ t('category') + ': ' + record.category.title }}</p>
+				<p class="mt-4 mb-5">{{ t('category') + ': ' + record.category.title }}</p>
 
-				<v-expansion-panels v-if="record.details?.length" class="record__details mt-4 mt-sm-6" color="card-2">
-					<v-expansion-panel>
+				<v-expansion-panels v-if="record.details?.length" class="record__details mt-4 mt-sm-6">
+					<v-expansion-panel bg-color="panel">
 						<v-expansion-panel-title class="text-subtitle-1">{{ t('record_details') }}</v-expansion-panel-title>
 						<v-expansion-panel-text>
 							<div class="mt-2 d-flex flex-wrap">
@@ -56,7 +75,7 @@
 											<small v-if="!isHovering" class="record-detail__ext text-primary">{{
 												detail.fullname.split('.').at(-1)
 											}}</small>
-											<v-icon :icon="mdiFile" size="88px" />
+											<v-icon :icon="mdiFile" size="88px" color="file-icon" />
 											<v-fade-transition>
 												<v-icon
 													v-if="isHovering"
@@ -67,7 +86,7 @@
 											</v-fade-transition>
 										</div>
 										<span
-											class="record-detail__filename text-subtitle-2 w-100 text-truncate"
+											class="record-detail__filename text-title text-center text-subtitle-2 w-100 text-truncate"
 											:style="{ 'text-decoration': isHovering ? 'underline' : 'none' }"
 											>{{ detail.fullname }}</span
 										>
@@ -117,7 +136,9 @@ import {
 	VExpansionPanelText,
 	VHover,
 	VFadeTransition,
+	VDialog,
 } from 'vuetify/components';
+import { useRouter } from 'vue-router';
 
 interface Breadcrumbs {
 	title: string;
@@ -128,6 +149,7 @@ interface Breadcrumbs {
 useMeta({ title: 'pageTitles.details' });
 
 const route = useRoute('/detail/[id]');
+const router = useRouter();
 const { t, d, n } = useI18n({ useScope: 'global' });
 const { cf } = useCurrencyFilter();
 const { userCurrency } = storeToRefs(useUserStore());
@@ -154,6 +176,14 @@ const { state: record, isLoading } = useAsyncState(
 		},
 	}
 );
+
+const confirmationDialog = ref(false);
+
+const deleteRecord = async () => {
+	await RecordService.deleteRecordById(route.params.id as string);
+	confirmationDialog.value = false;
+	router.push('/history');
+};
 
 const linkEl = ref<HTMLLinkElement>();
 const downloadState = ref({

@@ -146,4 +146,21 @@ export class RecordService {
 			return URL.createObjectURL(blobFile);
 		}
 	}
+
+	static async updateRecord(recordId: Record['id'], recordData: Pick<Record, 'amount' | 'description' | 'type'>) {
+		const { error, data: updatedRecord } = await supabase
+			.from('records')
+			.update(recordData)
+			.eq('id', recordId)
+			.select<typeof this.recordWithCategoryQuery, RecordWithCategory>(this.recordWithCategoryQuery)
+			.single();
+		if (error) return errorHandler(error);
+		return updatedRecord;
+	}
+
+	static async deleteRecordById(recordId: Record['id']) {
+		const { error, data } = await supabase.from('records').delete().eq('id', recordId);
+		if (error) return errorHandler(error);
+		return data;
+	}
 }

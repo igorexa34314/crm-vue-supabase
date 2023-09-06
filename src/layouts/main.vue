@@ -33,7 +33,7 @@ import AppNavbar from '@/components/app/AppNavbar.vue';
 import AppSidebar from '@/components/app/AppSidebar.vue';
 import { ref, onMounted, provide, onUnmounted } from 'vue';
 import { VLayout, VMain, VTooltip } from 'vuetify/components';
-import { CurrencyService } from '@/services/currency';
+import { CurrencyService, DEFAULT_CURRENCY_RESPONSE } from '@/services/currency';
 import { useUserStore } from '@/stores/user';
 import { mdiPlus } from '@mdi/js';
 import { UserService } from '@/services/user';
@@ -59,7 +59,7 @@ const {
 	isLoading,
 	isReady,
 	execute: fetchCurrency,
-} = useAsyncState(CurrencyService.fetchCurrency, null, {
+} = useAsyncState(CurrencyService.fetchCurrency, DEFAULT_CURRENCY_RESPONSE, {
 	immediate: false,
 	onError: e => {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_loading_currency'), 'red-darken-3');
