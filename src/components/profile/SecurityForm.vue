@@ -58,7 +58,7 @@ const emit = defineEmits<{
 	changeCreds: [creds: Partial<{ oldPass: string; newPass: string; email: string }>];
 }>();
 
-const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t } = useI18n();
 const { xs } = useDisplay();
 
 const form = ref<VForm>();

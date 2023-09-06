@@ -1,8 +1,8 @@
-import { createI18n, I18n, I18nOptions } from 'vue-i18n';
-import { nextTick, WritableComputedRef } from 'vue';
+import { createI18n, I18n, I18nOptions, MessageSchema, localeKey } from 'vue-i18n';
+import { nextTick } from 'vue';
 import fallbackMessages from '@intlify/unplugin-vue-i18n/messages';
 import datetimeFormats from '@/utils/datetimeFormats.json';
-import numberFormats from '@/utils/numberFormats.json';
+import numberFormats from '@/utils/numberFormats';
 import { LocaleService } from '@/services/locale';
 import { availableLocales, LOCALE_KEY, DEFAULT_LOCALE } from '@/globals';
 
@@ -23,20 +23,14 @@ export const initI18n = async () => {
 	}
 };
 
-const createI18nInstance = (locale: string, messages: any) => {
-	return createI18n({
-		legacy: false, // Vuetify does not support the legacy mode of vue-i18n
+const createI18nInstance = (locale: string, messages: { [key: string]: any } | undefined) => {
+	const options: I18nOptions = {
+		legacy: false, // Vuetify and composition API does not support the legacy mode of vue-i18n
 		locale: locale || DEFAULT_LOCALE,
 		fallbackLocale: DEFAULT_LOCALE,
-		messages: messages,
+		messages: messages as Record<localeKey, MessageSchema>,
 		// Using same number formats for each locale
-		numberFormats: Object.assign(
-			{},
-			numberFormats,
-			...availableLocales.map(locale => ({
-				[numberFormats[locale]['currency']['currency']]: numberFormats[locale],
-			}))
-		) as I18nOptions['numberFormats'],
+		numberFormats,
 
 		// Using same datetime formats for each locale
 		datetimeFormats: Object.assign(
@@ -45,10 +39,15 @@ const createI18nInstance = (locale: string, messages: any) => {
 				[locale]: datetimeFormats['en-US'],
 			}))
 		),
-	});
+	};
+	/**
+	 * setup vue-i18n with i18n resources with global type definition.
+	 * if you define the i18n resource schema in your `*.d.ts`, these is checked with typeScript.
+	 */
+	return createI18n<false, typeof options>(options);
 };
 
-export const setI18nLanguage = async (i18n: I18n, locale: string = DEFAULT_LOCALE) => {
+export const setI18nLanguage = async (i18n: I18n<any, any, {}, string, false>, locale: string = DEFAULT_LOCALE) => {
 	// Load locale if not available yet.
 	if (!i18n.global.availableLocales.includes(locale)) {
 		const messages = await LocaleService.fetchLocaleTranslation(locale);
@@ -61,7 +60,7 @@ export const setI18nLanguage = async (i18n: I18n, locale: string = DEFAULT_LOCAL
 		await nextTick();
 	}
 	localStorage.setItem(LOCALE_KEY, JSON.stringify(locale));
-	(i18n.global.locale as WritableComputedRef<string>).value = locale;
+	i18n.global.locale.value = locale;
 	/**
 	 * NOTE:
 	 * If you need to specify the language setting for headers, such as the `fetch` API, set it here.

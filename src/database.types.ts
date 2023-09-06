@@ -44,21 +44,21 @@ export interface Database {
 					code: string;
 					name: string;
 					native_name: string;
-					translations: Json;
+					translations: Database['public']['JsonSchemaTypes']['LocaleTranslations'];
 					updated_at: string | null;
 				};
 				Insert: {
 					code: string;
 					name: string;
 					native_name: string;
-					translations?: Json;
+					translations?: Database['public']['JsonSchemaTypes']['LocaleTranslations'];
 					updated_at?: string | null;
 				};
 				Update: {
 					code?: string;
 					name?: string;
 					native_name?: string;
-					translations?: Json;
+					translations?: Database['public']['JsonSchemaTypes']['LocaleTranslations'];
 					updated_at?: string | null;
 				};
 				Relationships: [];
@@ -166,6 +166,7 @@ export interface Database {
 					description: string;
 					id: string;
 					type: Database['public']['Enums']['record_type'];
+					updated_at: string | null;
 					user_id: string;
 				};
 				Insert: {
@@ -175,6 +176,7 @@ export interface Database {
 					description?: string;
 					id?: string;
 					type: Database['public']['Enums']['record_type'];
+					updated_at?: string | null;
 					user_id?: string;
 				};
 				Update: {
@@ -184,6 +186,7 @@ export interface Database {
 					description?: string;
 					id?: string;
 					type?: Database['public']['Enums']['record_type'];
+					updated_at?: string | null;
 					user_id?: string;
 				};
 				Relationships: [
@@ -231,6 +234,9 @@ export interface Database {
 		};
 		CompositeTypes: {
 			[_ in never]: never;
+		};
+		JsonSchemaTypes: {
+			LocaleTranslations: Exclude<Json, boolean | null | number | Json[]>;
 		};
 	};
 }

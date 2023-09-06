@@ -23,7 +23,7 @@ import { useDarkModeStore } from '@/stores/darkMode';
 import GlobalSnackbar from '@/components/app/GlobalSnackbar.vue';
 import { AppTitle } from '@/globals';
 
-const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t } = useI18n({ useScope: 'global' });
 
 const darkModeStore = useDarkModeStore();
 </script>

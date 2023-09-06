@@ -19,5 +19,5 @@ const props = withDefaults(
 	}
 );
 
-const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t } = useI18n();
 </script>

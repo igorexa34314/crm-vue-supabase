@@ -33,8 +33,7 @@ const props = withDefaults(
 		modelValue: false,
 	}
 );
-
-const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t } = useI18n();
 const drawer = useVModel(props, 'modelValue', emit);
 
 const links: { title: string; url: string; exact?: boolean }[] = [

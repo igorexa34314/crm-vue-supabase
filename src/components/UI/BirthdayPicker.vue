@@ -94,7 +94,7 @@ watch(
 );
 
 const monthsForLocales = (monthFormat: DateTimeOptions['month'] = 'long') => {
-	const { d } = useI18n({ inheritLocale: true, useScope: 'global' });
+	const { d } = useI18n();
 	return [...Array(12).keys()].map(m => d(new Date(Date.UTC(2022, m % 12)), { month: monthFormat }));
 };
 </script>

@@ -23,7 +23,7 @@
 						v-bind="props"
 						:class="isHovering ? 'bg-hover' : ''">
 						<td>{{ rec.index }}</td>
-						<td>{{ n(cf(rec.amount), 'currency', userCurrency) }}</td>
+						<td>{{ n(cf(rec.amount), { key: 'currency', currency: userCurrency }) }}</td>
 						<td>{{ d(rec.created_at, smAndDown ? 'shortdate' : 'short') }}</td>
 						<td class="record-category text-truncate">{{ rec.category?.title }}</td>
 						<td>
@@ -80,7 +80,7 @@ import { RecordWithCategory, SortFields, SortType } from '@/services/record';
 
 const props = withDefaults(
 	defineProps<{
-		records: (RecordWithCategory[number] & { index: number })[];
+		records: (RecordWithCategory & { index: number })[];
 		sortField?: SortFields;
 		sortType?: SortType;
 	}>(),
@@ -94,7 +94,7 @@ const emit = defineEmits<{
 	sort: [field: SortFields];
 }>();
 
-const { t, d, n } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t, d, n } = useI18n();
 const { push } = useRouter();
 const { smAndDown, xs } = useDisplay();
 const { cf } = useCurrencyFilter();

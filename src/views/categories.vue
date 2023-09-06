@@ -14,7 +14,7 @@
 				</v-col>
 				<v-col cols="6" md="6" sm="12" xs="12" class="edit-category v-col-xs-12">
 					<EditCategory
-						v-if="categories?.length"
+						v-if="categories.length"
 						v-bind="{ categories, defaultLimit }"
 						@updated="updateCategories"
 						:class="{ 'pl-6': !smAndDown, 'px-3': smAndDown && !xs }"
@@ -39,7 +39,7 @@ import { DEFAULT_CATEGORY_LIMIT as defaultLimit } from '@/globals';
 // Page title: Categories
 useMeta({ title: 'pageTitles.categories' });
 
-const { te, t } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { te, t } = useI18n({ useScope: 'global' });
 const { smAndDown, xs } = useDisplay();
 const { state: categories, isLoading } = useAsyncState(CategoryService.fetchCategories, [], {
 	onError: e => {
@@ -49,13 +49,9 @@ const { state: categories, isLoading } = useAsyncState(CategoryService.fetchCate
 });
 
 const addNewCategory = (cat: Category) => {
-	if (categories.value) {
-		categories.value = [...categories.value, cat];
-	} else {
-		categories.value = [cat];
-	}
+	categories.value = [...categories.value, cat];
 };
 const updateCategories = ({ id, ...catData }: Category) => {
-	categories.value = categories.value?.map(cat => (cat.id === id ? { id, ...catData } : cat));
+	categories.value = categories.value.map(cat => (cat.id === id ? { id, ...catData } : cat));
 };
 </script>

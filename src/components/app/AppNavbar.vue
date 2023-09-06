@@ -67,7 +67,7 @@ const emit = defineEmits<{
 	click: [];
 }>();
 
-const { t, d } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t, d } = useI18n();
 const { xs, smAndDown } = useDisplay();
 const { push } = useRouter();
 const infoStore = useUserStore();

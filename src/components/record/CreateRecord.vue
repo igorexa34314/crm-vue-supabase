@@ -77,7 +77,7 @@ import { record as validations } from '@/utils/validations';
 import { Category } from '@/services/category';
 import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
-import { DEFAULT_CURRENCY, DEFAULT_RECORD_AMOUNT } from '@/globals';
+import { DEFAULT_CURRENCY, DEFAULT_RECORD_AMOUNT, DEFAULT_BILL } from '@/globals';
 
 const props = withDefaults(
 	defineProps<{
@@ -97,7 +97,7 @@ const emit = defineEmits<{
 	createRecord: [data: Omit<RecordForm, 'date'>];
 }>();
 const { showMessage } = useSnackbarStore();
-const { t, n } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t, n } = useI18n();
 const { cf } = useCurrencyFilter();
 const infoStore = useUserStore();
 const { xs } = useDisplay();
@@ -131,11 +131,10 @@ const submitHandler = async () => {
 	} else if (!canCreateRecord.value) {
 		showMessage(
 			t('lack_of_amount') +
-				` (${n(
-					formState.value.amount - cf.value(info.value!.bill),
-					'currency',
-					info.value?.currency || DEFAULT_CURRENCY
-				)})`,
+				` (${n(formState.value.amount - cf.value(info.value?.bill || DEFAULT_BILL), {
+					key: 'currency',
+					currency: info.value?.currency || DEFAULT_CURRENCY,
+				})})`,
 			'red-darken-3'
 		);
 	}

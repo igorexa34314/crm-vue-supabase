@@ -76,7 +76,7 @@ const emit = defineEmits<{
 	'update:modelValue': [pass: string];
 }>();
 
-const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t } = useI18n();
 
 const passFieldState = reactive({
 	showPass: false,

@@ -2,11 +2,11 @@
 	<div>
 		<div class="title mt-2 mt-sm-4 d-flex flex-column flex-sm-row align-sm-center mb-3 text-title">
 			<h3 class="text-h5 text-sm-h4 ml-2 flex-grow-1 mb-3 mb-sm-0">{{ t('pageTitles.plan') }}</h3>
-			<h4 class="text-h5 text-sm-h4 text-end">{{ n(cf(bill!), 'currency', userCurrency) }}</h4>
+			<h4 class="text-h5 text-sm-h4 text-end">{{ n(cf(bill), { key: 'currency', currency: userCurrency }) }}</h4>
 		</div>
 		<v-divider color="black" thickness="1.5" class="bg-white mb-8" />
 		<app-loader v-if="isLoading" class="mt-10" page />
-		<div v-else-if="catStats && !catStats.length" class="mt-10 text-center text-h6">
+		<div v-else-if="!catStats.length" class="mt-10 text-center text-h6">
 			{{ t('no_categories') + '. ' }}<router-link to="/categories">{{ t('create_category') + '. ' }}</router-link>
 		</div>
 
@@ -18,19 +18,19 @@
 					>
 					<span class="category-spent mr-sm-4 text-primary text-end">
 						{{
-							n(
-								cf(cat.spend),
-								{ key: 'currency', currencyDisplay: xs ? 'narrowSymbol' : 'symbol' },
-								userCurrency
-							) +
+							n(cf(cat.spend), {
+								key: 'currency',
+								currencyDisplay: xs ? 'narrowSymbol' : 'symbol',
+								currency: userCurrency,
+							}) +
 							' ' +
 							(xs ? '/' : t('out_of')) +
 							' ' +
-							n(
-								cf(cat.limit),
-								{ key: 'currency', currencyDisplay: xs ? 'narrowSymbol' : 'symbol' },
-								userCurrency
-							)
+							n(cf(cat.limit), {
+								key: 'currency',
+								currencyDisplay: xs ? 'narrowSymbol' : 'symbol',
+								currency: userCurrency,
+							})
 						}}
 					</span>
 				</p>
@@ -49,7 +49,7 @@
 					{{
 						(cat.limit - cat.spend < 0 ? t('exceeding') : t('left')) +
 						' ' +
-						n(Math.abs(cf(cat.limit) - cf(cat.spend)), 'currency', userCurrency)
+						n(Math.abs(cf(cat.limit) - cf(cat.spend)), { key: 'currency', currency: userCurrency })
 					}}
 				</v-tooltip>
 			</div>
@@ -73,7 +73,7 @@ import { DEFAULT_BILL } from '@/globals';
 
 useMeta({ title: 'pageTitles.plan' });
 
-const { t, n, te } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t, n, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
 const infoStore = useUserStore();
 

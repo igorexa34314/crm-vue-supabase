@@ -37,7 +37,7 @@ import { VTabs, VTab, VWindow, VWindowItem } from 'vuetify/components';
 
 useMeta({ title: 'pageTitles.profile' });
 
-const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
 const { showMessage } = useSnackbarStore();
 const route = useRoute('/profile');

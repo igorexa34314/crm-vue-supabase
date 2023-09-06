@@ -56,7 +56,7 @@ import { DEFAULT_RECORDS_PER_PAGE } from '@/globals';
 
 useMeta({ title: 'pageTitles.history' });
 
-const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
 const { push } = useRouter();
 const route = useRoute();
@@ -65,7 +65,7 @@ const route = useRoute();
 const { state: catStats, isLoading: catLoading } = useAsyncState(
 	async () => {
 		const categories = await CategoryService.fetchCategoriesSpendStats();
-		return categories?.filter(cat => cat.spend > 0).map(({ title, spend }) => ({ label: title, data: spend }));
+		return categories.filter(cat => cat.spend > 0).map(({ title, spend }) => ({ label: title, data: spend }));
 	},
 	[],
 	{
@@ -98,15 +98,15 @@ const sortState = computed({
 
 const { state: recordsState, isLoading: recLoading } = useAsyncState(
 	async () => {
-		const result = await RecordService.fetchRecordsWithCategory({
+		const { records, count } = await RecordService.fetchRecordsWithCategory({
 			sortBy: sortState.value.field,
 			sortType: sortState.value.type,
 			perPage,
 			page: page.value,
 		});
 		return {
-			records: result?.records.map((r, idx) => ({ ...r, index: (page.value - 1) * perPage + ++idx })) || [],
-			count: result?.count || 0,
+			records: records.map((r, idx) => ({ ...r, index: (page.value - 1) * perPage + ++idx })) || [],
+			count,
 		};
 	},
 	{ records: [], count: 0 },
@@ -140,7 +140,7 @@ watch(page, async newPage => {
 			page: newPage,
 			perPage,
 		});
-		if (records && records.length) {
+		if (records.length) {
 			recordsState.value.records = records.map((r, idx) => ({ ...r, index: (page.value - 1) * perPage + ++idx }));
 		}
 	} catch (err) {

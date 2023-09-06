@@ -146,7 +146,7 @@ const emit = defineEmits<{
 	updateInfo: [info: Partial<UserInfo> & { avatar: File[] }];
 }>();
 
-const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t } = useI18n();
 const { xs, smAndDown } = useDisplay();
 const infoStore = useUserStore();
 

@@ -56,7 +56,8 @@ const emit = defineEmits<{
 	created: [category: Category];
 }>();
 
-const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t, te } = useI18n();
+
 const { cf } = useCurrencyFilter();
 const { showMessage } = useSnackbarStore();
 const { xs } = useDisplay();

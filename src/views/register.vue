@@ -27,7 +27,7 @@ import { definePage } from 'vue-router/auto';
 definePage({ meta: { layout: 'empty' } });
 useMeta({ title: 'sign_in' });
 
-const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
 const { push } = useRouter();
 const { showMessage } = useSnackbarStore();

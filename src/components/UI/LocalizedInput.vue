@@ -27,6 +27,6 @@ defineSlots<{
 	'append-inner': any;
 }>();
 
-const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t } = useI18n();
 const { xs } = useDisplay();
 </script>

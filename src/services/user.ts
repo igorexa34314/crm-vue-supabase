@@ -14,7 +14,7 @@ export interface UserCredentials {
 export class UserService {
 	static async getUserById(uid: UserCredentials['uid']) {
 		const { error, data } = await supabase.from('profiles').select('*').eq('id', uid).single();
-		if (error) throw error;
+		if (error) return errorHandler(error);
 		const { updated_at, ...user } = data;
 		return user;
 	}
@@ -51,15 +51,12 @@ export class UserService {
 			});
 		} catch (err) {
 			errorHandler(err);
+			return null;
 		}
 	}
 
 	static async updateUserInfo(data: Partial<UserInfo>) {
 		const uid = await AuthService.getUserId();
-		// 	const isEmailVerified = await AuthService.isEmailVerified();
-		// 	if (!isEmailVerified) {
-		// 		throw new Error('verify_error');
-		// 	}
 		return supabase.from('profiles').update(data).eq('id', uid);
 	}
 

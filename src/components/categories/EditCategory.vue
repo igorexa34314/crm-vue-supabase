@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { CategoryService, Category } from '@/services/category';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -59,7 +59,6 @@ import { storeToRefs } from 'pinia';
 import { useDisplay } from 'vuetify';
 import isEqual from 'lodash/isEqual';
 import { DEFAULT_CATEGORY_LIMIT } from '@/globals';
-import { computed } from 'vue';
 
 const props = withDefaults(
 	defineProps<{
@@ -75,7 +74,7 @@ const emit = defineEmits<{
 	updated: [cat: Category];
 }>();
 
-const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t, te } = useI18n();
 const { showMessage } = useSnackbarStore();
 const { cf } = useCurrencyFilter();
 const { xs } = useDisplay();
@@ -111,10 +110,8 @@ const submitHandler = async () => {
 			const convertedLimit = cf.value(limit, undefined, 'reverse');
 			loading.value = true;
 			const updatedCat = await CategoryService.updateCategory(id, { ...categoryData, limit: convertedLimit });
-			if (updatedCat) {
-				showMessage(t('category_updated'));
-				emit('updated', updatedCat);
-			}
+			showMessage(t('category_updated'));
+			emit('updated', updatedCat);
 		} catch (e) {
 			if (typeof e === 'string') {
 				showMessage(te(e) ? t(e) : e.substring(0, 64), 'red-darken-3');

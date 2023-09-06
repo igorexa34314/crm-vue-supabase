@@ -14,21 +14,15 @@ const DEFAULT_CURRENCY_RESPONSE = {
 
 export class CurrencyService {
 	static async fetchCurrency() {
-		try {
-			const res = await fetch(
-				import.meta.env.VITE_EXCHANGER_API_URL + `?base=${DEFAULT_CURRENCY}&symbols=EUR%2CUAH%2CUSD%2CRUB`,
-				{
-					method: 'GET',
-					redirect: 'follow',
-					headers: new Headers({
-						'Content-Type': 'application/json',
-					}),
-				}
-			);
-			const result = (await res.json()) as Awaited<Currency>;
-			return (result || DEFAULT_CURRENCY_RESPONSE) as Currency;
-		} catch (e) {
-			errorHandler(e);
-		}
+		return fetch(import.meta.env.VITE_EXCHANGER_API_URL + `?base=${DEFAULT_CURRENCY}&symbols=EUR%2CUAH%2CUSD%2CRUB`, {
+			method: 'GET',
+			redirect: 'follow',
+			headers: new Headers({
+				'Content-Type': 'application/json',
+			}),
+		})
+			.then(response => response.json())
+			.then((result: Currency) => result || DEFAULT_CURRENCY_RESPONSE)
+			.catch(error => errorHandler(error));
 	}
 }

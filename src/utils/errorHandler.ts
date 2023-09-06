@@ -1,4 +1,6 @@
-export const errorHandler = (err: unknown, msg?: string) => {
+import { DbResultErr } from '@/database.types';
+
+export const errorHandler = (err: DbResultErr | unknown, msg?: string) => {
 	if (err instanceof Error) {
 		const messageCode = err.message.toLowerCase().split(' ').join('_');
 		throw messageCode;

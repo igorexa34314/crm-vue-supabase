@@ -44,9 +44,10 @@ import { currencyKey } from '@/injection-keys';
 import { useRouter } from 'vue-router/auto';
 import { AuthService } from '@/services/auth';
 import { useDisplay } from 'vuetify';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 const { push } = useRouter();
-const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 const infoStore = useUserStore();
 const drawer = ref(true);
@@ -57,22 +58,25 @@ const {
 	state: currency,
 	isLoading,
 	isReady,
-	execute: refresh,
+	execute: fetchCurrency,
 } = useAsyncState(CurrencyService.fetchCurrency, null, {
+	immediate: false,
 	onError: e => {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_loading_currency'), 'red-darken-3');
+		infoStore.fallbackUserCurrency();
 	},
 });
 
-provide(currencyKey, { currency, isLoading, isReady, refresh });
+provide(currencyKey, { currency, isLoading, isReady, refresh: fetchCurrency });
 
-let userInfoChannel: Awaited<ReturnType<typeof UserService.fetchAndSubscribeInfo>>;
+let userInfoChannel: RealtimeChannel | null = null;
 
 onMounted(async () => {
 	try {
 		if (!infoStore.info || !Object.keys(infoStore.info).length) {
 			userInfoChannel = await UserService.fetchAndSubscribeInfo();
 		}
+		await fetchCurrency();
 	} catch (e) {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
 	} finally {

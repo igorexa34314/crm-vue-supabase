@@ -16,7 +16,7 @@ export const useChart = <T extends ChartType = 'pie'>(
 		| undefined
 	>
 ) => {
-	const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
+	const { t } = useI18n();
 	const theme = useTheme();
 
 	const chartOptions = computed<ChartOptions>(() => ({

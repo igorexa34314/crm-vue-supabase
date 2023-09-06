@@ -11,8 +11,12 @@
 		<app-loader v-if="isLoading" :color="theme.global.current.value.dark ? '#FFFFFF' : '#1A237E'" class="mt-2" page />
 
 		<v-row v-else-if="currency && isReady">
-			<MyBill :rates="currency.rates" />
-			<CurrencyRates v-if="currency?.rates" :rates="currency.rates" :date="new Date(currency.date)" />
+			<v-col cols="4" lg="4" md="6" sm="12" class="v-col-xs-12">
+				<MyBill :rates="currency.rates" />
+			</v-col>
+			<v-col cols="8" lg="8" md="6" sm="12" class="v-col-xs-12">
+				<CurrencyRates v-if="currency?.rates" :rates="currency.rates" :date="new Date(currency.date)" />
+			</v-col>
 		</v-row>
 	</div>
 </template>
@@ -34,7 +38,7 @@ definePage({
 	alias: ['/home'],
 });
 
-const { t } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t } = useI18n({ useScope: 'global' });
 const theme = useTheme();
 
 const { currency, isLoading, isReady, refresh } = inject(currencyKey)!;

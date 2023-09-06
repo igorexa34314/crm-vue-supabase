@@ -1,5 +1,6 @@
 import { Enums, Tables } from '@/database.types';
 import { AuthService } from '@/services/auth';
+import { Category } from '@/services/category';
 import { supabase } from '@/supabase';
 import { errorHandler } from '@/utils/errorHandler';
 import { v4 as uuidv4 } from 'uuid';
@@ -7,17 +8,15 @@ import { DEFAULT_RECORDS_PER_PAGE } from '@/globals';
 
 export type RecordType = Enums<'record_type'>;
 export type Record = Omit<Tables<'records'>, 'user_id'>;
-export type RecordWithCategory = Exclude<
-	Awaited<ReturnType<typeof RecordService.fetchRecordsWithCategory>>,
-	undefined
->['records'];
+export type RecordDetail = Tables<'record_details'>;
 
-export type RecordForm = Omit<Record, 'created_at' | 'id'> & { details: File[] };
+export type RecordWithCategory = Omit<Record, 'category_id'> & { category: Category };
+export type RecordWithDetails = RecordWithCategory & { details: RecordDetail[] };
+
+export type RecordForm = Omit<Record, 'updated_at' | 'created_at' | 'id'> & { details: File[] };
 
 export type SortType = 'asc' | 'desc';
 export type SortFields = keyof Tables<'records'>;
-
-export type RecordDetail = Tables<'record_details'>;
 
 export class RecordService {
 	static async createRecord({ details, ...record }: RecordForm) {
@@ -32,6 +31,11 @@ export class RecordService {
 			errorHandler(e);
 		}
 	}
+
+	private static recordWithCategoryQuery = `id, description, amount, type, created_at, 
+				category:categories (id, title, limit)` as const;
+
+	private static recordWithDetailQuery = `${this.recordWithCategoryQuery}, details:record_details(*)` as const;
 
 	static async fetchRecordsWithCategory(options?: {
 		sortBy?: SortFields;
@@ -49,11 +53,9 @@ export class RecordService {
 			count,
 		} = await supabase
 			.from('records')
-			.select(
-				`id, description, amount, type, created_at, 
-				category:categories (id, title, limit)`,
-				{ count: 'exact' }
-			)
+			.select<typeof this.recordWithCategoryQuery, RecordWithCategory>(this.recordWithCategoryQuery, {
+				count: 'exact',
+			})
 			.eq('user_id', uid)
 			.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
 			.range(
@@ -76,10 +78,7 @@ export class RecordService {
 		}
 		const { error, data: records } = await supabase
 			.from('records')
-			.select(
-				`id, description, amount, type, created_at,
-				category:categories (id, title, limit)`
-			)
+			.select<typeof this.recordWithCategoryQuery, RecordWithCategory>(this.recordWithCategoryQuery)
 			.eq('user_id', uid)
 			.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
 			.range(
@@ -90,21 +89,18 @@ export class RecordService {
 		return records;
 	}
 
-	static async fetchRecordById(recordId: string) {
+	static async fetchRecordById(recordId: Record['id']) {
 		const { error, data: record } = await supabase
 			.from('records')
-			.select(
-				`id, description, amount, type, created_at, 
-				category:categories (id, title, limit), details:record_details(*)`
-			)
+			.select<typeof this.recordWithDetailQuery, RecordWithDetails>(this.recordWithDetailQuery)
 			.eq('id', recordId)
 			.single();
 		if (error) return errorHandler(error);
 		return record;
 	}
 
-	private static async uploadRecordDetails(recordId: string, files: File[]) {
-		const uploadPromises: Promise<{ id: string; fullpath: string; publicUrl: string } | undefined>[] = [];
+	private static async uploadRecordDetails(recordId: Record['id'], files: File[]) {
+		const uploadPromises: Promise<Pick<RecordDetail, 'id' | 'fullpath' | 'public_url'> | undefined>[] = [];
 		for (const file of files) {
 			if (file instanceof File && file.size <= 2 * 1024 * 1024) {
 				uploadPromises.push(
@@ -126,7 +122,7 @@ export class RecordService {
 							fullpath: data.path,
 						});
 						if (insertError) return errorHandler(insertError);
-						return { id: fileId, fullpath: data.path, publicUrl };
+						return { id: fileId, fullpath: data.path, public_url: publicUrl };
 					})()
 				);
 			}
@@ -138,13 +134,13 @@ export class RecordService {
 	static async getAllRecordDetails(detailsData: RecordDetail[]) {
 		const downloadPromises: Promise<string | undefined>[] = [];
 		for (const detail of detailsData) {
-			downloadPromises.push(this.downloadRecordDetail(detail));
+			downloadPromises.push(this.downloadRecordDetail(detail.fullpath));
 		}
 		await Promise.all(downloadPromises);
 	}
 
-	static async downloadRecordDetail(detail: RecordDetail) {
-		const { error, data: blobFile } = await supabase.storage.from('record_details').download(detail.fullpath);
+	static async downloadRecordDetail(path: RecordDetail['fullpath']) {
+		const { error, data: blobFile } = await supabase.storage.from('record_details').download(path);
 		if (error) return errorHandler(error);
 		if (blobFile) {
 			return URL.createObjectURL(blobFile);

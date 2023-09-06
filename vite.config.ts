@@ -24,7 +24,6 @@ export default ({ mode }) => {
 			},
 		},
 		plugins: [
-			vue({ template: { transformAssetUrls } }),
 			VueI18nPlugin({
 				globalSFCScope: true,
 				include: [resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**')],
@@ -33,6 +32,7 @@ export default ({ mode }) => {
 				routesFolder: 'src/views',
 				dts: './src/typed-router.d.ts',
 			}),
+			vue({ template: { transformAssetUrls } }),
 			Layouts({
 				layoutsDirs: 'src/layouts',
 				defaultLayout: 'main',

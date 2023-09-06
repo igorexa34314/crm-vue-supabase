@@ -14,6 +14,7 @@
 		"username_exists": "This username already exists",
 		"email_rate_limit_exceeded": "Email rate limit exceeded"
 	},
+	"error_loading_currency": "Error loading currency",
 	"sign_in_success": "You have successfully signed up. Please confirm your email",
 	"no_records": "There are no records yet",
 	"limit": "Limit",

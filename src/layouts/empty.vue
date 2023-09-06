@@ -12,7 +12,7 @@ import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 
-const { t, te } = useI18n({ inheritLocale: true, useScope: 'global' });
+const { t, te } = useI18n({ useScope: 'global' });
 const route = useRoute();
 const { replace } = useRouter();
 const infoStore = useUserStore();
