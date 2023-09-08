@@ -42,7 +42,7 @@ import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import { VForm } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
-import { DEFAULT_CATEGORY_LIMIT } from '@/globals';
+import { DEFAULT_CATEGORY_LIMIT } from '@/global-vars';
 
 const props = withDefaults(
 	defineProps<{
@@ -83,7 +83,7 @@ const submitHandler = async () => {
 			loading.value = true;
 			const category = await CategoryService.createCategory({
 				...data,
-				limit: cf.value(limit, undefined, 'reverse'),
+				limit: cf.value(limit, { type: 'reverse' }),
 			});
 			if (category) {
 				emit('created', category);

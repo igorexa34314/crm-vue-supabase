@@ -1,5 +1,5 @@
 import { onMounted, onUnmounted } from 'vue';
-import { SITE_KEY } from '@/globals';
+import { SITE_KEY } from '@/global-vars';
 
 let turnstileToken: string;
 

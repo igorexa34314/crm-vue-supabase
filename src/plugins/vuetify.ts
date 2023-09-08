@@ -10,7 +10,7 @@ import * as VList from 'vuetify/components/VList';
 import * as VCard from 'vuetify/components/VCard';
 // import * as directives from 'vuetify/directives';
 
-import { vuetifyThemeNames, DEFAULT_THEME } from '@/globals';
+import { vuetifyThemeNames, DEFAULT_THEME } from '@/global-vars';
 // I18n
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
 import { I18n, useI18n } from 'vue-i18n';

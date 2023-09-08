@@ -58,7 +58,7 @@ import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { storeToRefs } from 'pinia';
 import { useDisplay } from 'vuetify';
 import isEqual from 'lodash/isEqual';
-import { DEFAULT_CATEGORY_LIMIT } from '@/globals';
+import { DEFAULT_CATEGORY_LIMIT } from '@/global-vars';
 
 const props = withDefaults(
 	defineProps<{
@@ -92,14 +92,14 @@ watchEffect(() => {
 	const category = props.categories.find(({ id }) => id === currentCategory.value.id);
 	if (category) {
 		currentCategory.value.title = category.title;
-		currentCategory.value.limit = Math.round(cf.value(category.limit) / 100) * 100;
+		currentCategory.value.limit = cf.value(category.limit);
 	}
 });
 
 const isNewCategoryEquals = computed(() => {
 	const { id, ...newCategory } = currentCategory.value;
 	const { title, limit } = props.categories.find(cat => cat.id === id)!;
-	return isEqual(newCategory, { title, limit: Math.round(cf.value(limit) / 100) * 100 });
+	return isEqual(newCategory, { title, limit: cf.value(limit) });
 });
 
 const submitHandler = async () => {
@@ -107,7 +107,7 @@ const submitHandler = async () => {
 	const { id, limit, ...categoryData } = currentCategory.value;
 	if (valid && id) {
 		try {
-			const convertedLimit = cf.value(limit, undefined, 'reverse');
+			const convertedLimit = cf.value(limit, { type: 'reverse' });
 			loading.value = true;
 			const updatedCat = await CategoryService.updateCategory(id, { ...categoryData, limit: convertedLimit });
 			showMessage(t('category_updated'));

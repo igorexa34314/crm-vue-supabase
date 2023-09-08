@@ -16,7 +16,7 @@ import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { Currency, CurrencyRates } from '@/services/currency';
 import { useDisplay } from 'vuetify';
-import { DEFAULT_CURRENCY } from '@/globals';
+import { SERVER_CURRENCY, DEFAULT_BILL } from '@/global-vars';
 
 const { t, n } = useI18n();
 const { xs } = useDisplay();
@@ -31,8 +31,8 @@ const currencies = computed(() => Object.keys(props.rates || {}) as CurrencyRate
 const info = computed(() => infoStore.info);
 
 const getCurrency = computed(() => (currency: CurrencyRates) => {
-	const base = info.value ? info.value.bill / props.rates[DEFAULT_CURRENCY] : 0;
-	return Math.floor(base * props.rates[currency]);
+	const base = (info.value?.bill ?? DEFAULT_BILL) / props.rates[SERVER_CURRENCY];
+	return +(base * props.rates[currency]).toFixed(2);
 });
 </script>
 
@@ -41,4 +41,4 @@ const getCurrency = computed(() => (currency: CurrencyRates) => {
 	--v-border-opacity: 1;
 }
 </style>
-@/utils/numberFormats
+@/utils/numberFormats @/global-vars @/global-var

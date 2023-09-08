@@ -1,26 +1,17 @@
 <template>
 	<div>
-		<v-breadcrumbs :items="breadcrumbs">
-			<template #divider>
-				<v-icon :icon="mdiChevronRight" />
-			</template>
-		</v-breadcrumbs>
+		<PageBreadcrumbs :breadcrumbs="breadcrumbs" />
 
 		<app-loader v-if="isLoading" page />
-		<v-card v-else-if="record" class="mt-4 pa-3" max-width="800" color="card-1">
-			<!-- <template #image>
-				<v-icon
-					:icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
-					size="80px"
-					color="title"
-					class="mx-auto my-auto"
-					style="opacity: 0.5" />
-			</template> -->
 
+		<v-card v-else-if="record" class="mt-4 pa-3" max-width="800" color="card-1">
 			<div class="card-header d-flex justify-space-between">
 				<v-card-title class="flex-fill d-flex">
 					<div>
-						{{ `${t('pageTitles.details')} - ${record.category.title} (${t(record.type).toLocaleLowerCase()})` }}
+						{{
+							(!xs ? `${t('pageTitles.details')} - ` : '') +
+							`${record.category.title} (${t(record.type).toLocaleLowerCase()})`
+						}}
 					</div>
 					<span
 						:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
@@ -28,27 +19,9 @@
 						<v-icon :icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp" color="title" />
 					</span>
 				</v-card-title>
-				<div class="card-header-actions">
-					<v-btn variant="text" :icon="mdiPencil" color="primary" disabled />
-
-					<v-dialog v-model="confirmationDialog" :transition="VFadeTransition">
-						<template #activator="{ props }">
-							<v-btn variant="text" v-bind="props" :icon="mdiDelete" color="primary" />
-						</template>
-
-						<v-card width="100%" max-width="650px" class="mx-auto pt-4">
-							<v-card-title class="text-h5 text-center">{{ t('delete_record_confirmation') }}</v-card-title>
-							<v-card-actions class="mt-4 mt-sm-6">
-								<v-spacer></v-spacer>
-								<v-btn color="red-darken-1" variant="text" @click="confirmationDialog = false">
-									<span class="text-h6">{{ t('cancel') }}</span>
-								</v-btn>
-								<v-btn color="green-darken-1" variant="text" @click="deleteRecord">
-									<span class="text-h6">{{ t('submit') }}</span></v-btn
-								>
-							</v-card-actions>
-						</v-card>
-					</v-dialog>
+				<div class="card-header-actions d-flex justify-end">
+					<v-btn :icon="mdiPencil" variant="text" color="primary" @click="updateRecordDialog = true" />
+					<v-btn :icon="mdiDelete" variant="text" color="primary" @click="confirmationDialog = true" />
 				</div>
 			</div>
 
@@ -60,49 +33,27 @@
 
 				<p class="mt-4 mb-5">{{ t('category') + ': ' + record.category.title }}</p>
 
-				<v-expansion-panels v-if="record.details?.length" class="record__details mt-4 mt-sm-6">
-					<v-expansion-panel bg-color="panel">
-						<v-expansion-panel-title class="text-subtitle-1">{{ t('record_details') }}</v-expansion-panel-title>
-						<v-expansion-panel-text>
-							<div class="mt-2 d-flex flex-wrap">
-								<v-hover v-for="detail in record.details" :key="detail.id" #default="{ isHovering, props }">
-									<div
-										v-bind="props"
-										class="record-detail mb-2 text-fixed d-flex flex-column align-center"
-										:class="{ 'mr-3': record.details.length > 1 }"
-										@click="downloadDetail(detail)">
-										<div class="record-detail__file">
-											<small v-if="!isHovering" class="record-detail__ext text-primary">{{
-												detail.fullname.split('.').at(-1)
-											}}</small>
-											<v-icon :icon="mdiFile" size="88px" color="file-icon" />
-											<v-fade-transition>
-												<v-icon
-													v-if="isHovering"
-													:icon="mdiDownload"
-													class="download-icon"
-													size="24px"
-													color="primary" />
-											</v-fade-transition>
-										</div>
-										<span
-											class="record-detail__filename text-title text-center text-subtitle-2 w-100 text-truncate"
-											:style="{ 'text-decoration': isHovering ? 'underline' : 'none' }"
-											>{{ detail.fullname }}</span
-										>
-									</div>
-								</v-hover>
-							</div>
-						</v-expansion-panel-text>
-					</v-expansion-panel>
-					<a hidden ref="linkEl" v-bind="downloadState"></a>
-				</v-expansion-panels>
+				<RecordDetails
+					v-if="record.details?.length"
+					:details="record.details"
+					class="record__details mt-4 mt-sm-6" />
 
 				<small class="text-right d-block mt-4 mt-sm-6 mr-1">
-					{{ d(record.created_at, 'short') + (record.updated_at ? ` (${d(record.updated_at, 'short')})` : '') }}
+					{{
+						d(record.created_at, 'short') +
+						(record.updated_at ? ` (${t('updated_short')}. ${d(record.updated_at, 'short')})` : '')
+					}}
 				</small>
 			</v-card-text>
+
+			<UpdateRecordDialog v-model="updateRecordDialog" :record="record" @update-record="updateRecord" />
+
+			<ConfirmationDialog
+				v-model="confirmationDialog"
+				:title="t('delete_record_confirmation')"
+				@on-submit="deleteRecord" />
 		</v-card>
+
 		<div v-else class="mt-7 text-center text-primary text-h6">
 			<strong>
 				{{ `${t('record_with_id')}: ` }}
@@ -114,37 +65,23 @@
 </template>
 
 <script setup lang="ts">
-import { mdiTrendingUp, mdiTrendingDown, mdiDelete, mdiPencil, mdiFile, mdiDownload } from '@mdi/js';
-import { ref, computed, nextTick } from 'vue';
+import UpdateRecordDialog from '@/components/record/UpdateRecordDialog.vue';
+import ConfirmationDialog from '@/components/UI/ConfirmationDialog.vue';
+import PageBreadcrumbs, { Breadcrumb } from '@/components/UI/PageBreadcrumbs.vue';
+import RecordDetails from '@/components/record/RecordDetails.vue';
+import { mdiTrendingUp, mdiTrendingDown, mdiDelete, mdiPencil } from '@mdi/js';
+import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
 import { useRoute } from 'vue-router/auto';
 import { useMeta } from 'vue-meta';
-import { mdiChevronRight } from '@mdi/js';
-import { RecordService } from '@/services/record';
+import { RecordDataToUpdate, RecordService, RecordWithDetails } from '@/services/record';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
-import { RecordDetail } from '@/services/record';
-import { RouteNamedMap } from 'vue-router/auto/routes';
-import {
-	VBreadcrumbs,
-	VExpansionPanel,
-	VExpansionPanels,
-	VExpansionPanelTitle,
-	VExpansionPanelText,
-	VHover,
-	VFadeTransition,
-	VDialog,
-} from 'vuetify/components';
 import { useRouter } from 'vue-router';
-
-interface Breadcrumbs {
-	title: string;
-	to?: keyof RouteNamedMap;
-	disabled?: boolean;
-}
+import { useDisplay } from 'vuetify';
 
 useMeta({ title: 'pageTitles.details' });
 
@@ -152,73 +89,58 @@ const route = useRoute('/detail/[id]');
 const router = useRouter();
 const { t, d, n } = useI18n({ useScope: 'global' });
 const { cf } = useCurrencyFilter();
-const { userCurrency } = storeToRefs(useUserStore());
+const { xs } = useDisplay();
+const { showMessage } = useSnackbarStore();
+const { info, userCurrency } = storeToRefs(useUserStore());
 
-const breadcrumbs = computed<Breadcrumbs[]>(() =>
-	(
-		[
-			{ title: t('menu.history'), to: '/history' },
-			{ title: record.value?.type === 'income' ? 'Доход' : 'Расход', disabled: true },
-		] as Breadcrumbs[]
-	).filter(Boolean)
-);
+const breadcrumbs = computed<Breadcrumb[]>(() => [
+	{ title: t('menu.history'), to: '/history' },
+	{ title: record.value?.type === 'income' ? 'Доход' : 'Расход', disabled: true },
+]);
 
-const { state: record, isLoading } = useAsyncState(
-	async () => {
-		return RecordService.fetchRecordById(route.params.id as string);
+const { state: record, isLoading } = useAsyncState(RecordService.fetchRecordById(route.params.id), null, {
+	onError: e => {
+		console.error(e);
+		showMessage('no_record_found', 'red-darken-3');
 	},
-	null,
-	{
-		onError: e => {
-			console.error(e);
-			const { showMessage } = useSnackbarStore();
-			showMessage('no_record_found', 'red-darken-3');
-		},
-	}
-);
+});
 
 const confirmationDialog = ref(false);
-
+const canDeleteRecord = computed(
+	() => record.value?.type === 'outcome' || info.value!.bill >= (record.value?.amount || 0)
+);
 const deleteRecord = async () => {
-	await RecordService.deleteRecordById(route.params.id as string);
-	confirmationDialog.value = false;
-	router.push('/history');
+	if (canDeleteRecord.value) {
+		try {
+			await RecordService.deleteRecordById(record.value?.id ?? route.params.id);
+			showMessage(t('record_deleted_succesfully'));
+			router.push('/history');
+		} catch (err) {
+			showMessage(t('error_delete_record'), 'red-darken-3');
+		}
+	} else {
+		showMessage(
+			t('lack_of_amount') +
+				` (${n(cf.value((record.value?.amount || 0) - info.value!.bill), {
+					key: 'currency',
+					currency: userCurrency.value,
+				})})`,
+			'red-darken-3'
+		);
+	}
 };
 
-const linkEl = ref<HTMLLinkElement>();
-const downloadState = ref({
-	href: '',
-	download: '',
-});
-const downloadDetail = async (detail: RecordDetail) => {
-	const downloadURL = await RecordService.downloadRecordDetail(detail.fullpath);
-	downloadState.value = { href: downloadURL || detail.public_url || '', download: detail.fullname };
-	await nextTick();
-	linkEl.value?.click();
+const updateRecordDialog = ref(false);
+const updateRecord = async (recordData: RecordDataToUpdate) => {
+	try {
+		isLoading.value = true;
+		const updatedRecord = await RecordService.updateRecord(record.value?.id || route.params.id, recordData);
+		record.value = { ...record.value, ...updatedRecord } as RecordWithDetails;
+		showMessage(t('record_updated_succesfully'));
+	} catch (err) {
+		showMessage(t('error_update_record'), 'red-darken-3');
+	} finally {
+		isLoading.value = false;
+	}
 };
 </script>
-
-<style lang="scss" scoped>
-.record-detail {
-	cursor: pointer;
-	max-width: 100px;
-	&__file {
-		position: relative;
-	}
-	&__ext {
-		display: inline-block;
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		z-index: 100;
-		transform: translate(-50%, -25%);
-	}
-}
-.download-icon {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -25%);
-	z-index: 100;
-}
-</style>

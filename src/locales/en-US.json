@@ -14,7 +14,13 @@
 		"username_exists": "This username already exists",
 		"email_rate_limit_exceeded": "Email rate limit exceeded"
 	},
+	"updated_short": "upd",
 	"error_loading_currency": "Error loading currency",
+	"edit_record": "Edit record",
+	"record_deleted_succesfully": "Record deleted successfully",
+	"record_updated_succesfully": "Record updated successfully",
+	"error_update_record": "Error update record",
+	"error_delete_record": "Error delete record",
 	"submit": "Submit",
 	"cancel": "Cancel",
 	"delete_record_confirmation": "Are you sure you want to delete this record?",

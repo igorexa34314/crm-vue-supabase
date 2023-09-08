@@ -3,8 +3,8 @@
 		<template #message="{ message }">
 			{{ t(message) }}
 		</template>
-		<template #append-inner>
-			<slot name="append-inner" />
+		<template #append-inner="slotProps">
+			<slot name="append-inner" v-bind="slotProps" />
 		</template>
 	</v-text-field>
 </template>
@@ -24,7 +24,7 @@ const props = withDefaults(
 );
 
 defineSlots<{
-	'append-inner': any;
+	'append-inner': VTextField['$slots']['append-inner'];
 }>();
 
 const { t } = useI18n();

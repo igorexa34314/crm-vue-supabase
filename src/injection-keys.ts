@@ -2,7 +2,7 @@ import { InjectionKey } from 'vue';
 import { Currency } from '@/services/currency';
 import { UseAsyncStateReturn } from '@vueuse/core';
 
-type CurrencyAPIResult = UseAsyncStateReturn<Currency | null | undefined, [], true>;
+type CurrencyAPIResult = UseAsyncStateReturn<Currency, [], true>;
 
 export interface CurrencyReturn extends Pick<CurrencyAPIResult, 'isLoading' | 'isReady'> {
 	currency: CurrencyAPIResult['state'];

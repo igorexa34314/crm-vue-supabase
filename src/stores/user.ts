@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { Tables } from '@/database.types';
-import { useSnackbarStore } from '@/stores/snackbar';
-import { DEFAULT_LOCALE, DEFAULT_CURRENCY, LOCALE_KEY } from '@/globals';
+import { DEFAULT_LOCALE, SERVER_CURRENCY, LOCALE_KEY } from '@/global-vars';
+import { CurrencyRates } from '@/services/currency';
 
 export type UserInfo = Omit<Tables<'profiles'>, 'updated_at'>;
 
@@ -17,10 +17,10 @@ export const useUserStore = defineStore('info', () => {
 	const $reset = () => {
 		info.value = null;
 	};
-	const userCurrency = computed(() => info.value?.currency || DEFAULT_CURRENCY);
+	const userCurrency = computed(() => info.value?.currency || SERVER_CURRENCY);
 
 	const fallbackUserCurrency = () => {
-		setInfo({ ...(info.value as UserInfo), currency: DEFAULT_CURRENCY });
+		setInfo({ ...(info.value as UserInfo), currency: SERVER_CURRENCY });
 	};
 
 	const setLocale = () => {
@@ -30,23 +30,27 @@ export const useUserStore = defineStore('info', () => {
 		});
 	};
 
-	const $subscribeLocale = (cb: (locale: string) => Promise<void>) => {
+	const getUserCurrency = computed(() => info.value?.currency || SERVER_CURRENCY);
+
+	const $subscribeLocale = (cb: (newLocale: string) => void | Promise<void>) => {
 		return watch(
 			() => info.value?.locale,
 			async newVal => {
 				if (newVal) {
-					try {
-						isLocaleLoading.value = true;
-						await cb(newVal);
-					} catch (err) {
-						const { showMessage } = useSnackbarStore();
-						showMessage('error_loading_locale', 'red-darken-3');
-					} finally {
-						isLocaleLoading.value = false;
-					}
+					await cb(newVal);
 				}
-			},
-			{ deep: true }
+			}
+		);
+	};
+
+	const $subscribeCurrency = (cb: (newCurrency: CurrencyRates) => void | Promise<void>) => {
+		return watch(
+			() => info.value?.currency,
+			async newVal => {
+				if (newVal) {
+					await cb(newVal);
+				}
+			}
 		);
 	};
 
@@ -54,10 +58,12 @@ export const useUserStore = defineStore('info', () => {
 		info,
 		isLocaleLoading,
 		userCurrency,
+		getUserCurrency,
 		setInfo,
 		fallbackUserCurrency,
 		$reset,
 		$subscribeLocale,
+		$subscribeCurrency,
 		setLocale,
 	};
 });

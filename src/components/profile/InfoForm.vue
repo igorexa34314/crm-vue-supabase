@@ -130,7 +130,7 @@ import { CurrencyRates } from '@/services/currency';
 import { currencyKey } from '@/injection-keys';
 import { useDisplay } from 'vuetify';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from '@/globals';
+import { SERVER_CURRENCY, DEFAULT_LOCALE } from '@/global-vars';
 import isEqual from 'lodash/isEqual';
 
 const props = withDefaults(
@@ -153,7 +153,7 @@ const infoStore = useUserStore();
 const { currency } = inject(currencyKey)!;
 
 const currencies = computed(() => {
-	const currencyNames = (currency.value ? Object.keys(currency.value.rates) : [DEFAULT_CURRENCY]) as CurrencyRates[];
+	const currencyNames = (currency.value ? Object.keys(currency.value.rates) : [SERVER_CURRENCY]) as CurrencyRates[];
 	return currencyNames.map(c => ({ title: t(`currencies.${c}`) + ` (${c})`, value: c }));
 });
 
@@ -173,7 +173,7 @@ const formState = ref<Partial<Omit<FormInfo, 'birthday_date'>> & { birthday_date
 	birthday_date: null,
 	gender: 'unknown',
 	locale: DEFAULT_LOCALE,
-	currency: DEFAULT_CURRENCY,
+	currency: SERVER_CURRENCY,
 	avatar: [],
 });
 const datePickerDate = computed({

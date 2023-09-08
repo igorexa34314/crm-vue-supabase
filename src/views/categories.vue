@@ -34,7 +34,7 @@ import { CategoryService, Category } from '@/services/category';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { DEFAULT_CATEGORY_LIMIT as defaultLimit } from '@/globals';
+import { DEFAULT_CATEGORY_LIMIT as defaultLimit } from '@/global-vars';
 
 // Page title: Categories
 useMeta({ title: 'pageTitles.categories' });

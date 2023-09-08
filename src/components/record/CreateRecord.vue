@@ -1,7 +1,7 @@
 <template>
 	<v-form
 		ref="form"
-		v-if="formState.category_id"
+		v-if="categories.length"
 		@submit.prevent="submitHandler"
 		class="record-form mt-8"
 		:class="xs ? 'px-2' : 'px-4'">
@@ -15,13 +15,7 @@
 			class="text-input" />
 
 		<v-radio-group v-model="formState.type" class="mt-3 text-input">
-			<v-radio
-				v-for="tp in ['income', 'outcome']"
-				:key="tp"
-				:label="t(tp)"
-				:value="tp"
-				density="comfortable"
-				color="radio" />
+			<v-radio v-for="tp in recordTypes" :key="tp" :label="t(tp)" :value="tp" density="comfortable" color="radio" />
 		</v-radio-group>
 
 		<LocalizedInput
@@ -77,7 +71,7 @@ import { record as validations } from '@/utils/validations';
 import { Category } from '@/services/category';
 import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
-import { DEFAULT_CURRENCY, DEFAULT_RECORD_AMOUNT, DEFAULT_BILL } from '@/globals';
+import { SERVER_CURRENCY, DEFAULT_RECORD_AMOUNT, DEFAULT_BILL, recordTypes } from '@/global-vars';
 
 const props = withDefaults(
 	defineProps<{
@@ -94,7 +88,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	createRecord: [data: Omit<RecordForm, 'date'>];
+	createRecord: [data: RecordForm];
 }>();
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
@@ -118,22 +112,22 @@ watchEffect(() => {
 	formState.value.category_id = props.categories[0].id;
 	formState.value.amount = Math.round(cf.value(props.defaultAmount) / 10) * 10;
 });
-const canCreateRecord = computed(() => {
-	return formState.value.type === 'income' ? true : cf.value(info.value!.bill) >= formState.value.amount;
-});
+const canCreateRecord = computed(
+	() => formState.value.type === 'income' || cf.value(info.value!.bill) >= formState.value.amount
+);
 
 const submitHandler = async () => {
 	const valid = (await form.value?.validate())?.valid;
 	if (valid && canCreateRecord.value) {
 		const { amount, ...data } = formState.value;
-		emit('createRecord', { ...data, amount: cf.value(amount, undefined, 'reverse') });
+		emit('createRecord', { ...data, amount: cf.value(amount, { type: 'reverse' }) });
 		resetForm();
-	} else if (!canCreateRecord.value) {
+	} else {
 		showMessage(
 			t('lack_of_amount') +
 				` (${n(formState.value.amount - cf.value(info.value?.bill || DEFAULT_BILL), {
 					key: 'currency',
-					currency: info.value?.currency || DEFAULT_CURRENCY,
+					currency: info.value?.currency || SERVER_CURRENCY,
 				})})`,
 			'red-darken-3'
 		);

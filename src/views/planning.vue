@@ -69,7 +69,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
 import { VProgressLinear, VTooltip } from 'vuetify/components';
-import { DEFAULT_BILL } from '@/globals';
+import { DEFAULT_BILL } from '@/global-vars';
 
 useMeta({ title: 'pageTitles.plan' });
 

@@ -4,7 +4,8 @@ import fallbackMessages from '@intlify/unplugin-vue-i18n/messages';
 import datetimeFormats from '@/utils/datetimeFormats.json';
 import numberFormats from '@/utils/numberFormats';
 import { LocaleService } from '@/services/locale';
-import { availableLocales, LOCALE_KEY, DEFAULT_LOCALE } from '@/globals';
+import { availableLocales, LOCALE_KEY, DEFAULT_LOCALE } from '@/global-vars';
+import { useSnackbarStore } from '@/stores/snackbar';
 
 export const initI18n = async () => {
 	const locale: string = JSON.parse(localStorage.getItem(LOCALE_KEY) || 'null') || DEFAULT_LOCALE;
@@ -50,14 +51,18 @@ const createI18nInstance = (locale: string, messages: { [key: string]: any } | u
 export const setI18nLanguage = async (i18n: I18n<any, any, {}, string, false>, locale: string = DEFAULT_LOCALE) => {
 	// Load locale if not available yet.
 	if (!i18n.global.availableLocales.includes(locale)) {
-		const messages = await LocaleService.fetchLocaleTranslation(locale);
-
-		if (!messages) {
-			return;
+		try {
+			const messages = await LocaleService.fetchLocaleTranslation(locale);
+			if (!messages) {
+				return;
+			}
+			// Add locale.
+			i18n.global.setLocaleMessage(locale, messages);
+			await nextTick();
+		} catch (err) {
+			//@ts-ignore
+			useSnackbarStore().showMessage(i18n.global.t('error_loading_locale'));
 		}
-		// Add locale.
-		i18n.global.setLocaleMessage(locale, messages);
-		await nextTick();
 	}
 	localStorage.setItem(LOCALE_KEY, JSON.stringify(locale));
 	i18n.global.locale.value = locale;

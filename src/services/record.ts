@@ -4,7 +4,7 @@ import { Category } from '@/services/category';
 import { supabase } from '@/supabase';
 import { errorHandler } from '@/utils/errorHandler';
 import { v4 as uuidv4 } from 'uuid';
-import { DEFAULT_RECORDS_PER_PAGE } from '@/globals';
+import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
 
 export type RecordType = Enums<'record_type'>;
 export type Record = Omit<Tables<'records'>, 'user_id'>;
@@ -14,26 +14,23 @@ export type RecordWithCategory = Omit<Record, 'category_id'> & { category: Categ
 export type RecordWithDetails = RecordWithCategory & { details: RecordDetail[] };
 
 export type RecordForm = Omit<Record, 'updated_at' | 'created_at' | 'id'> & { details: File[] };
+export type RecordDataToUpdate = Pick<RecordForm, 'amount' | 'description' | 'type'>;
 
 export type SortType = 'asc' | 'desc';
 export type SortFields = keyof Tables<'records'>;
 
 export class RecordService {
 	static async createRecord({ details, ...record }: RecordForm) {
-		try {
-			const { error, data: newRecord } = await supabase.from('records').insert(record).select('*').single();
-			if (error) throw error;
-			if (details?.length && newRecord?.id) {
-				await this.uploadRecordDetails(newRecord?.id, details);
-			}
-			return newRecord;
-		} catch (e) {
-			errorHandler(e);
+		const { error, data: newRecord } = await supabase.from('records').insert(record).select('*').single();
+		if (error) return errorHandler(error);
+		if (details?.length && newRecord?.id) {
+			await this.uploadRecordDetails(newRecord?.id, details);
 		}
+		return newRecord;
 	}
 
-	private static recordWithCategoryQuery = `id, description, amount, type, created_at, 
-				category:categories (id, title, limit)` as const;
+	private static recordWithCategoryQuery =
+		`id, description, amount, type, created_at, updated_at, category:categories (id, title, limit)` as const;
 
 	private static recordWithDetailQuery = `${this.recordWithCategoryQuery}, details:record_details(*)` as const;
 
@@ -147,7 +144,7 @@ export class RecordService {
 		}
 	}
 
-	static async updateRecord(recordId: Record['id'], recordData: Pick<Record, 'amount' | 'description' | 'type'>) {
+	static async updateRecord(recordId: Record['id'], recordData: RecordDataToUpdate) {
 		const { error, data: updatedRecord } = await supabase
 			.from('records')
 			.update(recordData)

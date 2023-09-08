@@ -45,7 +45,7 @@ const emit = defineEmits<{
 }>();
 
 defineSlots<{
-	label: any;
+	label(): any;
 }>();
 
 const datePickerDateItems = computed(() => [

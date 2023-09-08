@@ -21,7 +21,7 @@
 import { useI18n } from 'vue-i18n';
 import { useDarkModeStore } from '@/stores/darkMode';
 import GlobalSnackbar from '@/components/app/GlobalSnackbar.vue';
-import { AppTitle } from '@/globals';
+import { AppTitle } from '@/global-vars';
 
 const { t } = useI18n({ useScope: 'global' });
 

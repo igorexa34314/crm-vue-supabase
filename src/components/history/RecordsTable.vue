@@ -25,7 +25,7 @@
 						<td>{{ rec.index }}</td>
 						<td>{{ n(cf(rec.amount), { key: 'currency', currency: userCurrency }) }}</td>
 						<td>{{ d(rec.created_at, smAndDown ? 'shortdate' : 'short') }}</td>
-						<td class="record-category text-truncate">{{ rec.category?.title }}</td>
+						<td class="record-category text-truncate">{{ rec.category.title }}</td>
 						<td>
 							<span
 								:class="rec.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"

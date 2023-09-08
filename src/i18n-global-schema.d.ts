@@ -5,7 +5,7 @@
  * you need to import the some interfaces
  */
 import { DefineLocaleMessage, DefineDateTimeFormat, DefineNumberFormat } from 'vue-i18n';
-import { availableLocales } from '@/globals';
+import { availableLocales } from '@/global-vars';
 import datetimeFormats from '@/utils/datetimeFormats.json';
 import enUS from '@/locales/en-US.json';
 

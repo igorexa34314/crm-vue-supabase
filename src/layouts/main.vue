@@ -10,10 +10,7 @@
 			</div>
 		</v-main>
 
-		<v-tooltip
-			activator=".fixed-action-btn"
-			:text="t('create_record')"
-			content-class="bg-fixed text-primary font-weight-medium">
+		<v-tooltip :text="t('create_record')" content-class="bg-fixed text-primary font-weight-medium">
 			<template #activator="{ props }">
 				<v-btn
 					color="fixed"
@@ -59,7 +56,7 @@ const {
 	isLoading,
 	isReady,
 	execute: fetchCurrency,
-} = useAsyncState(CurrencyService.fetchCurrency, DEFAULT_CURRENCY_RESPONSE, {
+} = useAsyncState(() => CurrencyService.fetchCurrency(infoStore.getUserCurrency), DEFAULT_CURRENCY_RESPONSE, {
 	immediate: false,
 	onError: e => {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_loading_currency'), 'red-darken-3');
@@ -76,16 +73,18 @@ onMounted(async () => {
 		if (!infoStore.info || !Object.keys(infoStore.info).length) {
 			userInfoChannel = await UserService.fetchAndSubscribeInfo();
 		}
-		await fetchCurrency();
 	} catch (e) {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
-	} finally {
-		loading.value = false;
 	}
+});
+
+const unsubCurr = infoStore.$subscribeCurrency(async () => {
+	await fetchCurrency();
 });
 
 onUnmounted(() => {
 	userInfoChannel?.unsubscribe();
+	unsubCurr();
 	infoStore.$reset();
 });
 

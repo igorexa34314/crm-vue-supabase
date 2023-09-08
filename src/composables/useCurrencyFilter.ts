@@ -1,28 +1,24 @@
 import { computed, inject } from 'vue';
 import { currencyKey } from '@/injection-keys';
-import { useUserStore } from '@/stores/user';
 import { CurrencyRates } from '@/services/currency';
+import { SERVER_CURRENCY } from '@/global-vars';
 
 export const useCurrencyFilter = () => {
-	const { currency } = inject(currencyKey)!;
-
-	const infoStore = useUserStore();
+	const { currency: currencyRates } = inject(currencyKey)!;
 
 	const currencyFilter = computed(
-		() =>
-			(amount: number, currencyType?: CurrencyRates, type: 'direct' | 'reverse' = 'direct') => {
-				if (!currencyType) {
-					currencyType = infoStore.info?.currency || 'USD';
-				}
-				if (currency.value && Object.keys(currency.value).length) {
-					return +(
-						type === 'direct'
-							? amount * currency.value.rates[currencyType]
-							: amount / currency.value.rates[currencyType]
-					).toFixed(2);
-				}
+		() => (amount: number, options?: { currency?: CurrencyRates; type?: 'direct' | 'reverse' }) => {
+			// If no currencies or default currency response
+			if (!currencyRates.value || Object.keys(currencyRates.value.rates).length <= 1) {
 				return amount;
 			}
+
+			const currencyRate = 1 / currencyRates.value.rates[options?.currency || SERVER_CURRENCY];
+
+			return +(!options?.type || options.type === 'direct' ? amount * currencyRate : amount / currencyRate).toFixed(
+				2
+			);
+		}
 	);
 
 	return { cf: currencyFilter };

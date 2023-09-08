@@ -1,6 +1,6 @@
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/supabase';
-import { DEFAULT_BILL } from '@/globals';
+import { DEFAULT_BILL } from '@/global-vars';
 import { SignInWithOAuthCredentials, User } from '@supabase/supabase-js';
 
 export interface UserCredentials {
@@ -90,13 +90,9 @@ export class AuthService {
 	}
 
 	static async signInWithGoogle() {
-		try {
-			const { data, error } = await this.signInWithOAuthProvider('google');
-			if (error) throw error;
-			return data.url;
-		} catch (err) {
-			errorHandler(err);
-		}
+		const { data, error } = await this.signInWithOAuthProvider('google');
+		if (error) return errorHandler(error);
+		return data.url;
 	}
 
 	static async signInWithFacebook() {

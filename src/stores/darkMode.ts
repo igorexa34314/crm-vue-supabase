@@ -2,7 +2,7 @@ import { watchEffect } from 'vue';
 import { useTheme } from 'vuetify';
 import { defineStore } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
-import { vuetifyThemeNames, DARK_MODE_KEY } from '@/globals';
+import { vuetifyThemeNames, DARK_MODE_KEY } from '@/global-vars';
 
 export const useDarkModeStore = defineStore(DARK_MODE_KEY, () => {
 	const theme = useTheme();

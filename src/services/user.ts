@@ -41,18 +41,16 @@ export class UserService {
 	}
 
 	static async fetchAndSubscribeInfo() {
-		try {
-			const { setInfo } = useUserStore();
-			const uid = await AuthService.getUserId();
-			const info = await UserService.getUserById(uid);
-			setInfo(info);
-			return UserService.subscribeInfo(uid, userInfo => {
-				setInfo(userInfo);
-			});
-		} catch (err) {
-			errorHandler(err);
-			return null;
+		const { setInfo } = useUserStore();
+		const uid = await AuthService.getUserId();
+		if (!uid) {
+			throw new Error('user_unauthenticated');
 		}
+		const info = await UserService.getUserById(uid);
+		setInfo(info);
+		return UserService.subscribeInfo(uid, userInfo => {
+			setInfo(userInfo);
+		});
 	}
 
 	static async updateUserInfo(data: Partial<UserInfo>) {
@@ -61,26 +59,26 @@ export class UserService {
 	}
 
 	static async updateUserAvatar(files: File[]) {
-		try {
-			if (files.length !== 1) {
-				throw new Error('You should profide only 1 file');
+		if (files.length !== 1) {
+			throw new Error('You should profide only 1 file');
+		}
+		const avatar = files[0];
+		if (avatar instanceof File) {
+			const uid = await AuthService.getUserId();
+			if (!uid) {
+				throw new Error('user_unauthenticated');
 			}
-			const avatar = files[0];
-			if (avatar instanceof File) {
-				const uid = await AuthService.getUserId();
-				const { error, data } = await supabase.storage
-					.from('avatars')
-					.upload(`${uid}/${uuidv4()}.${avatar.name.split('.').at(-1)}`, avatar);
-				if (error) throw error;
-				if (data.path) {
-					const {
-						data: { publicUrl },
-					} = supabase.storage.from('avatars').getPublicUrl(data.path);
-					await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', uid);
-				}
+			const { error, data } = await supabase.storage
+				.from('avatars')
+				.upload(`${uid}/${uuidv4()}.${avatar.name.split('.').at(-1)}`, avatar);
+			if (error) return errorHandler(error);
+			if (data.path) {
+				const {
+					data: { publicUrl },
+				} = supabase.storage.from('avatars').getPublicUrl(data.path);
+				const { error } = await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', uid);
+				if (error) return errorHandler(error);
 			}
-		} catch (e) {
-			errorHandler(e);
 		}
 	}
 }

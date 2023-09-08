@@ -27,7 +27,7 @@ import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { CategoryService } from '@/services/category';
 import { RecordService, RecordForm } from '@/services/record';
-import { DEFAULT_RECORD_AMOUNT as defaultAmount } from '@/globals';
+import { DEFAULT_RECORD_AMOUNT as defaultAmount } from '@/global-vars';
 
 useMeta({ title: 'pageTitles.newRecord' });
 

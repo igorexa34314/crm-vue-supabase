@@ -52,7 +52,7 @@ import { VPagination } from 'vuetify/components';
 import { onUnmounted, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router/auto';
 import { useAsyncState } from '@vueuse/core';
-import { DEFAULT_RECORDS_PER_PAGE } from '@/globals';
+import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
 
 useMeta({ title: 'pageTitles.history' });
 
