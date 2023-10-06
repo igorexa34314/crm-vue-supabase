@@ -37,6 +37,7 @@ env:
    VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
    VITE_EXCHANGER_API_URL: ${{ vars.VITE_EXCHANGER_API_URL }}
+   VITE_EXCHANGER_API_KEY: ${{ secrets.VITE_EXCHANGER_API_KEY }}
 jobs:
    # Single deploy job since we're just deploying
    deploy:
