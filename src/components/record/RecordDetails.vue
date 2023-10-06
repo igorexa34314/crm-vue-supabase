@@ -63,7 +63,7 @@ const downloadState = ref({
 });
 const downloadDetail = async (detail: RecordDetail) => {
 	const downloadURL = await RecordService.downloadRecordDetail(detail.fullpath);
-	downloadState.value = { href: downloadURL || detail.public_url || '', download: detail.fullname };
+	downloadState.value = { href: downloadURL || '', download: detail.fullname };
 	await nextTick();
 	linkEl.value?.click();
 };

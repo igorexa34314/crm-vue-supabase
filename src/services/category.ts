@@ -3,17 +3,16 @@ import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/supabase';
 import { Tables } from '@/database.types';
 
-export type Category = Omit<Tables<'categories'>, 'updated_at' | 'created_at' | 'user_id'>;
+export type Category = Pick<Tables<'categories'>, 'id' | 'title' | 'limit'>;
 
 export class CategoryService {
+	static categoryQuery = `id, title, limit` as const;
+
 	static async fetchCategories() {
 		const uid = await AuthService.getUserId();
-		if (!uid) {
-			throw new Error('user_unauthenticated');
-		}
 		const { error, data: categories } = await supabase
 			.from('categories')
-			.select(`id, limit, title`)
+			.select<typeof CategoryService.categoryQuery, Category>(CategoryService.categoryQuery)
 			.eq('user_id', uid)
 			.order('created_at', { ascending: false });
 		if (error) return errorHandler(error);
@@ -21,7 +20,9 @@ export class CategoryService {
 	}
 
 	static async fetchCategoriesSpendStats() {
-		const { error, data: categories } = await supabase.rpc('calculate_category_spend_for_auth_user');
+		const { error, data: categories } = await supabase
+			.rpc('calculate_category_spend_for_auth_user')
+			.select(`${CategoryService.categoryQuery}, percent, spend`);
 		if (error) return errorHandler(error);
 		return categories;
 	}
@@ -30,7 +31,7 @@ export class CategoryService {
 		const { error, data: newCategory } = await supabase
 			.from('categories')
 			.insert(categoryData)
-			.select(`id, limit, title`)
+			.select<typeof CategoryService.categoryQuery, Category>(CategoryService.categoryQuery)
 			.single();
 		if (error) return errorHandler(error);
 		return newCategory;
@@ -41,7 +42,7 @@ export class CategoryService {
 			.from('categories')
 			.update(categoryData)
 			.eq('id', categoryId)
-			.select(`id, limit, title`)
+			.select(CategoryService.categoryQuery)
 			.single();
 		if (error) return errorHandler(error);
 		return category;
@@ -50,7 +51,7 @@ export class CategoryService {
 	static async fetchCategoryById(id: Category['id']) {
 		const { error, data: category } = await supabase
 			.from('categories')
-			.select(`id, limit, title`)
+			.select(CategoryService.categoryQuery)
 			.eq('id', id)
 			.single();
 		if (error) return errorHandler(error);

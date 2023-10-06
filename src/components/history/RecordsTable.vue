@@ -1,73 +1,95 @@
 <template>
-	<v-table class="records-table" :density="xs ? 'comfortable' : 'default'" disabled>
-		<thead class="text-title">
+	<v-data-table-server
+		color="background"
+		v-model:page="page"
+		:items-per-page="perPage"
+		@update:items-per-page="val => emit('update:perPage', val)"
+		:headers="tableHeaders"
+		:items-length="totalRecords || records.length"
+		:items="records"
+		:loading="loading"
+		:sort-desc-icon="mdiMenuDown"
+		:sort-asc-icon="mdiMenuUp"
+		hide-default-footer
+		class="records-table elevation-1"
+		item-value="name"
+		@update:options="loadItems">
+		<template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
 			<tr>
-				<th>{{ '#' }}</th>
-				<th v-for="h in tableHeaders" :key="h.title">
-					<span @click="triggerSort(h.sortValue)">{{ t(h.title) }}</span>
-					<v-icon
-						v-if="sortField === h.sortValue"
-						:icon="sortType === 'asc' ? mdiMenuUp : mdiMenuDown"
-						size="small"
-						class="ml-1"
-						@click="triggerSort(h.sortValue)" />
-				</th>
+				<template v-for="column in columns" :key="column.key">
+					<td>
+						<span class="mr-2 cursor-pointer" @click="column.sortable ? toggleSort(column) : null">{{
+							te(column.title) ? t(column.title) : column.title
+						}}</span>
+						<template v-if="isSorted(column)">
+							<v-icon :icon="getSortIcon(column)" />
+						</template>
+					</td>
+				</template>
 			</tr>
-		</thead>
-		<tbody class="text-primary">
-			<template v-for="rec in records" :key="rec.id">
-				<v-hover #default="{ isHovering, props }">
-					<tr
-						@click="push({ name: '/detail/[id]', params: { id: rec.id } })"
-						class="record"
-						v-bind="props"
-						:class="isHovering ? 'bg-hover' : ''">
-						<td>{{ rec.index }}</td>
-						<td>{{ n(cf(rec.amount), { key: 'currency', currency: userCurrency }) }}</td>
-						<td>{{ d(rec.created_at, smAndDown ? 'shortdate' : 'short') }}</td>
-						<td class="record-category text-truncate">{{ rec.category.title }}</td>
-						<td>
-							<span
-								:class="rec.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
-								class="py-2 px-3 text-center text-trend">
-								<v-icon
-									:icon="rec.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
-									:class="{ 'mr-2': !smAndDown }"
-									:size="xs ? 'small' : 'default'" />
-								{{
-									smAndDown
-										? ''
-										: rec.type === 'income'
-										? t('income').toLowerCase()
-										: t('outcome').toLowerCase()
-								}}</span
-							>
-						</td>
-						<td v-if="!smAndDown">
-							<v-tooltip
-								:activator="`#rec-${rec.id}`"
-								text="Посмотреть запись"
-								location="bottom"
-								content-class="bg-tooltip font-weight-medium text-primary">
-								<template #activator="{ props }">
-									<v-btn
-										:id="`rec-${rec.id}`"
-										color="success"
-										@click="push({ name: '/detail/[id]', params: { id: rec.id } })">
-										<v-icon v-bind="props" :icon="mdiOpenInNew" />
-									</v-btn>
-								</template>
-							</v-tooltip>
-						</td>
-					</tr>
-				</v-hover>
-			</template>
-		</tbody>
-	</v-table>
+		</template>
+		<template #item="{ item: rec }: { item: RecordWithCategory & { index: number } }">
+			<v-hover #default="{ isHovering, props }">
+				<tr
+					v-bind="props"
+					@click="push({ name: '/detail/[id]', params: { id: rec.id } })"
+					:class="{ 'bg-hover': isHovering }"
+					class="record">
+					<td>{{ rec.index }}</td>
+					<td>{{ n(cf(rec.amount), { key: 'currency', currency: userCurrency }) }}</td>
+					<td>{{ d(rec.created_at, smAndDown ? 'shortdate' : 'short') }}</td>
+					<td class="record-category text-truncate">{{ rec.category.title }}</td>
+					<td>
+						<span
+							:class="rec.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
+							class="py-2 px-3 text-center text-trend">
+							<v-icon
+								:icon="rec.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
+								:class="{ 'mr-2': !smAndDown }"
+								:size="xs ? 'small' : 'default'" />
+							{{
+								smAndDown ? '' : rec.type === 'income' ? t('income').toLowerCase() : t('outcome').toLowerCase()
+							}}</span
+						>
+					</td>
+					<td v-if="!smAndDown">
+						<v-tooltip
+							:activator="`#rec-${rec.id}`"
+							text="Посмотреть запись"
+							location="bottom"
+							content-class="bg-tooltip font-weight-medium text-primary">
+							<template #activator="{ props }">
+								<v-btn
+									:id="`rec-${rec.id}`"
+									color="success"
+									@click="push({ name: '/detail/[id]', params: { id: rec.id } })">
+									<v-icon v-bind="props" :icon="mdiOpenInNew" />
+								</v-btn>
+							</template>
+						</v-tooltip>
+					</td>
+				</tr>
+			</v-hover>
+		</template>
+
+		<template #bottom="{ pageCount }">
+			<v-pagination
+				v-if="pageCount > 1"
+				v-model="page"
+				:length="pageCount"
+				:total-visible="xs ? 3 : 4"
+				class="mt-4"
+				density="comfortable"
+				:size="xs ? 'small' : 'default'"
+				color="primary"
+				:disabled="loading" />
+		</template>
+		<template #loading></template>
+	</v-data-table-server>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router/auto';
 import { mdiOpenInNew, mdiTrendingUp, mdiTrendingDown, mdiMenuUp, mdiMenuDown } from '@mdi/js';
 import { useI18n } from 'vue-i18n';
@@ -75,51 +97,66 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
-import { VTable, VTooltip, VHover } from 'vuetify/components';
-import { RecordWithCategory, SortFields, SortType } from '@/services/record';
+import { VTooltip, VPagination, VHover } from 'vuetify/components';
+import { RecordWithCategory } from '@/services/record';
+import { VDataTableServer } from 'vuetify/labs/VDataTable';
+import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
+
+export type SortEmitData = Pick<VDataTableServer, 'page' | 'itemsPerPage'> & {
+	sortBy?: Partial<VDataTableServer['sortBy'][number]>[];
+};
 
 const props = withDefaults(
 	defineProps<{
 		records: (RecordWithCategory & { index: number })[];
-		sortField?: SortFields;
-		sortType?: SortType;
+		totalRecords?: VDataTableServer['itemsLength'];
+		perPage?: VDataTableServer['itemsPerPage'];
+		loading?: boolean;
 	}>(),
 	{
-		sortField: 'created_at',
-		sortType: 'desc',
+		totalRecords: 0,
+		perPage: DEFAULT_RECORDS_PER_PAGE,
+		loading: false,
 	}
 );
 
 const emit = defineEmits<{
-	sort: [field: SortFields];
+	sort: [data: SortEmitData];
+	'update:perPage': [val: number];
 }>();
 
-const { t, d, n } = useI18n();
+const page = ref(1);
+const tableHeaders = computed(
+	() =>
+		[
+			{
+				title: '#',
+				align: 'start',
+				sortable: false,
+				key: 'index',
+			},
+			{ title: 'amount', key: 'amount', align: 'end' },
+			{ title: 'date', key: 'created_at', align: 'end' },
+			{ title: 'category', key: 'category_id', align: 'end' },
+			{ title: 'type', key: 'type', align: 'end' },
+			!smAndDown.value ? { title: 'open', key: 'open', align: 'end', sortable: false } : false,
+		].filter(Boolean) as VDataTableServer['headers']
+);
+
+const loadItems: VDataTableServer['onUpdate:options'] = ({ page, itemsPerPage, sortBy }: SortEmitData) => {
+	emit('sort', { page, itemsPerPage, sortBy });
+};
+
+const { te, t, d, n } = useI18n();
 const { push } = useRouter();
 const { smAndDown, xs } = useDisplay();
 const { cf } = useCurrencyFilter();
 const { userCurrency } = storeToRefs(useUserStore());
-
-const triggerSort = (field?: SortFields) => {
-	if (field) {
-		emit('sort', field);
-	}
-};
-const tableHeaders = computed(
-	() =>
-		[
-			{ title: 'amount', sortValue: 'amount' },
-			{ title: 'date', sortValue: 'created_at' },
-			{ title: 'category', sortValue: 'category_id' },
-			{ title: 'type', sortValue: 'type' },
-			{ title: smAndDown.value ? '' : 'open' },
-		].filter(h => !!h.title) as { title: string; sortValue?: SortFields }[]
-);
 </script>
 
 <style lang="scss" scoped>
 .records-table {
-	& thead tr th {
+	& thead tr td span {
 		cursor: pointer;
 	}
 	& tbody tr {

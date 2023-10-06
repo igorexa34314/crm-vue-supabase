@@ -1,5 +1,5 @@
 import { errorHandler } from '@/utils/errorHandler';
-import { useUserStore, UserInfo } from '@/stores/user';
+import { useUserStore } from '@/stores/user';
 import { AuthService } from '@/services/auth';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/supabase';
@@ -10,12 +10,12 @@ export interface UserCredentials {
 	email: string;
 	displayName?: string;
 }
+export type UserInfo = Tables<'profiles'>;
 
 export class UserService {
 	static async getUserById(uid: UserCredentials['uid']) {
-		const { error, data } = await supabase.from('profiles').select('*').eq('id', uid).single();
+		const { error, data: user } = await supabase.from('profiles').select('*').eq('id', uid).single();
 		if (error) return errorHandler(error);
-		const { updated_at, ...user } = data;
 		return user;
 	}
 
@@ -32,7 +32,7 @@ export class UserService {
 				},
 				payload => {
 					if (Object.keys(payload.new).length) {
-						const { updated_at, ...info } = payload.new as UserInfo & { updated_at: string };
+						const info = payload.new as UserInfo;
 						cb(info);
 					}
 				}
@@ -43,9 +43,6 @@ export class UserService {
 	static async fetchAndSubscribeInfo() {
 		const { setInfo } = useUserStore();
 		const uid = await AuthService.getUserId();
-		if (!uid) {
-			throw new Error('user_unauthenticated');
-		}
 		const info = await UserService.getUserById(uid);
 		setInfo(info);
 		return UserService.subscribeInfo(uid, userInfo => {

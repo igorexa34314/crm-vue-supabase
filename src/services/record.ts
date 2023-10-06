@@ -1,6 +1,6 @@
 import { Enums, Tables } from '@/database.types';
 import { AuthService } from '@/services/auth';
-import { Category } from '@/services/category';
+import { Category, CategoryService } from '@/services/category';
 import { supabase } from '@/supabase';
 import { errorHandler } from '@/utils/errorHandler';
 import { v4 as uuidv4 } from 'uuid';
@@ -16,7 +16,7 @@ export type RecordWithDetails = RecordWithCategory & { details: RecordDetail[] }
 export type RecordForm = Omit<Record, 'updated_at' | 'created_at' | 'id'> & { details: File[] };
 export type RecordDataToUpdate = Pick<RecordForm, 'amount' | 'description' | 'type'>;
 
-export type SortType = 'asc' | 'desc';
+export type SortOrder = 'asc' | 'desc' | undefined;
 export type SortFields = keyof Tables<'records'>;
 
 export class RecordService {
@@ -30,20 +30,17 @@ export class RecordService {
 	}
 
 	private static recordWithCategoryQuery =
-		`id, description, amount, type, created_at, updated_at, category:categories (id, title, limit)` as const;
+		`id, description, amount, type, created_at, updated_at, category:categories (${CategoryService.categoryQuery})` as const;
 
 	private static recordWithDetailQuery = `${this.recordWithCategoryQuery}, details:record_details(*)` as const;
 
 	static async fetchRecordsWithCategory(options?: {
 		sortBy?: SortFields;
-		sortType?: SortType;
+		order?: SortOrder;
 		page?: number;
 		perPage?: number;
 	}) {
 		const uid = await AuthService.getUserId();
-		if (!uid) {
-			throw new Error('user_unauthenticated');
-		}
 		const {
 			error,
 			data: records,
@@ -54,36 +51,13 @@ export class RecordService {
 				count: 'exact',
 			})
 			.eq('user_id', uid)
-			.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
+			.order(options?.sortBy || 'created_at', { ascending: options?.order !== 'desc' || !!options?.order })
 			.range(
 				((options?.page || 1) - 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE),
 				(options?.page || 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE) - 1
 			);
 		if (error) return errorHandler(error);
 		return { records, count };
-	}
-
-	static async loadMoreRecords(options?: {
-		sortBy?: SortFields;
-		sortType?: SortType;
-		page?: number;
-		perPage?: number;
-	}) {
-		const uid = await AuthService.getUserId();
-		if (!uid) {
-			throw new Error('user_unauthenticated');
-		}
-		const { error, data: records } = await supabase
-			.from('records')
-			.select<typeof this.recordWithCategoryQuery, RecordWithCategory>(this.recordWithCategoryQuery)
-			.eq('user_id', uid)
-			.order(options?.sortBy || 'created_at', { ascending: options?.sortType === 'asc' })
-			.range(
-				((options?.page || 1) - 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE),
-				(options?.page || 1) * (options?.perPage || DEFAULT_RECORDS_PER_PAGE) - 1
-			);
-		if (error) return errorHandler(error);
-		return records;
 	}
 
 	static async fetchRecordById(recordId: Record['id']) {
@@ -97,51 +71,41 @@ export class RecordService {
 	}
 
 	private static async uploadRecordDetails(recordId: Record['id'], files: File[]) {
-		const uploadPromises: Promise<Pick<RecordDetail, 'id' | 'fullpath' | 'public_url'> | undefined>[] = [];
-		for (const file of files) {
-			if (file instanceof File && file.size <= 2 * 1024 * 1024) {
-				uploadPromises.push(
-					(async () => {
-						const fileId = uuidv4();
-						const { error: uploadError, data } = await supabase.storage
-							.from('record_details')
-							.upload(`${recordId}/${fileId}.${file.name.split('.').at(-1)}`, file);
-						if (uploadError) errorHandler(uploadError);
-						if (!data?.path) throw new Error('cant_get_uploaded_file');
-						const {
-							data: { publicUrl },
-						} = supabase.storage.from('record_details').getPublicUrl(data?.path);
-						const { error: insertError } = await supabase.from('record_details').insert({
-							record_id: recordId,
-							public_url: publicUrl,
-							fullname: file.name,
-							size: file.size,
-							fullpath: data.path,
-						});
-						if (insertError) return errorHandler(insertError);
-						return { id: fileId, fullpath: data.path, public_url: publicUrl };
-					})()
-				);
-			}
-		}
+		const uploadPromises = files
+			.filter(file => file instanceof File && file.size <= 2 * 1024 * 1024)
+			.map(async file => {
+				const fileId = uuidv4();
+				const { error: uploadError, data: uploadData } = await supabase.storage
+					.from('record_details')
+					.upload(`${recordId}/${fileId}.${file.name.split('.').at(-1)}`, file);
+				if (uploadError) errorHandler(uploadError);
+				if (!uploadData?.path) throw new Error('cant_get_uploaded_file');
+				const { error: insertError, data: newDetail } = await supabase
+					.from('record_details')
+					.insert({
+						record_id: recordId,
+						fullname: file.name,
+						size: file.size,
+						fullpath: uploadData.path,
+					})
+					.select('*')
+					.single();
+				if (insertError) return errorHandler(insertError);
+				return newDetail;
+			});
 		const details = await Promise.all(uploadPromises);
 		return details;
 	}
 
 	static async getAllRecordDetails(detailsData: RecordDetail[]) {
-		const downloadPromises: Promise<string | undefined>[] = [];
-		for (const detail of detailsData) {
-			downloadPromises.push(this.downloadRecordDetail(detail.fullpath));
-		}
-		await Promise.all(downloadPromises);
+		const downloadPromises = detailsData.map(async detail => await this.downloadRecordDetail(detail.fullpath));
+		return (await Promise.all(downloadPromises)).filter(Boolean) as string[];
 	}
 
 	static async downloadRecordDetail(path: RecordDetail['fullpath']) {
 		const { error, data: blobFile } = await supabase.storage.from('record_details').download(path);
 		if (error) return errorHandler(error);
-		if (blobFile) {
-			return URL.createObjectURL(blobFile);
-		}
+		return blobFile ? URL.createObjectURL(blobFile) : null;
 	}
 
 	static async updateRecord(recordId: Record['id'], recordData: RecordDataToUpdate) {

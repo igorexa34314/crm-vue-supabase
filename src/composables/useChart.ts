@@ -1,4 +1,4 @@
-import { computed, unref, MaybeRef } from 'vue';
+import { computed, toValue, MaybeRef } from 'vue';
 import { ChartData, ChartOptions, ChartType } from 'chart.js/dist/types';
 import { Chart as ChartJS, CategoryScale, Title, Tooltip, Legend, ArcElement } from 'chart.js/auto';
 import { useI18n } from 'vue-i18n';
@@ -19,41 +19,44 @@ export const useChart = <T extends ChartType = 'pie'>(
 	const { t } = useI18n();
 	const theme = useTheme();
 
-	const chartOptions = computed<ChartOptions>(() => ({
-		responsive: true,
-		plugins: {
-			legend: {
-				position: 'left',
-				align: 'center',
-				labels: {
-					boxHeight: 30,
-					font: {
-						weight: 'bold',
-						size: 16,
+	const chartOptions = computed<ChartOptions<T>>(
+		() =>
+			({
+				responsive: true,
+				plugins: {
+					legend: {
+						position: 'left',
+						align: 'center',
+						labels: {
+							boxHeight: 30,
+							font: {
+								weight: 'bold',
+								size: 16,
+							},
+						},
+					},
+					title: {
+						display: true,
+						text: t('chart_title'),
+						color: theme.global.current.value.dark ? '#B8C7D3' : '#D50000',
+						font: {
+							size: 22,
+							lineHeight: '1.5',
+						},
 					},
 				},
-			},
-			title: {
-				display: true,
-				text: t('chart_title'),
-				color: theme.global.current.value.dark ? '#B8C7D3' : '#D50000',
-				font: {
-					size: 22,
-					lineHeight: '1.5',
-				},
-			},
-		},
-	}));
+			}) as ChartOptions<T>
+	);
 
 	const chartData = computed<ChartData<T>>(
 		() =>
 			({
-				labels: unref(inputData)?.map(d => d.label) || [],
+				labels: toValue(inputData)?.map(d => d.label) || [],
 				datasets: [
 					{
-						data: unref(inputData)?.map(d => d.data),
+						data: toValue(inputData)?.map(d => d.data),
 						backgroundColor: randomColor({
-							count: unref(inputData)?.length || 1,
+							count: toValue(inputData)?.length || 1,
 							hue: theme.global.current.value.dark ? '#0E5578' : 'random',
 							luminosity: theme.global.current.value.dark ? 'light' : 'bright',
 						}),

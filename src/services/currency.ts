@@ -14,16 +14,23 @@ export const DEFAULT_CURRENCY_RESPONSE = {
 
 export class CurrencyService {
 	static async fetchCurrency(base: CurrencyRates = SERVER_CURRENCY) {
-		const currenciesToFetch = availableCurrencies.join('%2C');
-		return fetch(import.meta.env.VITE_EXCHANGER_API_URL + `?base=${base}&symbols=${currenciesToFetch}`, {
+		return fetch(`${import.meta.env.VITE_EXCHANGER_API_URL}/${base}`, {
 			method: 'GET',
-			redirect: 'follow',
 			headers: new Headers({
-				'Content-Type': 'application/json',
+				Authorization: `Bearer ${import.meta.env.VITE_EXCHANGER_API_KEY}`,
 			}),
 		})
 			.then(response => response.json())
-			.then((result: Currency) => result || DEFAULT_CURRENCY_RESPONSE)
+			.then(result => {
+				const { conversion_rates, time_last_update_utc } = result;
+				if (conversion_rates && time_last_update_utc) {
+					return {
+						date: time_last_update_utc,
+						rates: Object.assign({}, ...availableCurrencies.map(c => ({ [c]: conversion_rates[c] }))),
+					};
+				}
+				return DEFAULT_CURRENCY_RESPONSE;
+			})
 			.catch(error => errorHandler(error));
 	}
 }

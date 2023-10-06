@@ -1,4 +1,4 @@
-import { SortType } from './services/record';
+import { SortOrder } from './services/record';
 
 export const AppTitle: string = import.meta.env.VITE_APP_TITLE || 'CRM VUE';
 export const SITE_KEY = '0x4AAAAAAAJbSXrFU6QhWigO';
@@ -25,4 +25,4 @@ export const DEFAULT_THEME =
 export const DEFAULT_CATEGORY_LIMIT = 100;
 export const DEFAULT_RECORD_AMOUNT = 20;
 export const DEFAULT_RECORDS_PER_PAGE = 5;
-export const DEFAULT_SORT_TYPE: SortType = 'desc';
+export const DEFAULT_SORT_TYPE: SortOrder = 'desc';

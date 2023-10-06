@@ -1,4 +1,5 @@
 import { PostgrestError } from '@supabase/supabase-js';
+import enUS from '@/locales/en-US.json';
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
@@ -44,21 +45,21 @@ export interface Database {
 					code: string;
 					name: string;
 					native_name: string;
-					translations: Database['public']['JsonSchemaTypes']['LocaleTranslations'];
+					translations: typeof enUS;
 					updated_at: string | null;
 				};
 				Insert: {
 					code: string;
 					name: string;
 					native_name: string;
-					translations?: Database['public']['JsonSchemaTypes']['LocaleTranslations'];
+					translations?: typeof enUS;
 					updated_at?: string | null;
 				};
 				Update: {
 					code?: string;
 					name?: string;
 					native_name?: string;
-					translations?: Database['public']['JsonSchemaTypes']['LocaleTranslations'];
+					translations?: typeof enUS;
 					updated_at?: string | null;
 				};
 				Relationships: [];
@@ -127,7 +128,6 @@ export interface Database {
 					fullname: string;
 					fullpath: string;
 					id: string;
-					public_url: string;
 					record_id: string;
 					size: number;
 				};
@@ -136,7 +136,6 @@ export interface Database {
 					fullname?: string;
 					fullpath: string;
 					id?: string;
-					public_url?: string;
 					record_id: string;
 					size: number;
 				};
@@ -145,7 +144,6 @@ export interface Database {
 					fullname?: string;
 					fullpath?: string;
 					id?: string;
-					public_url?: string;
 					record_id?: string;
 					size?: number;
 				};
@@ -217,6 +215,8 @@ export interface Database {
 					limit: number;
 					spend: number;
 					percent: number;
+					created_at: string;
+					updated_at: string;
 				}[];
 			};
 			change_user_password: {
@@ -234,9 +234,6 @@ export interface Database {
 		};
 		CompositeTypes: {
 			[_ in never]: never;
-		};
-		JsonSchemaTypes: {
-			LocaleTranslations: Exclude<Json, boolean | null | number | Json[]>;
 		};
 	};
 }

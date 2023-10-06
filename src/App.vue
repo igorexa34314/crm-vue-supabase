@@ -25,7 +25,7 @@ import { AppTitle } from '@/global-vars';
 
 const { t } = useI18n({ useScope: 'global' });
 
-const darkModeStore = useDarkModeStore();
+useDarkModeStore();
 </script>
 
 <style lang="scss">

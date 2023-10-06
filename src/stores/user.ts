@@ -1,12 +1,10 @@
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
-import { Tables } from '@/database.types';
 import { DEFAULT_LOCALE, SERVER_CURRENCY, LOCALE_KEY } from '@/global-vars';
 import { CurrencyRates } from '@/services/currency';
+import { UserInfo } from '@/services/user';
 
-export type UserInfo = Omit<Tables<'profiles'>, 'updated_at'>;
-
-export const useUserStore = defineStore('info', () => {
+export const useUserStore = defineStore('user', () => {
 	const info = ref<UserInfo | null>(null);
 
 	const isLocaleLoading = ref(false);

@@ -1,7 +1,7 @@
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/supabase';
 import { DEFAULT_BILL } from '@/global-vars';
-import { SignInWithOAuthCredentials, User } from '@supabase/supabase-js';
+import { SignInWithOAuthCredentials, Subscription, User } from '@supabase/supabase-js';
 
 export interface UserCredentials {
 	email: string;
@@ -11,8 +11,32 @@ export interface UserCredentials {
 
 const supportedOAuthProviders = ['google', 'facebook', 'github'] as const;
 let user: User | undefined;
+let subscription: Subscription | undefined;
 
 export class AuthService {
+	static getCurrentUser() {
+		return new Promise((resolve: (currentUser: typeof user) => void) => {
+			if (user) {
+				resolve(user);
+			} else {
+				subscription?.unsubscribe();
+				const { data } = supabase.auth.onAuthStateChange((event, session) => {
+					user = session?.user;
+					resolve(user);
+				});
+				subscription = data.subscription;
+			}
+		});
+	}
+
+	static async getUserId() {
+		const user = await AuthService.getCurrentUser();
+		if (!user) {
+			throw new Error('User unauthenticated');
+		}
+		return user.id;
+	}
+
 	static async login({ email, password }: UserCredentials) {
 		const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 		if (error) return errorHandler(error);
@@ -31,25 +55,6 @@ export class AuthService {
 			},
 		});
 		if (error) return errorHandler(error);
-	}
-
-	static async getUserId() {
-		return user?.id ?? (await this.fetchUserId());
-	}
-
-	static setUser(newUser: User) {
-		user = newUser;
-	}
-
-	static async fetchUserId() {
-		const {
-			data: { user },
-			error,
-		} = await supabase.auth.getUser();
-		if (error || !user || !user.id) {
-			throw new Error('User unauthenticated');
-		}
-		return user.id;
 	}
 
 	static async changeUserEmail(newEmail: string) {

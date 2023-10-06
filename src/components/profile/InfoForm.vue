@@ -120,11 +120,12 @@ import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
 import { ref, computed, watchEffect, inject } from 'vue';
 import { mdiSend } from '@mdi/js';
-import { UserInfo, useUserStore } from '@/stores/user';
+import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
 import { useAsyncState } from '@vueuse/core';
 import { LocaleService } from '@/services/locale';
 import { user as validations } from '@/utils/validations';
+import { UserInfo } from '@/services/user';
 import { VForm, VSelect, VRadio, VRadioGroup } from 'vuetify/components';
 import { CurrencyRates } from '@/services/currency';
 import { currencyKey } from '@/injection-keys';
@@ -143,7 +144,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	updateInfo: [info: Partial<UserInfo> & { avatar: File[] }];
+	updateInfo: [info: Partial<Omit<UserInfo, 'updated_at'>> & { avatar: File[] }];
 }>();
 
 const { t } = useI18n();
@@ -164,8 +165,11 @@ const form = ref<VForm>();
 type NonUndefinedOrNullObjectFields<T extends { [key: string]: any }> = {
 	[key in keyof T]: Exclude<T[key], null | undefined>;
 };
+
 type FormInfo = NonUndefinedOrNullObjectFields<UserInfo>;
-const formState = ref<Partial<Omit<FormInfo, 'birthday_date'>> & { birthday_date: string | null; avatar: File[] }>({
+const formState = ref<
+	Partial<Omit<FormInfo, 'updated_at' | 'birthday_date'>> & { birthday_date: string | null; avatar: File[] }
+>({
 	username: '',
 	first_name: '',
 	last_name: '',
@@ -187,16 +191,18 @@ const { state: locales } = useAsyncState(LocaleService.fetchAvailableLocales, []
 	},
 });
 
-const genderItems = computed<{ title: string; value: UserInfo['gender'] }[]>(() => [
-	{ title: t('user.gender.male'), value: 'male' },
-	{ title: t('user.gender.female'), value: 'female' },
-	{ title: t('user.gender.unknown'), value: 'unknown' },
-]);
+const genderItems = computed<{ title: string; value: UserInfo['gender'] }[]>(() =>
+	[
+		{ title: 'male', value: 'male' },
+		{ title: 'female', value: 'female' },
+		{ title: 'unknown', value: 'unknown' },
+	].map(item => ({ ...item, title: t(`user.gender.${item.title}`) }) as { title: string; value: UserInfo['gender'] })
+);
 
 //fillInfo
 watchEffect(() => {
 	if (info.value && Object.keys(info.value).length) {
-		const { bill, id, avatar_url, ...userdata } = info.value;
+		const { updated_at, bill, id, avatar_url, ...userdata } = info.value;
 		formState.value = { ...formState.value, ...userdata };
 	}
 });
@@ -206,7 +212,7 @@ const isInfoEqualsToStore = computed(() => {
 	if (!info.value || !Object.keys(info.value).length) {
 		return false;
 	}
-	const { bill, ...userdata } = info.value;
+	const { updated_at, bill, id, avatar_url, ...userdata } = info.value;
 	return isEqual(userdata, formInfo);
 });
 
