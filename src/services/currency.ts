@@ -1,5 +1,5 @@
 import { errorHandler } from '@/utils/errorHandler';
-import { SERVER_CURRENCY, availableCurrencies } from '@/global-vars';
+import { EXCHANGER_API_URL, EXCHANGER_API_KEY, availableCurrencies, SERVER_CURRENCY } from '@/global-vars';
 
 export type CurrencyRates = (typeof availableCurrencies)[number];
 export interface Currency {
@@ -7,30 +7,53 @@ export interface Currency {
 	date: Date;
 }
 
-export const DEFAULT_CURRENCY_RESPONSE = {
+const FALLBACK_CURRENCY_RESPONSE = {
 	rates: { [SERVER_CURRENCY]: 1 },
 	date: new Date(),
-} as Currency;
+};
+
+type API_RESPONSE_SUCCESS<Base extends string = 'USD'> = {
+	base_code: Base;
+	conversion_rates: Record<string, number>;
+	result: 'success';
+	time_last_update_utc: string;
+	time_next_update_utc: string;
+};
+
+interface API_RESPONSE_ERROR {
+	result: 'error';
+	'error-type': string;
+}
 
 export class CurrencyService {
-	static async fetchCurrency(base: CurrencyRates = SERVER_CURRENCY) {
-		return fetch(`${import.meta.env.VITE_EXCHANGER_API_URL}/${base}`, {
-			method: 'GET',
-			headers: new Headers({
-				Authorization: `Bearer ${import.meta.env.VITE_EXCHANGER_API_KEY}`,
-			}),
-		})
-			.then(response => response.json())
-			.then(result => {
-				const { conversion_rates, time_last_update_utc } = result;
-				if (conversion_rates && time_last_update_utc) {
-					return {
-						date: time_last_update_utc,
-						rates: Object.assign({}, ...availableCurrencies.map(c => ({ [c]: conversion_rates[c] }))),
-					};
-				}
-				return DEFAULT_CURRENCY_RESPONSE;
-			})
-			.catch(error => errorHandler(error));
+	static async fetchCurrency<Base extends string = typeof SERVER_CURRENCY>(base: Base): Promise<Currency> {
+		try {
+			const response = await fetch(`${EXCHANGER_API_URL}/${base}`, {
+				method: 'GET',
+				headers: new Headers({
+					Authorization: `Bearer ${EXCHANGER_API_KEY}`,
+				}),
+			});
+			const result: API_RESPONSE_SUCCESS<Base> = await response.json();
+
+			const { conversion_rates, time_last_update_utc } = result;
+			if (conversion_rates && time_last_update_utc) {
+				return {
+					date: new Date(time_last_update_utc),
+					rates: availableCurrencies.reduce(
+						(rates, c) => ({ ...rates, [c]: conversion_rates[c] }),
+						{} as Record<CurrencyRates, number>
+					),
+				};
+			}
+			return FALLBACK_CURRENCY_RESPONSE as Currency;
+		} catch (error) {
+			if ((error as unknown as API_RESPONSE_ERROR)?.result === 'error') {
+				errorHandler((error as unknown as API_RESPONSE_ERROR)['error-type']);
+			} else {
+				errorHandler(error);
+			}
+			return FALLBACK_CURRENCY_RESPONSE as Currency;
+		}
 	}
 }

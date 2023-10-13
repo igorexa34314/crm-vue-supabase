@@ -15,7 +15,7 @@ import { vuetifyThemeNames, DEFAULT_THEME } from '@/global-vars';
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
 import { I18n, useI18n } from 'vue-i18n';
 
-export default (i18n: I18n) => {
+export default <T extends I18n<any, any, any, any, false>>(i18n: T) => {
 	return createVuetify({
 		components: { ...VList, ...VCard, ...VGrid, VBtn, VImg, VIcon, VDivider },
 		directives: {},

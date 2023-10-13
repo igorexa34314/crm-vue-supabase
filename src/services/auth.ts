@@ -1,17 +1,14 @@
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/supabase';
-import { DEFAULT_BILL } from '@/global-vars';
-import { SignInWithOAuthCredentials, Subscription, User } from '@supabase/supabase-js';
+import { supportedOAuthProviders, DEFAULT_BILL } from '@/global-vars';
+import { SignInWithOAuthCredentials, Subscription, User, UserAttributes } from '@supabase/supabase-js';
 
-export interface UserCredentials {
-	email: string;
-	password: string;
+export interface UserCredentials extends Required<Pick<UserAttributes, 'email' | 'password'>> {
 	username?: string;
 }
 
-const supportedOAuthProviders = ['google', 'facebook', 'github'] as const;
-let user: User | undefined;
-let subscription: Subscription | undefined;
+let user: User | null = null;
+let subscription: Subscription;
 
 export class AuthService {
 	static getCurrentUser() {
@@ -21,7 +18,7 @@ export class AuthService {
 			} else {
 				subscription?.unsubscribe();
 				const { data } = supabase.auth.onAuthStateChange((event, session) => {
-					user = session?.user;
+					user = session?.user ?? null;
 					resolve(user);
 				});
 				subscription = data.subscription;
@@ -44,7 +41,7 @@ export class AuthService {
 	}
 
 	static async register({ email, password, username }: UserCredentials) {
-		const { error } = await supabase.auth.signUp({
+		const { data, error } = await supabase.auth.signUp({
 			email,
 			password,
 			options: {
@@ -55,6 +52,7 @@ export class AuthService {
 			},
 		});
 		if (error) return errorHandler(error);
+		return data.user;
 	}
 
 	static async changeUserEmail(newEmail: string) {
@@ -75,7 +73,7 @@ export class AuthService {
 			current_password: oldPass,
 			new_password: newPass,
 		});
-		if (error) throw new Error('invalid_password');
+		if (error) return errorHandler(error);
 		return data;
 	}
 
@@ -83,7 +81,7 @@ export class AuthService {
 		provider: (typeof supportedOAuthProviders)[number],
 		options: SignInWithOAuthCredentials['options'] = {}
 	) {
-		return supabase.auth.signInWithOAuth({
+		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider,
 			options: {
 				redirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}${
@@ -92,24 +90,20 @@ export class AuthService {
 				...options,
 			},
 		});
+		if (error) return errorHandler(error);
+		return data.url;
 	}
 
 	static async signInWithGoogle() {
-		const { data, error } = await this.signInWithOAuthProvider('google');
-		if (error) return errorHandler(error);
-		return data.url;
+		return this.signInWithOAuthProvider('google');
 	}
 
 	static async signInWithFacebook() {
-		const { data, error } = await this.signInWithOAuthProvider('facebook');
-		if (error) return errorHandler(error);
-		return data.url;
+		return this.signInWithOAuthProvider('facebook');
 	}
 
 	static async signInWithGithub() {
-		const { data, error } = await this.signInWithOAuthProvider('github');
-		if (error) return errorHandler(error);
-		return data.url;
+		return this.signInWithOAuthProvider('github');
 	}
 
 	static async logout() {

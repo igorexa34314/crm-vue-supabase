@@ -38,6 +38,9 @@ env:
 
    VITE_EXCHANGER_API_URL: ${{ vars.VITE_EXCHANGER_API_URL }}
    VITE_EXCHANGER_API_KEY: ${{ secrets.VITE_EXCHANGER_API_KEY }}
+
+   VITE_TURNSTILE_SCRIPT_SRC: ${{ vars.VITE_TURNSTILE_SCRIPT_SRC }}
+   VITE_TURNSTILE_SITE_KEY: ${{ secrets.VITE_TURNSTILE_SITE_KEY }}
 jobs:
    # Single deploy job since we're just deploying
    deploy:

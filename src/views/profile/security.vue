@@ -11,7 +11,8 @@
 			variant="underlined"
 			:label="t('password_current')"
 			class="mb-5"
-			required />
+			required
+			autocomplete="on" />
 
 		<PassField
 			v-model="formState.newPass"
@@ -21,7 +22,8 @@
 			class="mb-5"
 			required
 			repeater
-			repeater-label="repeat_password" />
+			repeater-label="repeat_password"
+			autocomplete="off" />
 
 		<v-btn
 			type="submit"

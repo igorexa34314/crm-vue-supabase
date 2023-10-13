@@ -13,13 +13,15 @@ export interface UserCredentials {
 export type UserInfo = Tables<'profiles'>;
 
 export class UserService {
-	static async getUserById(uid: UserCredentials['uid']) {
+	static async getUserInfo() {
+		const uid = await AuthService.getUserId();
 		const { error, data: user } = await supabase.from('profiles').select('*').eq('id', uid).single();
 		if (error) return errorHandler(error);
 		return user;
 	}
 
-	static subscribeInfo(uid: UserInfo['id'], cb: (pl: UserInfo) => void) {
+	static async subscribeInfo(cb: (pl: UserInfo) => void) {
+		const uid = await AuthService.getUserId();
 		return supabase
 			.channel('schema-db-changes')
 			.on<Tables<'profiles'>>(
@@ -42,20 +44,19 @@ export class UserService {
 
 	static async fetchAndSubscribeInfo() {
 		const { setInfo } = useUserStore();
-		const uid = await AuthService.getUserId();
-		const info = await UserService.getUserById(uid);
+		const info = await UserService.getUserInfo();
 		setInfo(info);
-		return UserService.subscribeInfo(uid, userInfo => {
+		return UserService.subscribeInfo(userInfo => {
 			setInfo(userInfo);
 		});
 	}
 
-	static async updateUserInfo(data: Partial<UserInfo>) {
+	static async updateInfo(data: Partial<UserInfo>) {
 		const uid = await AuthService.getUserId();
 		return supabase.from('profiles').update(data).eq('id', uid);
 	}
 
-	static async updateUserAvatar(files: File[]) {
+	static async updateAvatar(files: File[]) {
 		if (files.length !== 1) {
 			throw new Error('You should profide only 1 file');
 		}

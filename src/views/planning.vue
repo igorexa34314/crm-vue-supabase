@@ -75,12 +75,12 @@ useMeta({ title: 'pageTitles.plan' });
 
 const { t, n, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
-const infoStore = useUserStore();
+const userStore = useUserStore();
 
-const { userCurrency } = storeToRefs(infoStore);
+const { userCurrency } = storeToRefs(userStore);
 const { cf } = useCurrencyFilter();
 
-const bill = computed(() => infoStore.info?.bill || DEFAULT_BILL);
+const bill = computed(() => userStore.info?.bill || DEFAULT_BILL);
 
 const { state: catStats, isLoading } = useAsyncState(CategoryService.fetchCategoriesSpendStats, [], {
 	onError: e => {

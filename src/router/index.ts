@@ -1,5 +1,4 @@
-import { RouteNamedMap } from 'vue-router/auto/routes';
-import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router/auto';
+import { createRouter, createWebHistory, createMemoryHistory, RouteRecordName } from 'vue-router/auto';
 import { setupLayouts } from 'virtual:generated-layouts';
 import { checkAuth } from '@/middlewares/auth';
 
@@ -10,10 +9,10 @@ const history = import.meta.env.SSR
 const router = createRouter({
 	history,
 	extendRoutes: routes => {
-		const authRoutes: (keyof RouteNamedMap)[] = ['/login', '/register'];
+		const authRoutes = ['/login', '/register'] as RouteRecordName[];
 		routes = routes.map(route => {
-			if (!authRoutes.includes(route.name as keyof RouteNamedMap)) {
-				route.meta = { ...route.meta, auth: true, requiresAuth: true };
+			if (!authRoutes.includes(route.name ?? route.path)) {
+				return { ...route, meta: { ...route.meta, auth: true, requiresAuth: true } };
 			}
 			return route;
 		});

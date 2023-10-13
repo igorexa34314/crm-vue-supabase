@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { VLayout } from 'vuetify/components';
-import { computed, onUnmounted, watchEffect } from 'vue';
+import { onMounted, onUnmounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router/auto';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -15,13 +15,14 @@ import { useI18n } from 'vue-i18n';
 const { t, te } = useI18n({ useScope: 'global' });
 const route = useRoute();
 const { replace } = useRouter();
-const infoStore = useUserStore();
-const info = computed(() => infoStore.info);
+const userStore = useUserStore();
 const { showMessage } = useSnackbarStore();
 
-if (!info.value?.locale) {
-	infoStore.setLocale();
-}
+onMounted(() => {
+	if (!userStore.info?.locale) {
+		userStore.setLocale();
+	}
+});
 
 watchEffect(() => {
 	if (te(`warnings.${route.query.message}`)) {
@@ -31,7 +32,7 @@ watchEffect(() => {
 });
 
 onUnmounted(() => {
-	infoStore.$reset();
+	userStore.$reset();
 });
 </script>
 

@@ -10,7 +10,7 @@
 					<div>
 						{{
 							(!xs ? `${t('pageTitles.details')} - ` : '') +
-							`${record.category.title} (${t(record.type).toLocaleLowerCase()})`
+							`${record.category.title} (${t(record.type).toLowerCase()})`
 						}}
 					</div>
 					<span
@@ -20,8 +20,18 @@
 					</span>
 				</v-card-title>
 				<div class="card-header-actions d-flex justify-end">
-					<v-btn :icon="mdiPencil" variant="text" color="primary" @click="updateRecordDialog = true" />
-					<v-btn :icon="mdiDelete" variant="text" color="primary" @click="confirmationDialog = true" />
+					<v-btn
+						:icon="mdiPencil"
+						:size="xs ? '46px' : 'default'"
+						variant="text"
+						color="primary"
+						@click="updateRecordDialog = true" />
+					<v-btn
+						:icon="mdiDelete"
+						:size="xs ? '46px' : 'default'"
+						variant="text"
+						color="primary"
+						@click="confirmationDialog = true" />
 				</div>
 			</div>
 
@@ -73,14 +83,13 @@ import { mdiTrendingUp, mdiTrendingDown, mdiDelete, mdiPencil } from '@mdi/js';
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
-import { useRoute } from 'vue-router/auto';
+import { useRouter, useRoute } from 'vue-router/auto';
 import { useMeta } from 'vue-meta';
 import { RecordDataToUpdate, RecordService, RecordWithDetails } from '@/services/record';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
-import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
 
 useMeta({ title: 'pageTitles.details' });

@@ -149,7 +149,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const { xs, smAndDown } = useDisplay();
-const infoStore = useUserStore();
+const userStore = useUserStore();
 
 const { currency } = inject(currencyKey)!;
 
@@ -158,7 +158,7 @@ const currencies = computed(() => {
 	return currencyNames.map(c => ({ title: t(`currencies.${c}`) + ` (${c})`, value: c }));
 });
 
-const info = computed(() => infoStore.info);
+const info = computed(() => userStore.info);
 
 const form = ref<VForm>();
 

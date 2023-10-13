@@ -82,11 +82,11 @@ const emit = defineEmits<{
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
 const { cf } = useCurrencyFilter();
-const infoStore = useUserStore();
+const userStore = useUserStore();
 const { xs } = useDisplay();
 const { record } = toRefs(props);
 
-const info = computed(() => infoStore.info);
+const info = computed(() => userStore.info);
 
 const form = ref<VForm>();
 

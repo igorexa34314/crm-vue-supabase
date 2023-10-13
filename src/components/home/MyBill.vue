@@ -20,7 +20,7 @@ import { SERVER_CURRENCY, DEFAULT_BILL } from '@/global-vars';
 
 const { t, n } = useI18n();
 const { xs } = useDisplay();
-const infoStore = useUserStore();
+const userStore = useUserStore();
 
 const props = defineProps<{
 	rates: Currency['rates'];
@@ -28,10 +28,8 @@ const props = defineProps<{
 
 const currencies = computed(() => Object.keys(props.rates || {}) as CurrencyRates[]);
 
-const info = computed(() => infoStore.info);
-
 const getCurrency = computed(() => (currency: CurrencyRates) => {
-	const base = (info.value?.bill ?? DEFAULT_BILL) / props.rates[SERVER_CURRENCY];
+	const base = (userStore.info?.bill ?? DEFAULT_BILL) / props.rates[SERVER_CURRENCY];
 	return +(base * props.rates[currency]).toFixed(2);
 });
 </script>

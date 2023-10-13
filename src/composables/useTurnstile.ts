@@ -1,21 +1,28 @@
-import { onMounted, onUnmounted } from 'vue';
-import { SITE_KEY } from '@/global-vars';
+import { ref, onUnmounted } from 'vue';
+import { useScriptTag } from '@vueuse/core';
+import { loadTurnstileCbName, turnstileScriptSrc, TURNSTILE_SITE_KEY } from '@/global-vars';
+import { Container } from 'turnstile-types';
 
-let turnstileToken: string;
-
-export const useTurnStile = (selector: string) => {
+export const useTurnstile = (selector: Container) => {
 	let turnstileId: string;
 
-	onMounted(() => {
-		(window as Window & typeof globalThis & { onloadTurnstileCallback: () => void }).onloadTurnstileCallback = () => {
-			turnstileId = window.turnstile.render(selector, {
-				sitekey: SITE_KEY,
-				size: 'normal',
-				'refresh-expired': 'manual',
-				callback: token => (turnstileToken = token),
-			});
-		};
-	});
+	const turnstileToken = ref('');
+
+	useScriptTag(
+		turnstileScriptSrc,
+		// on script tag loaded.
+		() => {
+			(window as typeof window & { [loadTurnstileCbName]: () => void })[loadTurnstileCbName] = () => {
+				turnstileId = window.turnstile.render(selector, {
+					sitekey: TURNSTILE_SITE_KEY,
+					size: 'normal',
+					'refresh-expired': 'manual',
+					callback: token => (turnstileToken.value = token),
+				});
+			};
+		},
+		{ defer: true }
+	);
 
 	onUnmounted(() => {
 		window.turnstile.remove(turnstileId);

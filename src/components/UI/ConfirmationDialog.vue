@@ -21,7 +21,7 @@
 					<slot v-bind="{ isActive }">{{ text }}</slot>
 				</v-card-text>
 				<v-card-actions class="mt-4 mt-sm-6">
-					<v-spacer></v-spacer>
+					<v-spacer />
 					<slot name="cancel" v-bind="{ cancelEvent: cancel }">
 						<v-btn color="red-darken-1" variant="text" @click="cancel">
 							<span class="text-h6">{{ cancelLabel || t('cancel') }}</span>

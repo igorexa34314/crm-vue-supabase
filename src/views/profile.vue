@@ -4,57 +4,67 @@
 			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2">{{ t('pageTitles.profile') }}</h3>
 		</div>
 		<v-tabs v-model="currentTab" density="comfortable" class="mt-6 mb-3 mb-sm-0" color="primary">
-			<v-tab v-for="tab in profileTabs" :key="tab.value" :value="tab.value" :size="xs ? 'small' : 'default'">
-				{{ t(`tabs.${tab.title}`) }}
-			</v-tab>
+			<v-tab
+				v-for="tab in profileTabs"
+				:key="tab.routeName"
+				:to="tab.routeName"
+				:value="tab.routeName"
+				:size="xs ? 'small' : 'default'"
+				:text="t(`tabs.${tab.title}`)" />
 		</v-tabs>
-		<v-window v-model="currentTab">
-			<v-window-item v-for="tab in profileTabs" :key="tab.value" :value="tab.value">
-				<component
-					:is="tab.component"
-					lass="mt-6 mt-sm-8 px-2 px-sm-4"
-					@update-info="updateInfo"
-					:loading="loading"
-					@change-creds="updateCreds" />
-			</v-window-item>
-		</v-window>
+		<div class="profile-tab__window">
+			<router-view v-slot="{ Component, route }">
+				<v-slide-x-transition>
+					<component
+						:is="Component"
+						:loading="loading"
+						@[getTabByRouteName(route.name?.toString()).updateEvent.name]="
+							getTabByRouteName(route.name?.toString()).updateEvent.on
+						"
+						class="profile-tab__window-item mt-6 mt-sm-8 px-2 px-sm-4" />
+				</v-slide-x-transition>
+			</router-view>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import InfoForm from '@/components/profile/InfoForm.vue';
-import SecurityForm from '@/components/profile/SecurityForm.vue';
 import { AuthService } from '@/services/auth';
 import { ref, watchEffect } from 'vue';
 import { useMeta } from 'vue-meta';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { UserService, UserInfo } from '@/services/user';
-import { useRoute, useRouter } from 'vue-router/auto';
+import { definePage, useRoute, useRouter, RouteLocationRaw } from 'vue-router/auto';
 import { useDisplay } from 'vuetify';
-import { VTabs, VTab, VWindow, VWindowItem } from 'vuetify/components';
+import { VTabs, VTab, VSlideXTransition } from 'vuetify/components';
 
+definePage({ redirect: { name: '/profile/info' } });
 useMeta({ title: 'pageTitles.profile' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
 const { showMessage } = useSnackbarStore();
-const route = useRoute('/profile');
+const route = useRoute('/profile/info');
 const { replace } = useRouter();
 
-const profileTabs = [
-	{ title: 'info', value: 'info', component: InfoForm },
-	{ title: 'security', value: 'security', component: SecurityForm },
-];
-const currentTab = ref(profileTabs[0]);
+watchEffect(() => {
+	if (te(`${route.query.message}`)) {
+		showMessage(t(`${route.query.message}`));
+		replace({ query: undefined });
+	}
+});
+
+const currentTab = ref(route.name);
+
 const loading = ref(false);
 
 const updateInfo = async ({ avatar, ...userdata }: Omit<UserInfo, 'bill' | 'email'> & { avatar: File[] }) => {
 	try {
 		loading.value = true;
-		await UserService.updateUserInfo(userdata);
+		await UserService.updateInfo(userdata);
 		if (avatar.length) {
-			await UserService.updateUserAvatar(avatar);
+			await UserService.updateAvatar(avatar);
 		}
 		showMessage(t('updateProfile_message'));
 	} catch (e) {
@@ -78,7 +88,7 @@ const updateCreds = async ({
 			await AuthService.changeUserPassword(oldPass, newPass);
 			showMessage(t('updatePass_message'));
 		}
-		// if (email && ) {
+		// if (email) {
 		// 	await AuthService.changeUserEmail(email);
 		// }
 	} catch (e) {
@@ -92,10 +102,19 @@ const updateCreds = async ({
 	}
 };
 
-watchEffect(() => {
-	if (te(`${route.query.message}`)) {
-		showMessage(t(`${route.query.message}`));
-		replace({ query: undefined });
-	}
-});
+const profileTabs = [
+	{
+		title: 'info',
+		routeName: '/profile/info' as const,
+		updateEvent: { name: 'updateInfo' as const, on: updateInfo },
+	},
+	{
+		title: 'security',
+		routeName: `/profile/security` as const,
+		updateEvent: { name: 'changeCreds' as const, on: updateCreds },
+	},
+];
+const getTabByRouteName = (name?: (typeof profileTabs)[number]['routeName'] | RouteLocationRaw) => {
+	return profileTabs.find(tab => tab.routeName === name) ?? profileTabs[0];
+};
 </script>

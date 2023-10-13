@@ -17,12 +17,11 @@
 
 <script setup lang="ts">
 import LocalRegister from '@/components/auth/LocalRegister.vue';
-import { useRouter } from 'vue-router/auto';
+import { definePage, useRouter } from 'vue-router/auto';
 import { useMeta } from 'vue-meta';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
-import { definePage } from 'vue-router/auto';
 
 definePage({ meta: { layout: 'empty' } });
 useMeta({ title: 'sign_in' });

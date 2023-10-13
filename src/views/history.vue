@@ -7,11 +7,14 @@
 
 		<app-loader v-if="categoriesLoading" class="mt-7" page />
 
-		<div class="history-chart mx-auto" v-else-if="catStats && catStats.length">
+		<div
+			v-else-if="catStats && catStats.length"
+			:style="{ 'max-width': xs ? '380px' : '550px' }"
+			class="history-chart mx-auto">
 			<Pie :options="chartOptions" :data="chartData" />
 		</div>
 
-		<section class="mt-lg-6">
+		<section class="mt-lg-6" v-if="!categoriesLoading">
 			<RecordsTable
 				:per-page="perPage"
 				:total-records="totalRecords || records.length"
@@ -42,14 +45,15 @@ import { ref, onUnmounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router/auto';
 import { useAsyncState } from '@vueuse/core';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
+import { useDisplay } from 'vuetify';
 
 useMeta({ title: 'pageTitles.history' });
 
 const { t } = useI18n({ useScope: 'global' });
+const { xs } = useDisplay();
 const { push } = useRouter();
-const route = useRoute();
+const route = useRoute('/history');
 
-// Draw chart from category spend stats
 const { state: catStats, isLoading: categoriesLoading } = useAsyncState(
 	async () => {
 		const categories = await CategoryService.fetchCategoriesSpendStats();
@@ -63,7 +67,7 @@ const { state: catStats, isLoading: categoriesLoading } = useAsyncState(
 		},
 	}
 );
-
+// Draw chart from category spend stats
 const { chartData, chartOptions } = useChart<'pie'>(catStats);
 
 // Init Records table pagination and sorting
@@ -75,6 +79,7 @@ const records = ref<(RecordWithCategory & { index: number })[]>([]);
 
 const sortRecords = async ({ page, itemsPerPage, sortBy }: SortEmitData) => {
 	try {
+		recordsLoading.value = true;
 		const sortArg: Parameters<typeof RecordService.fetchRecordsWithCategory>[number] = {
 			page: +page,
 			perPage: +itemsPerPage,
@@ -83,7 +88,6 @@ const sortRecords = async ({ page, itemsPerPage, sortBy }: SortEmitData) => {
 			sortArg.order = sortBy[0].order === true ? 'asc' : sortBy[0].order || 'desc';
 			sortArg.sortBy = sortBy[0].key as SortFields;
 		}
-		recordsLoading.value = true;
 		const recordsData = await RecordService.fetchRecordsWithCategory(sortArg);
 		totalRecords.value = recordsData.count || recordsData.records.length;
 		records.value = recordsData.records.map((r, idx) => ({ ...r, index: (+page - 1) * +itemsPerPage + ++idx }));
@@ -98,14 +102,3 @@ const sortRecords = async ({ page, itemsPerPage, sortBy }: SortEmitData) => {
 };
 onUnmounted(() => push({ query: undefined }));
 </script>
-
-<style lang="scss" scoped>
-.history-chart {
-	max-width: 550px;
-}
-</style>
-
-<route lang="yaml">
-meta:
-   withRouteQuery: true
-</route>

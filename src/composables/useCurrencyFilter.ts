@@ -15,9 +15,7 @@ export const useCurrencyFilter = () => {
 
 			const currencyRate = 1 / currencyRates.value.rates[options?.currency || SERVER_CURRENCY];
 
-			return +(!options?.type || options.type === 'direct' ? amount * currencyRate : amount / currencyRate).toFixed(
-				2
-			);
+			return +(options?.type !== 'reverse' ? amount * currencyRate : amount / currencyRate).toFixed(2);
 		}
 	);
 

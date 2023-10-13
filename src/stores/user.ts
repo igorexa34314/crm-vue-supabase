@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { DEFAULT_LOCALE, SERVER_CURRENCY, LOCALE_KEY } from '@/global-vars';
-import { CurrencyRates } from '@/services/currency';
 import { UserInfo } from '@/services/user';
 
 export const useUserStore = defineStore('user', () => {
@@ -41,12 +40,12 @@ export const useUserStore = defineStore('user', () => {
 		);
 	};
 
-	const $subscribeCurrency = (cb: (newCurrency: CurrencyRates) => void | Promise<void>) => {
+	const $subscribeCurrency = (callback: (newCurrency: UserInfo['currency']) => void | Promise<void>) => {
 		return watch(
 			() => info.value?.currency,
 			async newVal => {
 				if (newVal) {
-					await cb(newVal);
+					await callback(newVal);
 				}
 			}
 		);

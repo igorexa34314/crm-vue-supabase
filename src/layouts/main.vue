@@ -30,7 +30,7 @@ import AppNavbar from '@/components/app/AppNavbar.vue';
 import AppSidebar from '@/components/app/AppSidebar.vue';
 import { ref, onMounted, provide, onUnmounted } from 'vue';
 import { VLayout, VMain, VTooltip } from 'vuetify/components';
-import { CurrencyService, DEFAULT_CURRENCY_RESPONSE } from '@/services/currency';
+import { CurrencyService } from '@/services/currency';
 import { useUserStore } from '@/stores/user';
 import { mdiPlus } from '@mdi/js';
 import { UserService } from '@/services/user';
@@ -46,7 +46,7 @@ import { RealtimeChannel } from '@supabase/supabase-js';
 const { push } = useRouter();
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
-const infoStore = useUserStore();
+const userStore = useUserStore();
 const drawer = ref(true);
 const loading = ref(false);
 const { xs, mdAndDown } = useDisplay();
@@ -56,11 +56,11 @@ const {
 	isLoading,
 	isReady,
 	execute: fetchCurrency,
-} = useAsyncState(() => CurrencyService.fetchCurrency(infoStore.getUserCurrency), DEFAULT_CURRENCY_RESPONSE, {
+} = useAsyncState(() => CurrencyService.fetchCurrency(userStore.getUserCurrency), null, {
 	immediate: false,
 	onError: e => {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_loading_currency'), 'red-darken-3');
-		infoStore.fallbackUserCurrency();
+		userStore.fallbackUserCurrency();
 	},
 });
 
@@ -70,7 +70,7 @@ let userInfoChannel: RealtimeChannel | null = null;
 
 onMounted(async () => {
 	try {
-		if (!infoStore.info || !Object.keys(infoStore.info).length) {
+		if (!userStore.info || !Object.keys(userStore.info).length) {
 			userInfoChannel = await UserService.fetchAndSubscribeInfo();
 		}
 	} catch (e) {
@@ -78,14 +78,14 @@ onMounted(async () => {
 	}
 });
 
-const unsubCurr = infoStore.$subscribeCurrency(async () => {
+const unsubCurr = userStore.$subscribeCurrency(async () => {
 	await fetchCurrency();
 });
 
 onUnmounted(() => {
 	userInfoChannel?.unsubscribe();
 	unsubCurr();
-	infoStore.$reset();
+	userStore.$reset();
 });
 
 const logout = async () => {
@@ -118,9 +118,3 @@ const logout = async () => {
 	z-index: 100;
 }
 </style>
-
-<route lang="yaml">
-meta:
-   auth: true
-   requiresAuth: true
-</route>

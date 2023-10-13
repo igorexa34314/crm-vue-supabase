@@ -1,4 +1,4 @@
-import { createI18n, I18n, I18nOptions, MessageSchema, localeKey } from 'vue-i18n';
+import { createI18n, I18n, MessageSchema, DateTimeFormatSchema, localeKey } from 'vue-i18n';
 import { nextTick } from 'vue';
 import fallbackMessages from '@intlify/unplugin-vue-i18n/messages';
 import datetimeFormats from '@/utils/datetimeFormats.json';
@@ -25,7 +25,7 @@ export const initI18n = async () => {
 };
 
 const createI18nInstance = (locale: string, messages: { [key: string]: any } | undefined) => {
-	const options: I18nOptions = {
+	return createI18n({
 		legacy: false, // Vuetify and composition API does not support the legacy mode of vue-i18n
 		locale: locale || DEFAULT_LOCALE,
 		fallbackLocale: DEFAULT_LOCALE,
@@ -34,44 +34,43 @@ const createI18nInstance = (locale: string, messages: { [key: string]: any } | u
 		numberFormats,
 
 		// Using same datetime formats for each locale
-		datetimeFormats: Object.assign(
-			{},
-			...availableLocales.map(locale => ({
+		datetimeFormats: availableLocales.reduce(
+			(formats, locale) => ({
+				...formats,
 				[locale]: datetimeFormats['en-US'],
-			}))
+			}),
+			{} as Record<localeKey, DateTimeFormatSchema>
 		),
-	};
-	/**
-	 * setup vue-i18n with i18n resources with global type definition.
-	 * if you define the i18n resource schema in your `*.d.ts`, these is checked with typeScript.
-	 */
-	return createI18n<false, typeof options>(options);
+	});
 };
 
-export const setI18nLanguage = async (i18n: I18n<any, any, {}, string, false>, locale: string = DEFAULT_LOCALE) => {
+export const setI18nLocaleMessages = async <T extends I18n<any, any, any, any, false>>(
+	i18n: T,
+	locale: string = DEFAULT_LOCALE
+) => {
 	// Load locale if not available yet.
 	if (!i18n.global.availableLocales.includes(locale)) {
-		try {
-			const messages = await LocaleService.fetchLocaleTranslation(locale);
-			if (!messages) {
-				return;
-			}
-			// Add locale.
-			i18n.global.setLocaleMessage(locale, messages);
-			await nextTick();
-		} catch (err) {
-			//@ts-ignore
-			useSnackbarStore().showMessage(i18n.global.t('error_loading_locale'));
-		}
+		LocaleService.fetchLocaleTranslation(locale)
+			.then(messages => {
+				// Add locale.
+				i18n.global.setLocaleMessage(locale, messages);
+				return nextTick();
+			})
+			.then(() => {
+				localStorage.setItem(LOCALE_KEY, JSON.stringify(locale));
+				i18n.global.locale.value = locale;
+				/**
+				 * NOTE:
+				 * If you need to specify the language setting for headers, such as the `fetch` API, set it here.
+				 * The following is an example for axios.
+				 *
+				 * axios.defaults.headers.common['Accept-Language'] = locale
+				 */
+				document.querySelector('html')?.setAttribute('lang', locale);
+			})
+			.catch(() => {
+				// @ts-ignore
+				useSnackbarStore().showMessage(i18n.global.t('error_loading_locale'));
+			});
 	}
-	localStorage.setItem(LOCALE_KEY, JSON.stringify(locale));
-	i18n.global.locale.value = locale;
-	/**
-	 * NOTE:
-	 * If you need to specify the language setting for headers, such as the `fetch` API, set it here.
-	 * The following is an example for axios.
-	 *
-	 * axios.defaults.headers.common['Accept-Language'] = locale
-	 */
-	document.querySelector('html')?.setAttribute('lang', locale);
 };

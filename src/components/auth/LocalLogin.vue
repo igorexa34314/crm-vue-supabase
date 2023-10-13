@@ -14,11 +14,16 @@
 			variant="underlined"
 			label="Пароль"
 			class="mt-6"
+			autocomplete="on"
 			required />
 
-		<v-btn type="submit" width="100%" color="success" class="mt-4 mt-sm-8" v-bind="{ loading, appendIcon: mdiSend }">
-			{{ t('login') }}</v-btn
-		>
+		<v-btn
+			:text="t('login')"
+			type="submit"
+			width="100%"
+			color="success"
+			class="mt-4 mt-sm-8"
+			v-bind="{ loading, appendIcon: mdiSend }" />
 	</v-form>
 </template>
 

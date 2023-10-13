@@ -10,12 +10,12 @@
 
 		<app-loader v-if="isLoading" :color="theme.global.current.value.dark ? '#FFFFFF' : '#1A237E'" class="mt-2" page />
 
-		<v-row>
+		<v-row v-if="currency?.rates && isReady">
 			<v-col cols="4" lg="4" md="6" sm="12" class="v-col-xs-12">
-				<MyBill v-if="infoStore.info?.bill && !isLoading && currency.rates" :rates="currency.rates" />
+				<MyBill v-if="userStore.info?.bill && !isLoading && currency.rates" :rates="currency.rates" />
 			</v-col>
-			<v-col v-if="currency.rates && isReady" cols="8" lg="8" md="6" sm="12" class="v-col-xs-12">
-				<CurrencyRates v-if="currency?.rates" :rates="currency.rates" :date="new Date(currency.date)" />
+			<v-col cols="8" lg="8" md="6" sm="12" class="v-col-xs-12">
+				<CurrencyRates v-if="currency.rates" :rates="currency.rates" :date="currency.date" />
 			</v-col>
 		</v-row>
 	</div>
@@ -33,15 +33,14 @@ import { useTheme } from 'vuetify';
 import { definePage } from 'vue-router/auto';
 import { useUserStore } from '@/stores/user';
 
-useMeta({ title: 'pageTitles.bill' });
-
 definePage({
 	alias: ['/home'],
 });
+useMeta({ title: 'pageTitles.bill' });
 
 const { t } = useI18n({ useScope: 'global' });
 const theme = useTheme();
-const infoStore = useUserStore();
+const userStore = useUserStore();
 
 const { currency, isLoading, isReady, refresh: refreshCurrency } = inject(currencyKey)!;
 </script>

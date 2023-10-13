@@ -70,7 +70,7 @@ export interface Database {
 					bill: number;
 					bio: string;
 					birthday_date: string | null;
-					currency: Database['public']['Enums']['currencies'];
+					currency: string;
 					first_name: string;
 					gender: Database['public']['Enums']['genders'];
 					id: string;
@@ -84,7 +84,7 @@ export interface Database {
 					bill?: number;
 					bio?: string;
 					birthday_date?: string | null;
-					currency?: Database['public']['Enums']['currencies'];
+					currency?: string;
 					first_name?: string;
 					gender?: Database['public']['Enums']['genders'];
 					id: string;
@@ -98,7 +98,7 @@ export interface Database {
 					bill?: number;
 					bio?: string;
 					birthday_date?: string | null;
-					currency?: Database['public']['Enums']['currencies'];
+					currency?: string;
 					first_name?: string;
 					gender?: Database['public']['Enums']['genders'];
 					id?: string;
@@ -228,7 +228,6 @@ export interface Database {
 			};
 		};
 		Enums: {
-			currencies: 'USD' | 'EUR' | 'UAH' | 'RUB';
 			genders: 'male' | 'female' | 'unknown';
 			record_type: 'income' | 'outcome';
 		};

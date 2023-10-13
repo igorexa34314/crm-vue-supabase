@@ -28,41 +28,45 @@
 				</template>
 			</tr>
 		</template>
-		<template #item="{ item: rec }: { item: RecordWithCategory & { index: number } }">
+		<template #item="{ item: record }: { item: RecordWithCategory & { index: number } }">
 			<v-hover #default="{ isHovering, props }">
 				<tr
 					v-bind="props"
-					@click="push({ name: '/detail/[id]', params: { id: rec.id } })"
+					@click="push({ name: '/detail/[id]', params: { id: record.id } })"
 					:class="{ 'bg-hover': isHovering }"
 					class="record">
-					<td>{{ rec.index }}</td>
-					<td>{{ n(cf(rec.amount), { key: 'currency', currency: userCurrency }) }}</td>
-					<td>{{ d(rec.created_at, smAndDown ? 'shortdate' : 'short') }}</td>
-					<td class="record-category text-truncate">{{ rec.category.title }}</td>
+					<td>{{ record.index }}</td>
+					<td>{{ n(cf(record.amount), { key: 'currency', currency: userCurrency }) }}</td>
+					<td>{{ d(record.created_at, smAndDown ? 'shortdate' : 'short') }}</td>
+					<td class="record-category text-truncate">{{ record.category.title }}</td>
 					<td>
 						<span
-							:class="rec.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
+							:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
 							class="py-2 px-3 text-center text-trend">
 							<v-icon
-								:icon="rec.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
+								:icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
 								:class="{ 'mr-2': !smAndDown }"
 								:size="xs ? 'small' : 'default'" />
 							{{
-								smAndDown ? '' : rec.type === 'income' ? t('income').toLowerCase() : t('outcome').toLowerCase()
+								smAndDown
+									? ''
+									: record.type === 'income'
+									? t('income').toLowerCase()
+									: t('outcome').toLowerCase()
 							}}</span
 						>
 					</td>
 					<td v-if="!smAndDown">
 						<v-tooltip
-							:activator="`#rec-${rec.id}`"
+							:activator="`#rec-${record.id}`"
 							text="Посмотреть запись"
 							location="bottom"
 							content-class="bg-tooltip font-weight-medium text-primary">
 							<template #activator="{ props }">
 								<v-btn
-									:id="`rec-${rec.id}`"
+									:id="`rec-${record.id}`"
 									color="success"
-									@click="push({ name: '/detail/[id]', params: { id: rec.id } })">
+									:to="{ name: '/detail/[id]', params: { id: record.id } }">
 									<v-icon v-bind="props" :icon="mdiOpenInNew" />
 								</v-btn>
 							</template>

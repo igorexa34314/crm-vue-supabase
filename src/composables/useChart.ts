@@ -1,11 +1,22 @@
 import { computed, toValue, MaybeRef } from 'vue';
-import { ChartData, ChartOptions, ChartType } from 'chart.js/dist/types';
-import { Chart as ChartJS, CategoryScale, Title, Tooltip, Legend, ArcElement } from 'chart.js/auto';
+import {
+	Chart as ChartJS,
+	Title,
+	Tooltip,
+	Legend,
+	ArcElement,
+	ChartData,
+	ChartOptions,
+	ChartType,
+	TooltipItem,
+} from 'chart.js';
 import { useI18n } from 'vue-i18n';
-import { useTheme } from 'vuetify';
+import { useTheme, useDisplay } from 'vuetify';
+import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useUserStore } from '@/stores/user';
 import randomColor from 'randomcolor';
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
+ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
 export const useChart = <T extends ChartType = 'pie'>(
 	inputData: MaybeRef<
@@ -16,15 +27,28 @@ export const useChart = <T extends ChartType = 'pie'>(
 		| undefined
 	>
 ) => {
-	const { t } = useI18n();
+	const { t, n } = useI18n();
 	const theme = useTheme();
+	const { xs } = useDisplay();
+	const { cf } = useCurrencyFilter();
+	const userStore = useUserStore();
 
 	const chartOptions = computed<ChartOptions<T>>(
 		() =>
 			({
 				responsive: true,
 				plugins: {
+					title: {
+						display: true,
+						text: t('chart_title'),
+						color: theme.global.current.value.dark ? '#B8C7D3' : '#D50000',
+						font: {
+							size: xs.value ? 18 : 22,
+							lineHeight: '1.5',
+						},
+					},
 					legend: {
+						display: !xs.value,
 						position: 'left',
 						align: 'center',
 						labels: {
@@ -35,13 +59,14 @@ export const useChart = <T extends ChartType = 'pie'>(
 							},
 						},
 					},
-					title: {
-						display: true,
-						text: t('chart_title'),
-						color: theme.global.current.value.dark ? '#B8C7D3' : '#D50000',
-						font: {
-							size: 22,
-							lineHeight: '1.5',
+					tooltip: {
+						enabled: true,
+						callbacks: {
+							label: (item: TooltipItem<'pie'>) =>
+								n(cf.value(item.dataset.data[item.dataIndex]), {
+									key: 'currency',
+									currency: userStore.userCurrency,
+								}),
 						},
 					},
 				},

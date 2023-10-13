@@ -46,16 +46,14 @@
 
 		<div class="cf-turnstile"></div>
 
-		<v-btn type="submit" v-bind="{ appendIcon: mdiSend, loading }" color="success" width="100%" class="mt-4 mt-sm-7">
-			{{ t('sign_in') }}
-		</v-btn>
+		<v-btn
+			:text="t('sign_in')"
+			type="submit"
+			v-bind="{ appendIcon: mdiSend, loading }"
+			color="success"
+			width="100%"
+			class="mt-4 mt-sm-7" />
 	</v-form>
-	<teleport to="body">
-		<component
-			:is="'script'"
-			src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback"
-			defer />
-	</teleport>
 </template>
 
 <script setup lang="ts">
@@ -68,7 +66,7 @@ import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
 import { VForm, VCheckbox } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
-import { useTurnStile } from '@/composables/useTurnstile';
+import { useTurnstile } from '@/composables/useTurnstile';
 import { TurnstileService } from '@/services/turnstile';
 
 const emit = defineEmits<{
@@ -79,7 +77,7 @@ const emit = defineEmits<{
 const { t } = useI18n();
 const { xs } = useDisplay();
 
-const turnstileToken = useTurnStile('.cf-turnstile');
+const turnstileToken = useTurnstile('.cf-turnstile');
 
 const form = ref<VForm>();
 const loading = ref(false);
@@ -96,7 +94,7 @@ const submitRegister = async () => {
 		const { agree, ...data } = formState.value;
 		try {
 			loading.value = true;
-			await TurnstileService.validateToken(turnstileToken);
+			await TurnstileService.validateToken(turnstileToken.value);
 			await AuthService.register(data);
 			emit('success');
 		} catch (e) {

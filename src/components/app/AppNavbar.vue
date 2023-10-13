@@ -3,12 +3,12 @@
 		<template #prepend>
 			<v-app-bar-nav-icon color="primary" @click.stop="emit('click')" />
 		</template>
-		<v-app-bar-title class="app-title d-xs-none mt-1 text-primary">
-			{{ d(date, xs ? 'time' : smAndDown ? 'daytime' : 'long') }}
-		</v-app-bar-title>
+		<v-app-bar-title
+			:text="d(nowDate, xs ? 'time' : smAndDown ? 'daytime' : 'long')"
+			class="app-title d-xs-none mt-1 text-primary" />
 		<v-spacer />
 		<DarkmodeToggle class="mr-7" />
-		<v-menu v-if="infoStore.info">
+		<v-menu v-if="userStore.info">
 			<template #activator="{ props }">
 				<v-btn
 					color="profile"
@@ -31,13 +31,13 @@
 				</v-btn>
 			</template>
 			<v-list density="comfortable">
-				<v-list-item @click="push('/profile')">
+				<v-list-item :active="false" to="/profile">
 					<template #prepend>
 						<v-icon :icon="mdiAccountCircleOutline" class="mr-3" />
 					</template>
 					<v-list-item-title class="text-primary">{{ t('pageTitles.profile') }}</v-list-item-title>
 				</v-list-item>
-				<v-list-item @click="emit('logout')">
+				<v-list-item :active="false" @click="emit('logout')">
 					<template #prepend>
 						<v-icon :icon="mdiLogout" class="mr-3" />
 					</template>
@@ -56,10 +56,10 @@ import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader';
 import avatarPlaceholder from '@/assets/img/avatar-placeholder.jpg';
 import DarkmodeToggle from '@/components/app/DarkmodeToggle.vue';
 import { mdiTriangleSmallDown, mdiAccountCircleOutline, mdiLogout } from '@mdi/js';
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router/auto';
+import { useNow } from '@vueuse/core';
 import { useDisplay } from 'vuetify';
 
 const emit = defineEmits<{
@@ -69,18 +69,10 @@ const emit = defineEmits<{
 
 const { t, d } = useI18n();
 const { xs, smAndDown } = useDisplay();
-const { push } = useRouter();
-const infoStore = useUserStore();
+const userStore = useUserStore();
 
-const username = computed(() => (infoStore.info ? `${infoStore.info.username}` : t('guest')));
-const photoURL = computed(() => infoStore.info?.avatar_url);
+const username = computed(() => (userStore.info ? `${userStore.info.username}` : t('guest')));
+const photoURL = computed(() => userStore.info?.avatar_url);
 
-const date = ref(new Date());
-
-let dateInterval: NodeJS.Timeout;
-onMounted(() => {
-	dateInterval = setInterval(() => (date.value = new Date()), 1000 * 20);
-});
-
-onUnmounted(() => clearInterval(dateInterval));
+const nowDate = useNow({ interval: 1000 });
 </script>
