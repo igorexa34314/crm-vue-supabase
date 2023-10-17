@@ -15,13 +15,15 @@
 		<div class="profile-tab__window">
 			<router-view v-slot="{ Component, route }">
 				<v-slide-x-transition>
-					<component
-						:is="Component"
-						:loading="loading"
-						@[getTabByRouteName(route.name?.toString()).updateEvent.name]="
-							getTabByRouteName(route.name?.toString()).updateEvent.on
-						"
-						class="profile-tab__window-item mt-6 mt-sm-8 px-2 px-sm-4" />
+					<keep-alive include="info">
+						<component
+							:is="Component"
+							:loading="loading"
+							@[getTabByRouteName(route.name?.toString()).updateEvent.name]="
+								getTabByRouteName(route.name?.toString()).updateEvent.on
+							"
+							class="profile-tab__window-item mt-6 mt-sm-8 px-2 px-sm-4" />
+					</keep-alive>
 				</v-slide-x-transition>
 			</router-view>
 		</div>
@@ -114,6 +116,7 @@ const profileTabs = [
 		updateEvent: { name: 'changeCreds' as const, on: updateCreds },
 	},
 ];
+
 const getTabByRouteName = (name?: (typeof profileTabs)[number]['routeName'] | RouteLocationRaw) => {
 	return profileTabs.find(tab => tab.routeName === name) ?? profileTabs[0];
 };
