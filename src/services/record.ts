@@ -3,8 +3,8 @@ import { AuthService } from '@/services/auth';
 import { Category, CategoryService } from '@/services/category';
 import { supabase } from '@/supabase';
 import { errorHandler } from '@/utils/errorHandler';
-import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
+import { v4 as uuidv4 } from 'uuid';
 
 export type RecordType = Enums<'record_type'>;
 export type Record = Omit<Tables<'records'>, 'user_id'>;
@@ -74,27 +74,18 @@ export class RecordService {
 		const uploadPromises = files
 			.filter(file => file instanceof File && file.size <= 2 * 1024 * 1024)
 			.map(async file => {
-				const fileId = uuidv4();
 				const { error: uploadError, data: uploadData } = await supabase.storage
 					.from('record_details')
-					.upload(`${recordId}/${fileId}.${file.name.split('.').at(-1)}`, file);
-				if (uploadError) errorHandler(uploadError);
-				if (!uploadData?.path) throw new Error('cant_get_uploaded_file');
-				const { error: insertError, data: newDetail } = await supabase
-					.from('record_details')
-					.insert({
-						record_id: recordId,
-						fullname: file.name,
-						size: file.size,
-						fullpath: uploadData.path,
-					})
-					.select('*')
-					.single();
-				if (insertError) return errorHandler(insertError);
-				return newDetail;
+					.upload(
+						`${recordId}/${uuidv4()}__${
+							/^[a-zA-Z0-9._\-()\s]+$/.test(file.name) ? file.name : file.name.split('.').at(-1)
+						}`,
+						file
+					);
+				if (uploadError) return errorHandler(uploadError);
+				return uploadData.path;
 			});
-		const details = await Promise.all(uploadPromises);
-		return details;
+		return Promise.all(uploadPromises);
 	}
 
 	static async getAllRecordDetails(detailsData: RecordDetail[]) {

@@ -1,9 +1,9 @@
 import { errorHandler } from '@/utils/errorHandler';
 import { useUserStore } from '@/stores/user';
 import { AuthService } from '@/services/auth';
-import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/supabase';
 import { Tables } from '@/database.types';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface UserCredentials {
 	uid: string;
@@ -68,15 +68,14 @@ export class UserService {
 			}
 			const { error, data } = await supabase.storage
 				.from('avatars')
-				.upload(`${uid}/${uuidv4()}.${avatar.name.split('.').at(-1)}`, avatar);
+				.upload(
+					`${uid}/${uuidv4()}__${
+						/^[a-zA-Z0-9._\-()\s]+$/.test(avatar.name) ? avatar.name : avatar.name.split('.').at(-1)
+					}`,
+					avatar
+				);
 			if (error) return errorHandler(error);
-			if (data.path) {
-				const {
-					data: { publicUrl },
-				} = supabase.storage.from('avatars').getPublicUrl(data.path);
-				const { error } = await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', uid);
-				if (error) return errorHandler(error);
-			}
+			return data.path;
 		}
 	}
 }

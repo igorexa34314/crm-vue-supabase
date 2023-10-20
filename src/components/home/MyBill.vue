@@ -39,4 +39,3 @@ const getCurrency = computed(() => (currency: CurrencyRates) => {
 	--v-border-opacity: 1;
 }
 </style>
-@/utils/numberFormats @/global-vars @/global-var
