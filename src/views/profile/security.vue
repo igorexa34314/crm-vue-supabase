@@ -47,14 +47,9 @@ import { user as validations } from '@/utils/validations';
 import { VForm } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
 
-const props = withDefaults(
-	defineProps<{
-		loading?: boolean;
-	}>(),
-	{
-		loading: false,
-	}
-);
+const { loading } = defineProps<{
+	loading?: boolean;
+}>();
 
 const emit = defineEmits<{
 	changeCreds: [creds: Partial<{ oldPass: string; newPass: string; email: string }>];
@@ -63,7 +58,7 @@ const emit = defineEmits<{
 const { t } = useI18n();
 const { xs } = useDisplay();
 
-const form = ref<VForm>();
+const form = ref<VForm | null>(null);
 
 const formState = ref({
 	email: '',

@@ -6,9 +6,9 @@
 		<v-tabs v-model="currentTab" density="comfortable" class="mt-6 mb-3 mb-sm-0" color="primary">
 			<v-tab
 				v-for="tab in profileTabs"
-				:key="tab.routeName"
-				:to="tab.routeName"
-				:value="tab.routeName"
+				:key="tab.route?.toString()"
+				:to="tab.route"
+				:value="tab.route"
 				:size="xs ? 'small' : 'default'"
 				:text="t(`tabs.${tab.title}`)" />
 		</v-tabs>
@@ -107,17 +107,17 @@ const updateCreds = async ({
 const profileTabs = [
 	{
 		title: 'info',
-		routeName: '/profile/info' as const,
+		route: '/profile/info' as RouteLocationRaw,
 		updateEvent: { name: 'updateInfo' as const, on: updateInfo },
 	},
 	{
 		title: 'security',
-		routeName: `/profile/security` as const,
+		route: '/profile/security' as RouteLocationRaw,
 		updateEvent: { name: 'changeCreds' as const, on: updateCreds },
 	},
 ];
 
-const getTabByRouteName = (name?: (typeof profileTabs)[number]['routeName'] | RouteLocationRaw) => {
-	return profileTabs.find(tab => tab.routeName === name) ?? profileTabs[0];
+const getTabByRouteName = (name?: RouteLocationRaw) => {
+	return profileTabs.find(tab => tab.route === name) ?? profileTabs[0];
 };
 </script>

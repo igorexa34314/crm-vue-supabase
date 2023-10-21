@@ -40,5 +40,3 @@ export const record = {
 		(val: File[]) => val.every(v => v.size <= 1024 * 1024 * 2) || 'rules.file',
 	],
 };
-
-export default { category, user, record };

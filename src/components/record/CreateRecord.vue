@@ -73,23 +73,22 @@ import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
 import { SERVER_CURRENCY, DEFAULT_RECORD_AMOUNT, DEFAULT_BILL, recordTypes } from '@/global-vars';
 
-const props = withDefaults(
-	defineProps<{
-		categories: Category[];
-		defaultAmount?: number;
-		defaultType?: Record['type'];
-		loading?: boolean;
-	}>(),
-	{
-		defaultAmount: DEFAULT_RECORD_AMOUNT,
-		defaultType: 'outcome',
-		loading: false,
-	}
-);
+const {
+	categories,
+	defaultAmount = DEFAULT_RECORD_AMOUNT,
+	defaultType = 'outcome',
+	loading,
+} = defineProps<{
+	categories: Category[];
+	defaultAmount?: number;
+	defaultType?: Record['type'];
+	loading?: boolean;
+}>();
 
 const emit = defineEmits<{
 	createRecord: [data: RecordForm];
 }>();
+
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
 const { cf } = useCurrencyFilter();
@@ -98,19 +97,21 @@ const { xs } = useDisplay();
 
 const info = computed(() => userStore.info);
 
-const form = ref<VForm>();
+const form = ref<VForm | null>(null);
 
-const formState = ref<RecordForm>({
-	amount: Math.round(cf.value(props.defaultAmount) / 10) * 10,
+const defaultFormValues = {
+	amount: Math.round(cf.value(defaultAmount) / 10) * 10,
 	description: '',
-	type: 'income',
+	type: defaultType,
 	details: [],
-	category_id: props.categories[0].id,
-});
+	category_id: categories[0].id,
+};
+
+const formState = ref<RecordForm>({ ...defaultFormValues, details: [] });
 
 watchEffect(() => {
-	formState.value.category_id = props.categories[0].id;
-	formState.value.amount = Math.round(cf.value(props.defaultAmount) / 10) * 10;
+	formState.value.category_id = categories[0].id;
+	formState.value.amount = Math.round(cf.value(defaultAmount) / 10) * 10;
 });
 const canCreateRecord = computed(
 	() => formState.value.type === 'income' || cf.value(info.value!.bill) >= formState.value.amount
@@ -134,8 +135,6 @@ const submitHandler = async () => {
 	}
 };
 const resetForm = () => {
-	formState.value.description = '';
-	formState.value.amount = Math.round(cf.value(props.defaultAmount) / 10) * 10;
-	formState.value.details = [];
+	formState.value = { ...defaultFormValues, details: [] };
 };
 </script>

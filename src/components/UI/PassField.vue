@@ -43,11 +43,22 @@ import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 import { reactive } from 'vue';
 import { user as validations } from '@/utils/validations';
-import { useVModel } from '@vueuse/core';
 import { VTextField } from 'vuetify/components';
 import { useI18n } from 'vue-i18n';
 
-interface Props {
+defineOptions({
+	inheritAttrs: false,
+});
+
+const {
+	repeater,
+	placeholder = 'Введите пароль',
+	label = 'password',
+	rules = validations.password,
+	variant = 'underlined',
+	repeaterLabel = 'password_repeat',
+	repeaterPlaceholder = 'repeat_password',
+} = defineProps<{
 	modelValue?: string;
 	repeater?: boolean;
 	label?: VTextField['label'];
@@ -58,26 +69,11 @@ interface Props {
 	variant?: VTextField['variant'];
 	passClass?: string;
 	repeaterClass?: string;
-}
-
-defineOptions({
-	inheritAttrs: false,
-});
-
-const props = withDefaults(defineProps<Props>(), {
-	modelValue: '',
-	repeater: false,
-	placeholder: 'Введите пароль',
-	label: 'password',
-	rules: () => validations.password,
-	variant: 'underlined',
-	repeaterLabel: () => 'password_repeat',
-	repeaterPlaceholder: () => 'repeat_password',
-});
-
-const emit = defineEmits<{
-	'update:modelValue': [pass: string];
 }>();
+
+const password = defineModel<string>('modelValue', {
+	default: '',
+});
 
 const { t } = useI18n();
 
@@ -85,6 +81,4 @@ const passFieldState = reactive({
 	showPass: false,
 	showRepeater: false,
 });
-
-const password = useVModel(props, 'modelValue', emit);
 </script>

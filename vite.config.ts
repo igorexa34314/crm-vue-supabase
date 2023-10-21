@@ -32,7 +32,13 @@ export default ({ mode }) => {
 				routesFolder: 'src/views',
 				dts: './src/typed-router.d.ts',
 			}),
-			vue({ template: { transformAssetUrls } }),
+			vue({
+				script: {
+					propsDestructure: true,
+					defineModel: true,
+				},
+				template: { transformAssetUrls },
+			}),
 			Layouts({
 				layoutsDirs: 'src/layouts',
 				defaultLayout: 'main',

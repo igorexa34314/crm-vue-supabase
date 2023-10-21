@@ -60,15 +60,10 @@ import { useDisplay } from 'vuetify';
 import isEqual from 'lodash/isEqual';
 import { DEFAULT_CATEGORY_LIMIT } from '@/global-vars';
 
-const props = withDefaults(
-	defineProps<{
-		categories: Category[];
-		defaultLimit?: number;
-	}>(),
-	{
-		defaultLimit: DEFAULT_CATEGORY_LIMIT,
-	}
-);
+const { categories, defaultLimit = DEFAULT_CATEGORY_LIMIT } = defineProps<{
+	categories: Category[];
+	defaultLimit?: number;
+}>();
 
 const emit = defineEmits<{
 	updated: [cat: Category];
@@ -80,16 +75,16 @@ const { cf } = useCurrencyFilter();
 const { xs } = useDisplay();
 const { userCurrency } = storeToRefs(useUserStore());
 
-const form = ref<VForm>();
+const form = ref<VForm | null>(null);
 const loading = ref(false);
 const currentCategory = ref<Category>({
-	id: props.categories[0].id,
+	id: categories[0].id,
 	title: '',
-	limit: Math.round(cf.value(props.defaultLimit) / 100) * 100,
+	limit: Math.round(cf.value(defaultLimit) / 100) * 100,
 });
 
 watchEffect(() => {
-	const category = props.categories.find(({ id }) => id === currentCategory.value.id);
+	const category = categories.find(({ id }) => id === currentCategory.value.id);
 	if (category) {
 		currentCategory.value.title = category.title;
 		currentCategory.value.limit = cf.value(category.limit);
@@ -98,7 +93,7 @@ watchEffect(() => {
 
 const isNewCategoryEquals = computed(() => {
 	const { id, ...newCategory } = currentCategory.value;
-	const { title, limit } = props.categories.find(cat => cat.id === id)!;
+	const { title, limit } = categories.find(cat => cat.id === id)!;
 	return isEqual(newCategory, { title, limit: cf.value(limit) });
 });
 

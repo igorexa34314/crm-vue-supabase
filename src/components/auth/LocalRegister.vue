@@ -79,7 +79,7 @@ const { xs } = useDisplay();
 
 const turnstileToken = useTurnstile('.cf-turnstile');
 
-const form = ref<VForm>();
+const form = ref<VForm | null>(null);
 const loading = ref(false);
 const formState = ref({
 	email: '',
@@ -91,11 +91,10 @@ const formState = ref({
 const submitRegister = async () => {
 	const valid = (await form.value?.validate())?.valid;
 	if (valid) {
-		const { agree, ...data } = formState.value;
 		try {
 			loading.value = true;
 			await TurnstileService.validateToken(turnstileToken.value);
-			await AuthService.register(data);
+			await AuthService.register(formState.value);
 			emit('success');
 		} catch (e) {
 			emit('error', e);

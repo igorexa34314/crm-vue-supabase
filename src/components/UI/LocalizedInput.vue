@@ -14,14 +14,9 @@ import { useI18n } from 'vue-i18n';
 import { VTextField } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
 
-const props = withDefaults(
-	defineProps<{
-		variant?: VTextField['variant'];
-	}>(),
-	{
-		variant: 'underlined',
-	}
-);
+const { variant = 'underlined' } = defineProps<{
+	variant?: VTextField['variant'];
+}>();
 
 defineSlots<{
 	'append-inner': VTextField['$slots']['append-inner'];

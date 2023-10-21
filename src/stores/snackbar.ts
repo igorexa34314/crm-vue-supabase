@@ -18,8 +18,5 @@ export const useSnackbarStore = defineStore('snackbar', () => {
 		snackbar.value = { text, color, timeout };
 	};
 
-	return {
-		snackbar,
-		showMessage,
-	};
+	return { snackbar, showMessage };
 });

@@ -3,7 +3,7 @@
 		<v-list>
 			<v-list-item
 				v-for="link in links"
-				:key="link.url"
+				:key="link.url.toString()"
 				:to="link.url"
 				active-class="active"
 				link
@@ -19,24 +19,15 @@
 <script setup lang="ts">
 import { VNavigationDrawer } from 'vuetify/components';
 import { useI18n } from 'vue-i18n';
-import { useVModel } from '@vueuse/core';
+import { RouteLocationRaw } from 'vue-router/auto';
 
-const emit = defineEmits<{
-	'update:modelValue': [val: boolean];
-}>();
+const drawer = defineModel<boolean>('modelValue', {
+	default: false,
+});
 
-const props = withDefaults(
-	defineProps<{
-		modelValue?: boolean;
-	}>(),
-	{
-		modelValue: false,
-	}
-);
 const { t } = useI18n();
-const drawer = useVModel(props, 'modelValue', emit);
 
-const links: { title: string; url: string; exact?: boolean }[] = [
+const links: { title: string; url: RouteLocationRaw; exact?: boolean }[] = [
 	{ title: 'bill', url: '/', exact: true },
 	{ title: 'history', url: '/history' },
 	{ title: 'plan', url: '/planning' },

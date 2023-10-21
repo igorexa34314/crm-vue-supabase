@@ -1,18 +1,18 @@
 <template>
 	<v-btn @click="signInWithGithubProvider" flat variant="text">
-		<img :src="githubProvider" aspect-ratio="1" width="32" alt="Github" />
+		<img :src="setGithubProviderIcon" aspect-ratio="1" width="32" alt="Github" />
 	</v-btn>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { AuthService } from '@/services/auth';
 import { useTheme } from 'vuetify';
+import githubProvider from '/src/assets/img/github-provider.png';
+import githubProviderLight from '/src/assets/img/github-provider_light.png';
 
 const theme = useTheme();
-const githubProvider = new URL(
-	`/src/assets/img/github-provider${theme.global.current.value.dark ? '_light' : ''}.png`,
-	import.meta.url
-).href;
+const setGithubProviderIcon = computed(() => (theme.global.current.value.dark ? githubProviderLight : githubProvider));
 
 const emit = defineEmits<{
 	success: [];

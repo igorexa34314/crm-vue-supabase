@@ -10,14 +10,9 @@
 import { useI18n } from 'vue-i18n';
 import { VFileInput } from 'vuetify/components';
 
-const props = withDefaults(
-	defineProps<{
-		variant?: VFileInput['variant'];
-	}>(),
-	{
-		variant: 'underlined',
-	}
-);
+const { variant = 'underlined' } = defineProps<{
+	variant?: VFileInput['variant'];
+}>();
 
 const { t } = useI18n();
 </script>

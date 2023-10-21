@@ -44,14 +44,10 @@ import { VForm } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_CATEGORY_LIMIT } from '@/global-vars';
 
-const props = withDefaults(
-	defineProps<{
-		defaultLimit?: number;
-	}>(),
-	{
-		defaultLimit: DEFAULT_CATEGORY_LIMIT,
-	}
-);
+const { defaultLimit = DEFAULT_CATEGORY_LIMIT } = defineProps<{
+	defaultLimit?: number;
+}>();
+
 const emit = defineEmits<{
 	created: [category: Category];
 }>();
@@ -63,16 +59,16 @@ const { showMessage } = useSnackbarStore();
 const { xs } = useDisplay();
 
 const { userCurrency } = storeToRefs(useUserStore());
-const form = ref<VForm>();
+const form = ref<VForm | null>(null);
 const loading = ref(false);
 
 const formState = ref<Omit<Category, 'id'>>({
 	title: '',
-	limit: Math.floor(cf.value(props.defaultLimit) / 100) * 100,
+	limit: Math.floor(cf.value(defaultLimit) / 100) * 100,
 });
 
 watchEffect(() => {
-	formState.value.limit = Math.floor(cf.value(props.defaultLimit) / 100) * 100;
+	formState.value.limit = Math.floor(cf.value(defaultLimit) / 100) * 100;
 });
 
 const submitHandler = async () => {
@@ -88,7 +84,7 @@ const submitHandler = async () => {
 			if (category) {
 				emit('created', category);
 				form.value?.reset();
-				formState.value.limit = Math.floor(cf.value(props.defaultLimit) / 100) * 100;
+				formState.value.limit = Math.floor(cf.value(defaultLimit) / 100) * 100;
 				showMessage(t('category_created'));
 			} else {
 				throw new Error('category_undefined');

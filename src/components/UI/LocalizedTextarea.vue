@@ -11,14 +11,9 @@ import { VTextarea } from 'vuetify/components';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 
-const props = withDefaults(
-	defineProps<{
-		variant?: VTextarea['variant'];
-	}>(),
-	{
-		variant: 'underlined',
-	}
-);
+const { variant = 'underlined' } = defineProps<{
+	variant?: VTextarea['variant'];
+}>();
 
 const { t } = useI18n();
 const { xs } = useDisplay();

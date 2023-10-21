@@ -8,11 +8,11 @@
 			class="record-form mt-8"
 			:class="xs ? 'px-2' : 'px-4'">
 			<LocalizedInput
-				v-model="record.category.title"
+				:model-value="record.category.title"
 				variant="underlined"
 				:label="t('category')"
 				class="mt-2"
-				disabled />
+				readonly />
 
 			<v-radio-group v-model="formState.type" class="mt-2 text-input">
 				<v-radio
@@ -54,7 +54,7 @@
 import ConfirmationDialog from '@/components/UI/ConfirmationDialog.vue';
 import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
-import { ref, computed, toRefs, watchEffect } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { RecordWithCategory, RecordWithDetails, RecordDataToUpdate } from '@/services/record';
 import { VForm, VRadio, VRadioGroup } from 'vuetify/components';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -65,15 +65,10 @@ import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
 import { recordTypes } from '@/global-vars';
 
-const props = withDefaults(
-	defineProps<{
-		record: RecordWithCategory | RecordWithDetails;
-		loading?: boolean;
-	}>(),
-	{
-		loading: false,
-	}
-);
+const { record, loading } = defineProps<{
+	record: RecordWithCategory | RecordWithDetails;
+	loading?: boolean;
+}>();
 
 const emit = defineEmits<{
 	updateRecord: [data: RecordDataToUpdate];
@@ -84,23 +79,21 @@ const { t, n } = useI18n();
 const { cf } = useCurrencyFilter();
 const userStore = useUserStore();
 const { xs } = useDisplay();
-const { record } = toRefs(props);
 
 const info = computed(() => userStore.info);
 
-const form = ref<VForm>();
-
+const form = ref<VForm | null>(null);
 const formState = ref<RecordDataToUpdate>({
-	amount: cf.value(record.value.amount),
-	description: record.value.description,
-	type: record.value.type,
+	amount: cf.value(record.amount),
+	description: record.description,
+	type: record.type,
 });
 
 watchEffect(() => {
 	formState.value = {
-		amount: cf.value(record.value.amount),
-		description: record.value.description,
-		type: record.value.type,
+		amount: cf.value(record.amount),
+		description: record.description,
+		type: record.type,
 	};
 });
 
@@ -108,7 +101,7 @@ const canUpdateRecord = computed(
 	() =>
 		info.value!.bill >=
 		(formState.value.type === 'income' ? 1 : -1) * cf.value(formState.value.amount, { type: 'reverse' }) -
-			record.value.amount
+			record.amount
 );
 
 const submitHandler = async () => {
@@ -122,7 +115,7 @@ const submitHandler = async () => {
 			t('lack_of_amount') +
 				` (${n(
 					(formState.value.type === 'income' ? 1 : -1) *
-						(cf.value(formState.value.amount, { type: 'reverse' }) - record.value.amount) -
+						(cf.value(formState.value.amount, { type: 'reverse' }) - record.amount) -
 						info.value!.bill,
 					{
 						key: 'currency',

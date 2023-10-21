@@ -16,63 +16,60 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, watchEffect } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 import { useI18n, DateTimeOptions } from 'vue-i18n';
 import { VSelect } from 'vuetify/components';
 
-const props = withDefaults(
-	defineProps<{
-		modelValue?: Date;
-		fromYear?: string | number;
-		order?: 'dd-mmm-yyyy' | 'mmm-dd-yyyy';
-		density?: VSelect['density'];
-		variant?: VSelect['variant'];
-		label?: string;
-		maxWidth?: string | number;
-	}>(),
-	{
-		modelValue: () => new Date(),
-		fromYear: new Date().getFullYear() - 100,
-		order: 'dd-mmm-yyyy',
-		variant: 'outlined',
-		density: 'compact',
-		maxWidth: 700,
-	}
-);
-
-const emit = defineEmits<{
-	'update:modelValue': [date: Date];
+const {
+	fromYear = new Date().getFullYear() - 100,
+	order = 'dd-mmm-yyyy',
+	variant = 'outlined',
+	density = 'compact',
+	maxWidth = 700,
+} = defineProps<{
+	fromYear?: string | number;
+	order?: 'dd-mmm-yyyy' | 'mmm-dd-yyyy';
+	density?: VSelect['density'];
+	variant?: VSelect['variant'];
+	label?: string;
+	maxWidth?: string | number;
 }>();
+
+const modelValue = defineModel<Date>('modelValue', {
+	default: () => new Date(),
+});
 
 defineSlots<{
 	label(): any;
 }>();
 
-const datePickerDateItems = computed(() => [
+const monthsForLocales = (monthFormat: DateTimeOptions['month'] = 'long') => {
+	const { d } = useI18n();
+	return [...Array(12).keys()].map(m => d(new Date(Date.UTC(2022, m % 12)), { month: monthFormat }));
+};
+
+const datePickerDateItems = [
 	{
 		type: 'month',
 		title: 'Месяц',
 		items: monthsForLocales('long').map((title, i) => ({ title, value: ++i })),
-		order: props.order === 'dd-mmm-yyyy' ? 2 : 1,
+		order: order === 'dd-mmm-yyyy' ? 2 : 1,
 	},
 	{
 		type: 'day',
 		title: 'День',
-		items: Array.from({ length: 31 }, (v, i) => ++i),
-		order: props.order === 'dd-mmm-yyyy' ? 1 : 2,
+		items: Array.from({ length: 31 }, (_, i) => ++i),
+		order: order === 'dd-mmm-yyyy' ? 1 : 2,
 	},
 	{
 		type: 'year',
 		title: 'Год',
-		items: Array.from(
-			{ length: new Date().getFullYear() - +props.fromYear },
-			(v, i) => +props.fromYear + ++i
-		).reverse(),
+		items: Array.from({ length: new Date().getFullYear() - +fromYear }, (_, i) => +fromYear + ++i).reverse(),
 		order: 3,
 	},
-]);
+];
 
-const datePickerState = ref<Record<'month' | 'day' | 'year', number>>({
+const datePickerState = ref({
 	month: new Date().getMonth() + 1,
 	day: new Date().getDate(),
 	year: new Date().getFullYear(),
@@ -80,21 +77,16 @@ const datePickerState = ref<Record<'month' | 'day' | 'year', number>>({
 
 watchEffect(() => {
 	datePickerState.value = {
-		month: props.modelValue.getMonth() + 1,
-		day: props.modelValue.getDate(),
-		year: props.modelValue.getFullYear(),
+		month: modelValue.value.getMonth() + 1,
+		day: modelValue.value.getDate(),
+		year: modelValue.value.getFullYear(),
 	};
 });
 watch(
 	datePickerState,
 	newVal => {
-		emit('update:modelValue', new Date(Object.values(newVal).join('-')));
+		modelValue.value = new Date(Object.values(newVal).join('-'));
 	},
 	{ deep: true }
 );
-
-const monthsForLocales = (monthFormat: DateTimeOptions['month'] = 'long') => {
-	const { d } = useI18n();
-	return [...Array(12).keys()].map(m => d(new Date(Date.UTC(2022, m % 12)), { month: monthFormat }));
-};
 </script>

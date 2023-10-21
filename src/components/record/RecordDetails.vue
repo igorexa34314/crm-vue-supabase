@@ -34,13 +34,11 @@
 				</div>
 			</v-expansion-panel-text>
 		</v-expansion-panel>
-		<a hidden ref="linkEl" v-bind="downloadState"></a>
 	</v-expansion-panels>
 </template>
 
 <script setup lang="ts">
 import { mdiFile, mdiDownload } from '@mdi/js';
-import { ref, nextTick } from 'vue';
 import {
 	VExpansionPanels,
 	VExpansionPanel,
@@ -50,22 +48,21 @@ import {
 import { useI18n } from 'vue-i18n';
 import { RecordService, RecordDetail } from '@/services/record';
 
-const props = defineProps<{
+defineProps<{
 	details: RecordDetail[];
 }>();
 
 const { t } = useI18n({ useScope: 'global' });
 
-const linkEl = ref<HTMLLinkElement>();
-const downloadState = ref({
-	href: '',
-	download: '',
-});
 const downloadDetail = async (detail: RecordDetail) => {
-	const downloadURL = await RecordService.downloadRecordDetail(detail.fullpath);
-	downloadState.value = { href: downloadURL || '', download: detail.fullname };
-	await nextTick();
-	linkEl.value?.click();
+	const blob = await RecordService.downloadRecordDetail(detail.fullpath);
+	const downloadURL = URL.createObjectURL(blob);
+	const link = document.createElement('a');
+	link.href = downloadURL;
+	link.download = detail.fullname;
+	link.click();
+	link.remove();
+	URL.revokeObjectURL(downloadURL);
 };
 </script>
 

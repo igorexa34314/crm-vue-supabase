@@ -18,23 +18,21 @@
 import { VProgressCircular } from 'vuetify/components';
 import { mdiClose } from '@mdi/js';
 
-const props = withDefaults(
-	defineProps<{
-		modelValue?: string | number;
-		color?: string;
-		bgColor?: string;
-		size?: string | number;
-		width?: string | number;
-		iconSize?: string | number;
-	}>(),
-	{
-		color: 'grey-lighten-4',
-		bgColor: 'grey-darken-4',
-		size: 50,
-		width: 4,
-		iconSize: 26,
-	}
-);
+const {
+	color = 'grey-lighten-4',
+	bgColor = 'grey-darken-4',
+	size = 50,
+	width = 4,
+	iconSize = 26,
+} = defineProps<{
+	modelValue?: string | number;
+	color?: string;
+	bgColor?: string;
+	size?: string | number;
+	width?: string | number;
+	iconSize?: string | number;
+}>();
+
 const emit = defineEmits<{
 	cancel: [];
 }>();

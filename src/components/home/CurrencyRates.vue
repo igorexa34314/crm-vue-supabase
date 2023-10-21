@@ -33,21 +33,16 @@ import { VTable } from 'vuetify/components';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 
-const props = withDefaults(
-	defineProps<{
-		rates: Currency['rates'];
-		date?: Currency['date'];
-	}>(),
-	{
-		date: () => new Date(),
-	}
-);
+const { rates, date = new Date() } = defineProps<{
+	rates: Currency['rates'];
+	date?: Currency['date'];
+}>();
 
 const { xs, smAndDown } = useDisplay();
 const { t, d } = useI18n();
 const { getUserCurrency: userCurrency } = storeToRefs(useUserStore());
 
 const currencies = computed(
-	() => Object.keys(props.rates || {}).filter(cur => cur !== userCurrency.value) as CurrencyRates[]
+	() => Object.keys(rates || {}).filter(cur => cur !== userCurrency.value) as CurrencyRates[]
 );
 </script>

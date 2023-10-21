@@ -28,7 +28,7 @@
 						</v-btn>
 					</slot>
 					<slot name="submit" v-bind="{ submitEvent: submit }">
-						<v-btn :ref="el => (submitBtn = el as VBtn)" color="green-darken-1" variant="text" @click="submit">
+						<v-btn ref="submitBtn" color="green-darken-1" variant="text" @click="submit">
 							<span class="text-h6">{{ submitLabel || t('submit') }}</span>
 						</v-btn>
 					</slot>
@@ -41,11 +41,9 @@
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue';
 import { VBtn, VDialog, VFadeTransition } from 'vuetify/components';
-import { useVModel } from '@vueuse/core';
 import { useI18n } from 'vue-i18n';
 
-interface Props {
-	modelValue?: boolean;
+const { maxWidth = '550px', width = '100%' } = defineProps<{
 	maxWidth?: string | number;
 	width?: string | number;
 	title?: string;
@@ -55,16 +53,9 @@ interface Props {
 	submitLabel?: string;
 	cancelLabel?: string;
 	contentClass?: VDialog['contentClass'];
-}
-
-const props = withDefaults(defineProps<Props>(), {
-	modelValue: false,
-	maxWidth: '550px',
-	width: '100%',
-});
+}>();
 
 const emit = defineEmits<{
-	'update:modelValue': [val: boolean];
 	onSubmit: [];
 	onCancel: [];
 }>();
@@ -79,8 +70,11 @@ const slots = defineSlots<{
 
 const { t } = useI18n({ useScope: 'global' });
 
-const confirmationDialog = useVModel(props, 'modelValue', emit);
-const submitBtn = ref<VBtn>();
+const confirmationDialog = defineModel<boolean>('modelValue', {
+	default: false,
+});
+
+const submitBtn = ref<VBtn | null>(null);
 
 watch(
 	confirmationDialog,

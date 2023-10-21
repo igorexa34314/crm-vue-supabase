@@ -14,16 +14,13 @@
 <script setup lang="ts">
 import { VSwitch } from 'vuetify/components';
 import { mdiWeatherNight, mdiWeatherSunny } from '@mdi/js';
+import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { useDarkModeStore } from '@/stores/darkMode';
 
-const darkModeStore = useDarkModeStore();
+const { darkMode } = storeToRefs(useDarkModeStore());
 
-const darkMode = computed({
-	get: () => darkModeStore.darkMode,
-	set: (val: boolean) => darkModeStore.setDarkMode(val),
-});
-const switchToggleStyle = computed(() => (darkModeStore.darkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)'));
+const switchToggleStyle = computed(() => (darkMode.value ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)'));
 </script>
 
 <style lang="scss" scoped>

@@ -10,20 +10,14 @@ import { useTheme } from 'vuetify';
 
 const theme = useTheme();
 
-const props = withDefaults(
-	defineProps<{
-		page?: boolean;
-		screen?: boolean;
-		color?: string;
-	}>(),
-	{
-		screen: false,
-		page: false,
-	}
-);
+const { color, screen = false, page = false } = defineProps<{
+	page?: boolean;
+	screen?: boolean;
+	color?: string;
+}>();
 
 const cssProps = computed(() => ({
-	'--app-loader-color': props.color || (theme.global.current.value.dark ? '#FFFFFF' : '#000000'),
+	'--app-loader-color': color || (theme.global.current.value.dark ? '#FFFFFF' : '#000000'),
 }));
 </script>
 

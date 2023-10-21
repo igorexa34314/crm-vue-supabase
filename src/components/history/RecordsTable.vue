@@ -2,8 +2,7 @@
 	<v-data-table-server
 		color="background"
 		v-model:page="page"
-		:items-per-page="perPage"
-		@update:items-per-page="val => emit('update:perPage', val)"
+		v-model:items-per-page="perPage"
 		:headers="tableHeaders"
 		:items-length="totalRecords || records.length"
 		:items="records"
@@ -110,24 +109,23 @@ export type SortEmitData = Pick<VDataTableServer, 'page' | 'itemsPerPage'> & {
 	sortBy?: Partial<VDataTableServer['sortBy'][number]>[];
 };
 
-const props = withDefaults(
-	defineProps<{
-		records: (RecordWithCategory & { index: number })[];
-		totalRecords?: VDataTableServer['itemsLength'];
-		perPage?: VDataTableServer['itemsPerPage'];
-		loading?: boolean;
-	}>(),
-	{
-		totalRecords: 0,
-		perPage: DEFAULT_RECORDS_PER_PAGE,
-		loading: false,
-	}
-);
+const {
+	records,
+	totalRecords = 0,
+	loading = false,
+} = defineProps<{
+	records: (RecordWithCategory & { index: number })[];
+	totalRecords?: VDataTableServer['itemsLength'];
+	loading?: boolean;
+}>();
 
 const emit = defineEmits<{
 	sort: [data: SortEmitData];
-	'update:perPage': [val: number];
 }>();
+
+const perPage = defineModel<VDataTableServer['itemsPerPage']>('perPage', {
+	default: DEFAULT_RECORDS_PER_PAGE,
+});
 
 const page = ref(1);
 const tableHeaders = computed(

@@ -4,6 +4,7 @@ import { AuthService } from '@/services/auth';
 import { supabase } from '@/supabase';
 import { Tables } from '@/database.types';
 import { v4 as uuidv4 } from 'uuid';
+import { validateFileName } from '@/utils/helpers';
 
 export interface UserCredentials {
 	uid: string;
@@ -61,21 +62,14 @@ export class UserService {
 			throw new Error('You should profide only 1 file');
 		}
 		const avatar = files[0];
-		if (avatar instanceof File) {
-			const uid = await AuthService.getUserId();
-			if (!uid) {
-				throw new Error('user_unauthenticated');
-			}
-			const { error, data } = await supabase.storage
-				.from('avatars')
-				.upload(
-					`${uid}/${uuidv4()}__${
-						/^[a-zA-Z0-9._\-()\s]+$/.test(avatar.name) ? avatar.name : avatar.name.split('.').at(-1)
-					}`,
-					avatar
-				);
-			if (error) return errorHandler(error);
-			return data.path;
+		const uid = await AuthService.getUserId();
+		if (!uid) {
+			throw new Error('user_unauthenticated');
 		}
+		const { error, data } = await supabase.storage
+			.from('avatars')
+			.upload(`${uid}/${uuidv4()}__${validateFileName(avatar.name)}`, avatar);
+		if (error) return errorHandler(error);
+		return data.path;
 	}
 }

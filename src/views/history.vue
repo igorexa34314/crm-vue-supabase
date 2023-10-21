@@ -51,13 +51,13 @@ useMeta({ title: 'pageTitles.history' });
 
 const { t } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
-const { push } = useRouter();
+const { replace } = useRouter();
 const route = useRoute('/history');
 
 const { state: catStats, isLoading: categoriesLoading } = useAsyncState(
 	async () => {
 		const categories = await CategoryService.fetchCategoriesSpendStats();
-		return categories.filter(cat => cat.spend > 0).map(({ title, spend }) => ({ label: title, data: spend }));
+		return categories.filter(cat => cat.spend > 0).map(c => ({ label: c.title, data: c.spend }));
 	},
 	[],
 	{
@@ -88,10 +88,10 @@ const sortRecords = async ({ page, itemsPerPage, sortBy }: SortEmitData) => {
 			sortArg.order = sortBy[0].order === true ? 'asc' : sortBy[0].order || 'desc';
 			sortArg.sortBy = sortBy[0].key as SortFields;
 		}
-		const recordsData = await RecordService.fetchRecordsWithCategory(sortArg);
-		totalRecords.value = recordsData.count || recordsData.records.length;
-		records.value = recordsData.records.map((r, idx) => ({ ...r, index: (+page - 1) * +itemsPerPage + ++idx }));
-		push({ query: { ...route.query, ...sortArg } });
+		const { records: recordsData, count } = await RecordService.fetchRecordsWithCategory(sortArg);
+		totalRecords.value = count;
+		records.value = recordsData.map((r, idx) => ({ ...r, index: (+page - 1) * +itemsPerPage + ++idx }));
+		replace({ query: { ...route.query, ...sortArg } });
 	} catch (err) {
 		console.log(err);
 		const { showMessage } = useSnackbarStore();
@@ -100,5 +100,5 @@ const sortRecords = async ({ page, itemsPerPage, sortBy }: SortEmitData) => {
 		recordsLoading.value = false;
 	}
 };
-onUnmounted(() => push({ query: undefined }));
+onUnmounted(() => replace({ query: undefined }));
 </script>

@@ -17,7 +17,7 @@ export interface Breadcrumb {
 	disabled?: boolean;
 }
 
-const props = defineProps<{
+defineProps<{
 	breadcrumbs: Breadcrumb[];
 }>();
 </script>

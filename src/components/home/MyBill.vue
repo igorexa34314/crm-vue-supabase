@@ -22,15 +22,15 @@ const { t, n } = useI18n();
 const { xs } = useDisplay();
 const userStore = useUserStore();
 
-const props = defineProps<{
+const { rates } = defineProps<{
 	rates: Currency['rates'];
 }>();
 
-const currencies = computed(() => Object.keys(props.rates || {}) as CurrencyRates[]);
+const currencies = computed(() => Object.keys(rates || {}) as CurrencyRates[]);
 
 const getCurrency = computed(() => (currency: CurrencyRates) => {
-	const base = (userStore.info?.bill ?? DEFAULT_BILL) / props.rates[SERVER_CURRENCY];
-	return +(base * props.rates[currency]).toFixed(2);
+	const base = (userStore.info?.bill ?? DEFAULT_BILL) / rates[SERVER_CURRENCY];
+	return +(base * rates[currency]).toFixed(2);
 });
 </script>
 

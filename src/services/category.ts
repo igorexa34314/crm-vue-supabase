@@ -4,6 +4,7 @@ import { supabase } from '@/supabase';
 import { Tables } from '@/database.types';
 
 export type Category = Pick<Tables<'categories'>, 'id' | 'title' | 'limit'>;
+export type CategoryData = Omit<Category, 'id'>;
 
 export class CategoryService {
 	static categoryQuery = `id, title, limit` as const;
@@ -27,7 +28,7 @@ export class CategoryService {
 		return categories;
 	}
 
-	static async createCategory(categoryData: Omit<Category, 'id'>) {
+	static async createCategory(categoryData: CategoryData) {
 		const { error, data: newCategory } = await supabase
 			.from('categories')
 			.insert(categoryData)
@@ -37,12 +38,12 @@ export class CategoryService {
 		return newCategory;
 	}
 
-	static async updateCategory(categoryId: string, categoryData: Partial<Category>) {
+	static async updateCategory(categoryId: Category['id'], categoryData: CategoryData) {
 		const { error, data: category } = await supabase
 			.from('categories')
 			.update(categoryData)
 			.eq('id', categoryId)
-			.select(CategoryService.categoryQuery)
+			.select<typeof CategoryService.categoryQuery, Category>(CategoryService.categoryQuery)
 			.single();
 		if (error) return errorHandler(error);
 		return category;
@@ -51,7 +52,7 @@ export class CategoryService {
 	static async fetchCategoryById(id: Category['id']) {
 		const { error, data: category } = await supabase
 			.from('categories')
-			.select(CategoryService.categoryQuery)
+			.select<typeof CategoryService.categoryQuery, Category>(CategoryService.categoryQuery)
 			.eq('id', id)
 			.single();
 		if (error) return errorHandler(error);

@@ -43,7 +43,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const form = ref<VForm>();
+const form = ref<VForm | null>(null);
 const loading = ref(false);
 
 const formState = ref({

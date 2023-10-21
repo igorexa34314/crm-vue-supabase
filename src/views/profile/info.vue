@@ -36,7 +36,7 @@
 					<v-radio
 						v-for="gender in genderItems"
 						:key="gender.value"
-						:label="gender.title"
+						:label="t(`user.gender.${gender.title}`)"
 						:value="gender.value"
 						color="radio" />
 				</v-radio-group>
@@ -134,14 +134,9 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { SERVER_CURRENCY, DEFAULT_LOCALE } from '@/global-vars';
 import isEqual from 'lodash/isEqual';
 
-const props = withDefaults(
-	defineProps<{
-		loading?: boolean;
-	}>(),
-	{
-		loading: false,
-	}
-);
+const { loading } = defineProps<{
+	loading?: boolean;
+}>();
 
 const emit = defineEmits<{
 	updateInfo: [info: Partial<Omit<UserInfo, 'updated_at'>> & { avatar: File[] }];
@@ -160,7 +155,7 @@ const currencies = computed(() => {
 
 const info = computed(() => userStore.info);
 
-const form = ref<VForm>();
+const form = ref<VForm | null>(null);
 
 type NonUndefinedOrNullObjectFields<T extends { [key: string]: any }> = {
 	[key in keyof T]: Exclude<T[key], null | undefined>;
@@ -191,13 +186,11 @@ const { state: locales } = useAsyncState(LocaleService.fetchAvailableLocales, []
 	},
 });
 
-const genderItems = computed<{ title: string; value: UserInfo['gender'] }[]>(() =>
-	[
-		{ title: 'male', value: 'male' },
-		{ title: 'female', value: 'female' },
-		{ title: 'unknown', value: 'unknown' },
-	].map(item => ({ ...item, title: t(`user.gender.${item.title}`) }) as { title: string; value: UserInfo['gender'] })
-);
+const genderItems = [
+	{ title: 'male', value: 'male' },
+	{ title: 'female', value: 'female' },
+	{ title: 'unknown', value: 'unknown' },
+];
 
 //fillInfo
 watchEffect(() => {
