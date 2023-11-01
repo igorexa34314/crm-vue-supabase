@@ -76,7 +76,7 @@ const emit = defineEmits<{
 
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
-const { cf } = useCurrencyFilter();
+const cf = useCurrencyFilter();
 const userStore = useUserStore();
 const { xs } = useDisplay();
 

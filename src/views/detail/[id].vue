@@ -58,10 +58,7 @@
 
 			<UpdateRecordDialog v-model="updateRecordDialog" :record="record" @update-record="updateRecord" />
 
-			<ConfirmationDialog
-				v-model="confirmationDialog"
-				:title="t('delete_record_confirmation')"
-				@on-submit="deleteRecord" />
+			<DeleteRecordDialog v-model="confirmationDialog" @delete-record="deleteRecord" />
 		</v-card>
 
 		<div v-else class="mt-7 text-center text-primary text-h6">
@@ -75,8 +72,8 @@
 </template>
 
 <script setup lang="ts">
+import DeleteRecordDialog from '@/components/record/DeleteRecordDialog.vue';
 import UpdateRecordDialog from '@/components/record/UpdateRecordDialog.vue';
-import ConfirmationDialog from '@/components/UI/ConfirmationDialog.vue';
 import PageBreadcrumbs, { Breadcrumb } from '@/components/UI/PageBreadcrumbs.vue';
 import RecordDetails from '@/components/record/RecordDetails.vue';
 import { mdiTrendingUp, mdiTrendingDown, mdiDelete, mdiPencil } from '@mdi/js';
@@ -97,7 +94,7 @@ useMeta({ title: 'pageTitles.details' });
 const route = useRoute('/detail/[id]');
 const router = useRouter();
 const { t, d, n } = useI18n({ useScope: 'global' });
-const { cf } = useCurrencyFilter();
+const cf = useCurrencyFilter();
 const { xs } = useDisplay();
 const { showMessage } = useSnackbarStore();
 const { info, userCurrency } = storeToRefs(useUserStore());

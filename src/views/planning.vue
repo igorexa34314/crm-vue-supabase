@@ -78,7 +78,7 @@ const { xs } = useDisplay();
 const userStore = useUserStore();
 
 const { userCurrency } = storeToRefs(userStore);
-const { cf } = useCurrencyFilter();
+const cf = useCurrencyFilter();
 
 const bill = computed(() => userStore.info?.bill || DEFAULT_BILL);
 

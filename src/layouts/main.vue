@@ -58,6 +58,7 @@ const {
 	execute: fetchCurrency,
 } = useAsyncState(() => CurrencyService.fetchCurrency(userStore.getUserCurrency), null, {
 	immediate: false,
+	resetOnExecute: false,
 	onError: e => {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_loading_currency'), 'red-darken-3');
 		userStore.fallbackUserCurrency();
@@ -70,7 +71,7 @@ let userInfoChannel: RealtimeChannel | null = null;
 
 onMounted(async () => {
 	try {
-		if (!userStore.info || !Object.keys(userStore.info).length) {
+		if (!Object.keys(userStore.info || {}).length) {
 			userInfoChannel = await UserService.fetchAndSubscribeInfo();
 		}
 	} catch (e) {

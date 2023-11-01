@@ -6,7 +6,7 @@
 
 		<v-form ref="form" @submit.prevent="submitHandler">
 			<v-select
-				v-model="currentCategory.id"
+				v-model="currentCategoryId"
 				:items="categories"
 				item-title="title"
 				item-value="id"
@@ -15,7 +15,7 @@
 				class="text-input" />
 
 			<LocalizedInput
-				v-model="currentCategory.title"
+				v-model="categoryData.title"
 				:rules="validations.title"
 				variant="underlined"
 				:label="t('title')"
@@ -23,7 +23,7 @@
 				required />
 
 			<LocalizedInput
-				v-model="currentCategory.limit"
+				v-model="categoryData.limit"
 				:rules="validations.limit"
 				variant="underlined"
 				type="number"
@@ -31,23 +31,38 @@
 				class="mt-6"
 				required />
 
-			<v-btn
-				color="success"
-				type="submit"
-				:class="xs ? 'mt-4' : 'mt-7'"
-				:disabled="isNewCategoryEquals"
-				:loading="loading">
-				{{ t('update') }}
-				<v-icon :icon="mdiSend" class="ml-3" />
-			</v-btn>
+			<div class="d-flex items-center">
+				<v-btn
+					color="success"
+					type="submit"
+					:class="xs ? 'mt-4' : 'mt-7'"
+					:disabled="isNewCategoryEquals"
+					:loading="loading">
+					{{ t('update') }}
+					<v-icon :icon="mdiSend" class="ml-3" />
+				</v-btn>
+
+				<v-btn
+					color="success"
+					type="button"
+					:class="xs ? 'mt-4' : 'mt-7'"
+					class="ml-sm-6 ml-4"
+					@click="confirmationDialog = true">
+					{{ t('delete') }}
+					<v-icon :icon="mdiDelete" class="ml-3" />
+				</v-btn>
+
+				<DeleteCategoryDialog v-model="confirmationDialog" @delete-category="deleteCategory" />
+			</div>
 		</v-form>
 	</div>
 </template>
 
 <script setup lang="ts">
+import DeleteCategoryDialog from '@/components/categories/DeleteCategoryDialog.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
-import { ref, watchEffect, computed } from 'vue';
-import { mdiSend } from '@mdi/js';
+import { ref, watchEffect, watch, computed } from 'vue';
+import { mdiSend, mdiDelete } from '@mdi/js';
 import { CategoryService, Category } from '@/services/category';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
@@ -67,44 +82,52 @@ const { categories, defaultLimit = DEFAULT_CATEGORY_LIMIT } = defineProps<{
 
 const emit = defineEmits<{
 	updated: [cat: Category];
+	deleted: [categoryId: Category['id']];
 }>();
 
 const { t, te } = useI18n();
 const { showMessage } = useSnackbarStore();
-const { cf } = useCurrencyFilter();
+const cf = useCurrencyFilter();
 const { xs } = useDisplay();
 const { userCurrency } = storeToRefs(useUserStore());
 
 const form = ref<VForm | null>(null);
 const loading = ref(false);
-const currentCategory = ref<Category>({
-	id: categories[0].id,
+const confirmationDialog = ref(false);
+
+const currentCategoryId = ref(categories[0].id);
+
+watch(
+	() => categories.length,
+	() => {
+		currentCategoryId.value = categories[0].id;
+	}
+);
+
+const categoryData = ref<Omit<Category, 'id'>>({
 	title: '',
 	limit: Math.round(cf.value(defaultLimit) / 100) * 100,
 });
 
 watchEffect(() => {
-	const category = categories.find(({ id }) => id === currentCategory.value.id);
-	if (category) {
-		currentCategory.value.title = category.title;
-		currentCategory.value.limit = cf.value(category.limit);
-	}
+	const category = categories.find(({ id }) => id === currentCategoryId.value)!;
+	categoryData.value = { title: category.title, limit: cf.value(category.limit) };
 });
 
 const isNewCategoryEquals = computed(() => {
-	const { id, ...newCategory } = currentCategory.value;
-	const { title, limit } = categories.find(cat => cat.id === id)!;
-	return isEqual(newCategory, { title, limit: cf.value(limit) });
+	const { title, limit } = categories.find(cat => cat.id === currentCategoryId.value)!;
+	return isEqual(categoryData.value, { title, limit: cf.value(limit) });
 });
 
 const submitHandler = async () => {
 	const valid = (await form.value?.validate())?.valid;
-	const { id, limit, ...categoryData } = currentCategory.value;
-	if (valid && id) {
+	if (valid && currentCategoryId.value) {
 		try {
-			const convertedLimit = cf.value(limit, { type: 'reverse' });
 			loading.value = true;
-			const updatedCat = await CategoryService.updateCategory(id, { ...categoryData, limit: convertedLimit });
+			const updatedCat = await CategoryService.updateCategory(currentCategoryId.value, {
+				...categoryData.value,
+				limit: cf.value(categoryData.value.limit, { type: 'reverse' }),
+			});
 			showMessage(t('category_updated'));
 			emit('updated', updatedCat);
 		} catch (e) {
@@ -116,6 +139,22 @@ const submitHandler = async () => {
 		} finally {
 			loading.value = false;
 		}
+	}
+};
+
+const deleteCategory = async () => {
+	try {
+		loading.value = true;
+		await CategoryService.deleteCategoryById(currentCategoryId.value);
+		emit('deleted', currentCategoryId.value);
+	} catch (e) {
+		if (typeof e === 'string') {
+			showMessage(te(e) ? t(e) : e.substring(0, 64), 'red-darken-3');
+		} else {
+			showMessage('error_update_category', 'red-darken-3');
+		}
+	} finally {
+		loading.value = false;
 	}
 };
 </script>

@@ -30,7 +30,7 @@ export const useChart = <T extends ChartType = 'pie'>(
 	const { t, n } = useI18n();
 	const theme = useTheme();
 	const { xs } = useDisplay();
-	const { cf } = useCurrencyFilter();
+	const cf = useCurrencyFilter();
 	const userStore = useUserStore();
 
 	const chartOptions = computed<ChartOptions<T>>(

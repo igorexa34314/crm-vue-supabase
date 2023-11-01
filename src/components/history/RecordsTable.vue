@@ -152,7 +152,7 @@ const loadItems: VDataTableServer['onUpdate:options'] = ({ page, itemsPerPage, s
 const { te, t, d, n } = useI18n();
 const { push } = useRouter();
 const { smAndDown, xs } = useDisplay();
-const { cf } = useCurrencyFilter();
+const cf = useCurrencyFilter();
 const { userCurrency } = storeToRefs(useUserStore());
 </script>
 

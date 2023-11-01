@@ -122,7 +122,7 @@ import { ref, computed, watchEffect, inject } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
-import { useAsyncState } from '@vueuse/core';
+import { computedInject, computedWithControl, useAsyncState } from '@vueuse/core';
 import { LocaleService } from '@/services/locale';
 import { user as validations } from '@/utils/validations';
 import { UserInfo } from '@/services/user';
@@ -146,10 +146,8 @@ const { t } = useI18n();
 const { xs, smAndDown } = useDisplay();
 const userStore = useUserStore();
 
-const { currency } = inject(currencyKey)!;
-
-const currencies = computed(() => {
-	const currencyNames = (currency.value ? Object.keys(currency.value.rates) : [SERVER_CURRENCY]) as CurrencyRates[];
+const currencies = computedInject(currencyKey, data => {
+	const currencyNames = Object.keys(data?.currency.value?.rates || { [SERVER_CURRENCY]: 1 }) as CurrencyRates[];
 	return currencyNames.map(c => ({ title: t(`currencies.${c}`) + ` (${c})`, value: c }));
 });
 

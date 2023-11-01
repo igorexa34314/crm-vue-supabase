@@ -49,6 +49,12 @@ export class CategoryService {
 		return category;
 	}
 
+	static async deleteCategoryById(categoryId: Category['id']) {
+		const { error, data = {} } = await supabase.from('categories').delete().eq('id', categoryId);
+		if (error) return errorHandler(error);
+		return { success: true, ...data };
+	}
+
 	static async fetchCategoryById(id: Category['id']) {
 		const { error, data: category } = await supabase
 			.from('categories')

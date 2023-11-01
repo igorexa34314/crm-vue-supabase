@@ -72,6 +72,7 @@
 	"create_category": "Create category",
 	"income": "Income",
 	"repeat_password": "Repeat your password",
+	"delete_category_confirmation": "Are you sure you want to delete this category?",
 	"have_account": "Have an account",
 	"chart_title": "Your spending schedule",
 	"description": "Description",
@@ -196,6 +197,7 @@
 		"UAH": "Ukrainian hryvnia",
 		"RUB": "Russian ruble"
 	},
+	"delete": "Delete",
 	"record_details": "Record details in files",
 	"upload_details": "Upload record details",
 	"rules": {
@@ -207,7 +209,7 @@
 		"agree": "You must agree to the rules",
 		"firstName": "@:user.firstName must be between 2 and 64 characters",
 		"file": "File size must be less than 2 megabytes",
-		"limit": "@:limit must be greater than 100",
+		"limit": "@:limit must be greater than 50",
 		"category": "@:category name must be between 3 and 20 characters",
 		"email": "Enter correct email",
 		"repeater": "Password mismatch",

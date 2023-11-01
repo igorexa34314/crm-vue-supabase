@@ -54,7 +54,7 @@ const emit = defineEmits<{
 
 const { t, te } = useI18n();
 
-const { cf } = useCurrencyFilter();
+const cf = useCurrencyFilter();
 const { showMessage } = useSnackbarStore();
 const { xs } = useDisplay();
 
@@ -64,11 +64,7 @@ const loading = ref(false);
 
 const formState = ref<Omit<Category, 'id'>>({
 	title: '',
-	limit: Math.floor(cf.value(defaultLimit) / 100) * 100,
-});
-
-watchEffect(() => {
-	formState.value.limit = Math.floor(cf.value(defaultLimit) / 100) * 100;
+	limit: Math.floor(cf.value(defaultLimit) / 10) * 10,
 });
 
 const submitHandler = async () => {
