@@ -1,7 +1,7 @@
 import { AuthService } from '@/services/auth';
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/supabase';
-import { Tables } from '@/database.types';
+import type { Tables } from '@/database.types';
 
 export type Category = Pick<Tables<'categories'>, 'id' | 'title' | 'limit'>;
 export type CategoryData = Omit<Category, 'id'>;

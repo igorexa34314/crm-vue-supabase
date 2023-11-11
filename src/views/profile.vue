@@ -36,8 +36,8 @@ import { ref, watchEffect } from 'vue';
 import { useMeta } from 'vue-meta';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { UserService, UserInfo } from '@/services/user';
-import { definePage, useRoute, useRouter, RouteLocationRaw } from 'vue-router/auto';
+import { UserService, type UserInfo } from '@/services/user';
+import { definePage, useRoute, useRouter, type RouteLocationRaw } from 'vue-router/auto';
 import { useDisplay } from 'vuetify';
 import { VTabs, VTab, VSlideXTransition } from 'vuetify/components';
 

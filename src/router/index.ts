@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, createMemoryHistory, RouteRecordName } from 'vue-router/auto';
+import { createRouter, createWebHistory, createMemoryHistory, type RouteRecordName } from 'vue-router/auto';
 import { setupLayouts } from 'virtual:generated-layouts';
 import { checkAuth } from '@/middlewares/auth';
 

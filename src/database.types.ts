@@ -1,5 +1,5 @@
-import { PostgrestError } from '@supabase/supabase-js';
-import enUS from '@/locales/en-US.json';
+import type { PostgrestError } from '@supabase/supabase-js';
+import type { MessageSchema } from 'vue-i18n';
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
@@ -45,21 +45,21 @@ export interface Database {
 					code: string;
 					name: string;
 					native_name: string;
-					translations: typeof enUS;
+					translations: MessageSchema;
 					updated_at: string | null;
 				};
 				Insert: {
 					code: string;
 					name: string;
 					native_name: string;
-					translations?: typeof enUS;
+					translations?: MessageSchema;
 					updated_at?: string | null;
 				};
 				Update: {
 					code?: string;
 					name?: string;
 					native_name?: string;
-					translations?: typeof enUS;
+					translations?: MessageSchema;
 					updated_at?: string | null;
 				};
 				Relationships: [];
@@ -72,7 +72,7 @@ export interface Database {
 					birthday_date: string | null;
 					currency: string;
 					first_name: string;
-					gender: Database['public']['Enums']['genders'];
+					gender: Database['public']['Enums']['user_gender'];
 					id: string;
 					last_name: string;
 					locale: string;
@@ -86,7 +86,7 @@ export interface Database {
 					birthday_date?: string | null;
 					currency?: string;
 					first_name?: string;
-					gender?: Database['public']['Enums']['genders'];
+					gender?: Database['public']['Enums']['user_gender'];
 					id: string;
 					last_name?: string;
 					locale?: string;
@@ -100,7 +100,7 @@ export interface Database {
 					birthday_date?: string | null;
 					currency?: string;
 					first_name?: string;
-					gender?: Database['public']['Enums']['genders'];
+					gender?: Database['public']['Enums']['user_gender'];
 					id?: string;
 					last_name?: string;
 					locale?: string;
@@ -226,9 +226,17 @@ export interface Database {
 				};
 				Returns: Json;
 			};
+			get_record_types: {
+				Args: Record<PropertyKey, never>;
+				Returns: string[];
+			};
+			get_user_genders: {
+				Args: Record<PropertyKey, never>;
+				Returns: string[];
+			};
 		};
 		Enums: {
-			genders: 'male' | 'female' | 'unknown';
+			user_gender: 'male' | 'female' | 'unknown';
 			record_type: 'income' | 'outcome';
 		};
 		CompositeTypes: {

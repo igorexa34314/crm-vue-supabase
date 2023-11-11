@@ -1,11 +1,11 @@
-import { Enums, Tables } from '@/database.types';
 import { AuthService } from '@/services/auth';
-import { Category, CategoryService } from '@/services/category';
+import { CategoryService , type Category} from '@/services/category';
 import { supabase } from '@/supabase';
 import { errorHandler } from '@/utils/errorHandler';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
 import { validateFileName } from '@/utils/helpers';
 import { v4 as uuidv4 } from 'uuid';
+import type { Enums, Tables } from '@/database.types';
 
 export type RecordType = Enums<'record_type'>;
 export type Record = Omit<Tables<'records'>, 'user_id'>;

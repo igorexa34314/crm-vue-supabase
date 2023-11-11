@@ -62,16 +62,16 @@ import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
 import { ref, computed, watchEffect } from 'vue';
-import { Record, RecordForm } from '@/services/record';
 import { VForm, VSelect, VRadio, VRadioGroup } from 'vuetify/components';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useI18n } from 'vue-i18n';
 import { record as validations } from '@/utils/validations';
-import { Category } from '@/services/category';
 import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
 import { SERVER_CURRENCY, DEFAULT_RECORD_AMOUNT, DEFAULT_BILL, recordTypes } from '@/global-vars';
+import type { Category } from '@/services/category';
+import type { Record, RecordForm } from '@/services/record';
 
 const {
 	categories,
@@ -91,7 +91,7 @@ const emit = defineEmits<{
 
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
-const cf = useCurrencyFilter();
+const { cf } = useCurrencyFilter();
 const userStore = useUserStore();
 const { xs } = useDisplay();
 

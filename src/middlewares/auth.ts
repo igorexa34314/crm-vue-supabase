@@ -1,4 +1,4 @@
-import { NavigationGuardWithThis } from 'vue-router/auto';
+import type { NavigationGuardWithThis } from 'vue-router/auto';
 import { AuthService } from '@/services/auth';
 
 export const checkAuth: NavigationGuardWithThis<undefined> = async (to, from, next) => {

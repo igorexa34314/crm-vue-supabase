@@ -4,17 +4,18 @@
 		<v-card-text class="text-h5 text-primary" :class="xs ? 'text-h6' : 'text-h5'">
 			<div v-for="cur in currencies" :key="cur" :class="xs ? 'mt-5' : 'mt-7'">
 				<span class="mx-2">{{ n(getCurrency(cur), { key: 'currency', currency: cur }) }}</span>
-				<v-divider color="primary" thickness="2.5" class="bg-white" :class="xs ? 'mt-2' : 'mt-4'" />
+				<v-divider thickness="2.5" color="divider" :class="xs ? 'mt-2' : 'mt-4'" />
 			</div>
 		</v-card-text>
 	</v-card>
 </template>
 
 <script setup lang="ts">
+import { VDivider } from 'vuetify/lib/components/index.mjs';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
-import { Currency, CurrencyRates } from '@/services/currency';
+import type { Currency, CurrencyRates } from '@/services/currency';
 import { useDisplay } from 'vuetify';
 import { SERVER_CURRENCY, DEFAULT_BILL } from '@/global-vars';
 

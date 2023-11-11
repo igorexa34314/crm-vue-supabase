@@ -12,12 +12,6 @@ export const TURNSTILE_SITE_KEY: string = import.meta.env.VITE_TURNSTILE_SITE_KE
 // Auth providers
 export const supportedOAuthProviders = ['google', 'facebook', 'github'] as const;
 
-// Vuetify
-export const vuetifyThemeNames = {
-	dark: 'customDark',
-	light: 'customLight',
-} as const;
-
 // I18n
 export const availableLocales = ['ru-RU', 'uk-UA', 'en-US'] as const;
 export const availableCurrencies = ['USD', 'EUR', 'RUB', 'UAH'] as const;
@@ -32,9 +26,7 @@ export const recordTypes = ['income', 'outcome'] as const;
 
 // App vars
 export const AppTitle: string = import.meta.env.VITE_APP_TITLE || 'CRM VUE';
-export const DEFAULT_THEME =
-	vuetifyThemeNames[import.meta.env.VITE_APP_DEFAULT_THEME as keyof typeof vuetifyThemeNames] ||
-	vuetifyThemeNames.light;
+export const DEFAULT_THEME: string = import.meta.env.VITE_APP_DEFAULT_THEME || 'light';
 export const DEFAULT_BILL = +import.meta.env.VITE_APP_DEFAULT_BILL || 1000;
 export const DEFAULT_LOCALE: string = import.meta.env.VITE_APP_DEFAULT_LOCALE || 'uk-UA';
 export const DEFAULT_CATEGORY_LIMIT = 100;

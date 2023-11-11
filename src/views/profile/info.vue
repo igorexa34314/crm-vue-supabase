@@ -118,21 +118,21 @@ import avatarPlaceholder from '@/assets/img/avatar-placeholder.jpg';
 import BirthdayPicker from '@/components/UI/BirthdayPicker.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
-import { ref, computed, watchEffect, inject } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
-import { computedInject, computedWithControl, useAsyncState } from '@vueuse/core';
+import { computedInject, useAsyncState } from '@vueuse/core';
 import { LocaleService } from '@/services/locale';
 import { user as validations } from '@/utils/validations';
-import { UserInfo } from '@/services/user';
 import { VForm, VSelect, VRadio, VRadioGroup } from 'vuetify/components';
-import { CurrencyRates } from '@/services/currency';
 import { currencyKey } from '@/injection-keys';
 import { useDisplay } from 'vuetify';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { SERVER_CURRENCY, DEFAULT_LOCALE } from '@/global-vars';
 import isEqual from 'lodash/isEqual';
+import type { UserInfo } from '@/services/user';
+import type { CurrencyRates } from '@/services/currency';
 
 const { loading } = defineProps<{
 	loading?: boolean;

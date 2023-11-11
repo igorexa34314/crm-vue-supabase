@@ -33,11 +33,11 @@
 </template>
 
 <script setup lang="ts">
-import RecordsTable, { SortEmitData } from '@/components/history/RecordsTable.vue';
+import RecordsTable, { type SortEmitData } from '@/components/history/RecordsTable.vue';
 import { useMeta } from 'vue-meta';
 import { Pie } from 'vue-chartjs';
 import { CategoryService } from '@/services/category';
-import { RecordService, SortFields, RecordWithCategory } from '@/services/record';
+import { RecordService, type SortFields, type RecordWithCategory } from '@/services/record';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useChart } from '@/composables/useChart';

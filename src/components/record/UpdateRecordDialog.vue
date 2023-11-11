@@ -55,7 +55,6 @@ import ConfirmationDialog from '@/components/UI/ConfirmationDialog.vue';
 import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { ref, computed, watchEffect } from 'vue';
-import { RecordWithCategory, RecordWithDetails, RecordDataToUpdate } from '@/services/record';
 import { VForm, VRadio, VRadioGroup } from 'vuetify/components';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
@@ -64,6 +63,7 @@ import { record as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
 import { recordTypes } from '@/global-vars';
+import type { RecordWithCategory, RecordWithDetails, RecordDataToUpdate } from '@/services/record';
 
 const { record, loading } = defineProps<{
 	record: RecordWithCategory | RecordWithDetails;
@@ -76,7 +76,7 @@ const emit = defineEmits<{
 
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
-const cf = useCurrencyFilter();
+const { cf } = useCurrencyFilter();
 const userStore = useUserStore();
 const { xs } = useDisplay();
 

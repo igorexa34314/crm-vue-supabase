@@ -27,11 +27,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
-import { Currency, CurrencyRates } from '@/services/currency';
 import { useDisplay } from 'vuetify';
 import { VTable } from 'vuetify/components';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
+import type { Currency, CurrencyRates } from '@/services/currency';
 
 const { rates, date = new Date() } = defineProps<{
 	rates: Currency['rates'];

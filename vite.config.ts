@@ -9,14 +9,14 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
-export default ({ mode }) => {
+export default ({ mode }: { mode: any }) => {
 	process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
 	return defineConfig({
 		appType: 'mpa',
 		base: process.env.VITE_BASE || '/',
 		server: {
-			port: +process.env.VITE_PORT || 3000,
+			port: +(process.env.VITE_PORT || 3000),
 		},
 		resolve: {
 			alias: {
@@ -43,7 +43,7 @@ export default ({ mode }) => {
 				layoutsDirs: 'src/layouts',
 				defaultLayout: 'main',
 			}),
-			vuetify(),
+			vuetify({ autoImport: true }),
 			{
 				...visualizer({ filename: 'bundle-stats.html' }),
 				apply: () => !!process.env.ROLLUP_ANALYZE,

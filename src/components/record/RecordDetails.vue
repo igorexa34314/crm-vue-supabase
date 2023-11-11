@@ -46,7 +46,7 @@ import {
 	VExpansionPanelTitle,
 } from 'vuetify/components/VExpansionPanel';
 import { useI18n } from 'vue-i18n';
-import { RecordService, RecordDetail } from '@/services/record';
+import { RecordService, type RecordDetail } from '@/services/record';
 
 defineProps<{
 	details: RecordDetail[];

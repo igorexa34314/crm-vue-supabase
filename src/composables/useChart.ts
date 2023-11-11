@@ -1,14 +1,14 @@
-import { computed, toValue, MaybeRef } from 'vue';
+import { computed, toValue, type MaybeRef } from 'vue';
 import {
 	Chart as ChartJS,
 	Title,
 	Tooltip,
 	Legend,
 	ArcElement,
-	ChartData,
-	ChartOptions,
-	ChartType,
-	TooltipItem,
+	type ChartData,
+	type ChartOptions,
+	type ChartType,
+	type TooltipItem,
 } from 'chart.js';
 import { useI18n } from 'vue-i18n';
 import { useTheme, useDisplay } from 'vuetify';
@@ -30,7 +30,7 @@ export const useChart = <T extends ChartType = 'pie'>(
 	const { t, n } = useI18n();
 	const theme = useTheme();
 	const { xs } = useDisplay();
-	const cf = useCurrencyFilter();
+	const { cf } = useCurrencyFilter();
 	const userStore = useUserStore();
 
 	const chartOptions = computed<ChartOptions<T>>(

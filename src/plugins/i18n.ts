@@ -1,4 +1,4 @@
-import { createI18n, I18n, MessageSchema, DateTimeFormatSchema, localeKey } from 'vue-i18n';
+import { createI18n, type I18n, type MessageSchema, type DateTimeFormatSchema, type localeKey } from 'vue-i18n';
 import { nextTick } from 'vue';
 import fallbackMessages from '@intlify/unplugin-vue-i18n/messages';
 import datetimeFormats from '@/utils/datetimeFormats.json';

@@ -1,6 +1,6 @@
 <template>
 	<metainfo>
-		<template #title="{ content }: any">
+		<template #title="{ content }: SlotScopeProperties">
 			{{ content ? `${t(content)} | ${AppTitle} ` : AppTitle }}
 		</template>
 	</metainfo>
@@ -18,13 +18,13 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-import { useDarkModeStore } from '@/stores/darkMode';
 import GlobalSnackbar from '@/components/app/GlobalSnackbar.vue';
+import { useDarkModeStore } from '@/stores/darkMode';
+import { useI18n } from 'vue-i18n';
 import { AppTitle } from '@/global-vars';
+import type { SlotScopeProperties } from 'vue-meta';
 
 const { t } = useI18n({ useScope: 'global' });
-
 useDarkModeStore();
 </script>
 

@@ -2,7 +2,7 @@ import { errorHandler } from '@/utils/errorHandler';
 import { useUserStore } from '@/stores/user';
 import { AuthService } from '@/services/auth';
 import { supabase } from '@/supabase';
-import { Tables } from '@/database.types';
+import type { Tables } from '@/database.types';
 import { v4 as uuidv4 } from 'uuid';
 import { validateFileName } from '@/utils/helpers';
 

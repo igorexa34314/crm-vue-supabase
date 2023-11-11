@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { DEFAULT_LOCALE, SERVER_CURRENCY, LOCALE_KEY } from '@/global-vars';
-import { UserInfo } from '@/services/user';
+import type { UserInfo } from '@/services/user';
 
 export const useUserStore = defineStore('user', () => {
 	const info = ref<UserInfo | null>(null);

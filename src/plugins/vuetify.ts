@@ -2,23 +2,14 @@
 import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
-
-// Components
-import { VBtn, VImg, VIcon, VDivider } from 'vuetify/components';
-import * as VGrid from 'vuetify/components/VGrid';
-import * as VList from 'vuetify/components/VList';
-import * as VCard from 'vuetify/components/VCard';
-// import * as directives from 'vuetify/directives';
-
-import { vuetifyThemeNames, DEFAULT_THEME } from '@/global-vars';
 // I18n
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
-import { I18n, useI18n } from 'vue-i18n';
+import { useI18n, type I18n } from 'vue-i18n';
+
+import { DEFAULT_THEME } from '@/global-vars';
 
 export default <T extends I18n<any, any, any, any, false>>(i18n: T) => {
 	return createVuetify({
-		components: { ...VList, ...VCard, ...VGrid, VBtn, VImg, VIcon, VDivider },
-		directives: {},
 		locale: {
 			adapter: createVueI18nAdapter({ i18n, useI18n }),
 		},
@@ -31,9 +22,8 @@ export default <T extends I18n<any, any, any, any, false>>(i18n: T) => {
 		},
 		theme: {
 			defaultTheme: DEFAULT_THEME,
-
 			themes: {
-				[vuetifyThemeNames.dark]: {
+				dark: {
 					dark: true,
 					colors: {
 						'card-1': '#5e5a66',
@@ -55,12 +45,13 @@ export default <T extends I18n<any, any, any, any, false>>(i18n: T) => {
 						hover: '#37474f33',
 						surface: '#282828',
 						primary: '#E0E0E0',
+						divider: '#E0E0E0',
 						trend: '#E0E0E0',
 						secondary: '#37474F',
 						navbar: '#263238',
 					},
 				},
-				[vuetifyThemeNames.light]: {
+				light: {
 					dark: false,
 					colors: {
 						background: '#F8F6F4',
@@ -79,6 +70,7 @@ export default <T extends I18n<any, any, any, any, false>>(i18n: T) => {
 						hover: '#ffffff66',
 						fixed: '#FDCEDF',
 						primary: '#393646',
+						divider: '#BCAAA4',
 						navbar: '#ECB365',
 						profile: '#261C2C',
 						trend: '#FFFFFF',

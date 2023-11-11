@@ -63,7 +63,7 @@ import DeleteCategoryDialog from '@/components/categories/DeleteCategoryDialog.v
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { ref, watchEffect, watch, computed } from 'vue';
 import { mdiSend, mdiDelete } from '@mdi/js';
-import { CategoryService, Category } from '@/services/category';
+import { CategoryService, type Category } from '@/services/category';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
@@ -87,7 +87,7 @@ const emit = defineEmits<{
 
 const { t, te } = useI18n();
 const { showMessage } = useSnackbarStore();
-const cf = useCurrencyFilter();
+const { cf } = useCurrencyFilter();
 const { xs } = useDisplay();
 const { userCurrency } = storeToRefs(useUserStore());
 

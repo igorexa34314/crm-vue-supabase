@@ -18,7 +18,7 @@
 				<template v-for="column in columns" :key="column.key">
 					<td>
 						<span class="mr-2 cursor-pointer" @click="column.sortable ? toggleSort(column) : null">{{
-							te(column.title) ? t(column.title) : column.title
+							te(column.title ?? '') ? t(column.title as string) : column.title
 						}}</span>
 						<template v-if="isSorted(column)">
 							<v-icon :icon="getSortIcon(column)" />
@@ -100,10 +100,9 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
-import { VTooltip, VPagination, VHover } from 'vuetify/components';
-import { RecordWithCategory } from '@/services/record';
-import { VDataTableServer } from 'vuetify/labs/VDataTable';
+import { VTooltip, VPagination, VHover, VDataTableServer } from 'vuetify/components';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
+import type { RecordWithCategory } from '@/services/record';
 
 export type SortEmitData = Pick<VDataTableServer, 'page' | 'itemsPerPage'> & {
 	sortBy?: Partial<VDataTableServer['sortBy'][number]>[];
@@ -152,7 +151,7 @@ const loadItems: VDataTableServer['onUpdate:options'] = ({ page, itemsPerPage, s
 const { te, t, d, n } = useI18n();
 const { push } = useRouter();
 const { smAndDown, xs } = useDisplay();
-const cf = useCurrencyFilter();
+const { cf } = useCurrencyFilter();
 const { userCurrency } = storeToRefs(useUserStore());
 </script>
 

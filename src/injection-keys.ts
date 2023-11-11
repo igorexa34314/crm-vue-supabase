@@ -1,6 +1,6 @@
-import { InjectionKey } from 'vue';
-import { UseAsyncStateReturn } from '@vueuse/core';
 import { CurrencyService } from '@/services/currency';
+import type { InjectionKey } from 'vue';
+import type { UseAsyncStateReturn } from '@vueuse/core';
 
 type CurrencyAPIResult = UseAsyncStateReturn<
 	Awaited<ReturnType<typeof CurrencyService.fetchCurrency>> | null,

@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { VNavigationDrawer } from 'vuetify/components';
 import { useI18n } from 'vue-i18n';
-import { RouteLocationRaw } from 'vue-router/auto';
+import { type RouteLocationRaw } from 'vue-router/auto';
 
 const drawer = defineModel<boolean>('modelValue', {
 	default: false,

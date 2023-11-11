@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import DeleteRecordDialog from '@/components/record/DeleteRecordDialog.vue';
 import UpdateRecordDialog from '@/components/record/UpdateRecordDialog.vue';
-import PageBreadcrumbs, { Breadcrumb } from '@/components/UI/PageBreadcrumbs.vue';
+import PageBreadcrumbs, { type Breadcrumb } from '@/components/UI/PageBreadcrumbs.vue';
 import RecordDetails from '@/components/record/RecordDetails.vue';
 import { mdiTrendingUp, mdiTrendingDown, mdiDelete, mdiPencil } from '@mdi/js';
 import { ref, computed } from 'vue';
@@ -82,7 +82,7 @@ import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
 import { useRouter, useRoute } from 'vue-router/auto';
 import { useMeta } from 'vue-meta';
-import { RecordDataToUpdate, RecordService, RecordWithDetails } from '@/services/record';
+import { RecordService, type RecordDataToUpdate, type RecordWithDetails } from '@/services/record';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -94,7 +94,7 @@ useMeta({ title: 'pageTitles.details' });
 const route = useRoute('/detail/[id]');
 const router = useRouter();
 const { t, d, n } = useI18n({ useScope: 'global' });
-const cf = useCurrencyFilter();
+const { cf } = useCurrencyFilter();
 const { xs } = useDisplay();
 const { showMessage } = useSnackbarStore();
 const { info, userCurrency } = storeToRefs(useUserStore());

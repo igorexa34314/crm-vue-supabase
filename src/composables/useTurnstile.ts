@@ -1,7 +1,7 @@
 import { ref, onBeforeUnmount } from 'vue';
 import { useScriptTag } from '@vueuse/core';
 import { loadTurnstileCbName, turnstileScriptSrc, TURNSTILE_SITE_KEY } from '@/global-vars';
-import { Container } from 'turnstile-types';
+import type { Container } from 'turnstile-types';
 
 export const useTurnstile = (selector: Container) => {
 	let turnstileId: string;

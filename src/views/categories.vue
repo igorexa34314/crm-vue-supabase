@@ -32,7 +32,7 @@ import EditCategory from '@/components/categories/EditCategory.vue';
 import { inject } from 'vue';
 import { useMeta } from 'vue-meta';
 import { useAsyncState } from '@vueuse/core';
-import { CategoryService, Category } from '@/services/category';
+import { CategoryService, type Category } from '@/services/category';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 import { useSnackbarStore } from '@/stores/snackbar';

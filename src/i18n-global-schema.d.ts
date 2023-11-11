@@ -5,15 +5,12 @@
  * you need to import the some interfaces
  */
 import { DefineLocaleMessage, DefineDateTimeFormat, DefineNumberFormat } from 'vue-i18n';
-import { availableLocales } from '@/global-vars';
-import datetimeFormats from '@/utils/datetimeFormats.json';
-import enUS from '@/locales/en-US.json';
 
 declare module 'vue-i18n' {
 	// define the locale messages schema
-	export type localeKey = (typeof availableLocales)[number];
-	export type MessageSchema = typeof enUS;
-	export type DateTimeFormatSchema = typeof datetimeFormats;
+	export type localeKey = (typeof import('./global-vars.ts'))['availableLocales'][number];
+	export type MessageSchema = typeof import('./locales/en-US.json');
+	export type DateTimeFormatSchema = typeof import('./utils/datetimeFormats.json');
 
 	export interface DefineLocaleMessage extends MessageSchema {}
 

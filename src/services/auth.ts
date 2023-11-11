@@ -1,7 +1,7 @@
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/supabase';
 import { supportedOAuthProviders, DEFAULT_BILL } from '@/global-vars';
-import { SignInWithOAuthCredentials, Subscription, User, UserAttributes } from '@supabase/supabase-js';
+import type { SignInWithOAuthCredentials, Subscription, User, UserAttributes } from '@supabase/supabase-js';
 
 export interface UserCredentials extends Required<Pick<UserAttributes, 'email' | 'password'>> {
 	username?: string;

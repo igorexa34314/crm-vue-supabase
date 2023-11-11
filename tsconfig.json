@@ -1,26 +1,11 @@
 {
-	"compilerOptions": {
-		"target": "ESNext",
-		"useDefineForClassFields": true,
-		"module": "ESNext",
-		"moduleResolution": "Node",
-		"strict": true,
-		"jsx": "preserve",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"esModuleInterop": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"lib": ["ESNext", "DOM"],
-		"allowSyntheticDefaultImports": true,
-		"skipLibCheck": true,
-		"noEmit": true,
-		"baseUrl": ".",
-		"types": ["vite-plugin-vue-layouts/client", "vuetify", "@intlify/unplugin-vue-i18n/messages", "turnstile-types"],
-		"paths": {
-			"@/*": ["src/*"]
-		}
-	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-	"references": [{ "path": "./tsconfig.node.json" }]
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
 }

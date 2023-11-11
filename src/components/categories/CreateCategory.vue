@@ -32,8 +32,8 @@
 <script setup lang="ts">
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
-import { ref, watchEffect } from 'vue';
-import { CategoryService, Category } from '@/services/category';
+import { ref } from 'vue';
+import { CategoryService, type Category } from '@/services/category';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
@@ -54,7 +54,7 @@ const emit = defineEmits<{
 
 const { t, te } = useI18n();
 
-const cf = useCurrencyFilter();
+const { cf } = useCurrencyFilter();
 const { showMessage } = useSnackbarStore();
 const { xs } = useDisplay();
 
