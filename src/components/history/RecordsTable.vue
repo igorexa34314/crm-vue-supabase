@@ -102,7 +102,7 @@ import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
 import type { VDataTableServer } from 'vuetify/components';
-import type { RecordWithCategory } from '@/services/record';
+import type { RecordWithCategory } from '@/api/record';
 
 export type SortEmitData = Pick<VDataTableServer, 'page' | 'itemsPerPage'> & {
 	sortBy?: Partial<VDataTableServer['sortBy'][number]>[];

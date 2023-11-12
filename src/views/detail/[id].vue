@@ -56,7 +56,7 @@
 				</small>
 			</v-card-text>
 
-			<UpdateRecordDialog v-model="updateRecordDialog" :record="record" @update-record="updateRecord" />
+			<UpdateRecordDialog v-model="updateRecordDialog" :record="record" @update-record="handleRecordUpdate" />
 
 			<DeleteRecordDialog v-model="confirmationDialog" @delete-record="deleteRecord" />
 		</v-card>
@@ -82,7 +82,13 @@ import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
 import { useRouter, useRoute } from 'vue-router/auto';
 import { useMeta } from 'vue-meta';
-import { RecordService, type RecordDataToUpdate, type RecordWithDetails } from '@/services/record';
+import {
+	fetchRecordById,
+	deleteRecordById,
+	updateRecord,
+	type RecordDataToUpdate,
+	type RecordWithDetails,
+} from '@/api/record';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -104,7 +110,7 @@ const breadcrumbs = computed<Breadcrumb[]>(() => [
 	{ title: record.value?.type === 'income' ? 'Доход' : 'Расход', disabled: true },
 ]);
 
-const { state: record, isLoading } = useAsyncState(RecordService.fetchRecordById(route.params.id), null, {
+const { state: record, isLoading } = useAsyncState(fetchRecordById(route.params.id), null, {
 	onError: e => {
 		console.error(e);
 		showMessage('no_record_found', 'red-darken-3');
@@ -118,7 +124,7 @@ const canDeleteRecord = computed(
 const deleteRecord = async () => {
 	if (canDeleteRecord.value) {
 		try {
-			await RecordService.deleteRecordById(record.value?.id ?? route.params.id);
+			await deleteRecordById(record.value?.id ?? route.params.id);
 			showMessage(t('record_deleted_succesfully'));
 			router.push('/history');
 		} catch (err) {
@@ -137,10 +143,10 @@ const deleteRecord = async () => {
 };
 
 const updateRecordDialog = ref(false);
-const updateRecord = async (recordData: RecordDataToUpdate) => {
+const handleRecordUpdate = async (recordData: RecordDataToUpdate) => {
 	try {
 		isLoading.value = true;
-		const updatedRecord = await RecordService.updateRecord(record.value?.id || route.params.id, recordData);
+		const updatedRecord = await updateRecord(record.value?.id || route.params.id, recordData);
 		record.value = { ...record.value, ...updatedRecord } as RecordWithDetails;
 		showMessage(t('record_updated_succesfully'));
 	} catch (err) {

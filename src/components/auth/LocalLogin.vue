@@ -32,7 +32,7 @@ import PassField from '@/components/UI/PassField.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { ref } from 'vue';
 import { mdiSend } from '@mdi/js';
-import { AuthService } from '@/services/auth';
+import { login } from '@/api/auth';
 import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
 import type { VForm } from 'vuetify/components';
@@ -56,7 +56,7 @@ const submitLogin = async () => {
 	if (valid) {
 		try {
 			loading.value = true;
-			await AuthService.login(formState.value);
+			await login(formState.value);
 			emit('success');
 		} catch (e) {
 			console.error(e);

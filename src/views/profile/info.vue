@@ -123,7 +123,7 @@ import { mdiSend } from '@mdi/js';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
 import { computedInject, useAsyncState } from '@vueuse/core';
-import { LocaleService } from '@/services/locale';
+import { fetchAvailableLocales } from '@/api/locale';
 import { user as validations } from '@/utils/validations';
 import { useDisplay } from 'vuetify';
 import { currencyKey } from '@/injection-keys';
@@ -131,8 +131,8 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { SERVER_CURRENCY, DEFAULT_LOCALE } from '@/global-vars';
 import isEqual from 'lodash/isEqual';
 import type { VForm } from 'vuetify/components';
-import type { UserInfo } from '@/services/user';
-import type { CurrencyRates } from '@/services/currency';
+import type { UserInfo } from '@/api/user';
+import type { CurrencyRates } from '@/api/currency';
 
 const { loading } = defineProps<{
 	loading?: boolean;
@@ -177,7 +177,7 @@ const datePickerDate = computed({
 	get: () => new Date(formState.value.birthday_date || new Date()),
 	set: val => (formState.value.birthday_date = val.toDateString()),
 });
-const { state: locales } = useAsyncState(LocaleService.fetchAvailableLocales, [], {
+const { state: locales } = useAsyncState(fetchAvailableLocales, [], {
 	onError: () => {
 		const { showMessage } = useSnackbarStore();
 		showMessage(t('error_loading_locales'), 'red-darken-3');

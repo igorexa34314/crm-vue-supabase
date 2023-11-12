@@ -30,7 +30,7 @@ import { computed } from 'vue';
 import { useDisplay } from 'vuetify';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
-import type { Currency, CurrencyRates } from '@/services/currency';
+import type { Currency, CurrencyRates } from '@/api/currency';
 
 const { rates, date = new Date() } = defineProps<{
 	rates: Currency['rates'];

@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import googleProvider from '@/assets/img/google-provider.png';
-import { AuthService } from '@/services/auth';
+import { signInWithGoogle } from '@/api/auth';
 
 const emit = defineEmits<{
 	success: [];
@@ -14,7 +14,7 @@ const emit = defineEmits<{
 }>();
 
 const signInWithGoogleProvider = () => {
-	AuthService.signInWithGoogle()
+	signInWithGoogle()
 		.then(() => emit('success'))
 		.catch(e => {
 			console.error(e);

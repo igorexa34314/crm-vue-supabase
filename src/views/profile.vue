@@ -33,12 +33,12 @@
 </template>
 
 <script setup lang="ts">
-import { AuthService } from '@/services/auth';
+import { changeUserPassword, changeUserEmail } from '@/api/auth';
 import { ref, watchEffect } from 'vue';
 import { useMeta } from 'vue-meta';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { UserService, type UserInfo } from '@/services/user';
+import { updateInfo, updateAvatar, type UserInfo } from '@/api/user';
 import { definePage, useRoute, useRouter, type RouteLocationRaw } from 'vue-router/auto';
 import { useDisplay } from 'vuetify';
 
@@ -62,12 +62,12 @@ const currentTab = ref(route.name);
 
 const loading = ref(false);
 
-const updateInfo = async ({ avatar, ...userdata }: Omit<UserInfo, 'bill' | 'email'> & { avatar: File[] }) => {
+const updateUserInfo = async ({ avatar, ...userdata }: Omit<UserInfo, 'bill' | 'email'> & { avatar: File[] }) => {
 	try {
 		loading.value = true;
-		await UserService.updateInfo(userdata);
+		await updateInfo(userdata);
 		if (avatar.length) {
-			await UserService.updateAvatar(avatar);
+			await updateAvatar(avatar);
 		}
 		showMessage(t('updateProfile_message'));
 	} catch (e) {
@@ -88,11 +88,11 @@ const updateCreds = async ({
 	try {
 		loading.value = true;
 		if (oldPass && newPass) {
-			await AuthService.changeUserPassword(oldPass, newPass);
+			await changeUserPassword(oldPass, newPass);
 			showMessage(t('updatePass_message'));
 		}
 		// if (email) {
-		// 	await AuthService.changeUserEmail(email);
+		// 	await changeUserEmail(email);
 		// }
 	} catch (e) {
 		if (typeof e === 'string') {
@@ -109,7 +109,7 @@ const profileTabs = [
 	{
 		title: 'info',
 		route: '/profile/info' as RouteLocationRaw,
-		updateEvent: { name: 'updateInfo' as const, on: updateInfo },
+		updateEvent: { name: 'updateInfo' as const, on: updateUserInfo },
 	},
 	{
 		title: 'security',

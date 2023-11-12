@@ -85,7 +85,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { CategoryService } from '@/services/category';
+import { fetchCategoriesSpendStats } from '@/api/category';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useMeta } from 'vue-meta';
@@ -107,7 +107,7 @@ const { cf, isLoading: isCurrencyLoading } = useCurrencyFilter();
 
 const bill = computed(() => userStore.info?.bill || DEFAULT_BILL);
 
-const { state: catStats, isLoading: isStatsLoading } = useAsyncState(CategoryService.fetchCategoriesSpendStats, [], {
+const { state: catStats, isLoading: isStatsLoading } = useAsyncState(fetchCategoriesSpendStats, [], {
 	onError: e => {
 		const { showMessage } = useSnackbarStore();
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');

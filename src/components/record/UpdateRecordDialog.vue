@@ -63,7 +63,7 @@ import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
 import { recordTypes } from '@/global-vars';
 import type { VForm } from 'vuetify/components';
-import type { RecordWithCategory, RecordWithDetails, RecordDataToUpdate } from '@/services/record';
+import type { RecordWithCategory, RecordWithDetails, RecordDataToUpdate } from '@/api/record';
 
 const { record, loading } = defineProps<{
 	record: RecordWithCategory | RecordWithDetails;

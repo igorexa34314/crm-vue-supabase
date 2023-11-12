@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { AuthService } from '@/services/auth';
+import { signInWithGithub } from '@/api/auth';
 import { useTheme } from 'vuetify';
 import githubProvider from '/src/assets/img/github-provider.png';
 import githubProviderLight from '/src/assets/img/github-provider_light.png';
@@ -20,7 +20,7 @@ const emit = defineEmits<{
 }>();
 
 const signInWithGithubProvider = () => {
-	AuthService.signInWithGithub()
+	signInWithGithub()
 		.then(() => emit('success'))
 		.catch(e => {
 			console.error(e);

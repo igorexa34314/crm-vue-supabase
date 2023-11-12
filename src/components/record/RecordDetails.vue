@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { mdiFile, mdiDownload } from '@mdi/js';
 import { useI18n } from 'vue-i18n';
-import { RecordService, type RecordDetail } from '@/services/record';
+import { downloadRecordDetail, type RecordDetail } from '@/api/record';
 
 defineProps<{
 	details: RecordDetail[];
@@ -49,7 +49,7 @@ defineProps<{
 const { t } = useI18n({ useScope: 'global' });
 
 const downloadDetail = async (detail: RecordDetail) => {
-	const blob = await RecordService.downloadRecordDetail(detail.fullpath);
+	const blob = await downloadRecordDetail(detail.fullpath);
 	const downloadURL = URL.createObjectURL(blob);
 	const link = document.createElement('a');
 	link.href = downloadURL;

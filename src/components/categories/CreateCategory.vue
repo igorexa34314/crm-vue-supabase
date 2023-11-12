@@ -33,7 +33,7 @@
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
 import { ref } from 'vue';
-import { CategoryService, type Category } from '@/services/category';
+import { createCategory, type Category } from '@/api/category';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
@@ -73,7 +73,7 @@ const submitHandler = async () => {
 		try {
 			const { limit, ...data } = formState.value;
 			loading.value = true;
-			const category = await CategoryService.createCategory({
+			const category = await createCategory({
 				...data,
 				limit: cf.value(limit, { type: 'reverse' }),
 			});

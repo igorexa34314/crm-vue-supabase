@@ -63,7 +63,7 @@ import DeleteCategoryDialog from '@/components/categories/DeleteCategoryDialog.v
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { ref, watchEffect, watch, computed } from 'vue';
 import { mdiSend, mdiDelete } from '@mdi/js';
-import { CategoryService, type Category } from '@/services/category';
+import { updateCategory, deleteCategoryById, type Category } from '@/api/category';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
@@ -124,7 +124,7 @@ const submitHandler = async () => {
 	if (valid && currentCategoryId.value) {
 		try {
 			loading.value = true;
-			const updatedCat = await CategoryService.updateCategory(currentCategoryId.value, {
+			const updatedCat = await updateCategory(currentCategoryId.value, {
 				...categoryData.value,
 				limit: cf.value(categoryData.value.limit, { type: 'reverse' }),
 			});
@@ -145,7 +145,7 @@ const submitHandler = async () => {
 const deleteCategory = async () => {
 	try {
 		loading.value = true;
-		await CategoryService.deleteCategoryById(currentCategoryId.value);
+		await deleteCategoryById(currentCategoryId.value);
 		emit('deleted', currentCategoryId.value);
 	} catch (e) {
 		if (typeof e === 'string') {

@@ -34,7 +34,7 @@ import CreateCategory from '@/components/categories/CreateCategory.vue';
 import { inject, defineAsyncComponent } from 'vue';
 import { useMeta } from 'vue-meta';
 import { useAsyncState } from '@vueuse/core';
-import { CategoryService, type Category } from '@/services/category';
+import { fetchCategories, type Category } from '@/api/category';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -49,7 +49,7 @@ const EditCategory = defineAsyncComponent(() => import('@/components/categories/
 const { te, t } = useI18n({ useScope: 'global' });
 const { isLoading: isCurrencyLoading } = inject(currencyKey)!;
 const { smAndDown, xs } = useDisplay();
-const { state: categories, isLoading } = useAsyncState(CategoryService.fetchCategories, [], {
+const { state: categories, isLoading } = useAsyncState(fetchCategories, [], {
 	onError: e => {
 		const { showMessage } = useSnackbarStore();
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_load_categories'), 'red-darken-3');

@@ -14,7 +14,7 @@
 		<CreateRecord
 			v-else
 			v-bind="{ categories, defaultAmount, loading: createLoading }"
-			@create-record="createRecord" />
+			@create-record="handleRecordCreate" />
 	</div>
 </template>
 
@@ -24,8 +24,8 @@ import { useAsyncState } from '@vueuse/core';
 import { useMeta } from 'vue-meta';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { CategoryService } from '@/services/category';
-import { RecordService, type RecordForm } from '@/services/record';
+import { fetchCategories } from '@/api/category';
+import { createRecord, type RecordForm } from '@/api/record';
 import { DEFAULT_RECORD_AMOUNT as defaultAmount } from '@/global-vars';
 
 useMeta({ title: 'pageTitles.newRecord' });
@@ -35,7 +35,7 @@ const CreateRecord = defineAsyncComponent(() => import('@/components/record/Crea
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 
-const { state: categories, isLoading: categoriesLoading } = useAsyncState(CategoryService.fetchCategories, [], {
+const { state: categories, isLoading: categoriesLoading } = useAsyncState(fetchCategories, [], {
 	onError: e => {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_load_categories'), 'red-darken-3');
 	},
@@ -43,10 +43,10 @@ const { state: categories, isLoading: categoriesLoading } = useAsyncState(Catego
 
 const createLoading = ref(false);
 
-const createRecord = async (formData: RecordForm) => {
+const handleRecordCreate = async (formData: RecordForm) => {
 	try {
 		createLoading.value = true;
-		await RecordService.createRecord(formData);
+		await createRecord(formData);
 		showMessage(t('createRecord_success'));
 	} catch (e) {
 		if (typeof e === 'string') {

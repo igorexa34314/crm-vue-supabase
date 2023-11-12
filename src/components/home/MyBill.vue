@@ -15,7 +15,7 @@ import { VDivider } from 'vuetify/lib/components/index.mjs';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
-import type { Currency, CurrencyRates } from '@/services/currency';
+import type { Currency, CurrencyRates } from '@/api/currency';
 import { useDisplay } from 'vuetify';
 import { SERVER_CURRENCY, DEFAULT_BILL } from '@/global-vars';
 

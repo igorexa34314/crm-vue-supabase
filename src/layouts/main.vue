@@ -1,7 +1,7 @@
 <template>
 	<app-loader v-if="loading" class="main-loader" />
 	<v-layout v-else class="app-main-layout" full-height>
-		<AppNavbar @click="drawer = !drawer" @logout="logout" />
+		<AppNavbar @click="drawer = !drawer" @logout="handleLogout" />
 		<AppSidebar v-model="drawer" />
 
 		<v-main class="app bg-background" style="min-height: 100dvh; min-height: 100vh">
@@ -29,16 +29,16 @@
 import AppNavbar from '@/components/app/AppNavbar.vue';
 import AppSidebar from '@/components/app/AppSidebar.vue';
 import { ref, onMounted, provide, onUnmounted } from 'vue';
-import { CurrencyService } from '@/services/currency';
+import { fetchCurrency } from '@/api/currency';
 import { useUserStore } from '@/stores/user';
 import { mdiPlus } from '@mdi/js';
-import { UserService } from '@/services/user';
+import { fetchAndSubscribeInfo } from '@/api/user';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useAsyncState } from '@vueuse/core';
 import { currencyKey } from '@/injection-keys';
 import { useRouter } from 'vue-router/auto';
-import { AuthService } from '@/services/auth';
+import { logout } from '@/api/auth';
 import { useDisplay } from 'vuetify';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
@@ -54,8 +54,8 @@ const {
 	state: currency,
 	isLoading,
 	isReady,
-	execute: fetchCurrency,
-} = useAsyncState(() => CurrencyService.fetchCurrency(userStore.getUserCurrency), null, {
+	execute,
+} = useAsyncState(() => fetchCurrency(userStore.getUserCurrency), null, {
 	immediate: false,
 	resetOnExecute: false,
 	onError: e => {
@@ -64,14 +64,14 @@ const {
 	},
 });
 
-provide(currencyKey, { currency, isLoading, isReady, refresh: fetchCurrency });
+provide(currencyKey, { currency, isLoading, isReady, refresh: execute });
 
 let userInfoChannel: RealtimeChannel | null = null;
 
 onMounted(async () => {
 	try {
 		if (!Object.keys(userStore.info || {}).length) {
-			userInfoChannel = await UserService.fetchAndSubscribeInfo();
+			userInfoChannel = await fetchAndSubscribeInfo();
 		}
 	} catch (e) {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
@@ -79,7 +79,7 @@ onMounted(async () => {
 });
 
 const unsubCurr = userStore.$subscribeCurrency(async () => {
-	await fetchCurrency();
+	await execute();
 });
 
 onUnmounted(() => {
@@ -88,9 +88,9 @@ onUnmounted(() => {
 	userStore.$reset();
 });
 
-const logout = async () => {
+const handleLogout = async () => {
 	try {
-		await AuthService.logout();
+		await logout();
 		push({
 			path: '/login',
 			query: {

@@ -2,19 +2,19 @@ import { createI18n, type I18n, type MessageSchema, type DateTimeFormatSchema, t
 import { nextTick } from 'vue';
 import datetimeFormats from '@/utils/datetimeFormats.json';
 import numberFormats from '@/utils/numberFormats';
-import { LocaleService } from '@/services/locale';
+import { fetchLocaleTranslation } from '@/api/locale';
 import { availableLocales, LOCALE_KEY, DEFAULT_LOCALE } from '@/global-vars';
 import { useSnackbarStore } from '@/stores/snackbar';
 
 export const loadMessages = async (locale?: string) => {
 	locale ??= JSON.parse(localStorage.getItem(LOCALE_KEY) || 'null') || DEFAULT_LOCALE;
 	try {
-		const messages = { [locale as string]: await LocaleService.fetchLocaleTranslation(locale) };
+		const messages = { [locale as string]: await fetchLocaleTranslation(locale) };
 		return { locale: locale as string, messages };
 	} catch (err) {
 		try {
 			console.error('Unable to load translations with this locale. Loading fallback locale from server...');
-			const messages = { [DEFAULT_LOCALE]: await LocaleService.fetchLocaleTranslation(DEFAULT_LOCALE) };
+			const messages = { [DEFAULT_LOCALE]: await fetchLocaleTranslation(DEFAULT_LOCALE) };
 			return { locale: DEFAULT_LOCALE, messages };
 		} catch (error) {
 			console.error('Unable to load translations from server', err);

@@ -1,6 +1,6 @@
 import { computed, inject } from 'vue';
 import { currencyKey, type CurrencyReturn } from '@/injection-keys';
-import type { CurrencyRates } from '@/services/currency';
+import type { CurrencyRates } from '@/api/currency';
 import { SERVER_CURRENCY } from '@/global-vars';
 
 export const useCurrencyFilter = () => {

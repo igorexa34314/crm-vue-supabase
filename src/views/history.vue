@@ -36,8 +36,8 @@
 import RecordsTable, { type SortEmitData } from '@/components/history/RecordsTable.vue';
 import { useMeta } from 'vue-meta';
 import { Pie } from 'vue-chartjs';
-import { CategoryService } from '@/services/category';
-import { RecordService, type SortFields, type RecordWithCategory } from '@/services/record';
+import { fetchCategoriesSpendStats } from '@/api/category';
+import { fetchRecordsWithCategory, type SortFields, type RecordWithCategory } from '@/api/record';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useChart } from '@/composables/useChart';
@@ -56,7 +56,7 @@ const route = useRoute('/history');
 
 const { state: catStats, isLoading: categoriesLoading } = useAsyncState(
 	async () => {
-		const categories = await CategoryService.fetchCategoriesSpendStats();
+		const categories = await fetchCategoriesSpendStats();
 		return categories.filter(cat => cat.spend > 0).map(c => ({ label: c.title, data: c.spend }));
 	},
 	[],
@@ -80,7 +80,7 @@ const records = ref<(RecordWithCategory & { index: number })[]>([]);
 const sortRecords = async ({ page, itemsPerPage, sortBy }: SortEmitData) => {
 	try {
 		recordsLoading.value = true;
-		const sortArg: Parameters<typeof RecordService.fetchRecordsWithCategory>[number] = {
+		const sortArg: Parameters<typeof fetchRecordsWithCategory>[number] = {
 			page: +page,
 			perPage: +itemsPerPage,
 		};
@@ -88,7 +88,7 @@ const sortRecords = async ({ page, itemsPerPage, sortBy }: SortEmitData) => {
 			sortArg.order = sortBy[0].order === true ? 'asc' : sortBy[0].order || 'desc';
 			sortArg.sortBy = sortBy[0].key as SortFields;
 		}
-		const { records: recordsData, count } = await RecordService.fetchRecordsWithCategory(sortArg);
+		const { records: recordsData, count } = await fetchRecordsWithCategory(sortArg);
 		totalRecords.value = count;
 		records.value = recordsData.map((r, idx) => ({ ...r, index: (+page - 1) * +itemsPerPage + ++idx }));
 		replace({ query: { ...route.query, ...sortArg } });

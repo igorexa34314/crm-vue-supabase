@@ -70,8 +70,8 @@ import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
 import { SERVER_CURRENCY, DEFAULT_RECORD_AMOUNT, DEFAULT_BILL, recordTypes } from '@/global-vars';
 import type { VForm } from 'vuetify/components';
-import type { Category } from '@/services/category';
-import type { Record, RecordForm } from '@/services/record';
+import type { Category } from '@/api/category';
+import type { Record, RecordForm } from '@/api/record';
 
 const {
 	categories,
