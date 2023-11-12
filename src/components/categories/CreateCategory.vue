@@ -40,9 +40,9 @@ import { category as validations } from '@/utils/validations';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
-import { VForm } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_CATEGORY_LIMIT } from '@/global-vars';
+import type { VForm } from 'vuetify/components';
 
 const { defaultLimit = DEFAULT_CATEGORY_LIMIT } = defineProps<{
 	defaultLimit?: number;

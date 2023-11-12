@@ -35,7 +35,7 @@ import { mdiSend } from '@mdi/js';
 import { AuthService } from '@/services/auth';
 import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
-import { VForm } from 'vuetify/components';
+import type { VForm } from 'vuetify/components';
 
 const emit = defineEmits<{
 	success: [];

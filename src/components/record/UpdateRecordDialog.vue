@@ -55,7 +55,6 @@ import ConfirmationDialog from '@/components/UI/ConfirmationDialog.vue';
 import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { ref, computed, watchEffect } from 'vue';
-import { VForm } from 'vuetify/components';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useI18n } from 'vue-i18n';
@@ -63,6 +62,7 @@ import { record as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
 import { recordTypes } from '@/global-vars';
+import type { VForm } from 'vuetify/components';
 import type { RecordWithCategory, RecordWithDetails, RecordDataToUpdate } from '@/services/record';
 
 const { record, loading } = defineProps<{

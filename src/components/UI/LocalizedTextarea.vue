@@ -7,9 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import { VTextarea } from 'vuetify/components';
-import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
+import { useI18n } from 'vue-i18n';
+import type { VTextarea } from 'vuetify/components';
 
 const { variant = 'underlined' } = defineProps<{
 	variant?: VTextarea['variant'];

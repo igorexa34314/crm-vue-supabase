@@ -125,12 +125,12 @@ import { useI18n } from 'vue-i18n';
 import { computedInject, useAsyncState } from '@vueuse/core';
 import { LocaleService } from '@/services/locale';
 import { user as validations } from '@/utils/validations';
-import { VForm } from 'vuetify/components';
-import { currencyKey } from '@/injection-keys';
 import { useDisplay } from 'vuetify';
+import { currencyKey } from '@/injection-keys';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { SERVER_CURRENCY, DEFAULT_LOCALE } from '@/global-vars';
 import isEqual from 'lodash/isEqual';
+import type { VForm } from 'vuetify/components';
 import type { UserInfo } from '@/services/user';
 import type { CurrencyRates } from '@/services/currency';
 

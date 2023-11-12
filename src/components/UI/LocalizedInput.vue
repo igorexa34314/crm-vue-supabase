@@ -10,9 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-import { VTextField } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
+import { useI18n } from 'vue-i18n';
+import type { VTextField } from 'vuetify/components';
 
 const { variant = 'underlined' } = defineProps<{
 	variant?: VTextField['variant'];

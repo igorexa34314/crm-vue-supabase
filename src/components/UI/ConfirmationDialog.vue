@@ -1,10 +1,9 @@
 <template>
 	<v-dialog
 		v-model="confirmationDialog"
-		:transition="VFadeTransition"
+		:transition="{ component: VFadeTransition }"
 		:attach="attach"
 		width="auto"
-		eager
 		content-class="w-100">
 		<template #activator="{ props, isActive }">
 			<slot name="activator" v-bind="{ props, isActive }"></slot>
@@ -40,7 +39,7 @@
 
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue';
-import { VBtn, VDialog, VFadeTransition } from 'vuetify/components';
+import { type VBtn, type VDialog, VFadeTransition } from 'vuetify/components';
 import { useI18n } from 'vue-i18n';
 
 const { maxWidth = '550px', width = '100%' } = defineProps<{

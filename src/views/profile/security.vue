@@ -44,8 +44,8 @@ import { ref } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
-import { VForm } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
+import type { VForm } from 'vuetify/components';
 
 const { loading } = defineProps<{
 	loading?: boolean;

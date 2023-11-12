@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { VFileInput } from 'vuetify/components';
+import type { VFileInput } from 'vuetify/components';
 
 const { variant = 'underlined' } = defineProps<{
 	variant?: VFileInput['variant'];

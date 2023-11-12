@@ -19,8 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import CreateRecord from '@/components/record/CreateRecord.vue';
-import { ref } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 import { useAsyncState } from '@vueuse/core';
 import { useMeta } from 'vue-meta';
 import { useI18n } from 'vue-i18n';
@@ -30,6 +29,8 @@ import { RecordService, type RecordForm } from '@/services/record';
 import { DEFAULT_RECORD_AMOUNT as defaultAmount } from '@/global-vars';
 
 useMeta({ title: 'pageTitles.newRecord' });
+
+const CreateRecord = defineAsyncComponent(() => import('@/components/record/CreateRecord.vue'));
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();

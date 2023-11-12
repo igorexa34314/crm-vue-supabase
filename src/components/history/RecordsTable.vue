@@ -100,8 +100,8 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
-import { VDataTableServer } from 'vuetify/components';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
+import type { VDataTableServer } from 'vuetify/components';
 import type { RecordWithCategory } from '@/services/record';
 
 export type SortEmitData = Pick<VDataTableServer, 'page' | 'itemsPerPage'> & {

@@ -43,8 +43,8 @@ import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 import { reactive } from 'vue';
 import { user as validations } from '@/utils/validations';
-import { VTextField } from 'vuetify/components';
 import { useI18n } from 'vue-i18n';
+import type { VTextField } from 'vuetify/components';
 
 defineOptions({
 	inheritAttrs: false,

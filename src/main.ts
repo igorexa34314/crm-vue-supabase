@@ -3,12 +3,14 @@ import App from '@/App.vue';
 import router from '@/router';
 import { createMetaManager } from 'vue-meta';
 import vuetify from '@/plugins/vuetify';
-import { initI18n, setI18nLocaleMessages } from '@/plugins/i18n';
+import { loadMessages, createI18nInstance, setI18nLocaleMessages } from '@/plugins/i18n';
 import pinia from '@/plugins/pinia';
 import { useUserStore } from '@/stores/user';
 import AppLoader from '@/components/app/AppLoader.vue';
 
-initI18n().then(i18n => {
+loadMessages().then(({ locale, messages }) => {
+	const i18n = createI18nInstance(locale, messages);
+
 	const app = createApp(App);
 	app.use(router).use(pinia).use(i18n);
 

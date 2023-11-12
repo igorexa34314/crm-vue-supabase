@@ -1,30 +1,30 @@
 import { createI18n, type I18n, type MessageSchema, type DateTimeFormatSchema, type localeKey } from 'vue-i18n';
 import { nextTick } from 'vue';
-import fallbackMessages from '@intlify/unplugin-vue-i18n/messages';
 import datetimeFormats from '@/utils/datetimeFormats.json';
 import numberFormats from '@/utils/numberFormats';
 import { LocaleService } from '@/services/locale';
 import { availableLocales, LOCALE_KEY, DEFAULT_LOCALE } from '@/global-vars';
 import { useSnackbarStore } from '@/stores/snackbar';
 
-export const initI18n = async () => {
-	const locale: string = JSON.parse(localStorage.getItem(LOCALE_KEY) || 'null') || DEFAULT_LOCALE;
+export const loadMessages = async (locale?: string) => {
+	locale ??= JSON.parse(localStorage.getItem(LOCALE_KEY) || 'null') || DEFAULT_LOCALE;
 	try {
-		const messages = { [locale]: await LocaleService.fetchLocaleTranslation(locale) };
-		return createI18nInstance(locale, messages);
+		const messages = { [locale as string]: await LocaleService.fetchLocaleTranslation(locale) };
+		return { locale: locale as string, messages };
 	} catch (err) {
 		try {
 			console.error('Unable to load translations with this locale. Loading fallback locale from server...');
 			const messages = { [DEFAULT_LOCALE]: await LocaleService.fetchLocaleTranslation(DEFAULT_LOCALE) };
-			return createI18nInstance(DEFAULT_LOCALE, messages);
+			return { locale: DEFAULT_LOCALE, messages };
 		} catch (error) {
 			console.error('Unable to load translations from server', err);
-			return createI18nInstance(DEFAULT_LOCALE, fallbackMessages);
+			const fallbackMessages = (await import('@intlify/unplugin-vue-i18n/messages')) as Record<string, any>;
+			return { locale: DEFAULT_LOCALE, messages: fallbackMessages };
 		}
 	}
 };
 
-const createI18nInstance = (locale: string, messages: { [key: string]: any } | undefined) => {
+export const createI18nInstance = (locale: string, messages: Record<string, any>) => {
 	return createI18n({
 		legacy: false, // Vuetify and composition API does not support the legacy mode of vue-i18n
 		locale: locale || DEFAULT_LOCALE,
@@ -50,7 +50,7 @@ export const setI18nLocaleMessages = async <T extends I18n<any, any, any, any, f
 ) => {
 	// Load locale if not available yet.
 	if (!i18n.global.availableLocales.includes(locale)) {
-		LocaleService.fetchLocaleTranslation(locale)
+		loadMessages(locale)
 			.then(messages => {
 				// Add locale.
 				i18n.global.setLocaleMessage(locale, messages);

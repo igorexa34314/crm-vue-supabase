@@ -3,6 +3,7 @@
 		<div class="title text-title">
 			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2">{{ t('pageTitles.profile') }}</h3>
 		</div>
+
 		<v-tabs v-model="currentTab" density="comfortable" class="mt-6 mb-3 mb-sm-0" color="primary">
 			<v-tab
 				v-for="tab in profileTabs"
@@ -12,6 +13,7 @@
 				:size="xs ? 'small' : 'default'"
 				:text="t(`tabs.${tab.title}`)" />
 		</v-tabs>
+
 		<div class="profile-tab__window">
 			<router-view v-slot="{ Component, route }">
 				<v-slide-x-transition>

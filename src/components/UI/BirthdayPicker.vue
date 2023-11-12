@@ -16,9 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect } from 'vue';
+import { watch, reactive } from 'vue';
 import { useI18n, type DateTimeOptions } from 'vue-i18n';
-import { VSelect } from 'vuetify/components';
+import type { VSelect } from 'vuetify/components';
 
 const {
 	fromYear = new Date().getFullYear() - 100,
@@ -69,19 +69,12 @@ const datePickerDateItems = [
 	},
 ];
 
-const datePickerState = ref({
-	month: new Date().getMonth() + 1,
-	day: new Date().getDate(),
-	year: new Date().getFullYear(),
+const datePickerState = reactive({
+	month: modelValue.value.getMonth() + 1,
+	day: modelValue.value.getDate(),
+	year: modelValue.value.getFullYear(),
 });
 
-watchEffect(() => {
-	datePickerState.value = {
-		month: modelValue.value.getMonth() + 1,
-		day: modelValue.value.getDate(),
-		year: modelValue.value.getFullYear(),
-	};
-});
 watch(
 	datePickerState,
 	newVal => {

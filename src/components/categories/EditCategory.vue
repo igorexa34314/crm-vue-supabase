@@ -67,13 +67,13 @@ import { CategoryService, type Category } from '@/services/category';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
-import { VForm } from 'vuetify/components';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { storeToRefs } from 'pinia';
 import { useDisplay } from 'vuetify';
 import isEqual from 'lodash/isEqual';
 import { DEFAULT_CATEGORY_LIMIT } from '@/global-vars';
+import type { VForm } from 'vuetify/components';
 
 const { categories, defaultLimit = DEFAULT_CATEGORY_LIMIT } = defineProps<{
 	categories: Category[];
