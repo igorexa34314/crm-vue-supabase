@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import { VSnackbar } from 'vuetify/components';
 import { mdiClose } from '@mdi/js';
 import { ref } from 'vue';
 import { useSnackbarStore, type Snackbar } from '@/stores/snackbar';

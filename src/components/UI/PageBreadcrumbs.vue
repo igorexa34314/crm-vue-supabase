@@ -7,7 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import { VBreadcrumbs } from 'vuetify/components';
 import { mdiChevronRight } from '@mdi/js';
 import type { RouteNamedMap } from 'vue-router/auto/routes';
 

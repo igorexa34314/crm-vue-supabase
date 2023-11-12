@@ -100,7 +100,7 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
-import { VTooltip, VPagination, VHover, VDataTableServer } from 'vuetify/components';
+import { VDataTableServer } from 'vuetify/components';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
 import type { RecordWithCategory } from '@/services/record';
 

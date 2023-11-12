@@ -39,12 +39,6 @@
 
 <script setup lang="ts">
 import { mdiFile, mdiDownload } from '@mdi/js';
-import {
-	VExpansionPanels,
-	VExpansionPanel,
-	VExpansionPanelText,
-	VExpansionPanelTitle,
-} from 'vuetify/components/VExpansionPanel';
 import { useI18n } from 'vue-i18n';
 import { RecordService, type RecordDetail } from '@/services/record';
 

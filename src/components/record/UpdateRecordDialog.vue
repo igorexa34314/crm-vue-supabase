@@ -55,7 +55,7 @@ import ConfirmationDialog from '@/components/UI/ConfirmationDialog.vue';
 import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { ref, computed, watchEffect } from 'vue';
-import { VForm, VRadio, VRadioGroup } from 'vuetify/components';
+import { VForm } from 'vuetify/components';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useI18n } from 'vue-i18n';

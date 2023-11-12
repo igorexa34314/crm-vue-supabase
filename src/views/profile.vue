@@ -39,7 +39,6 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { UserService, type UserInfo } from '@/services/user';
 import { definePage, useRoute, useRouter, type RouteLocationRaw } from 'vue-router/auto';
 import { useDisplay } from 'vuetify';
-import { VTabs, VTab, VSlideXTransition } from 'vuetify/components';
 
 definePage({ redirect: { name: '/profile/info' } });
 useMeta({ title: 'pageTitles.profile' });

@@ -12,7 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { VSwitch } from 'vuetify/components';
 import { mdiWeatherNight, mdiWeatherSunny } from '@mdi/js';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';

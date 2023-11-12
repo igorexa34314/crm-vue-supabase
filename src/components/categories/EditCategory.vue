@@ -67,7 +67,7 @@ import { CategoryService, type Category } from '@/services/category';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
-import { VForm, VSelect } from 'vuetify/components';
+import { VForm } from 'vuetify/components';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { storeToRefs } from 'pinia';

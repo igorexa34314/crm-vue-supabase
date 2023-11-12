@@ -1,5 +1,5 @@
 import { AuthService } from '@/services/auth';
-import { CategoryService , type Category} from '@/services/category';
+import { CategoryService, type Category } from '@/services/category';
 import { supabase } from '@/supabase';
 import { errorHandler } from '@/utils/errorHandler';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';

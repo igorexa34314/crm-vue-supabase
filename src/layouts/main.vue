@@ -29,7 +29,6 @@
 import AppNavbar from '@/components/app/AppNavbar.vue';
 import AppSidebar from '@/components/app/AppSidebar.vue';
 import { ref, onMounted, provide, onUnmounted } from 'vue';
-import { VLayout, VMain, VTooltip } from 'vuetify/components';
 import { CurrencyService } from '@/services/currency';
 import { useUserStore } from '@/stores/user';
 import { mdiPlus } from '@mdi/js';

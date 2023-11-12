@@ -64,7 +64,7 @@ import { mdiSend } from '@mdi/js';
 import { AuthService } from '@/services/auth';
 import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
-import { VForm, VCheckbox } from 'vuetify/components';
+import { VForm } from 'vuetify/components';
 import { useDisplay } from 'vuetify';
 import { useTurnstile } from '@/composables/useTurnstile';
 import { TurnstileService } from '@/services/turnstile';

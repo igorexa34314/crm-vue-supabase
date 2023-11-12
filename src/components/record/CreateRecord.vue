@@ -62,7 +62,7 @@ import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
 import { ref, computed, watchEffect } from 'vue';
-import { VForm, VSelect, VRadio, VRadioGroup } from 'vuetify/components';
+import { VForm } from 'vuetify/components';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useI18n } from 'vue-i18n';

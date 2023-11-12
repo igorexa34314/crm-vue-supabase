@@ -125,7 +125,7 @@ import { useI18n } from 'vue-i18n';
 import { computedInject, useAsyncState } from '@vueuse/core';
 import { LocaleService } from '@/services/locale';
 import { user as validations } from '@/utils/validations';
-import { VForm, VSelect, VRadio, VRadioGroup } from 'vuetify/components';
+import { VForm } from 'vuetify/components';
 import { currencyKey } from '@/injection-keys';
 import { useDisplay } from 'vuetify';
 import { useSnackbarStore } from '@/stores/snackbar';
