@@ -23,8 +23,7 @@
 
 <script setup lang="ts">
 import MyBill from '@/components/home/MyBill.vue';
-import CurrencyRates from '@/components/home/CurrencyRates.vue';
-import { inject } from 'vue';
+import { inject, defineAsyncComponent } from 'vue';
 import { useMeta } from 'vue-meta';
 import { useI18n } from 'vue-i18n';
 import { currencyKey } from '@/injection-keys';
@@ -37,6 +36,8 @@ definePage({
 	alias: ['/home'],
 });
 useMeta({ title: 'pageTitles.bill' });
+
+const CurrencyRates = defineAsyncComponent(() => import('@/components/home/CurrencyRates.vue'));
 
 const { t } = useI18n({ useScope: 'global' });
 const theme = useTheme();

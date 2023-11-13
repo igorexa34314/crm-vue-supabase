@@ -49,11 +49,7 @@ const handleRecordCreate = async (formData: RecordForm) => {
 		await createRecord(formData);
 		showMessage(t('createRecord_success'));
 	} catch (e) {
-		if (typeof e === 'string') {
-			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64), 'red-darken-3');
-		} else {
-			showMessage(t('error_create_record'), 'red-darken-3');
-		}
+		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_create_record'), 'red-darken-3');
 	} finally {
 		createLoading.value = false;
 	}

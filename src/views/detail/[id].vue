@@ -56,7 +56,11 @@
 				</small>
 			</v-card-text>
 
-			<UpdateRecordDialog v-model="updateRecordDialog" :record="record" @update-record="handleRecordUpdate" />
+			<UpdateRecordDialog
+				v-if="updateRecordDialog"
+				v-model="updateRecordDialog"
+				:record="record"
+				@update-record="handleRecordUpdate" />
 
 			<DeleteRecordDialog v-model="confirmationDialog" @delete-record="deleteRecord" />
 		</v-card>
@@ -72,12 +76,10 @@
 </template>
 
 <script setup lang="ts">
-import DeleteRecordDialog from '@/components/record/DeleteRecordDialog.vue';
-import UpdateRecordDialog from '@/components/record/UpdateRecordDialog.vue';
 import PageBreadcrumbs, { type Breadcrumb } from '@/components/UI/PageBreadcrumbs.vue';
 import RecordDetails from '@/components/record/RecordDetails.vue';
 import { mdiTrendingUp, mdiTrendingDown, mdiDelete, mdiPencil } from '@mdi/js';
-import { ref, computed } from 'vue';
+import { ref, computed, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
 import { useRouter, useRoute } from 'vue-router/auto';
@@ -96,6 +98,9 @@ import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
 
 useMeta({ title: 'pageTitles.details' });
+
+const DeleteRecordDialog = defineAsyncComponent(() => import('@/components/record/DeleteRecordDialog.vue'));
+const UpdateRecordDialog = defineAsyncComponent(() => import('@/components/record/UpdateRecordDialog.vue'));
 
 const route = useRoute('/detail/[id]');
 const router = useRouter();

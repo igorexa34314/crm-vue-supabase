@@ -71,11 +71,7 @@ const updateUserInfo = async ({ avatar, ...userdata }: Omit<UserInfo, 'bill' | '
 		}
 		showMessage(t('updateProfile_message'));
 	} catch (e) {
-		if (typeof e === 'string') {
-			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64), 'red-darken-3');
-		} else {
-			showMessage(t('error_update_profile'), 'red-darken-3');
-		}
+		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_update_profile'), 'red-darken-3');
 	} finally {
 		loading.value = false;
 	}

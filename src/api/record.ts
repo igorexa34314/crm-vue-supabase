@@ -18,7 +18,7 @@ export type RecordForm = Omit<Record, 'updated_at' | 'created_at' | 'id'> & { de
 export type RecordDataToUpdate = Pick<RecordForm, 'amount' | 'description' | 'type'>;
 
 export type SortOrder = 'asc' | 'desc' | undefined;
-export type SortFields = keyof Tables<'records'>;
+export type SortFields = keyof Record;
 
 const recordWithCategoryQuery =
 	`id, description, amount, type, created_at, updated_at, category:categories (${categoryQuery})` as const;
