@@ -7,24 +7,28 @@
 		<section class="mt-sm-10 mt-7">
 			<app-loader v-if="isLoading || isCurrencyLoading" page />
 
-			<v-row v-else :class="xs ? 'px-2' : 'px-4'">
-				<v-col cols="6" md="6" sm="12" xs="12" class="create-category v-col-xs-12">
-					<CreateCategory
-						:default-limit="100"
-						@created="addNewCategory"
-						:class="{ 'pr-6': !smAndDown, 'px-3': smAndDown && !xs }" />
-				</v-col>
+			<template v-else>
+				<Suspense>
+					<v-row :class="xs ? 'px-2' : 'px-4'">
+						<v-col cols="6" md="6" sm="12" xs="12" class="create-category v-col-xs-12">
+							<CreateCategory
+								:default-limit="100"
+								@created="addNewCategory"
+								:class="{ 'pr-6': !smAndDown, 'px-3': smAndDown && !xs }" />
+						</v-col>
 
-				<v-col cols="6" md="6" sm="12" xs="12" class="edit-category v-col-xs-12">
-					<EditCategory
-						v-if="categories.length"
-						v-bind="{ categories, defaultLimit }"
-						@updated="handleUpdatedCategory"
-						@deleted="handleDeletedCategory"
-						:class="{ 'pl-6': !smAndDown, 'px-3': smAndDown && !xs }"
-						class="mt-5 mt-sm-7 mt-md-0" />
-				</v-col>
-			</v-row>
+						<v-col cols="6" md="6" sm="12" xs="12" class="edit-category v-col-xs-12">
+							<EditCategory
+								v-if="categories.length"
+								v-bind="{ categories, defaultLimit }"
+								@updated="handleUpdatedCategory"
+								@deleted="handleDeletedCategory"
+								:class="{ 'pl-6': !smAndDown, 'px-3': smAndDown && !xs }"
+								class="mt-5 mt-sm-7 mt-md-0" />
+						</v-col>
+					</v-row>
+				</Suspense>
+			</template>
 		</section>
 	</div>
 </template>
@@ -32,7 +36,7 @@
 <script setup lang="ts">
 import CreateCategory from '@/components/categories/CreateCategory.vue';
 import { inject, defineAsyncComponent } from 'vue';
-import { useMeta } from 'vue-meta';
+import { useHead } from '@unhead/vue';
 import { useAsyncState } from '@vueuse/core';
 import { fetchCategories, type Category } from '@/api/category';
 import { useI18n } from 'vue-i18n';
@@ -42,7 +46,7 @@ import { DEFAULT_CATEGORY_LIMIT as defaultLimit } from '@/global-vars';
 import { currencyKey } from '@/injection-keys';
 
 // Page title: Categories
-useMeta({ title: 'pageTitles.categories' });
+useHead({ title: 'pageTitles.categories' });
 
 const EditCategory = defineAsyncComponent(() => import('@/components/categories/EditCategory.vue'));
 

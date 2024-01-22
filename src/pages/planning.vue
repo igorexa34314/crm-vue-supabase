@@ -88,7 +88,7 @@ import { useI18n } from 'vue-i18n';
 import { fetchCategoriesSpendStats } from '@/api/category';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useMeta } from 'vue-meta';
+import { useHead } from '@unhead/vue';
 import { useAsyncState } from '@vueuse/core';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -96,7 +96,7 @@ import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_BILL } from '@/global-vars';
 
-useMeta({ title: 'pageTitles.plan' });
+useHead({ title: 'pageTitles.plan' });
 
 const { t, n, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();

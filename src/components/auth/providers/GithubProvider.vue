@@ -8,11 +8,15 @@
 import { computed } from 'vue';
 import { signInWithGithub } from '@/api/auth';
 import { useTheme } from 'vuetify';
-import githubProvider from '/src/assets/img/github-provider.png';
-import githubProviderLight from '/src/assets/img/github-provider_light.png';
 
 const theme = useTheme();
-const setGithubProviderIcon = computed(() => (theme.global.current.value.dark ? githubProviderLight : githubProvider));
+const setGithubProviderIcon = computed(
+	() =>
+		new URL(
+			`/src/assets/img/${theme.global.current.value.dark ? 'github-provider_light' : 'github-provider'}.png`,
+			import.meta.url
+		).href
+);
 
 const emit = defineEmits<{
 	success: [];

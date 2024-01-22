@@ -83,7 +83,7 @@ import { ref, computed, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
 import { useRouter, useRoute } from 'vue-router/auto';
-import { useMeta } from 'vue-meta';
+import { useHead } from '@unhead/vue';
 import {
 	fetchRecordById,
 	deleteRecordById,
@@ -97,7 +97,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
 
-useMeta({ title: 'pageTitles.details' });
+useHead({ title: 'pageTitles.details' });
 
 const DeleteRecordDialog = defineAsyncComponent(() => import('@/components/record/DeleteRecordDialog.vue'));
 const UpdateRecordDialog = defineAsyncComponent(() => import('@/components/record/UpdateRecordDialog.vue'));

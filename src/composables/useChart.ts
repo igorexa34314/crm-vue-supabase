@@ -1,10 +1,11 @@
-import { computed, toValue, type MaybeRef } from 'vue';
+import { computed, toValue, type MaybeRef, type ComputedRef } from 'vue';
 import {
 	Chart as ChartJS,
 	Title,
 	Tooltip,
 	Legend,
 	ArcElement,
+	PieController,
 	type ChartData,
 	type ChartOptions,
 	type ChartType,
@@ -16,9 +17,19 @@ import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useUserStore } from '@/stores/user';
 import randomColor from 'randomcolor';
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+type UseChartFunc = <T extends ChartType = ChartType>(
+	inputData: MaybeRef<
+		| {
+				label: string;
+				data: ChartData<T>['datasets'][number]['data'][number];
+		  }[]
+		| undefined
+	>
+) => { chartData: ComputedRef<ChartData<T>>; chartOptions: ComputedRef<ChartOptions<T>> };
 
-export const useChart = <T extends ChartType = 'pie'>(
+ChartJS.register(Title, Tooltip, Legend, PieController, ArcElement);
+
+export const useChart: UseChartFunc = <T extends ChartType = ChartType>(
 	inputData: MaybeRef<
 		| {
 				label: string;

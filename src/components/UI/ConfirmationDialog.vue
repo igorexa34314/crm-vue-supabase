@@ -69,7 +69,7 @@ const slots = defineSlots<{
 
 const { t } = useI18n({ useScope: 'global' });
 
-const confirmationDialog = defineModel<boolean>('modelValue', {
+const confirmationDialog = defineModel<boolean>({
 	default: false,
 });
 

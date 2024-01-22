@@ -5,6 +5,6 @@
 		"composite": true,
 		"module": "ESNext",
 		"moduleResolution": "Node",
-		"types": ["node", "vite-plugin-vue-layouts/client.d.ts"]
+		"types": ["node"]
 	}
 }

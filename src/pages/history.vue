@@ -11,7 +11,9 @@
 			v-else-if="catStats && catStats.length"
 			:style="{ 'max-width': xs ? '380px' : '550px' }"
 			class="history-chart mx-auto">
-			<Pie :options="chartOptions" :data="chartData" />
+			<Pie id="category-stats-chart" :options="chartOptions" :data="chartData">
+				Canvas element is not supported in your browser
+			</Pie>
 		</div>
 
 		<section class="mt-lg-6" v-if="!categoriesLoading">
@@ -34,7 +36,7 @@
 
 <script setup lang="ts">
 import RecordsTable, { type SortEmitData } from '@/components/history/RecordsTable.vue';
-import { useMeta } from 'vue-meta';
+import { useHead } from '@unhead/vue';
 import { Pie } from 'vue-chartjs';
 import { fetchCategoriesSpendStats } from '@/api/category';
 import { fetchRecordsWithCategory, type SortFields, type RecordWithCategory } from '@/api/record';
@@ -47,7 +49,7 @@ import { useAsyncState } from '@vueuse/core';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
 import { useDisplay } from 'vuetify';
 
-useMeta({ title: 'pageTitles.history' });
+useHead({ title: 'pageTitles.history' });
 
 const { t } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();

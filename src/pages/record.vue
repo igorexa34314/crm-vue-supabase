@@ -21,14 +21,14 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from 'vue';
 import { useAsyncState } from '@vueuse/core';
-import { useMeta } from 'vue-meta';
+import { useHead } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { fetchCategories } from '@/api/category';
 import { createRecord, type RecordForm } from '@/api/record';
 import { DEFAULT_RECORD_AMOUNT as defaultAmount } from '@/global-vars';
 
-useMeta({ title: 'pageTitles.newRecord' });
+useHead({ title: 'pageTitles.newRecord' });
 
 const CreateRecord = defineAsyncComponent(() => import('@/components/record/CreateRecord.vue'));
 

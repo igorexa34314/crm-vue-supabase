@@ -50,8 +50,8 @@
 								smAndDown
 									? ''
 									: record.type === 'income'
-									? t('income').toLowerCase()
-									: t('outcome').toLowerCase()
+										? t('income').toLowerCase()
+										: t('outcome').toLowerCase()
 							}}</span
 						>
 					</td>

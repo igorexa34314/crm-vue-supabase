@@ -13,7 +13,7 @@ const emit = defineEmits<{
 	deleteCategory: [];
 }>();
 
-const confirmationDialog = defineModel<boolean>('modelValue', { default: false });
+const confirmationDialog = defineModel<boolean>({ default: false });
 
 const { t } = useI18n();
 </script>

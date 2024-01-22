@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from '@/App.vue';
 import router from '@/router';
-import { createMetaManager } from 'vue-meta';
+import { createHead } from '@unhead/vue';
 import vuetify from '@/plugins/vuetify';
 import { loadMessages, createI18nInstance, setI18nLocaleMessages } from '@/plugins/i18n';
 import pinia from '@/plugins/pinia';
@@ -16,7 +16,7 @@ loadMessages().then(({ locale, messages }) => {
 
 	useUserStore().$subscribeLocale(locale => setI18nLocaleMessages(i18n, locale));
 
-	app.use(createMetaManager()).use(vuetify(i18n)).component('app-loader', AppLoader);
+	app.use(createHead()).use(vuetify(i18n)).component('app-loader', AppLoader);
 
 	app.mount('#app');
 });

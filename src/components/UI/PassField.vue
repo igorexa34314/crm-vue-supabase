@@ -59,7 +59,6 @@ const {
 	repeaterLabel = 'password_repeat',
 	repeaterPlaceholder = 'repeat_password',
 } = defineProps<{
-	modelValue?: string;
 	repeater?: boolean;
 	label?: VTextField['label'];
 	repeaterLabel?: VTextField['label'];
@@ -71,7 +70,7 @@ const {
 	repeaterClass?: string;
 }>();
 
-const password = defineModel<string>('modelValue', {
+const password = defineModel<string>({
 	default: '',
 });
 

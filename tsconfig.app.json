@@ -8,6 +8,6 @@
 		"paths": {
 			"@/*": ["./src/*"]
 		},
-		"types": ["vite-plugin-vue-layouts/client.d.ts"]
+		"types": ["vite-plugin-vue-layouts/client", "turnstile-types"]
 	}
 }

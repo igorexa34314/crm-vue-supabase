@@ -1,10 +1,4 @@
 <template>
-	<metainfo>
-		<template #title="{ content }: SlotScopeProperties">
-			{{ content ? `${t(content)} | ${AppTitle} ` : AppTitle }}
-		</template>
-	</metainfo>
-
 	<GlobalSnackbar />
 
 	<Suspense>
@@ -22,8 +16,11 @@ import GlobalSnackbar from '@/components/app/GlobalSnackbar.vue';
 import { useDarkModeStore } from '@/stores/darkMode';
 import { useI18n } from 'vue-i18n';
 import { AppTitle } from '@/global-vars';
-import type { SlotScopeProperties } from 'vue-meta';
+import { useSeoMeta } from '@unhead/vue';
 
+useSeoMeta({
+	titleTemplate: (title?: string) => (title ? `${t(title)} | ${AppTitle}` : AppTitle),
+});
 const { t } = useI18n({ useScope: 'global' });
 useDarkModeStore();
 </script>

@@ -30,7 +30,11 @@
 
 		<div class="d-flex flex-column flex-md-row">
 			<div class="flex-fill d-flex flex-column">
-				<BirthdayPicker v-model="datePickerDate" :label="t('user.birthday')" class="flex-fill" />
+				<v-birthday-picker
+					v-model="datePickerDate"
+					:label="t('user.birthday')"
+					class="flex-fill"
+					:month-formatter="month => d(month, { month: 'long' })" />
 
 				<v-radio-group v-model="formState.gender" :label="t('user.gender.label')" class="text-input">
 					<v-radio
@@ -115,9 +119,9 @@
 import LocalizedFileInput from '@/components/UI/LocalizedFileInput.vue';
 import ImageLoader from '@/components/app/ImageLoader.vue';
 import avatarPlaceholder from '@/assets/img/avatar-placeholder.jpg';
-import BirthdayPicker from '@/components/UI/BirthdayPicker.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
+import { VBirthdayPicker } from 'vuetify-birthdaypicker';
 import { ref, computed, watchEffect } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { useUserStore } from '@/stores/user';
@@ -142,7 +146,7 @@ const emit = defineEmits<{
 	updateInfo: [info: Partial<Omit<UserInfo, 'updated_at'>> & { avatar: File[] }];
 }>();
 
-const { t } = useI18n();
+const { t, d } = useI18n();
 const { xs, smAndDown } = useDisplay();
 const userStore = useUserStore();
 

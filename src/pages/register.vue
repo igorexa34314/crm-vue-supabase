@@ -18,13 +18,13 @@
 <script setup lang="ts">
 import LocalRegister from '@/components/auth/LocalRegister.vue';
 import { definePage, useRouter } from 'vue-router/auto';
-import { useMeta } from 'vue-meta';
+import { useHead } from '@unhead/vue';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 
-definePage({ meta: { layout: 'empty' } });
-useMeta({ title: 'sign_in' });
+definePage({ meta: { layout: 'empty', authRoute: true } });
+useHead({ title: 'sign_in' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();

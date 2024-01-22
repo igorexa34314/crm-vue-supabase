@@ -3,8 +3,8 @@
 		<v-list>
 			<v-list-item
 				v-for="link in links"
-				:key="link.url.toString()"
-				:to="link.url"
+				:key="link.to.toString()"
+				:to="link.to"
 				active-class="active"
 				link
 				:exact="link.exact"
@@ -18,19 +18,19 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { type RouteLocationRaw } from 'vue-router/auto';
+import type { RouteLocationRaw } from 'vue-router/auto';
 
-const drawer = defineModel<boolean>('modelValue', {
+const drawer = defineModel<boolean>({
 	default: false,
 });
 
 const { t } = useI18n();
 
-const links: { title: string; url: RouteLocationRaw; exact?: boolean }[] = [
-	{ title: 'bill', url: '/', exact: true },
-	{ title: 'history', url: '/history' },
-	{ title: 'plan', url: '/planning' },
-	{ title: 'newRecord', url: '/record' },
-	{ title: 'categories', url: '/categories' },
+const links: { title: string; to: RouteLocationRaw; exact?: boolean }[] = [
+	{ title: 'bill', to: '/', exact: true },
+	{ title: 'history', to: '/history' },
+	{ title: 'plan', to: '/planning' },
+	{ title: 'newRecord', to: '/record' },
+	{ title: 'categories', to: '/categories' },
 ];
 </script>

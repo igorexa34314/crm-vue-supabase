@@ -1,9 +1,9 @@
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, onBeforeUnmount, toValue, type MaybeRefOrGetter } from 'vue';
 import { useScriptTag } from '@vueuse/core';
 import { loadTurnstileCbName, turnstileScriptSrc, TURNSTILE_SITE_KEY } from '@/global-vars';
-import type { Container } from 'turnstile-types';
+import type { ElementId } from 'turnstile-types';
 
-export const useTurnstile = (selector: Container) => {
+export const useTurnstile = (selector: MaybeRefOrGetter<HTMLElement | ElementId>) => {
 	let turnstileId: string;
 
 	const turnstileToken = ref('');
@@ -12,11 +12,12 @@ export const useTurnstile = (selector: Container) => {
 		turnstileScriptSrc,
 		// on script tag loaded.
 		() => {
-			(window as typeof window & { [loadTurnstileCbName]: () => void })[loadTurnstileCbName] = () => {
-				turnstileId = window.turnstile.render(selector, {
+			window[loadTurnstileCbName] = () => {
+				turnstileId = turnstile.render(toValue(selector), {
 					sitekey: TURNSTILE_SITE_KEY,
 					size: 'normal',
 					'refresh-expired': 'manual',
+					theme: 'auto',
 					callback: token => (turnstileToken.value = token),
 				});
 			};
@@ -25,7 +26,7 @@ export const useTurnstile = (selector: Container) => {
 	);
 
 	onBeforeUnmount(() => {
-		window.turnstile.remove(turnstileId);
+		turnstile.remove(turnstileId);
 	});
 
 	return turnstileToken;

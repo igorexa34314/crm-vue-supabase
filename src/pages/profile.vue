@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { changeUserPassword, changeUserEmail } from '@/api/auth';
 import { ref, watchEffect } from 'vue';
-import { useMeta } from 'vue-meta';
+import { useHead } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { updateInfo, updateAvatar, type UserInfo } from '@/api/user';
@@ -43,7 +43,7 @@ import { definePage, useRoute, useRouter, type RouteLocationRaw } from 'vue-rout
 import { useDisplay } from 'vuetify';
 
 definePage({ redirect: { name: '/profile/info' } });
-useMeta({ title: 'pageTitles.profile' });
+useHead({ title: 'pageTitles.profile' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
