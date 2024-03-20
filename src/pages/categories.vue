@@ -5,7 +5,7 @@
 		</div>
 
 		<section class="mt-sm-10 mt-7">
-			<app-loader v-if="isLoading || isCurrencyLoading" page />
+			<app-loader v-if="isPending || isCurrencyLoading" page />
 
 			<template v-else>
 				<Suspense>
@@ -19,7 +19,7 @@
 
 						<v-col cols="6" md="6" sm="12" xs="12" class="edit-category v-col-xs-12">
 							<EditCategory
-								v-if="categories.length"
+								v-if="categories?.length"
 								v-bind="{ categories, defaultLimit }"
 								@updated="handleUpdatedCategory"
 								@deleted="handleDeletedCategory"
@@ -35,30 +35,25 @@
 
 <script setup lang="ts">
 import CreateCategory from '@/components/categories/CreateCategory.vue';
-import { inject, defineAsyncComponent } from 'vue';
+import { inject, watch, defineAsyncComponent } from 'vue';
 import { useHead } from '@unhead/vue';
-import { useAsyncState } from '@vueuse/core';
-import { fetchCategories, type Category } from '@/api/category';
+import { type Category } from '@/api/category';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
-import { useSnackbarStore } from '@/stores/snackbar';
 import { DEFAULT_CATEGORY_LIMIT as defaultLimit } from '@/global-vars';
 import { currencyKey } from '@/injection-keys';
+import { useFetchCategories } from '@/composables/queries/categories';
 
 // Page title: Categories
 useHead({ title: 'pageTitles.categories' });
 
 const EditCategory = defineAsyncComponent(() => import('@/components/categories/EditCategory.vue'));
 
-const { te, t } = useI18n({ useScope: 'global' });
+const { t } = useI18n({ useScope: 'global' });
 const { isLoading: isCurrencyLoading } = inject(currencyKey)!;
 const { smAndDown, xs } = useDisplay();
-const { state: categories, isLoading } = useAsyncState(fetchCategories, [], {
-	onError: e => {
-		const { showMessage } = useSnackbarStore();
-		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_load_categories'), 'red-darken-3');
-	},
-});
+
+const { data: categories, isPending } = useFetchCategories();
 
 const addNewCategory = (cat: Category) => {
 	categories.value = [cat, ...categories.value];

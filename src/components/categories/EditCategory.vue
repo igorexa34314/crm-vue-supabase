@@ -68,7 +68,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currencyFilter';
 import { storeToRefs } from 'pinia';
 import { useDisplay } from 'vuetify';
 import isEqual from 'lodash/isEqual';

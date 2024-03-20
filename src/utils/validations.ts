@@ -40,3 +40,9 @@ export const record = {
 		(val: File[]) => val.every(v => v.size <= 1024 * 1024 * 2) || 'rules.file',
 	],
 };
+
+const isLatinic = (str: string) => /^[a-zA-Z0-9._\-()\s]+$/.test(str);
+
+export const validateFileName = (name: string) => {
+	return isLatinic(name) ? name : name.split('.').at(-1) ?? '';
+};

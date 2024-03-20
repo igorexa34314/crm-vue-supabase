@@ -56,7 +56,7 @@ import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/UI/LocalizedInput.vue';
 import { ref, computed, watchEffect } from 'vue';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currencyFilter';
 import { useI18n } from 'vue-i18n';
 import { record as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';

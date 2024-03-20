@@ -17,12 +17,12 @@
 
 		<app-loader v-if="isStatsLoading" class="mt-10" page />
 
-		<div v-else-if="!catStats.length" class="mt-10 text-center text-h6">
+		<div v-else-if="!stats.length" class="mt-10 text-center text-h6">
 			{{ t('no_categories') + '. ' }}<router-link to="/categories">{{ t('create_category') + '. ' }}</router-link>
 		</div>
 
 		<section v-else class="mt-10 px-4">
-			<div v-for="(cat, index) of catStats" :key="cat.id || index" class="mt-8">
+			<div v-for="(cat, index) of stats" :key="cat.id || index" class="mt-8">
 				<div class="d-flex flex-row align-center justify-space-between">
 					<div class="category-title mr-4">
 						<strong class="text-truncate font-weight-bold text-primary flex-fill">{{ cat.title + ':' }}</strong>
@@ -86,20 +86,21 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { fetchCategoriesSpendStats } from '@/api/category';
-import { computed } from 'vue';
+import { watch, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useHead } from '@unhead/vue';
-import { useAsyncState } from '@vueuse/core';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currencyFilter';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_BILL } from '@/global-vars';
+import { useQuery } from '@tanstack/vue-query';
 
 useHead({ title: 'pageTitles.plan' });
 
 const { t, n, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
+const { showMessage } = useSnackbarStore();
 const userStore = useUserStore();
 
 const { userCurrency } = storeToRefs(userStore);
@@ -107,12 +108,25 @@ const { cf, isLoading: isCurrencyLoading } = useCurrencyFilter();
 
 const bill = computed(() => userStore.info?.bill || DEFAULT_BILL);
 
-const { state: catStats, isLoading: isStatsLoading } = useAsyncState(fetchCategoriesSpendStats, [], {
-	onError: e => {
-		const { showMessage } = useSnackbarStore();
-		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
-	},
+const {
+	data: stats,
+	isLoading: isStatsLoading,
+	error: statsError,
+} = useQuery({
+	queryKey: ['categories', 'stats'],
+	queryFn: fetchCategoriesSpendStats,
+	initialData: [],
 });
+
+watch(
+	statsError,
+	error => {
+		if (error) {
+			showMessage(te(`warnings.${error.message}`) ? t(`warnings.${error}`) : error.message, 'red-darken-3');
+		}
+	},
+	{ immediate: true }
+);
 </script>
 
 <style lang="scss" scoped>

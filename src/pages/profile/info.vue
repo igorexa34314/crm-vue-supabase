@@ -159,14 +159,16 @@ const info = computed(() => userStore.info);
 
 const form = ref<VForm | null>(null);
 
-type NonUndefinedOrNullObjectFields<T extends { [key: string]: any }> = {
+type NonNullableObjectFields<T extends { [key: string]: any }> = {
 	[key in keyof T]: Exclude<T[key], null | undefined>;
 };
 
-type FormInfo = NonUndefinedOrNullObjectFields<UserInfo>;
-const formState = ref<
-	Partial<Omit<FormInfo, 'updated_at' | 'birthday_date'>> & { birthday_date: string | null; avatar: File[] }
->({
+type FormInfo = Partial<Omit<NonNullableObjectFields<UserInfo>, 'updated_at' | 'birthday_date'>> & {
+	birthday_date: string | null;
+	avatar: File[];
+};
+
+const formState = ref<FormInfo>({
 	username: '',
 	first_name: '',
 	last_name: '',

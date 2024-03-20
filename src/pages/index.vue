@@ -36,9 +36,7 @@ import { useTheme } from 'vuetify';
 import { definePage } from 'vue-router/auto';
 import { useUserStore } from '@/stores/user';
 
-definePage({
-	alias: ['/home'],
-});
+definePage({ alias: ['/home'] });
 useHead({ title: 'pageTitles.bill' });
 
 const CurrencyRates = defineAsyncComponent(() => import('@/components/home/CurrencyRates.vue'));

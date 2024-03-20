@@ -1,12 +1,17 @@
 import { getUserId } from '@/api/auth';
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/supabase';
-import type { Tables } from '@/database.types';
+import type { Tables, FunctionResponse } from '@/types/database.types';
 
 export type Category = Pick<Tables<'categories'>, 'id' | 'title' | 'limit'>;
+export type CategorySpendStats = Omit<
+	FunctionResponse<'calculate_category_spend_for_auth_user'>[number],
+	'created_at' | 'updated_at'
+>;
 export type CategoryData = Omit<Category, 'id'>;
 
 export const categoryQuery = `id, title, limit` as const;
+export const categorySpendStatsQuery = `${categoryQuery}, percent, spend` as const;
 
 export const fetchCategories = async () => {
 	const uid = await getUserId();
@@ -22,7 +27,7 @@ export const fetchCategories = async () => {
 export const fetchCategoriesSpendStats = async () => {
 	const { error, data: categories } = await supabase
 		.rpc('calculate_category_spend_for_auth_user')
-		.select(`${categoryQuery}, percent, spend`);
+		.select<typeof categorySpendStatsQuery, CategorySpendStats>(categorySpendStatsQuery);
 	if (error) return errorHandler(error);
 	return categories;
 };

@@ -8,6 +8,7 @@ module.exports = {
 		'eslint:recommended',
 		'@vue/eslint-config-typescript',
 		'@vue/eslint-config-prettier/skip-formatting',
+		'plugin:@tanstack/eslint-plugin-query/recommended',
 	],
 	parserOptions: {
 		ecmaVersion: 'latest',

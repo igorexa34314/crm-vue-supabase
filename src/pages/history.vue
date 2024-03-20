@@ -5,7 +5,7 @@
 		</div>
 		<v-divider color="black" thickness="1.5" class="bg-white mt-3 mb-6" />
 
-		<app-loader v-if="categoriesLoading" class="mt-7" page />
+		<app-loader v-if="isFetching" class="mt-7" page />
 
 		<div
 			v-else-if="catStats && catStats.length"
@@ -16,7 +16,7 @@
 			</Pie>
 		</div>
 
-		<section class="mt-lg-6" v-if="!categoriesLoading">
+		<section class="mt-lg-6" v-if="!isFetching">
 			<RecordsTable
 				:per-page="perPage"
 				:total-records="totalRecords || records.length"
@@ -25,9 +25,7 @@
 				@sort="sortRecords" />
 		</section>
 
-		<div
-			v-if="!categoriesLoading && !recordsLoading && (!records || !records.length)"
-			class="text-center text-h6 mt-9">
+		<div v-if="!isFetching && !recordsLoading && (!records || !records.length)" class="text-center text-h6 mt-9">
 			{{ t('no_records') + '. ' }}
 			<router-link to="/record">{{ t('create_record') }}</router-link>
 		</div>
@@ -38,16 +36,15 @@
 import RecordsTable, { type SortEmitData } from '@/components/history/RecordsTable.vue';
 import { useHead } from '@unhead/vue';
 import { Pie } from 'vue-chartjs';
-import { fetchCategoriesSpendStats } from '@/api/category';
 import { fetchRecordsWithCategory, type SortFields, type RecordWithCategory } from '@/api/record';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useChart } from '@/composables/useChart';
-import { ref, onUnmounted } from 'vue';
+import { useChart } from '@/composables/chart';
+import { ref, computed, onUnmounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router/auto';
-import { useAsyncState } from '@vueuse/core';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
 import { useDisplay } from 'vuetify';
+import { useFetchCategoriesSpendStats } from '@/composables/queries/categories';
 
 useHead({ title: 'pageTitles.history' });
 
@@ -56,21 +53,13 @@ const { xs } = useDisplay();
 const { replace } = useRouter();
 const route = useRoute('/history');
 
-const { state: catStats, isLoading: categoriesLoading } = useAsyncState(
-	async () => {
-		const categories = await fetchCategoriesSpendStats();
-		return categories.filter(cat => cat.spend > 0).map(c => ({ label: c.title, data: c.spend }));
-	},
-	[],
-	{
-		onError: () => {
-			const { showMessage } = useSnackbarStore();
-			showMessage('error_loading_records_or_categories', 'red-darken-3');
-		},
-	}
+const { data: catStats, isFetching } = useFetchCategoriesSpendStats();
+const categoriesChartData = computed(() =>
+	catStats.value.filter(cat => cat.spend > 0).map(c => ({ label: c.title, data: c.spend }))
 );
+
 // Draw chart from category spend stats
-const { chartData, chartOptions } = useChart<'pie'>(catStats);
+const { chartData, chartOptions } = useChart<'pie'>(categoriesChartData);
 
 // Init Records table pagination and sorting
 const perPage = ref(DEFAULT_RECORDS_PER_PAGE);

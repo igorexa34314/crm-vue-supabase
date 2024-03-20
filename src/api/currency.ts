@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch';
 import { errorHandler } from '@/utils/errorHandler';
 import { EXCHANGER_API_URL, EXCHANGER_API_KEY, availableCurrencies, SERVER_CURRENCY } from '@/global-vars';
 

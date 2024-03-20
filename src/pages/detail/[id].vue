@@ -94,7 +94,7 @@ import {
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currencyFilter';
 import { useDisplay } from 'vuetify';
 
 useHead({ title: 'pageTitles.details' });

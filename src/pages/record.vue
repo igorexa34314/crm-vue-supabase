@@ -4,7 +4,7 @@
 			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2 text-title">{{ t('pageTitles.newRecord') }}</h3>
 		</div>
 
-		<app-loader v-if="categoriesLoading" class="mt-10" page />
+		<app-loader v-if="isFetching" class="mt-10" page />
 
 		<div v-else-if="!categories.length" class="mt-10 text-center text-h6">
 			{{ t('no_categories') + '. ' }}
@@ -20,13 +20,12 @@
 
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from 'vue';
-import { useAsyncState } from '@vueuse/core';
 import { useHead } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { fetchCategories } from '@/api/category';
 import { createRecord, type RecordForm } from '@/api/record';
 import { DEFAULT_RECORD_AMOUNT as defaultAmount } from '@/global-vars';
+import { useFetchCategories } from '@/composables/queries/categories';
 
 useHead({ title: 'pageTitles.newRecord' });
 
@@ -35,11 +34,7 @@ const CreateRecord = defineAsyncComponent(() => import('@/components/record/Crea
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 
-const { state: categories, isLoading: categoriesLoading } = useAsyncState(fetchCategories, [], {
-	onError: e => {
-		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_load_categories'), 'red-darken-3');
-	},
-});
+const { data: categories, isFetching } = useFetchCategories();
 
 const createLoading = ref(false);
 

@@ -3,8 +3,8 @@ import { useUserStore } from '@/stores/user';
 import { getUserId } from '@/api/auth';
 import { supabase } from '@/supabase';
 import { v4 as uuidv4 } from 'uuid';
-import { validateFileName } from '@/utils/helpers';
-import type { Tables } from '@/database.types';
+import { validateFileName } from '@/utils/validations';
+import type { Tables } from '@/types/database.types';
 
 export interface UserCredentials {
 	uid: string;

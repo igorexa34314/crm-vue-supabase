@@ -1,4 +1,7 @@
-import { loadTurnstileCbName } from './global-vars';
+/* eslint-disable */
+/* prettier-ignore */
+// @ts-nocheck
+import { loadTurnstileCbName } from '../global-vars';
 import { TurnstileObject } from 'turnstile-types';
 
 declare global {

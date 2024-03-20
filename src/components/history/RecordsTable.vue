@@ -98,7 +98,7 @@ import { mdiOpenInNew, mdiTrendingUp, mdiTrendingDown, mdiMenuUp, mdiMenuDown } 
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currencyFilter';
 import { useDisplay } from 'vuetify';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
 import type { VDataTableServer } from 'vuetify/components';

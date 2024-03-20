@@ -65,7 +65,7 @@ import { register } from '@/api/auth';
 import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
 import { useDisplay } from 'vuetify';
-import { useTurnstile } from '@/composables/useTurnstile';
+import { useTurnstile } from '@/composables/turnstile';
 import { validateToken } from '@/api/turnstile';
 import type { VForm } from 'vuetify/components';
 
