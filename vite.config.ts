@@ -1,7 +1,8 @@
-import { type UserConfig, defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import { URL, fileURLToPath } from 'node:url';
 
 import vue from '@vitejs/plugin-vue';
+import VueDevTools from 'vite-plugin-vue-devtools';
 import VueRouter from 'unplugin-vue-router/vite';
 import Layouts from 'vite-plugin-vue-layouts';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
@@ -9,13 +10,13 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
-export default ({ mode }: UserConfig) => {
-	process.env = { ...process.env, ...loadEnv(mode ?? '', process.cwd()) };
+export default defineConfig(({ mode }) => {
+	const { BASE, PORT } = loadEnv(mode, process.cwd(), '');
 
-	return defineConfig({
-		base: process.env.VITE_BASE || '/',
+	return {
+		base: BASE ?? '/',
 		server: {
-			port: +(process.env.VITE_PORT || 3000),
+			port: +(PORT ?? 3000),
 		},
 		resolve: {
 			alias: {
@@ -29,7 +30,7 @@ export default ({ mode }: UserConfig) => {
 			}),
 			VueRouter({
 				routesFolder: 'src/pages',
-				dts: './src/typed-router.d.ts',
+				dts: './src/types/typed-router.d.ts',
 			}),
 			vue({
 				script: {
@@ -47,6 +48,7 @@ export default ({ mode }: UserConfig) => {
 				...visualizer({ filename: 'bundle-stats.html' }),
 				apply: () => mode === 'analyze',
 			},
+			VueDevTools(),
 		],
-	});
-};
+	};
+});
