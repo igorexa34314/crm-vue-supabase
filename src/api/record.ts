@@ -5,7 +5,7 @@ import { errorHandler } from '@/utils/errorHandler';
 import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
 import { validateFileName } from '@/utils/helpers';
 import { v4 as uuidv4 } from 'uuid';
-import type { Enums, Tables } from '@/database.types';
+import type { Enums, Tables } from '@/types/database.types';
 
 export type RecordType = Enums<'record_type'>;
 export type Record = Omit<Tables<'records'>, 'user_id'>;

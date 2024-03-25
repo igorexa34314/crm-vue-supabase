@@ -30,7 +30,7 @@ export default ({ mode }: UserConfig) => {
 			}),
 			VueRouter({
 				routesFolder: 'src/pages',
-				dts: './src/typed-router.d.ts',
+				dts: './src/types/typed-router.d.ts',
 			}),
 			vue({
 				script: {
