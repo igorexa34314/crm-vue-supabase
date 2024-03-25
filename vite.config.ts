@@ -1,4 +1,4 @@
-import { type UserConfig, defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import { URL, fileURLToPath } from 'node:url';
 
 import vue from '@vitejs/plugin-vue';
@@ -10,13 +10,13 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
-export default ({ mode }: UserConfig) => {
-	process.env = { ...process.env, ...loadEnv(mode ?? '', process.cwd()) };
+export default defineConfig(({ mode }) => {
+	const { BASE, PORT } = loadEnv(mode, process.cwd(), '');
 
-	return defineConfig({
-		base: process.env.VITE_BASE || '/',
+	return {
+		base: BASE ?? '/',
 		server: {
-			port: +(process.env.VITE_PORT || 3000),
+			port: +(PORT ?? 3000),
 		},
 		resolve: {
 			alias: {
@@ -50,5 +50,5 @@ export default ({ mode }: UserConfig) => {
 			},
 			VueDevTools(),
 		],
-	});
-};
+	};
+});
