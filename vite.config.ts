@@ -2,6 +2,7 @@ import { type UserConfig, defineConfig, loadEnv } from 'vite';
 import { URL, fileURLToPath } from 'node:url';
 
 import vue from '@vitejs/plugin-vue';
+import VueDevTools from 'vite-plugin-vue-devtools';
 import VueRouter from 'unplugin-vue-router/vite';
 import Layouts from 'vite-plugin-vue-layouts';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
@@ -47,6 +48,7 @@ export default ({ mode }: UserConfig) => {
 				...visualizer({ filename: 'bundle-stats.html' }),
 				apply: () => mode === 'analyze',
 			},
+			VueDevTools(),
 		],
 	});
 };
