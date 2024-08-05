@@ -28,13 +28,14 @@ import LocalLogin from '@/components/auth/LocalLogin.vue';
 import GithubProvider from '@/components/auth/providers/GithubProvider.vue';
 import FacebookProvider from '@/components/auth/providers/FacebookProvider.vue';
 import GoogleProvider from '@/components/auth/providers/GoogleProvider.vue';
-import { definePage, useRouter } from 'vue-router/auto';
+import { useRouter } from 'vue-router';
 import { useHead } from '@unhead/vue';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { useDisplay } from 'vuetify';
 
-definePage({ meta: { layout: 'empty', authRoute: true } });
+definePage({ meta: { layout: 'empty', requiresAuth: false } });
+
 useHead({ title: 'login' });
 
 const { t, te } = useI18n({ useScope: 'global' });

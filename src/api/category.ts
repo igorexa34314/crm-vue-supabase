@@ -1,70 +1,57 @@
 import { getUserId } from '@/api/auth';
 import { errorHandler } from '@/utils/errorHandler';
-import { supabase } from '@/supabase';
-import type { Tables, FunctionResponse } from '@/types/database.types';
+import { supabase } from '@/config/supabase';
+import type { Tables, TablesInsert, TablesUpdate } from '@/types/database.types';
+import type { Split } from 'type-fest';
 
-export type Category = Pick<Tables<'categories'>, 'id' | 'title' | 'limit'>;
-export type CategorySpendStats = Omit<
-	FunctionResponse<'calculate_category_spend_for_auth_user'>[number],
-	'created_at' | 'updated_at'
->;
-export type CategoryData = Omit<Category, 'id'>;
+export const categoryQuery = 'id, title, limit';
+export const categorySpendStatsQuery = `${categoryQuery}, percent, spend`;
 
-export const categoryQuery = `id, title, limit` as const;
-export const categorySpendStatsQuery = `${categoryQuery}, percent, spend` as const;
+export type Category = Pick<Tables<'categories'>, Split<typeof categoryQuery, ', '>[number]>;
+export type CategoryData = TablesInsert<'categories'>;
 
 export const fetchCategories = async () => {
 	const uid = await getUserId();
-	const { error, data: categories } = await supabase
+	const { error, data } = await supabase
 		.from('categories')
-		.select<typeof categoryQuery, Category>(categoryQuery)
+		.select(categoryQuery)
 		.eq('user_id', uid)
 		.order('created_at', { ascending: false });
-	if (error) return errorHandler(error);
-	return categories;
+	if (error) throw errorHandler(error);
+	return data;
 };
 
 export const fetchCategoriesSpendStats = async () => {
-	const { error, data: categories } = await supabase
-		.rpc('calculate_category_spend_for_auth_user')
-		.select<typeof categorySpendStatsQuery, CategorySpendStats>(categorySpendStatsQuery);
-	if (error) return errorHandler(error);
-	return categories;
+	const { error, data } = await supabase.rpc('calculate_category_spend_for_auth_user').select(categorySpendStatsQuery);
+	if (error) throw errorHandler(error);
+	return data;
 };
 
-export const createCategory = async (categoryData: CategoryData) => {
-	const { error, data: newCategory } = await supabase
-		.from('categories')
-		.insert(categoryData)
-		.select<typeof categoryQuery, Category>(categoryQuery)
-		.single();
-	if (error) return errorHandler(error);
-	return newCategory;
+export const createCategory = async (categoryData: TablesInsert<'categories'>) => {
+	const { error, data } = await supabase.from('categories').insert(categoryData).select(categoryQuery).single();
+	if (error) throw errorHandler(error);
+	return data;
 };
 
-export const updateCategory = async (categoryId: Category['id'], categoryData: CategoryData) => {
-	const { error, data: category } = await supabase
+export const updateCategory = async (categoryId: Category['id'], categoryData: TablesUpdate<'categories'>) => {
+	const { error, data } = await supabase
 		.from('categories')
 		.update(categoryData)
 		.eq('id', categoryId)
-		.select<typeof categoryQuery, Category>(categoryQuery)
+		.select(categoryQuery)
 		.single();
-	if (error) return errorHandler(error);
-	return category;
+	if (error) throw errorHandler(error);
+	return data;
 };
 
 export const deleteCategoryById = async (categoryId: Category['id']) => {
-	const { error, data = {} } = await supabase.from('categories').delete().eq('id', categoryId);
-	if (error) return errorHandler(error);
-	return { success: true, ...data };
+	const { error, data } = await supabase.from('categories').delete().eq('id', categoryId);
+	if (error) throw errorHandler(error);
+	return data;
 };
 
 export const fetchCategoryById = async (id: Category['id']) => {
-	const { error, data: category } = await supabase
-		.from('categories')
-		.select<typeof categoryQuery, Category>(categoryQuery)
-		.eq('id', id)
-		.single();
-	if (error) return errorHandler(error);
-	return category;
+	const { error, data } = await supabase.from('categories').select(categoryQuery).eq('id', id).single();
+	if (error) throw errorHandler(error);
+	return data;
 };

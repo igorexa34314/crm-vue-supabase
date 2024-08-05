@@ -44,16 +44,16 @@ import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useChart } from '@/composables/useChart';
 import { ref, onUnmounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router/auto';
+import { useRouter, useRoute } from 'vue-router';
 import { useAsyncState } from '@vueuse/core';
-import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
+import { defaultRecordsPerPage } from '@/constants/app';
 import { useDisplay } from 'vuetify';
 
 useHead({ title: 'pageTitles.history' });
 
 const { t } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
-const { replace } = useRouter();
+const router = useRouter();
 const route = useRoute('/history');
 
 const { state: catStats, isLoading: categoriesLoading } = useAsyncState(
@@ -73,7 +73,7 @@ const { state: catStats, isLoading: categoriesLoading } = useAsyncState(
 const { chartData, chartOptions } = useChart<'pie'>(catStats);
 
 // Init Records table pagination and sorting
-const perPage = ref(DEFAULT_RECORDS_PER_PAGE);
+const perPage = ref(defaultRecordsPerPage);
 
 const totalRecords = ref(0);
 const recordsLoading = ref(false);
@@ -93,7 +93,7 @@ const sortRecords = async ({ page, itemsPerPage, sortBy }: SortEmitData) => {
 		const { records: recordsData, count } = await fetchRecordsWithCategory(sortArg);
 		totalRecords.value = count;
 		records.value = recordsData.map((r, idx) => ({ ...r, index: (+page - 1) * +itemsPerPage + ++idx }));
-		replace({ query: { ...route.query, ...sortArg } });
+		router.replace({ query: { ...route.query, ...sortArg } });
 	} catch (err) {
 		console.log(err);
 		const { showMessage } = useSnackbarStore();
@@ -102,5 +102,5 @@ const sortRecords = async ({ page, itemsPerPage, sortBy }: SortEmitData) => {
 		recordsLoading.value = false;
 	}
 };
-onUnmounted(() => replace({ query: undefined }));
+onUnmounted(() => router.replace({ query: {} }));
 </script>

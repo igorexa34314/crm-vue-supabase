@@ -1,7 +1,7 @@
 import { computed, inject } from 'vue';
 import { currencyKey, type CurrencyReturn } from '@/injection-keys';
 import type { CurrencyRates } from '@/api/currency';
-import { SERVER_CURRENCY } from '@/global-vars';
+import { serverCurrency } from '@/constants/currency';
 
 export const useCurrencyFilter = () => {
 	const { currency, isLoading } = inject(currencyKey, {} as CurrencyReturn);
@@ -13,7 +13,7 @@ export const useCurrencyFilter = () => {
 				return amount;
 			}
 
-			const currencyRate = 1 / currency.value!.rates[options?.currency || SERVER_CURRENCY];
+			const currencyRate = 1 / currency.value!.rates[options?.currency || serverCurrency];
 
 			return +(options?.type !== 'reverse' ? amount * currencyRate : amount / currencyRate).toFixed(2);
 		}

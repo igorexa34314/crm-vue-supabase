@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import AppNavbar from '@/components/app/AppNavbar.vue';
 import AppSidebar from '@/components/app/AppSidebar.vue';
-import { ref, onMounted, provide, onUnmounted } from 'vue';
+import { ref, onMounted, provide, onUnmounted, watchEffect } from 'vue';
 import { fetchCurrency } from '@/api/currency';
 import { useUserStore } from '@/stores/user';
 import { mdiPlus } from '@mdi/js';
@@ -37,12 +37,12 @@ import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useAsyncState } from '@vueuse/core';
 import { currencyKey } from '@/injection-keys';
-import { useRouter } from 'vue-router/auto';
+import { useRouter } from 'vue-router';
 import { logout } from '@/api/auth';
 import { useDisplay } from 'vuetify';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
-const { push } = useRouter();
+const router = useRouter();
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 const userStore = useUserStore();
@@ -54,17 +54,17 @@ const {
 	state: currency,
 	isLoading,
 	isReady,
-	execute,
-} = useAsyncState(() => fetchCurrency(userStore.getUserCurrency), null, {
+	execute: loadCurrency,
+} = useAsyncState(() => fetchCurrency(userStore.userCurrency), null, {
 	immediate: false,
 	resetOnExecute: false,
 	onError: e => {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_loading_currency'), 'red-darken-3');
-		userStore.fallbackUserCurrency();
+		userStore.resetUserCurrency();
 	},
 });
 
-provide(currencyKey, { currency, isLoading, isReady, refresh: execute });
+provide(currencyKey, { currency, isLoading, isReady, refresh: loadCurrency });
 
 let userInfoChannel: RealtimeChannel | null = null;
 
@@ -78,25 +78,19 @@ onMounted(async () => {
 	}
 });
 
-const unsubCurr = userStore.$subscribeCurrency(async () => {
-	await execute();
+watchEffect(async () => {
+	await loadCurrency();
 });
 
 onUnmounted(() => {
 	userInfoChannel?.unsubscribe();
-	unsubCurr();
 	userStore.$reset();
 });
 
 const handleLogout = async () => {
 	try {
 		await logout();
-		push({
-			path: '/login',
-			query: {
-				message: 'logout',
-			},
-		});
+		router.push({ path: '/login', query: { message: 'logout' } });
 	} catch (e) {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
 	}

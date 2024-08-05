@@ -1,66 +1,38 @@
 import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
-import { DEFAULT_LOCALE, SERVER_CURRENCY, LOCALE_KEY } from '@/global-vars';
+import { computed, readonly, shallowRef } from 'vue';
+import { serverCurrency } from '@/constants/currency';
+import { defaultLocale, localeKey } from '@/constants/i18n';
 import type { UserInfo } from '@/api/user';
 
 export const useUserStore = defineStore('user', () => {
-	const info = ref<UserInfo | null>(null);
+	const info = shallowRef<UserInfo | null>(null);
 
-	const isLocaleLoading = ref(false);
-
-	const setInfo = (data: UserInfo) => {
-		info.value = data;
+	const setInfo = (data: Partial<UserInfo> | null) => {
+		info.value = { ...info.value, ...data } as UserInfo;
 	};
 	const $reset = () => {
-		info.value = null;
+		setInfo(null);
 	};
-	const userCurrency = computed(() => info.value?.currency || SERVER_CURRENCY);
 
-	const fallbackUserCurrency = () => {
-		setInfo({ ...(info.value as UserInfo), currency: SERVER_CURRENCY });
+	const userCurrency = computed(() => info.value?.currency || serverCurrency);
+
+	const resetUserCurrency = () => {
+		setInfo({ ...info.value, currency: serverCurrency });
 	};
 
 	const setLocale = () => {
 		setInfo({
-			...(info.value as UserInfo),
-			locale: JSON.parse(localStorage.getItem(LOCALE_KEY) || 'null') || DEFAULT_LOCALE,
+			...info.value,
+			locale: JSON.parse(localStorage.getItem(localeKey) || 'null') || defaultLocale,
 		});
 	};
 
-	const getUserCurrency = computed(() => info.value?.currency || SERVER_CURRENCY);
-
-	const $subscribeLocale = (cb: (newLocale: string) => void | Promise<void>) => {
-		return watch(
-			() => info.value?.locale,
-			async newVal => {
-				if (newVal) {
-					await cb(newVal);
-				}
-			}
-		);
-	};
-
-	const $subscribeCurrency = (callback: (newCurrency: UserInfo['currency']) => void | Promise<void>) => {
-		return watch(
-			() => info.value?.currency,
-			async newVal => {
-				if (newVal) {
-					await callback(newVal);
-				}
-			}
-		);
-	};
-
 	return {
-		info,
-		isLocaleLoading,
+		info: readonly(info),
 		userCurrency,
-		getUserCurrency,
 		setInfo,
-		fallbackUserCurrency,
-		$reset,
-		$subscribeLocale,
-		$subscribeCurrency,
 		setLocale,
+		resetUserCurrency,
+		$reset,
 	};
 });

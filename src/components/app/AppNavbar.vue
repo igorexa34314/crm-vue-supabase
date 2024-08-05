@@ -19,8 +19,7 @@
 					flat>
 					<div class="text-subtitle-1 font-weight-bold d-flex align-center">
 						<v-img
-							:src="photoURL || avatarPlaceholder"
-							:lazy-src="avatarPlaceholder"
+							:src="photoURL || '/img/avatar-placeholder.jpg'"
 							aspect-ratio="1"
 							:width="xs ? 32 : 36"
 							alt="User avatar"
@@ -50,7 +49,6 @@
 </template>
 
 <script setup lang="ts">
-import avatarPlaceholder from '@/assets/img/avatar-placeholder.jpg';
 import DarkmodeToggle from '@/components/app/DarkmodeToggle.vue';
 import { mdiTriangleSmallDown, mdiAccountCircleOutline, mdiLogout } from '@mdi/js';
 import { computed } from 'vue';

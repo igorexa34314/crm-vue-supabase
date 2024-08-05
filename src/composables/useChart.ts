@@ -1,4 +1,4 @@
-import { computed, toValue, type MaybeRef, type ComputedRef } from 'vue';
+import { computed, toValue, type MaybeRefOrGetter } from 'vue';
 import {
 	Chart as ChartJS,
 	Title,
@@ -17,27 +17,17 @@ import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useUserStore } from '@/stores/user';
 import randomColor from 'randomcolor';
 
-type UseChartFunc = <T extends ChartType = ChartType>(
-	inputData: MaybeRef<
-		| {
-				label: string;
-				data: ChartData<T>['datasets'][number]['data'][number];
-		  }[]
-		| undefined
-	>
-) => { chartData: ComputedRef<ChartData<T>>; chartOptions: ComputedRef<ChartOptions<T>> };
-
 ChartJS.register(Title, Tooltip, Legend, PieController, ArcElement);
 
-export const useChart: UseChartFunc = <T extends ChartType = ChartType>(
-	inputData: MaybeRef<
+export function useChart<T extends ChartType = ChartType>(
+	inputData: MaybeRefOrGetter<
 		| {
 				label: string;
 				data: ChartData<T>['datasets'][number]['data'][number];
 		  }[]
 		| undefined
 	>
-) => {
+) {
 	const { t, n } = useI18n();
 	const theme = useTheme();
 	const { xs } = useDisplay();
@@ -84,7 +74,7 @@ export const useChart: UseChartFunc = <T extends ChartType = ChartType>(
 			}) as ChartOptions<T>
 	);
 
-	const chartData = computed<ChartData<T>>(
+	const chartData = computed(
 		() =>
 			({
 				labels: toValue(inputData)?.map(d => d.label) || [],
@@ -103,4 +93,4 @@ export const useChart: UseChartFunc = <T extends ChartType = ChartType>(
 	);
 
 	return { chartData, chartOptions };
-};
+}

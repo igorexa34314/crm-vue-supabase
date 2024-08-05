@@ -31,9 +31,11 @@ export default defineConfig(({ mode }) => {
 			VueRouter({
 				routesFolder: 'src/pages',
 				dts: './src/types/typed-router.d.ts',
+				extendRoute: route => route.addToMeta({ requiresAuth: true }),
 			}),
 			vue({
-				script: {
+				features: {
+					optionsAPI: false,
 					propsDestructure: true,
 				},
 				template: { transformAssetUrls },
@@ -41,7 +43,7 @@ export default defineConfig(({ mode }) => {
 			Layouts({
 				pagesDirs: 'src/pages',
 				layoutsDirs: 'src/layouts',
-				defaultLayout: 'main',
+				defaultLayout: 'default',
 			}),
 			vuetify({ autoImport: true, styles: 'sass' }),
 			{
@@ -50,5 +52,9 @@ export default defineConfig(({ mode }) => {
 			},
 			VueDevTools(),
 		],
+		optimizeDeps: {
+			include: ['chart.js', 'vue-chartjs', 'vuetify-birthdaypicker', 'randomcolor', 'deep-equal', '@vueuse/router'],
+			exclude: ['vuetify'],
+		},
 	};
 });

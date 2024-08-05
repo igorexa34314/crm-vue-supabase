@@ -1,222 +1,236 @@
 {
 	"date": "Date",
-	"exceeding": "Exceeding",
-	"type": "Type",
-	"create_record": "Create record",
-	"logout": "Logout",
-	"password": "Password",
-	"warnings": {
-		"logout": "You have successfully logged out",
-		"login": "Need to sign in",
-		"needToLogout": "You need to logout before",
-		"email_not_confirmed": "You should confirm your email before",
-		"invalid_login_credentials": "Invalid email or password",
-		"username_exists": "This username already exists",
-		"email_rate_limit_exceeded": "Email rate limit exceeded"
-	},
-	"updated_short": "upd",
-	"error_loading_currency": "Error loading currency",
-	"edit_record": "Edit record",
-	"record_deleted_succesfully": "Record deleted successfully",
-	"record_updated_succesfully": "Record updated successfully",
-	"error_update_record": "Error update record",
-	"error_delete_record": "Error delete record",
-	"submit": "Submit",
-	"cancel": "Cancel",
-	"delete_record_confirmation": "Are you sure you want to delete this record?",
-	"sign_in_success": "You have successfully signed up. Please confirm your email",
-	"no_records": "There are no records yet",
-	"limit": "Limit",
-	"create": "Create",
-	"app_rules": "rules",
-	"sign_in": "Sign up",
-	"error_message": "Something went wrong",
-	"no_categories": "There are no categories yet",
-	"upload_avatar": "Upload your avatar",
-	"invalid_password": "Invalid password",
-	"updatePass_message": "Your password successfully updated",
-	"exchange_rate": "Exchange rate",
 	"edit": "Edit",
-	"change_password": "Change password",
-	"password_current": "Current password",
-	"password_new": "New password",
-	"updateProfile_message": "Data updated successfully",
-	"home_bookkeeping": "Home bookkeeping",
-	"login_success": "You have successfully logged in",
-	"no_account": "Don't have an account",
-	"login_error": "Error when trying to log in",
-	"currency_account": "Currency account",
-	"category_created": "Category successfully created",
-	"error_create_category": "Error when creating category",
-	"category_updated": "Category successfully updated",
-	"error_update_category": "Error occurred when updating category",
-	"error_create_record": "Cant create this record",
-	"category_undefined": "Category is undefined",
-	"error_register": "Sorry, we cant register you",
-	"verify_error": "You must verify your email before",
-	"error_update_profile": "Error when updating your profile",
-	"error_update_avatar": "Something was wrong after updating your avatar",
+	"lang": "Language",
 	"left": "Left",
-	"messages": {
-		"enter_email": "Enter email",
-		"repeat_pass": "Repeat your password",
-		"enter_username": "Enter name",
-		"enter_category_name": "Enter category name",
-		"enter_limit": "Enter limit",
-		"enter_amount": "Enter amount",
-		"enter_pass": "Enter password"
+	"menu": {
+		"bill": "Your bill",
+		"plan": "Planning",
+		"history": "History",
+		"newRecord": "New record",
+		"categories": "Categories"
 	},
-	"agree_with": "agree with",
-	"guest": "Guest",
-	"password_repeat": "Password repeat",
-	"create_category": "Create category",
-	"income": "Income",
-	"repeat_password": "Repeat your password",
-	"delete_category_confirmation": "Are you sure you want to delete this category?",
-	"have_account": "Have an account",
-	"chart_title": "Your spending schedule",
-	"description": "Description",
-	"update": "Update",
-	"login": "Login",
-	"title": "Title",
-	"lack_of_amount": "Insufficient funds on the account",
+	"open": "Open",
 	"rate": "Rate",
 	"tabs": {
 		"info": "Information",
 		"security": "Security"
 	},
-	"pageTitles": {
-		"profile": "Profile",
-		"bill": "Your bill",
-		"details": "Record detail",
-		"categories": "Categories",
-		"history": "Records history",
-		"plan": "Planning",
-		"newRecord": "New record",
-		"home": "Home"
+	"type": "Type",
+	"user": {
+		"bio": "Bio",
+		"avatar": "Profile avatar",
+		"gender": {
+			"male": "Male",
+			"label": "Gender",
+			"female": "Female",
+			"unknown": "Unknown"
+		},
+		"birthday": "Birthday date",
+		"lastName": "Last name",
+		"username": "User name",
+		"firstName": "First name"
 	},
-	"currency": "Currency",
-	"lang": "Language",
+	"email": "Email",
+	"guest": "Guest",
+	"limit": "Limit",
+	"login": "Login",
+	"rules": {
+		"bio": "@:user.bio should be less than 2056 characters",
+		"file": "File size must be less than 2 megabytes",
+		"pass": "@:password must be between 6 and 32 characters",
+		"agree": "You must agree to the rules",
+		"email": "Enter correct email",
+		"limit": "@:limit must be greater than 50",
+		"amount": "The @:amount cannot be less than 1",
+		"details": "Maximum 5 files",
+		"category": "@:category name must be between 3 and 20 characters",
+		"lastName": "@:user.lastName name must be between 2 and 64 characters",
+		"repeater": "Password mismatch",
+		"username": {
+			"limit": "@:user.username must be between 4 and 64 characters",
+			"latinic": "@:user.username must contain only latinic characters, numbers or underlines"
+		},
+		"firstName": "@:user.firstName must be between 2 and 64 characters",
+		"description": "@:description should contain less than 2056 characters"
+	},
+	"title": "Title",
+	"amount": "Amount",
+	"cancel": "Cancel",
+	"create": "Create",
+	"delete": "Delete",
+	"income": "Income",
+	"logout": "Logout",
+	"out_of": "out of",
+	"submit": "Submit",
+	"update": "Update",
+	"outcome": "Outcome",
+	"sign_in": "Sign up",
 	"$vuetify": {
 		"open": "Open",
-		"calendar": { "moreEvents": "{0} more" },
-		"dataIterator": {
-			"loadingText": "Loading items...",
-			"noResultsText": "No matching records found"
+		"badge": "Badge",
+		"close": "Close",
+		"input": {
+			"clear": "Clear {0}",
+			"appendAction": "{0} appended action",
+			"prependAction": "{0} prepended action"
+		},
+		"rating": {
+			"ariaLabel": {
+				"item": "Rating {0} of {1}"
+			}
+		},
+		"loading": "Loading...",
+		"calendar": {
+			"moreEvents": "{0} more"
+		},
+		"carousel": {
+			"next": "Next visual",
+			"prev": "Previous visual",
+			"ariaLabel": {
+				"delimiter": "Carousel slide {0} of {1}"
+			}
+		},
+		"dataTable": {
+			"sortBy": "Sort by",
+			"ariaLabel": {
+				"sortNone": "Not sorted.",
+				"activateNone": "Activate to remove sorting.",
+				"sortAscending": "Sorted ascending.",
+				"sortDescending": "Sorted descending.",
+				"activateAscending": "Activate to sort ascending.",
+				"activateDescending": "Activate to sort descending."
+			},
+			"itemsPerPageText": "Rows per page:"
+		},
+		"fileInput": {
+			"counter": "{0} files",
+			"counterSize": "{0} files ({1} in total)"
 		},
 		"dataFooter": {
-			"firstPage": "First page",
 			"lastPage": "Last page",
 			"nextPage": "Next page",
 			"pageText": "{0}-{1} of {2}",
 			"prevPage": "Previous page",
+			"firstPage": "First page",
 			"itemsPerPageAll": "All",
 			"itemsPerPageText": "Items per page:"
 		},
-		"pagination": {
-			"ariaLabel": {
-				"next": "Next page",
-				"last": "Last page",
-				"previous": "Previous page",
-				"root": "Pagination Navigation",
-				"page": "Go to page {0}",
-				"currentPage": "Page {0}, Current page",
-				"first": "First page"
-			}
-		},
-		"rating": { "ariaLabel": { "item": "Rating {0} of {1}" } },
 		"datePicker": {
 			"itemsSelected": "{0} selected",
-			"prevMonthAriaLabel": "Previous month",
 			"nextYearAriaLabel": "Next year",
 			"prevYearAriaLabel": "Previous year",
-			"nextMonthAriaLabel": "Next month"
-		},
-		"loading": "Loading...",
-		"carousel": {
-			"next": "Next visual",
-			"prev": "Previous visual",
-			"ariaLabel": { "delimiter": "Carousel slide {0} of {1}" }
+			"nextMonthAriaLabel": "Next month",
+			"prevMonthAriaLabel": "Previous month"
 		},
 		"noDataText": "No data available",
-		"badge": "Badge",
-		"input": {
-			"appendAction": "{0} appended action",
-			"clear": "Clear {0}",
-			"prependAction": "{0} prepended action"
-		},
-		"timePicker": { "am": "AM", "pm": "PM" },
-		"dataTable": {
-			"sortBy": "Sort by",
-			"itemsPerPageText": "Rows per page:",
+		"pagination": {
 			"ariaLabel": {
-				"sortDescending": "Sorted descending.",
-				"sortAscending": "Sorted ascending.",
-				"activateAscending": "Activate to sort ascending.",
-				"activateDescending": "Activate to sort descending.",
-				"activateNone": "Activate to remove sorting.",
-				"sortNone": "Not sorted."
+				"last": "Last page",
+				"next": "Next page",
+				"page": "Go to page {0}",
+				"root": "Pagination Navigation",
+				"first": "First page",
+				"previous": "Previous page",
+				"currentPage": "Page {0}, Current page"
 			}
 		},
-		"fileInput": { "counterSize": "{0} files ({1} in total)", "counter": "{0} files" },
-		"close": "Close"
-	},
-	"email": "Email",
-	"outcome": "Outcome",
-	"amount": "Amount",
-	"error_load_categories": "Error loading categories",
-	"createRecord_success": "Record created successfully",
-	"menu": {
-		"bill": "Your bill",
-		"categories": "Categories",
-		"history": "History",
-		"plan": "Planning",
-		"newRecord": "New record"
-	},
-	"select_category": "Choose category",
-	"out_of": "out of",
-	"category": "Category",
-	"user": {
-		"birthday": "Birthday date",
-		"firstName": "First name",
-		"lastName": "Last name",
-		"gender": {
-			"label": "Gender",
-			"female": "Female",
-			"male": "Male",
-			"unknown": "Unknown"
+		"timePicker": {
+			"am": "AM",
+			"pm": "PM"
 		},
-		"bio": "Bio",
-		"avatar": "Profile avatar",
-		"username": "User name"
+		"dataIterator": {
+			"loadingText": "Loading items...",
+			"noResultsText": "No matching records found"
+		}
 	},
-	"open": "Open",
+	"category": "Category",
+	"currency": "Currency",
+	"messages": {
+		"enter_pass": "Enter password",
+		"enter_email": "Enter email",
+		"enter_limit": "Enter limit",
+		"repeat_pass": "Repeat your password",
+		"enter_amount": "Enter amount",
+		"enter_username": "Enter name",
+		"enter_category_name": "Enter category name"
+	},
+	"password": "Password",
+	"warnings": {
+		"login": "Need to sign in",
+		"logout": "You have successfully logged out",
+		"needToLogout": "You need to logout before",
+		"username_exists": "This username already exists",
+		"email_not_confirmed": "You should confirm your email before",
+		"email_rate_limit_exceeded": "Email rate limit exceeded",
+		"invalid_login_credentials": "Invalid email or password"
+	},
+	"app_rules": "rules",
+	"exceeding": "Exceeding",
+	"agree_with": "agree with",
 	"currencies": {
 		"EUR": "Euro",
-		"USD": "USA Dollar",
+		"RUB": "Russian ruble",
 		"UAH": "Ukrainian hryvnia",
-		"RUB": "Russian ruble"
+		"USD": "USA Dollar"
 	},
-	"delete": "Delete",
+	"no_account": "Don't have an account",
+	"no_records": "There are no records yet",
+	"pageTitles": {
+		"bill": "Your bill",
+		"home": "Home",
+		"plan": "Planning",
+		"details": "Record detail",
+		"history": "Records history",
+		"profile": "Profile",
+		"newRecord": "New record",
+		"categories": "Categories"
+	},
+	"chart_title": "Your spending schedule",
+	"description": "Description",
+	"edit_record": "Edit record",
+	"login_error": "Error when trying to log in",
+	"have_account": "Have an account",
+	"password_new": "New password",
+	"verify_error": "You must verify your email before",
+	"create_record": "Create record",
+	"error_message": "Something went wrong",
+	"exchange_rate": "Exchange rate",
+	"login_success": "You have successfully logged in",
+	"no_categories": "There are no categories yet",
+	"updated_short": "upd",
+	"upload_avatar": "Upload your avatar",
+	"error_register": "Sorry, we cant register you",
+	"lack_of_amount": "Insufficient funds on the account",
 	"record_details": "Record details in files",
 	"upload_details": "Upload record details",
-	"rules": {
-		"lastName": "@:user.lastName name must be between 2 and 64 characters",
-		"amount": "The @:amount cannot be less than 1",
-		"pass": "@:password must be between 6 and 32 characters",
-		"bio": "@:user.bio should be less than 2056 characters",
-		"description": "@:description should contain less than 2056 characters",
-		"agree": "You must agree to the rules",
-		"firstName": "@:user.firstName must be between 2 and 64 characters",
-		"file": "File size must be less than 2 megabytes",
-		"limit": "@:limit must be greater than 50",
-		"category": "@:category name must be between 3 and 20 characters",
-		"email": "Enter correct email",
-		"repeater": "Password mismatch",
-		"username": {
-			"latinic": "@:user.username must contain only latinic characters, numbers or underlines",
-			"limit": "@:user.username must be between 4 and 64 characters"
-		},
-		"details": "Maximum 5 files"
-	}
+	"change_password": "Change password",
+	"create_category": "Create category",
+	"password_repeat": "Password repeat",
+	"repeat_password": "Repeat your password",
+	"select_category": "Choose category",
+	"sign_in_success": "You have successfully signed up. Please confirm your email",
+	"category_created": "Category successfully created",
+	"category_updated": "Category successfully updated",
+	"currency_account": "Currency account",
+	"home_bookkeeping": "Home bookkeeping",
+	"invalid_password": "Invalid password",
+	"password_current": "Current password",
+	"category_undefined": "Category is undefined",
+	"updatePass_message": "Your password successfully updated",
+	"error_create_record": "Cant create this record",
+	"error_delete_record": "Error delete record",
+	"error_update_avatar": "Something was wrong after updating your avatar",
+	"error_update_record": "Error update record",
+	"createRecord_success": "Record created successfully",
+	"error_update_profile": "Error when updating your profile",
+	"error_create_category": "Error when creating category",
+	"error_load_categories": "Error loading categories",
+	"error_update_category": "Error occurred when updating category",
+	"updateProfile_message": "Data updated successfully",
+	"error_loading_currency": "Error loading currency",
+	"delete_record_confirmation": "Are you sure you want to delete this record?",
+	"record_deleted_succesfully": "Record deleted successfully",
+	"record_updated_succesfully": "Record updated successfully",
+	"delete_category_confirmation": "Are you sure you want to delete this category?"
 }

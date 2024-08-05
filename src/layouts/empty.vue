@@ -6,14 +6,14 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, watchEffect } from 'vue';
-import { useRoute, useRouter } from 'vue-router/auto';
+import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 
 const { t, te } = useI18n({ useScope: 'global' });
 const route = useRoute();
-const { replace } = useRouter();
+const router = useRouter();
 const userStore = useUserStore();
 const { showMessage } = useSnackbarStore();
 
@@ -24,9 +24,10 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-	if (te(`warnings.${route.query.message}`)) {
-		showMessage(t(`warnings.${route.query.message}`));
-		replace({ query: undefined });
+	const { message, ...q } = route.query;
+	if (te(`warnings.${message}`)) {
+		showMessage(t(`warnings.${message}`));
+		router.replace({ query: q });
 	}
 });
 

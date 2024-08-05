@@ -49,12 +49,7 @@
 				:style="{ 'max-width': smAndDown ? 'none' : '40%', width: '100%' }"
 				class="d-flex flex-column pl-4 mt-md-0 my-4">
 				<v-card variant="flat" :max-width="smAndDown ? 200 : 250" class="mb-5" elevation="4">
-					<v-img
-						:lazy-src="avatarPlaceholder"
-						:src="info.avatar_url || avatarPlaceholder"
-						alt="Ваш аватар"
-						cover
-						eager>
+					<v-img :src="info.avatar_url || '/img/avatar-placeholder.jpg'" alt="Ваш аватар" cover eager>
 						<template #placeholder>
 							<ImageLoader />
 						</template>
@@ -116,11 +111,10 @@
 </template>
 
 <script setup lang="ts">
-import LocalizedFileInput from '@/components/UI/LocalizedFileInput.vue';
+import LocalizedFileInput from '@/components/ui/LocalizedFileInput.vue';
 import ImageLoader from '@/components/app/ImageLoader.vue';
-import avatarPlaceholder from '@/assets/img/avatar-placeholder.jpg';
-import LocalizedInput from '@/components/UI/LocalizedInput.vue';
-import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
+import LocalizedInput from '@/components/ui/LocalizedInput.vue';
+import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import { VBirthdayPicker } from 'vuetify-birthdaypicker';
 import { ref, computed, watchEffect } from 'vue';
 import { mdiSend } from '@mdi/js';
@@ -132,26 +126,20 @@ import { user as validations } from '@/utils/validations';
 import { useDisplay } from 'vuetify';
 import { currencyKey } from '@/injection-keys';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { SERVER_CURRENCY, DEFAULT_LOCALE } from '@/global-vars';
-import isEqual from 'lodash/isEqual';
+import { defaultLocale } from '@/constants/i18n';
+import { serverCurrency } from '@/constants/currency';
+import deepEqual from 'deep-equal';
 import type { VForm } from 'vuetify/components';
-import type { UserInfo } from '@/api/user';
+import { updateInfo, updateAvatar, type UserInfo } from '@/api/user';
 import type { CurrencyRates } from '@/api/currency';
 
-const { loading } = defineProps<{
-	loading?: boolean;
-}>();
-
-const emit = defineEmits<{
-	updateInfo: [info: Partial<Omit<UserInfo, 'updated_at'>> & { avatar: File[] }];
-}>();
-
-const { t, d } = useI18n();
+const { showMessage } = useSnackbarStore();
+const { t, te, d } = useI18n();
 const { xs, smAndDown } = useDisplay();
 const userStore = useUserStore();
 
 const currencies = computedInject(currencyKey, data => {
-	const currencyNames = Object.keys(data?.currency.value?.rates || { [SERVER_CURRENCY]: 1 }) as CurrencyRates[];
+	const currencyNames = Object.keys(data?.currency.value?.rates || { [serverCurrency]: 1 }) as CurrencyRates[];
 	return currencyNames.map(c => ({ title: t(`currencies.${c}`) + ` (${c})`, value: c }));
 });
 
@@ -173,8 +161,8 @@ const formState = ref<
 	bio: '',
 	birthday_date: null,
 	gender: 'unknown',
-	locale: DEFAULT_LOCALE,
-	currency: SERVER_CURRENCY,
+	locale: defaultLocale,
+	currency: serverCurrency,
 	avatar: [],
 });
 const datePickerDate = computed({
@@ -183,7 +171,6 @@ const datePickerDate = computed({
 });
 const { state: locales } = useAsyncState(fetchAvailableLocales, [], {
 	onError: () => {
-		const { showMessage } = useSnackbarStore();
 		showMessage(t('error_loading_locales'), 'red-darken-3');
 	},
 });
@@ -208,13 +195,27 @@ const isInfoEqualsToStore = computed(() => {
 		return false;
 	}
 	const { updated_at, bill, id, avatar_url, ...userdata } = info.value;
-	return isEqual(userdata, formInfo);
+	return deepEqual(userdata, formInfo, { strict: true });
 });
+
+const loading = ref(false);
 
 const submitHandler = async () => {
 	const valid = (await form.value?.validate())?.valid;
 	if (valid) {
-		emit('updateInfo', formState.value);
+		try {
+			const { avatar, ...userdata } = formState.value;
+			loading.value = true;
+			await updateInfo(userdata);
+			if (avatar.length) {
+				await updateAvatar(avatar);
+			}
+			showMessage(t('updateProfile_message'));
+		} catch (e) {
+			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_update_profile'), 'red-darken-3');
+		} finally {
+			loading.value = false;
+		}
 		formState.value.avatar = [];
 	}
 };

@@ -10,7 +10,7 @@
 					<div>
 						{{
 							(!xs ? `${t('pageTitles.details')} - ` : '') +
-							`${record.category.title} (${t(record.type).toLowerCase()})`
+							`${record.category?.title} (${t(record.type).toLowerCase()})`
 						}}
 					</div>
 					<span
@@ -41,7 +41,7 @@
 					{{ t('amount') + ': ' + n(cf(record.amount), { key: 'currency', currency: userCurrency }) }}
 				</p>
 
-				<p class="mt-4 mb-5">{{ t('category') + ': ' + record.category.title }}</p>
+				<p class="mt-4 mb-5">{{ t('category') + ': ' + record.category?.title }}</p>
 
 				<RecordDetails
 					v-if="record.details?.length"
@@ -76,13 +76,13 @@
 </template>
 
 <script setup lang="ts">
-import PageBreadcrumbs, { type Breadcrumb } from '@/components/UI/PageBreadcrumbs.vue';
+import PageBreadcrumbs, { type Breadcrumb } from '@/components/ui/PageBreadcrumbs.vue';
 import RecordDetails from '@/components/record/RecordDetails.vue';
 import { mdiTrendingUp, mdiTrendingDown, mdiDelete, mdiPencil } from '@mdi/js';
 import { ref, computed, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
-import { useRouter, useRoute } from 'vue-router/auto';
+import { useRouter, useRoute } from 'vue-router';
 import { useHead } from '@unhead/vue';
 import {
 	fetchRecordById,

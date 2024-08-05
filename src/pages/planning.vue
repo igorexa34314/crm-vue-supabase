@@ -94,7 +94,7 @@ import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
-import { DEFAULT_BILL } from '@/global-vars';
+import { defaultBill } from '@/constants/app';
 
 useHead({ title: 'pageTitles.plan' });
 
@@ -105,7 +105,7 @@ const userStore = useUserStore();
 const { userCurrency } = storeToRefs(userStore);
 const { cf, isLoading: isCurrencyLoading } = useCurrencyFilter();
 
-const bill = computed(() => userStore.info?.bill || DEFAULT_BILL);
+const bill = computed(() => userStore.info?.bill || defaultBill);
 
 const { state: catStats, isLoading: isStatsLoading } = useAsyncState(fetchCategoriesSpendStats, [], {
 	onError: e => {

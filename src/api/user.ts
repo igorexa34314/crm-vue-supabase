@@ -1,7 +1,7 @@
 import { errorHandler } from '@/utils/errorHandler';
 import { useUserStore } from '@/stores/user';
 import { getUserId } from '@/api/auth';
-import { supabase } from '@/supabase';
+import { supabase } from '@/config/supabase';
 import { v4 as uuidv4 } from 'uuid';
 import { validateFileName } from '@/utils/helpers';
 import type { Tables } from '@/types/database.types';
@@ -16,7 +16,7 @@ export type UserInfo = Tables<'profiles'>;
 export const getUserInfo = async () => {
 	const uid = await getUserId();
 	const { error, data: user } = await supabase.from('profiles').select('*').eq('id', uid).single();
-	if (error) return errorHandler(error);
+	if (error) throw errorHandler(error);
 	return user;
 };
 
@@ -68,6 +68,6 @@ export const updateAvatar = async (files: File[]) => {
 	const { error, data } = await supabase.storage
 		.from('avatars')
 		.upload(`${uid}/${uuidv4()}__${validateFileName(avatar.name)}`, avatar);
-	if (error) return errorHandler(error);
+	if (error) throw errorHandler(error);
 	return data.path;
 };

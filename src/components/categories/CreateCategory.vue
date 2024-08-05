@@ -30,10 +30,10 @@
 </template>
 
 <script setup lang="ts">
-import LocalizedInput from '@/components/UI/LocalizedInput.vue';
+import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
 import { ref } from 'vue';
-import { createCategory, type Category } from '@/api/category';
+import { createCategory, type Category, type CategoryData } from '@/api/category';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
@@ -41,10 +41,10 @@ import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import { useDisplay } from 'vuetify';
-import { DEFAULT_CATEGORY_LIMIT } from '@/global-vars';
+import { defaultCategoryLimit } from '@/constants/app';
 import type { VForm } from 'vuetify/components';
 
-const { defaultLimit = DEFAULT_CATEGORY_LIMIT } = defineProps<{
+const { defaultLimit = defaultCategoryLimit } = defineProps<{
 	defaultLimit?: number;
 }>();
 
@@ -62,7 +62,7 @@ const { userCurrency } = storeToRefs(useUserStore());
 const form = ref<VForm | null>(null);
 const loading = ref(false);
 
-const formState = ref<Omit<Category, 'id'>>({
+const formState = ref<CategoryData>({
 	title: '',
 	limit: Math.floor(cf.value(defaultLimit) / 10) * 10,
 });

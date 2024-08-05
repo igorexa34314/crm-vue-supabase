@@ -1,17 +1,19 @@
 import { errorHandler } from '@/utils/errorHandler';
-import { supabase } from '@/supabase';
-import { supportedOAuthProviders, DEFAULT_BILL } from '@/global-vars';
+import { supabase } from '@/config/supabase';
+import { defaultBill } from '@/constants/app';
 import type { SignInWithOAuthCredentials, Subscription, User, UserAttributes } from '@supabase/supabase-js';
 
 export interface UserCredentials extends Required<Pick<UserAttributes, 'email' | 'password'>> {
 	username?: string;
 }
 
+const supportedOAuthProviders = ['google', 'facebook', 'github'] as const;
+
 let user: User | null = null;
 let subscription: Subscription;
 
 export const getCurrentUser = () => {
-	return new Promise((resolve: (currentUser: typeof user) => void) => {
+	return new Promise((resolve: (currentUser: User | null) => void) => {
 		if (user) {
 			resolve(user);
 		} else {
@@ -35,7 +37,7 @@ export const getUserId = async () => {
 
 export const login = async ({ email, password }: UserCredentials) => {
 	const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-	if (error) return errorHandler(error);
+	if (error) throw errorHandler(error);
 	return data.user;
 };
 
@@ -46,11 +48,11 @@ export const register = async ({ email, password, username }: UserCredentials) =
 		options: {
 			data: {
 				username,
-				bill: DEFAULT_BILL,
+				bill: defaultBill,
 			},
 		},
 	});
-	if (error) return errorHandler(error);
+	if (error) throw errorHandler(error);
 	return data.user;
 };
 
@@ -63,7 +65,7 @@ export const changeUserEmail = async (newEmail: string) => {
 			}profile?message=password_changed`,
 		}
 	);
-	if (error) return errorHandler(error);
+	if (error) throw errorHandler(error);
 	return data.user;
 };
 
@@ -72,7 +74,7 @@ export const changeUserPassword = async (oldPass: string, newPass: string) => {
 		current_password: oldPass,
 		new_password: newPass,
 	});
-	if (error) return errorHandler(error);
+	if (error) throw errorHandler(error);
 	return data;
 };
 
@@ -89,7 +91,7 @@ const signInWithOAuthProvider = async (
 			...options,
 		},
 	});
-	if (error) return errorHandler(error);
+	if (error) throw errorHandler(error);
 	return data.url;
 };
 
@@ -107,5 +109,5 @@ export const signInWithGithub = async () => {
 
 export const logout = async () => {
 	const { error } = await supabase.auth.signOut();
-	if (error) return errorHandler(error);
+	if (error) throw errorHandler(error);
 };

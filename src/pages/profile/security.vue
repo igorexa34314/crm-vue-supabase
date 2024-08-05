@@ -38,27 +38,24 @@
 </template>
 
 <script setup lang="ts">
-import PassField from '@/components/UI/PassField.vue';
-// import LocalizedInput from '@/components/UI/LocalizedInput.vue';
+import PassField from '@/components/ui/PassField.vue';
+// import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
+import { useSnackbarStore } from '@/stores/snackbar';
 import { useDisplay } from 'vuetify';
 import type { VForm } from 'vuetify/components';
+import { changeUserPassword, changeUserEmail } from '@/api/auth';
 
-const { loading } = defineProps<{
-	loading?: boolean;
-}>();
-
-const emit = defineEmits<{
-	changeCreds: [creds: Partial<{ oldPass: string; newPass: string; email: string }>];
-}>();
-
-const { t } = useI18n();
+const { t, te } = useI18n();
 const { xs } = useDisplay();
+const { showMessage } = useSnackbarStore();
 
 const form = ref<VForm | null>(null);
+
+const loading = ref(false);
 
 const formState = ref({
 	email: '',
@@ -66,16 +63,27 @@ const formState = ref({
 	newPass: '',
 });
 
-// watchEffect(() => {
-// 	if (currentEmail.value) {
-// 		formState.value = { ...formState.value, email: currentEmail.value };
-// 	}
-// })
-
 const submitHandler = async () => {
 	const valid = (await form.value?.validate())?.valid;
 	if (valid) {
-		emit('changeCreds', formState.value);
+		try {
+			loading.value = true;
+			if (formState.value.oldPass && formState.value.newPass) {
+				await changeUserPassword(formState.value.oldPass, formState.value.newPass);
+				showMessage(t('updatePass_message'));
+			}
+			// if (email) {
+			// 	await changeUserEmail(email);
+			// }
+		} catch (e) {
+			if (typeof e === 'string') {
+				showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64), 'red-darken-3');
+			} else {
+				showMessage(t('error_update_profile'), 'red-darken-3');
+			}
+		} finally {
+			loading.value = false;
+		}
 	}
 };
 </script>

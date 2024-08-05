@@ -1,17 +1,17 @@
 import { getCurrentUser } from '@/api/auth';
-import type { NavigationGuardWithThis } from 'vue-router/auto';
+import type { NavigationGuard } from 'vue-router';
 
-export const checkAuth: NavigationGuardWithThis<undefined> = async (to, from) => {
-	if (to.name === from.name && from.query.message) {
+export const checkAuth: NavigationGuard = async (to, from) => {
+	if (to.path === from.path && from.query.message) {
 		return true;
 	}
 
 	const user = await getCurrentUser();
-	const requiresAuth = to.matched.some(record => record.meta.auth || record.meta.requiresAuth);
+	const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
 	if (requiresAuth && !user) {
 		return { path: '/login', query: { message: 'login' } };
-	} else if (!requiresAuth && user) {
-		return { path: '/' };
+	} else if (['/login', '/register'].includes(to.path) && user) {
+		return '/';
 	}
 };

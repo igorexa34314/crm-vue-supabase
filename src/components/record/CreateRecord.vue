@@ -57,9 +57,9 @@
 </template>
 
 <script setup lang="ts">
-import LocalizedFileInput from '@/components/UI/LocalizedFileInput.vue';
-import LocalizedTextarea from '@/components/UI/LocalizedTextarea.vue';
-import LocalizedInput from '@/components/UI/LocalizedInput.vue';
+import LocalizedFileInput from '@/components/ui/LocalizedFileInput.vue';
+import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
+import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
 import { ref, computed, watchEffect } from 'vue';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -68,14 +68,15 @@ import { useI18n } from 'vue-i18n';
 import { record as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
-import { SERVER_CURRENCY, DEFAULT_RECORD_AMOUNT, DEFAULT_BILL, recordTypes } from '@/global-vars';
+import { defaultRecordAmount, defaultBill, recordTypes } from '@/constants/app';
+import { serverCurrency } from '@/constants/currency';
 import type { VForm } from 'vuetify/components';
 import type { Category } from '@/api/category';
 import type { Record, RecordForm } from '@/api/record';
 
 const {
 	categories,
-	defaultAmount = DEFAULT_RECORD_AMOUNT,
+	defaultAmount = defaultRecordAmount,
 	defaultType = 'outcome',
 	loading,
 } = defineProps<{
@@ -126,9 +127,9 @@ const submitHandler = async () => {
 	} else {
 		showMessage(
 			t('lack_of_amount') +
-				` (${n(formState.value.amount - cf.value(info.value?.bill || DEFAULT_BILL), {
+				` (${n(formState.value.amount - cf.value(info.value?.bill || defaultBill), {
 					key: 'currency',
-					currency: info.value?.currency || SERVER_CURRENCY,
+					currency: info.value?.currency || serverCurrency,
 				})})`,
 			'red-darken-3'
 		);

@@ -18,11 +18,9 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import type { RouteLocationRaw } from 'vue-router/auto';
+import type { RouteLocationRaw } from 'vue-router';
 
-const drawer = defineModel<boolean>({
-	default: false,
-});
+const drawer = defineModel<boolean>();
 
 const { t } = useI18n();
 

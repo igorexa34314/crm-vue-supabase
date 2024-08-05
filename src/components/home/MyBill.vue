@@ -17,7 +17,8 @@ import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
 import type { Currency, CurrencyRates } from '@/api/currency';
 import { useDisplay } from 'vuetify';
-import { SERVER_CURRENCY, DEFAULT_BILL } from '@/global-vars';
+import { defaultBill } from '@/constants/app';
+import { serverCurrency } from '@/constants/currency';
 
 const { t, n } = useI18n();
 const { xs } = useDisplay();
@@ -30,7 +31,7 @@ const { rates } = defineProps<{
 const currencies = computed(() => Object.keys(rates || {}) as CurrencyRates[]);
 
 const getCurrency = computed(() => (currency: CurrencyRates) => {
-	const base = (userStore.info?.bill ?? DEFAULT_BILL) / rates[SERVER_CURRENCY];
+	const base = (userStore.info?.bill ?? defaultBill) / rates[serverCurrency];
 	return +(base * rates[currency]).toFixed(2);
 });
 </script>

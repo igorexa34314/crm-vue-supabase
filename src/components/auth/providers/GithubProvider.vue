@@ -11,11 +11,7 @@ import { useTheme } from 'vuetify';
 
 const theme = useTheme();
 const setGithubProviderIcon = computed(
-	() =>
-		new URL(
-			`/src/assets/img/${theme.global.current.value.dark ? 'github-provider_light' : 'github-provider'}.png`,
-			import.meta.url
-		).href
+	() => `/img/${theme.global.current.value.dark ? 'github-provider_light' : 'github-provider'}.png`
 );
 
 const emit = defineEmits<{

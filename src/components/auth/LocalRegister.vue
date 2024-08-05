@@ -57,8 +57,8 @@
 </template>
 
 <script setup lang="ts">
-import PassField from '@/components/UI/PassField.vue';
-import LocalizedInput from '@/components/UI/LocalizedInput.vue';
+import PassField from '@/components/ui/PassField.vue';
+import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { register } from '@/api/auth';

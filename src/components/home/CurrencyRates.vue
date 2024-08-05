@@ -39,7 +39,7 @@ const { rates, date = new Date() } = defineProps<{
 
 const { xs, smAndDown } = useDisplay();
 const { t, d } = useI18n();
-const { getUserCurrency: userCurrency } = storeToRefs(useUserStore());
+const { userCurrency } = storeToRefs(useUserStore());
 
 const currencies = computed(
 	() => Object.keys(rates || {}).filter(cur => cur !== userCurrency.value) as CurrencyRates[]

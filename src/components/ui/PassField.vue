@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import LocalizedInput from '@/components/UI/LocalizedInput.vue';
+import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 import { reactive } from 'vue';
 import { user as validations } from '@/utils/validations';
@@ -70,9 +70,7 @@ const {
 	repeaterClass?: string;
 }>();
 
-const password = defineModel<string>({
-	default: '',
-});
+const password = defineModel<string>({ default: '' });
 
 const { t } = useI18n();
 

@@ -60,10 +60,10 @@
 
 <script setup lang="ts">
 import DeleteCategoryDialog from '@/components/categories/DeleteCategoryDialog.vue';
-import LocalizedInput from '@/components/UI/LocalizedInput.vue';
+import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref, watchEffect, watch, computed } from 'vue';
 import { mdiSend, mdiDelete } from '@mdi/js';
-import { updateCategory, deleteCategoryById, type Category } from '@/api/category';
+import { updateCategory, deleteCategoryById, type Category, type CategoryData } from '@/api/category';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
@@ -71,11 +71,11 @@ import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { storeToRefs } from 'pinia';
 import { useDisplay } from 'vuetify';
-import isEqual from 'lodash/isEqual';
-import { DEFAULT_CATEGORY_LIMIT } from '@/global-vars';
+import deepEqual from 'deep-equal';
+import { defaultCategoryLimit } from '@/constants/app';
 import type { VForm } from 'vuetify/components';
 
-const { categories, defaultLimit = DEFAULT_CATEGORY_LIMIT } = defineProps<{
+const { categories, defaultLimit = defaultCategoryLimit } = defineProps<{
 	categories: Category[];
 	defaultLimit?: number;
 }>();
@@ -104,7 +104,7 @@ watch(
 	}
 );
 
-const categoryData = ref<Omit<Category, 'id'>>({
+const categoryData = ref<CategoryData>({
 	title: '',
 	limit: Math.round(cf.value(defaultLimit) / 100) * 100,
 });
@@ -116,7 +116,7 @@ watchEffect(() => {
 
 const isNewCategoryEquals = computed(() => {
 	const { title, limit } = categories.find(cat => cat.id === currentCategoryId.value)!;
-	return isEqual(categoryData.value, { title, limit: cf.value(limit) });
+	return deepEqual(categoryData.value, { title, limit: cf.value(limit) }, { strict: true });
 });
 
 const submitHandler = async () => {

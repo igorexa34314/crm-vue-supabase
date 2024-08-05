@@ -13,7 +13,7 @@
 
 		<CreateRecord
 			v-else
-			v-bind="{ categories, defaultAmount, loading: createLoading }"
+			v-bind="{ categories, defaultRecordAmount, loading: createLoading }"
 			@create-record="handleRecordCreate" />
 	</div>
 </template>
@@ -26,7 +26,7 @@ import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { fetchCategories } from '@/api/category';
 import { createRecord, type RecordForm } from '@/api/record';
-import { DEFAULT_RECORD_AMOUNT as defaultAmount } from '@/global-vars';
+import { defaultRecordAmount } from '@/constants/app';
 
 useHead({ title: 'pageTitles.newRecord' });
 

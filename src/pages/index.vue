@@ -11,16 +11,14 @@
 		<app-loader v-if="isLoading" :color="theme.global.current.value.dark ? '#FFFFFF' : '#1A237E'" class="mt-2" page />
 
 		<template v-else-if="currency?.rates && isReady">
-			<Suspense>
-				<v-row>
-					<v-col cols="4" lg="4" md="6" sm="12" class="v-col-xs-12">
-						<MyBill v-if="userStore.info?.bill && !isLoading && currency.rates" :rates="currency.rates" />
-					</v-col>
-					<v-col cols="8" lg="8" md="6" sm="12" class="v-col-xs-12">
-						<CurrencyRates v-if="currency.rates" :rates="currency.rates" :date="currency.date" />
-					</v-col>
-				</v-row>
-			</Suspense>
+			<v-row>
+				<v-col cols="4" lg="4" md="6" sm="12" class="v-col-xs-12">
+					<MyBill v-if="userStore.info?.bill && !isLoading && currency.rates" :rates="currency.rates" />
+				</v-col>
+				<v-col cols="8" lg="8" md="6" sm="12" class="v-col-xs-12">
+					<CurrencyRates v-if="currency.rates" :rates="currency.rates" :date="currency.date" />
+				</v-col>
+			</v-row>
 		</template>
 	</div>
 </template>
@@ -33,12 +31,12 @@ import { useI18n } from 'vue-i18n';
 import { currencyKey } from '@/injection-keys';
 import { mdiRefresh } from '@mdi/js';
 import { useTheme } from 'vuetify';
-import { definePage } from 'vue-router/auto';
 import { useUserStore } from '@/stores/user';
 
 definePage({
 	alias: ['/home'],
 });
+
 useHead({ title: 'pageTitles.bill' });
 
 const CurrencyRates = defineAsyncComponent(() => import('@/components/home/CurrencyRates.vue'));

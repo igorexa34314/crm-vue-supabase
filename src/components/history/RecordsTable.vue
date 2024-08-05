@@ -12,7 +12,8 @@
 		hide-default-footer
 		class="records-table elevation-1"
 		item-value="name"
-		@update:options="loadItems">
+		@update:options="loadItems"
+		@click:row="openRecord">
 		<template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
 			<tr>
 				<template v-for="column in columns" :key="column.key">
@@ -29,15 +30,11 @@
 		</template>
 		<template #item="{ item: record }: { item: RecordWithCategory & { index: number } }">
 			<v-hover #default="{ isHovering, props }">
-				<tr
-					v-bind="props"
-					@click="push({ name: '/detail/[id]', params: { id: record.id } })"
-					:class="{ 'bg-hover': isHovering }"
-					class="record">
+				<tr v-bind="props" :class="{ 'bg-hover': isHovering }" class="record">
 					<td>{{ record.index }}</td>
 					<td>{{ n(cf(record.amount), { key: 'currency', currency: userCurrency }) }}</td>
 					<td>{{ d(record.created_at, smAndDown ? 'shortdate' : 'short') }}</td>
-					<td class="record-category text-truncate">{{ record.category.title }}</td>
+					<td class="record-category text-truncate">{{ record.category?.title ?? '' }}</td>
 					<td>
 						<span
 							:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
@@ -57,16 +54,12 @@
 					</td>
 					<td v-if="!smAndDown">
 						<v-tooltip
-							:activator="`#rec-${record.id}`"
 							text="Посмотреть запись"
 							location="bottom"
 							content-class="bg-tooltip font-weight-medium text-primary">
 							<template #activator="{ props }">
-								<v-btn
-									:id="`rec-${record.id}`"
-									color="success"
-									:to="{ name: '/detail/[id]', params: { id: record.id } }">
-									<v-icon v-bind="props" :icon="mdiOpenInNew" />
+								<v-btn v-bind="props" color="success" :to="{ name: '/detail/[id]', params: { id: record.id } }">
+									<v-icon :icon="mdiOpenInNew" />
 								</v-btn>
 							</template>
 						</v-tooltip>
@@ -93,16 +86,16 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router/auto';
 import { mdiOpenInNew, mdiTrendingUp, mdiTrendingDown, mdiMenuUp, mdiMenuDown } from '@mdi/js';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useDisplay } from 'vuetify';
-import { DEFAULT_RECORDS_PER_PAGE } from '@/global-vars';
+import { defaultRecordsPerPage } from '@/constants/app';
 import type { VDataTableServer } from 'vuetify/components';
 import type { RecordWithCategory } from '@/api/record';
+import { useRouter } from 'vue-router';
 
 export type SortEmitData = Pick<VDataTableServer, 'page' | 'itemsPerPage'> & {
 	sortBy?: Partial<VDataTableServer['sortBy'][number]>[];
@@ -123,7 +116,7 @@ const emit = defineEmits<{
 }>();
 
 const perPage = defineModel<VDataTableServer['itemsPerPage']>('perPage', {
-	default: DEFAULT_RECORDS_PER_PAGE,
+	default: defaultRecordsPerPage,
 });
 
 const page = ref(1);
@@ -149,10 +142,15 @@ const loadItems: VDataTableServer['onUpdate:options'] = ({ page, itemsPerPage, s
 };
 
 const { te, t, d, n } = useI18n();
-const { push } = useRouter();
 const { smAndDown, xs } = useDisplay();
 const { cf } = useCurrencyFilter();
 const { userCurrency } = storeToRefs(useUserStore());
+
+const router = useRouter();
+
+const openRecord = (event: MouseEvent, { item: record }: { item: RecordWithCategory }) => {
+	router.push({ name: '/detail/[id]', params: { id: record.id } });
+};
 </script>
 
 <style lang="scss" scoped>

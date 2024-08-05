@@ -1,32 +1,42 @@
-import { ref, onBeforeUnmount, toValue, type MaybeRefOrGetter } from 'vue';
+import { ref, toValue, type MaybeRefOrGetter, onMounted, onUnmounted } from 'vue';
 import { useScriptTag } from '@vueuse/core';
-import { loadTurnstileCbName, turnstileScriptSrc, TURNSTILE_SITE_KEY } from '@/global-vars';
-import type { ElementId } from 'turnstile-types';
 
-export const useTurnstile = (selector: MaybeRefOrGetter<HTMLElement | ElementId>) => {
-	let turnstileId: string;
+const sitekey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+
+export const useTurnstile = (selector: MaybeRefOrGetter<string | HTMLElement>) => {
+	let turnstileId: string | null = null;
 
 	const turnstileToken = ref('');
 
-	useScriptTag(
-		turnstileScriptSrc,
+	const { load, unload } = useScriptTag(
+		`${import.meta.env.VITE_TURNSTILE_SCRIPT_SRC}?render=explicit&onload=onloadTurnstileCallback`,
 		// on script tag loaded.
 		() => {
-			window[loadTurnstileCbName] = () => {
-				turnstileId = turnstile.render(toValue(selector), {
-					sitekey: TURNSTILE_SITE_KEY,
-					size: 'normal',
-					'refresh-expired': 'manual',
-					theme: 'auto',
-					callback: token => (turnstileToken.value = token),
-				});
+			(window as any).onloadTurnstileCallback = () => {
+				turnstileId =
+					turnstile.render(toValue(selector), {
+						sitekey,
+						size: 'normal',
+						'refresh-expired': 'manual',
+						theme: 'auto',
+						callback: token => {
+							turnstileToken.value = token;
+						},
+					}) ?? null;
 			};
 		},
-		{ defer: true }
+		{ defer: true, manual: true }
 	);
 
-	onBeforeUnmount(() => {
-		turnstile.remove(turnstileId);
+	onMounted(() => {
+		load();
+	});
+
+	onUnmounted(() => {
+		if (turnstileId) {
+			turnstile.remove(turnstileId);
+		}
+		unload();
 	});
 
 	return turnstileToken;

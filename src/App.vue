@@ -2,9 +2,7 @@
 	<GlobalSnackbar />
 
 	<Suspense>
-		<template #default>
-			<router-view />
-		</template>
+		<router-view />
 		<template #fallback>
 			<app-loader class="mt-7" page />
 		</template>
@@ -15,16 +13,16 @@
 import GlobalSnackbar from '@/components/app/GlobalSnackbar.vue';
 import { useDarkModeStore } from '@/stores/darkMode';
 import { useI18n } from 'vue-i18n';
-import { AppTitle } from '@/global-vars';
+import { appTitle } from '@/constants/app';
 import { useSeoMeta } from '@unhead/vue';
 
 useSeoMeta({
-	titleTemplate: (title?: string) => (title ? `${t(title)} | ${AppTitle}` : AppTitle),
+	titleTemplate: (title?: string) => (title ? `${t(title)} | ${appTitle}` : appTitle),
 });
 const { t } = useI18n({ useScope: 'global' });
 useDarkModeStore();
 </script>
 
 <style lang="scss">
-@import './assets/styles/main.scss';
+@import '@/assets/styles/main.scss';
 </style>

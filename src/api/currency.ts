@@ -1,6 +1,5 @@
-import fetch from 'cross-fetch';
 import { errorHandler } from '@/utils/errorHandler';
-import { EXCHANGER_API_URL, EXCHANGER_API_KEY, availableCurrencies, SERVER_CURRENCY } from '@/global-vars';
+import { availableCurrencies, serverCurrency } from '@/constants/currency';
 
 export type CurrencyRates = (typeof availableCurrencies)[number];
 export interface Currency {
@@ -9,7 +8,7 @@ export interface Currency {
 }
 
 const FALLBACK_CURRENCY_RESPONSE = {
-	rates: { [SERVER_CURRENCY]: 1 },
+	rates: { [serverCurrency]: 1 },
 	date: new Date(),
 };
 
@@ -26,13 +25,16 @@ interface API_RESPONSE_ERROR {
 	'error-type': string;
 }
 
-export const fetchCurrency = async <Base extends string = typeof SERVER_CURRENCY>(base: Base): Promise<Currency> => {
+const apiUrl = import.meta.env.VITE_EXCHANGER_API_URL;
+const apiKey = import.meta.env.VITE_EXCHANGER_API_KEY;
+
+export const fetchCurrency = async <Base extends string = typeof serverCurrency>(base: Base): Promise<Currency> => {
 	try {
-		const response = await fetch(`${EXCHANGER_API_URL}/${base}`, {
+		const response = await fetch(`${apiUrl}/${base}`, {
 			method: 'GET',
-			headers: new Headers({
-				Authorization: `Bearer ${EXCHANGER_API_KEY}`,
-			}),
+			headers: {
+				Authorization: `Bearer ${apiKey}`,
+			},
 		});
 		const result: API_RESPONSE_SUCCESS<Base> = await response.json();
 

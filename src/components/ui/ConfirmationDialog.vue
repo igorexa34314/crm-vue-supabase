@@ -5,8 +5,8 @@
 		:attach="attach"
 		width="auto"
 		content-class="w-100">
-		<template #activator="{ props, isActive }">
-			<slot name="activator" v-bind="{ props, isActive }"></slot>
+		<template #activator="slotProps">
+			<slot name="activator" v-bind="slotProps"></slot>
 		</template>
 		<template #default="{ isActive }">
 			<v-card v-bind="{ maxWidth, width }" :class="contentClass" class="mx-auto pt-2 pt-sm-4">
@@ -69,9 +69,7 @@ const slots = defineSlots<{
 
 const { t } = useI18n({ useScope: 'global' });
 
-const confirmationDialog = defineModel<boolean>({
-	default: false,
-});
+const confirmationDialog = defineModel<boolean>();
 
 const submitBtn = ref<VBtn | null>(null);
 
