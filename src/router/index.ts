@@ -6,6 +6,12 @@ import { checkAuth } from '@/middleware/auth';
 const router = createRouter({
 	routes: setupLayouts(routes),
 	history: createWebHistory(import.meta.env.BASE_URL),
+	scrollBehavior: (to, from, savedPosition) => {
+		if (to.path === from.path && to.query) {
+			return;
+		}
+		return savedPosition || { top: 0 };
+	},
 });
 
 router.beforeEach(checkAuth);

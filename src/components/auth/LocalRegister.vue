@@ -4,14 +4,14 @@
 			v-model="formState.email"
 			:rules="validations.email"
 			variant="underlined"
-			:label="t('email')"
+			:label="$t('email')"
 			required />
 
 		<PassField
 			v-model="formState.password"
 			:rules="validations.password"
 			variant="underlined"
-			:label="t('password')"
+			:label="$t('password')"
 			class="mt-5"
 			validate-on="lazy blur"
 			repeater
@@ -22,7 +22,7 @@
 			:rules="validations.username"
 			variant="underlined"
 			:counter="64"
-			:label="t('user.username')"
+			:label="$t('user.username')"
 			class="mt-5"
 			validate-on="lazy blur"
 			required />
@@ -32,13 +32,13 @@
 			:rules="validations.agree"
 			class="mt-5"
 			validate-on="lazy blur"
-			:density="xs ? 'compact' : 'default'"
+			:density="$vuetify.display.xs ? 'compact' : 'default'"
 			required>
 			<template #label>
 				<p>
-					{{ t('agree_with').charAt(0).toUpperCase() + t('agree_with').slice(1) + ' '
+					{{ $t('agree_with').charAt(0).toUpperCase() + $t('agree_with').slice(1) + ' '
 					}}<a target="_blank" href="https://old.uinp.gov.ua/publication/derzhavnii-gimn-ukraini">{{
-						t('app_rules')
+						$t('app_rules')
 					}}</a>
 				</p>
 			</template>
@@ -47,7 +47,7 @@
 		<div class="cf-turnstile"></div>
 
 		<v-btn
-			:text="t('sign_in')"
+			:text="$t('sign_in')"
 			type="submit"
 			v-bind="{ appendIcon: mdiSend, loading }"
 			color="success"
@@ -62,9 +62,7 @@ import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { register } from '@/api/auth';
-import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
-import { useDisplay } from 'vuetify';
 import { useTurnstile } from '@/composables/useTurnstile';
 import { validateToken } from '@/api/turnstile';
 import type { VForm } from 'vuetify/components';
@@ -73,9 +71,6 @@ const emit = defineEmits<{
 	success: [];
 	error: [err: unknown];
 }>();
-
-const { t } = useI18n();
-const { xs } = useDisplay();
 
 const turnstileToken = useTurnstile('.cf-turnstile');
 

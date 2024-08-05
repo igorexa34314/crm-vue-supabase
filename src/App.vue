@@ -1,12 +1,16 @@
 <template>
 	<GlobalSnackbar />
 
-	<Suspense>
-		<router-view />
-		<template #fallback>
-			<app-loader class="mt-7" page />
+	<router-view #default="{ Component }">
+		<template v-if="Component">
+			<Suspense>
+				<component :is="Component" />
+				<template #fallback>
+					<app-loader class="mt-7" page />
+				</template>
+			</Suspense>
 		</template>
-	</Suspense>
+	</router-view>
 </template>
 
 <script setup lang="ts">
@@ -16,10 +20,12 @@ import { useI18n } from 'vue-i18n';
 import { appTitle } from '@/constants/app';
 import { useSeoMeta } from '@unhead/vue';
 
+const { t } = useI18n({ useScope: 'global' });
+
 useSeoMeta({
 	titleTemplate: (title?: string) => (title ? `${t(title)} | ${appTitle}` : appTitle),
 });
-const { t } = useI18n({ useScope: 'global' });
+
 useDarkModeStore();
 </script>
 

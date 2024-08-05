@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="subtitle">
-			<h4 class="text-h6 text-sm-h5 mb-3 mb-sm-7 text-subtitle">{{ t('create') }}</h4>
+			<h4 class="text-h6 text-sm-h5 mb-3 mb-sm-7 text-subtitle">{{ $t('create') }}</h4>
 		</div>
 
 		<v-form ref="form" @submit.prevent="submitHandler">
@@ -9,7 +9,7 @@
 				v-model="formState.title"
 				:rules="validations.title"
 				variant="underlined"
-				:label="t('title')"
+				:label="$t('title')"
 				required />
 
 			<LocalizedInput
@@ -17,12 +17,12 @@
 				:rules="validations.limit"
 				variant="underlined"
 				type="number"
-				:label="t('limit') + ` (${userCurrency})`"
+				:label="$t('limit') + ` (${userCurrency})`"
 				class="mt-6"
 				required />
 
-			<v-btn color="success" type="submit" :class="xs ? 'mt-4' : 'mt-7'" :loading="loading">
-				{{ t('create') }}
+			<v-btn color="success" type="submit" :class="$vuetify.display.xs ? 'mt-4' : 'mt-7'" :loading="loading">
+				{{ $t('create') }}
 				<v-icon :icon="mdiSend" class="ml-3" />
 			</v-btn>
 		</v-form>
@@ -40,7 +40,6 @@ import { category as validations } from '@/utils/validations';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
-import { useDisplay } from 'vuetify';
 import { defaultCategoryLimit } from '@/constants/app';
 import type { VForm } from 'vuetify/components';
 
@@ -54,9 +53,8 @@ const emit = defineEmits<{
 
 const { t, te } = useI18n();
 
-const { cf } = useCurrencyFilter();
+const cf = useCurrencyFilter();
 const { showMessage } = useSnackbarStore();
-const { xs } = useDisplay();
 
 const { userCurrency } = storeToRefs(useUserStore());
 const form = ref<VForm | null>(null);

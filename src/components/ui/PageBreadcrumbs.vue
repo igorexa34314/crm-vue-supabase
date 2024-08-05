@@ -8,11 +8,11 @@
 
 <script setup lang="ts">
 import { mdiChevronRight } from '@mdi/js';
-import type { RouteNamedMap } from 'vue-router/auto-routes';
+import type { RouteLocationRaw } from 'vue-router';
 
 export interface Breadcrumb {
 	title: string;
-	to?: keyof RouteNamedMap;
+	to?: RouteLocationRaw;
 	disabled?: boolean;
 }
 

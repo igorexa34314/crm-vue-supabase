@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="subtitle">
-			<h4 class="text-h6 text-sm-h6 mb-5 mb-sm-7 text-subtitle">{{ t('edit') }}</h4>
+			<h4 class="text-h6 text-sm-h6 mb-5 mb-sm-7 text-subtitle">{{ $t('edit') }}</h4>
 		</div>
 
 		<v-form ref="form" @submit.prevent="submitHandler">
@@ -10,7 +10,7 @@
 				:items="categories"
 				item-title="title"
 				item-value="id"
-				:label="t('select_category')"
+				:label="$t('select_category')"
 				variant="underlined"
 				class="text-input" />
 
@@ -18,7 +18,7 @@
 				v-model="categoryData.title"
 				:rules="validations.title"
 				variant="underlined"
-				:label="t('title')"
+				:label="$t('title')"
 				class="mt-6"
 				required />
 
@@ -27,7 +27,7 @@
 				:rules="validations.limit"
 				variant="underlined"
 				type="number"
-				:label="t('limit') + ` (${userCurrency})`"
+				:label="$t('limit') + ` (${userCurrency})`"
 				class="mt-6"
 				required />
 
@@ -35,20 +35,20 @@
 				<v-btn
 					color="success"
 					type="submit"
-					:class="xs ? 'mt-4' : 'mt-7'"
+					:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'"
 					:disabled="isNewCategoryEquals"
 					:loading="loading">
-					{{ t('update') }}
+					{{ $t('update') }}
 					<v-icon :icon="mdiSend" class="ml-3" />
 				</v-btn>
 
 				<v-btn
 					color="success"
 					type="button"
-					:class="xs ? 'mt-4' : 'mt-7'"
+					:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'"
 					class="ml-sm-6 ml-4"
 					@click="confirmationDialog = true">
-					{{ t('delete') }}
+					{{ $t('delete') }}
 					<v-icon :icon="mdiDelete" class="ml-3" />
 				</v-btn>
 
@@ -70,7 +70,6 @@ import { category as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { storeToRefs } from 'pinia';
-import { useDisplay } from 'vuetify';
 import deepEqual from 'deep-equal';
 import { defaultCategoryLimit } from '@/constants/app';
 import type { VForm } from 'vuetify/components';
@@ -87,8 +86,7 @@ const emit = defineEmits<{
 
 const { t, te } = useI18n();
 const { showMessage } = useSnackbarStore();
-const { cf } = useCurrencyFilter();
-const { xs } = useDisplay();
+const cf = useCurrencyFilter();
 const { userCurrency } = storeToRefs(useUserStore());
 
 const form = ref<VForm | null>(null);

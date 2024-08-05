@@ -1,13 +1,13 @@
 <template>
 	<v-expansion-panels class="record__details">
 		<v-expansion-panel bg-color="panel">
-			<v-expansion-panel-title class="text-subtitle-1">{{ t('record_details') }}</v-expansion-panel-title>
+			<v-expansion-panel-title class="text-subtitle-1">{{ $t('record_details') }}</v-expansion-panel-title>
 			<v-expansion-panel-text>
 				<div class="mt-2 d-flex flex-wrap">
 					<v-hover v-for="detail in details" :key="detail.id" #default="{ isHovering, props }">
 						<div
 							v-bind="props"
-							class="record-detail mb-2 text-fixed d-flex flex-column align-center"
+							class="record-detail cursor-pointer mb-2 text-fixed d-flex flex-column align-center"
 							:class="{ 'mr-3': details.length > 1 }"
 							@click="downloadDetail(detail)">
 							<div class="record-detail__file">
@@ -39,14 +39,11 @@
 
 <script setup lang="ts">
 import { mdiFile, mdiDownload } from '@mdi/js';
-import { useI18n } from 'vue-i18n';
 import { downloadRecordDetail, type RecordDetail } from '@/api/record';
 
 defineProps<{
 	details: RecordDetail[];
 }>();
-
-const { t } = useI18n({ useScope: 'global' });
 
 const downloadDetail = async (detail: RecordDetail) => {
 	const blob = await downloadRecordDetail(detail.fullpath);
@@ -62,7 +59,6 @@ const downloadDetail = async (detail: RecordDetail) => {
 
 <style lang="scss" scoped>
 .record-detail {
-	cursor: pointer;
 	max-width: 100px;
 	&__file {
 		position: relative;

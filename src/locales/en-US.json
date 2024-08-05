@@ -1,236 +1,237 @@
 {
-	"date": "Date",
-	"edit": "Edit",
-	"lang": "Language",
-	"left": "Left",
-	"menu": {
-		"bill": "Your bill",
-		"plan": "Planning",
-		"history": "History",
-		"newRecord": "New record",
-		"categories": "Categories"
-	},
-	"open": "Open",
-	"rate": "Rate",
-	"tabs": {
-		"info": "Information",
-		"security": "Security"
-	},
-	"type": "Type",
-	"user": {
-		"bio": "Bio",
-		"avatar": "Profile avatar",
-		"gender": {
-			"male": "Male",
-			"label": "Gender",
-			"female": "Female",
-			"unknown": "Unknown"
-		},
-		"birthday": "Birthday date",
-		"lastName": "Last name",
-		"username": "User name",
-		"firstName": "First name"
-	},
-	"email": "Email",
-	"guest": "Guest",
-	"limit": "Limit",
-	"login": "Login",
-	"rules": {
-		"bio": "@:user.bio should be less than 2056 characters",
-		"file": "File size must be less than 2 megabytes",
-		"pass": "@:password must be between 6 and 32 characters",
-		"agree": "You must agree to the rules",
-		"email": "Enter correct email",
-		"limit": "@:limit must be greater than 50",
-		"amount": "The @:amount cannot be less than 1",
-		"details": "Maximum 5 files",
-		"category": "@:category name must be between 3 and 20 characters",
-		"lastName": "@:user.lastName name must be between 2 and 64 characters",
-		"repeater": "Password mismatch",
-		"username": {
-			"limit": "@:user.username must be between 4 and 64 characters",
-			"latinic": "@:user.username must contain only latinic characters, numbers or underlines"
-		},
-		"firstName": "@:user.firstName must be between 2 and 64 characters",
-		"description": "@:description should contain less than 2056 characters"
-	},
-	"title": "Title",
-	"amount": "Amount",
-	"cancel": "Cancel",
-	"create": "Create",
-	"delete": "Delete",
-	"income": "Income",
-	"logout": "Logout",
-	"out_of": "out of",
-	"submit": "Submit",
-	"update": "Update",
-	"outcome": "Outcome",
-	"sign_in": "Sign up",
-	"$vuetify": {
-		"open": "Open",
-		"badge": "Badge",
-		"close": "Close",
-		"input": {
-			"clear": "Clear {0}",
-			"appendAction": "{0} appended action",
-			"prependAction": "{0} prepended action"
-		},
-		"rating": {
-			"ariaLabel": {
-				"item": "Rating {0} of {1}"
-			}
-		},
-		"loading": "Loading...",
-		"calendar": {
-			"moreEvents": "{0} more"
-		},
-		"carousel": {
-			"next": "Next visual",
-			"prev": "Previous visual",
-			"ariaLabel": {
-				"delimiter": "Carousel slide {0} of {1}"
-			}
-		},
-		"dataTable": {
-			"sortBy": "Sort by",
-			"ariaLabel": {
-				"sortNone": "Not sorted.",
-				"activateNone": "Activate to remove sorting.",
-				"sortAscending": "Sorted ascending.",
-				"sortDescending": "Sorted descending.",
-				"activateAscending": "Activate to sort ascending.",
-				"activateDescending": "Activate to sort descending."
-			},
-			"itemsPerPageText": "Rows per page:"
-		},
-		"fileInput": {
-			"counter": "{0} files",
-			"counterSize": "{0} files ({1} in total)"
-		},
-		"dataFooter": {
-			"lastPage": "Last page",
-			"nextPage": "Next page",
-			"pageText": "{0}-{1} of {2}",
-			"prevPage": "Previous page",
-			"firstPage": "First page",
-			"itemsPerPageAll": "All",
-			"itemsPerPageText": "Items per page:"
-		},
-		"datePicker": {
-			"itemsSelected": "{0} selected",
-			"nextYearAriaLabel": "Next year",
-			"prevYearAriaLabel": "Previous year",
-			"nextMonthAriaLabel": "Next month",
-			"prevMonthAriaLabel": "Previous month"
-		},
-		"noDataText": "No data available",
-		"pagination": {
-			"ariaLabel": {
-				"last": "Last page",
-				"next": "Next page",
-				"page": "Go to page {0}",
-				"root": "Pagination Navigation",
-				"first": "First page",
-				"previous": "Previous page",
-				"currentPage": "Page {0}, Current page"
-			}
-		},
-		"timePicker": {
-			"am": "AM",
-			"pm": "PM"
-		},
-		"dataIterator": {
-			"loadingText": "Loading items...",
-			"noResultsText": "No matching records found"
-		}
-	},
-	"category": "Category",
-	"currency": "Currency",
-	"messages": {
-		"enter_pass": "Enter password",
-		"enter_email": "Enter email",
-		"enter_limit": "Enter limit",
-		"repeat_pass": "Repeat your password",
-		"enter_amount": "Enter amount",
-		"enter_username": "Enter name",
-		"enter_category_name": "Enter category name"
-	},
-	"password": "Password",
-	"warnings": {
-		"login": "Need to sign in",
-		"logout": "You have successfully logged out",
-		"needToLogout": "You need to logout before",
-		"username_exists": "This username already exists",
-		"email_not_confirmed": "You should confirm your email before",
-		"email_rate_limit_exceeded": "Email rate limit exceeded",
-		"invalid_login_credentials": "Invalid email or password"
-	},
-	"app_rules": "rules",
-	"exceeding": "Exceeding",
-	"agree_with": "agree with",
-	"currencies": {
-		"EUR": "Euro",
-		"RUB": "Russian ruble",
-		"UAH": "Ukrainian hryvnia",
-		"USD": "USA Dollar"
-	},
-	"no_account": "Don't have an account",
-	"no_records": "There are no records yet",
-	"pageTitles": {
-		"bill": "Your bill",
-		"home": "Home",
-		"plan": "Planning",
-		"details": "Record detail",
-		"history": "Records history",
-		"profile": "Profile",
-		"newRecord": "New record",
-		"categories": "Categories"
-	},
-	"chart_title": "Your spending schedule",
-	"description": "Description",
-	"edit_record": "Edit record",
-	"login_error": "Error when trying to log in",
-	"have_account": "Have an account",
-	"password_new": "New password",
-	"verify_error": "You must verify your email before",
-	"create_record": "Create record",
-	"error_message": "Something went wrong",
-	"exchange_rate": "Exchange rate",
-	"login_success": "You have successfully logged in",
-	"no_categories": "There are no categories yet",
-	"updated_short": "upd",
-	"upload_avatar": "Upload your avatar",
-	"error_register": "Sorry, we cant register you",
-	"lack_of_amount": "Insufficient funds on the account",
-	"record_details": "Record details in files",
-	"upload_details": "Upload record details",
-	"change_password": "Change password",
-	"create_category": "Create category",
-	"password_repeat": "Password repeat",
-	"repeat_password": "Repeat your password",
-	"select_category": "Choose category",
-	"sign_in_success": "You have successfully signed up. Please confirm your email",
-	"category_created": "Category successfully created",
-	"category_updated": "Category successfully updated",
-	"currency_account": "Currency account",
-	"home_bookkeeping": "Home bookkeeping",
-	"invalid_password": "Invalid password",
-	"password_current": "Current password",
-	"category_undefined": "Category is undefined",
-	"updatePass_message": "Your password successfully updated",
-	"error_create_record": "Cant create this record",
-	"error_delete_record": "Error delete record",
-	"error_update_avatar": "Something was wrong after updating your avatar",
-	"error_update_record": "Error update record",
-	"createRecord_success": "Record created successfully",
-	"error_update_profile": "Error when updating your profile",
-	"error_create_category": "Error when creating category",
-	"error_load_categories": "Error loading categories",
-	"error_update_category": "Error occurred when updating category",
-	"updateProfile_message": "Data updated successfully",
-	"error_loading_currency": "Error loading currency",
-	"delete_record_confirmation": "Are you sure you want to delete this record?",
-	"record_deleted_succesfully": "Record deleted successfully",
-	"record_updated_succesfully": "Record updated successfully",
-	"delete_category_confirmation": "Are you sure you want to delete this category?"
+  "$vuetify": {
+    "badge": "Badge",
+    "calendar": {
+      "moreEvents": "{0} more"
+    },
+    "carousel": {
+      "ariaLabel": {
+        "delimiter": "Carousel slide {0} of {1}"
+      },
+      "next": "Next visual",
+      "prev": "Previous visual"
+    },
+    "close": "Close",
+    "dataFooter": {
+      "firstPage": "First page",
+      "itemsPerPageAll": "All",
+      "itemsPerPageText": "Items per page:",
+      "lastPage": "Last page",
+      "nextPage": "Next page",
+      "pageText": "{0}-{1} of {2}",
+      "prevPage": "Previous page"
+    },
+    "dataIterator": {
+      "loadingText": "Loading items...",
+      "noResultsText": "No matching records found"
+    },
+    "dataTable": {
+      "ariaLabel": {
+        "activateAscending": "Activate to sort ascending.",
+        "activateDescending": "Activate to sort descending.",
+        "activateNone": "Activate to remove sorting.",
+        "sortAscending": "Sorted ascending.",
+        "sortDescending": "Sorted descending.",
+        "sortNone": "Not sorted."
+      },
+      "itemsPerPageText": "Rows per page:",
+      "sortBy": "Sort by"
+    },
+    "datePicker": {
+      "itemsSelected": "{0} selected",
+      "nextMonthAriaLabel": "Next month",
+      "nextYearAriaLabel": "Next year",
+      "prevMonthAriaLabel": "Previous month",
+      "prevYearAriaLabel": "Previous year"
+    },
+    "fileInput": {
+      "counter": "{0} files",
+      "counterSize": "{0} files ({1} in total)"
+    },
+    "input": {
+      "appendAction": "{0} appended action",
+      "clear": "Clear {0}",
+      "prependAction": "{0} prepended action"
+    },
+    "loading": "Loading...",
+    "noDataText": "No data available",
+    "open": "Open",
+    "pagination": {
+      "ariaLabel": {
+        "currentPage": "Page {0}, Current page",
+        "first": "First page",
+        "last": "Last page",
+        "next": "Next page",
+        "page": "Go to page {0}",
+        "previous": "Previous page",
+        "root": "Pagination Navigation"
+      }
+    },
+    "rating": {
+      "ariaLabel": {
+        "item": "Rating {0} of {1}"
+      }
+    },
+    "timePicker": {
+      "am": "AM",
+      "pm": "PM"
+    }
+  },
+  "agree_with": "agree with",
+  "amount": "Amount",
+  "app_rules": "rules",
+  "cancel": "Cancel",
+  "category": "Category",
+  "category_created": "Category successfully created",
+  "category_undefined": "Category is undefined",
+  "category_updated": "Category successfully updated",
+  "change_password": "Change password",
+  "chart_title": "Your spending schedule",
+  "create": "Create",
+  "createRecord_success": "Record created successfully",
+  "create_category": "Create category",
+  "create_record": "Create record",
+  "currencies": {
+    "EUR": "Euro",
+    "RUB": "Russian ruble",
+    "UAH": "Ukrainian hryvnia",
+    "USD": "USA Dollar"
+  },
+  "currency": "Currency",
+  "currency_account": "Currency account",
+  "date": "Date",
+  "delete": "Delete",
+  "delete_category_confirmation": "Are you sure you want to delete this category?",
+  "delete_record_confirmation": "Are you sure you want to delete this record?",
+  "description": "Description",
+  "edit": "Edit",
+  "edit_record": "Edit record",
+  "email": "Email",
+  "error_create_category": "Error when creating category",
+  "error_create_record": "Cant create this record",
+  "error_delete_record": "Error delete record",
+  "error_load_categories": "Error loading categories",
+  "error_loading_currency": "Error loading currency",
+  "error_message": "Something went wrong",
+  "error_register": "Sorry, we cant register you",
+  "error_update_avatar": "Something was wrong after updating your avatar",
+  "error_update_category": "Error occurred when updating category",
+  "error_update_profile": "Error when updating your profile",
+  "error_update_record": "Error update record",
+  "exceeding": "Exceeding",
+  "exchange_rate": "Exchange rate",
+  "guest": "Guest",
+  "have_account": "Have an account",
+  "home_bookkeeping": "Home bookkeeping",
+  "income": "Income",
+  "invalid_password": "Invalid password",
+  "lack_of_amount": "Insufficient funds on the account",
+  "lang": "Language",
+  "left": "Left",
+  "limit": "Limit",
+  "login": "Login",
+  "login_error": "Error when trying to log in",
+  "login_success": "You have successfully logged in",
+  "logout": "Logout",
+  "menu": {
+    "bill": "Your bill",
+    "categories": "Categories",
+    "history": "History",
+    "newRecord": "New record",
+    "plan": "Planning"
+  },
+  "messages": {
+    "enter_amount": "Enter amount",
+    "enter_category_name": "Enter category name",
+    "enter_email": "Enter email",
+    "enter_limit": "Enter limit",
+    "enter_pass": "Enter password",
+    "enter_username": "Enter name",
+    "repeat_pass": "Repeat your password"
+  },
+  "no_account": "Don't have an account",
+  "no_categories": "There are no categories yet",
+  "no_records": "There are no records yet",
+  "open": "Open",
+  "open_record": "Open record",
+  "out_of": "out of",
+  "outcome": "Outcome",
+  "pageTitles": {
+    "bill": "Your bill",
+    "categories": "Categories",
+    "details": "Record detail",
+    "history": "Records history",
+    "home": "Home",
+    "newRecord": "New record",
+    "plan": "Planning",
+    "profile": "Profile"
+  },
+  "password": "Password",
+  "password_current": "Current password",
+  "password_new": "New password",
+  "password_repeat": "Password repeat",
+  "rate": "Rate",
+  "record_deleted_succesfully": "Record deleted successfully",
+  "record_details": "Record details in files",
+  "record_updated_succesfully": "Record updated successfully",
+  "repeat_password": "Repeat your password",
+  "rules": {
+    "agree": "You must agree to the rules",
+    "amount": "The @:amount cannot be less than 1",
+    "bio": "@:user.bio should be less than 2056 characters",
+    "category": "@:category name must be between 3 and 20 characters",
+    "description": "@:description should contain less than 2056 characters",
+    "details": "Maximum 5 files",
+    "email": "Enter correct email",
+    "file": "File size must be less than 2 megabytes",
+    "firstName": "@:user.firstName must be between 2 and 64 characters",
+    "lastName": "@:user.lastName name must be between 2 and 64 characters",
+    "limit": "@:limit must be greater than 50",
+    "pass": "@:password must be between 6 and 32 characters",
+    "repeater": "Password mismatch",
+    "username": {
+      "latinic": "@:user.username must contain only latinic characters, numbers or underlines",
+      "limit": "@:user.username must be between 4 and 64 characters"
+    }
+  },
+  "select_category": "Choose category",
+  "sign_in": "Sign up",
+  "sign_in_success": "You have successfully signed up. Please confirm your email",
+  "submit": "Submit",
+  "tabs": {
+    "info": "Information",
+    "security": "Security"
+  },
+  "title": "Title",
+  "type": "Type",
+  "update": "Update",
+  "updatePass_message": "Your password successfully updated",
+  "updateProfile_message": "Data updated successfully",
+  "updated_short": "upd",
+  "upload_avatar": "Upload your avatar",
+  "upload_details": "Upload record details",
+  "user": {
+    "avatar": "Profile avatar",
+    "bio": "Bio",
+    "birthday": "Birthday date",
+    "firstName": "First name",
+    "gender": {
+      "female": "Female",
+      "label": "Gender",
+      "male": "Male",
+      "unknown": "Unknown"
+    },
+    "lastName": "Last name",
+    "username": "User name"
+  },
+  "verify_error": "You must verify your email before",
+  "warnings": {
+    "email_not_confirmed": "You should confirm your email before",
+    "email_rate_limit_exceeded": "Email rate limit exceeded",
+    "invalid_login_credentials": "Invalid email or password",
+    "login": "Need to sign in",
+    "logout": "You have successfully logged out",
+    "needToLogout": "You need to logout before",
+    "username_exists": "This username already exists"
+  }
 }

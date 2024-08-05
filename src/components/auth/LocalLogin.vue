@@ -18,7 +18,7 @@
 			required />
 
 		<v-btn
-			:text="t('login')"
+			:text="$t('login')"
 			type="submit"
 			width="100%"
 			color="success"
@@ -33,7 +33,6 @@ import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { login } from '@/api/auth';
-import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
 import type { VForm } from 'vuetify/components';
 
@@ -42,7 +41,6 @@ const emit = defineEmits<{
 	error: [err: unknown];
 }>();
 
-const { t } = useI18n();
 const form = ref<VForm | null>(null);
 const loading = ref(false);
 

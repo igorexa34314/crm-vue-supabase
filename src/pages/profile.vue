@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="title text-title">
-			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2">{{ t('pageTitles.profile') }}</h3>
+			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2">{{ $t('pageTitles.profile') }}</h3>
 		</div>
 
 		<v-tabs :model-value="$route.name" density="comfortable" class="mt-6 mb-3 mb-sm-0" color="primary">
@@ -10,16 +10,14 @@
 				:key="tab.path"
 				:to="tab.path"
 				:value="tab.path"
-				:size="xs ? 'small' : 'default'"
-				:text="t(`tabs.${tab.title}`)" />
+				:size="$vuetify.display.xs ? 'small' : 'default'"
+				:text="$t(`tabs.${tab.title}`)" />
 		</v-tabs>
 
 		<div class="profile-tab__window">
 			<router-view #default="{ Component }">
-				<v-slide-x-transition>
-					<keep-alive include="info">
-						<component :is="Component" class="profile-tab__window-item mt-6 mt-sm-8 px-2 px-sm-4" />
-					</keep-alive>
+				<v-slide-x-transition hide-on-leave>
+					<component :is="Component" class="profile-tab__window-item mt-6 mt-sm-8 px-2 px-sm-4" />
 				</v-slide-x-transition>
 			</router-view>
 		</div>
@@ -32,14 +30,12 @@ import { useHead } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
-import { useDisplay } from 'vuetify';
 
 definePage({ redirect: '/profile/info' });
 
 useHead({ title: 'pageTitles.profile' });
 
 const { t, te } = useI18n({ useScope: 'global' });
-const { xs } = useDisplay();
 const { showMessage } = useSnackbarStore();
 const route = useRoute('/profile/info');
 const router = useRouter();

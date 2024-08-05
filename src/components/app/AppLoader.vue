@@ -12,8 +12,8 @@ const theme = useTheme();
 
 const {
 	color,
-	screen = false,
-	page = false,
+	screen,
+	page,
 } = defineProps<{
 	page?: boolean;
 	screen?: boolean;

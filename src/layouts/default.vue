@@ -1,27 +1,30 @@
 <template>
-	<app-loader v-if="loading" class="main-loader" />
-	<v-layout v-else class="app-main-layout" full-height>
-		<AppNavbar @click="drawer = !drawer" @logout="handleLogout" />
-		<AppSidebar v-model="drawer" />
+	<v-layout class="app-main-layout" full-height>
+		<app-loader v-if="loading" class="main-loader" />
 
-		<v-main class="app bg-background" style="min-height: 100dvh; min-height: 100vh">
-			<div class="app-content pa-sm-5 pa-4">
-				<router-view />
-			</div>
-		</v-main>
+		<template v-else>
+			<AppNavbar @click="drawer = !drawer" @logout="handleLogout" />
+			<AppSidebar v-model="drawer" />
 
-		<v-tooltip :text="t('create_record')" content-class="bg-fixed text-primary font-weight-medium">
-			<template #activator="{ props }">
-				<v-btn
-					color="fixed"
-					:size="xs ? 'default' : mdAndDown ? 'large' : 'x-large'"
-					class="fixed-action-btn"
-					to="/record"
-					position="fixed"
-					:icon="mdiPlus"
-					v-bind="props" />
-			</template>
-		</v-tooltip>
+			<v-main class="app bg-background" style="min-height: 100dvh; min-height: 100vh">
+				<div class="app-content pa-sm-5 pa-4">
+					<router-view />
+				</div>
+			</v-main>
+
+			<v-tooltip :text="$t('create_record')" content-class="bg-fixed text-primary font-weight-medium">
+				<template #activator="{ props }">
+					<v-btn
+						color="fixed"
+						:size="$vuetify.display.xs ? 'default' : $vuetify.display.mdAndDown ? 'large' : 'x-large'"
+						class="fixed-action-btn"
+						to="/records/create"
+						position="fixed"
+						:icon="mdiPlus"
+						v-bind="props" />
+				</template>
+			</v-tooltip>
+		</template>
 	</v-layout>
 </template>
 
@@ -39,7 +42,6 @@ import { useAsyncState } from '@vueuse/core';
 import { currencyKey } from '@/injection-keys';
 import { useRouter } from 'vue-router';
 import { logout } from '@/api/auth';
-import { useDisplay } from 'vuetify';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
 const router = useRouter();
@@ -48,7 +50,6 @@ const { showMessage } = useSnackbarStore();
 const userStore = useUserStore();
 const drawer = ref(true);
 const loading = ref(false);
-const { xs, mdAndDown } = useDisplay();
 
 const {
 	state: currency,
@@ -97,7 +98,7 @@ const handleLogout = async () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .fixed-action-btn {
 	right: 0;
 	bottom: 0;

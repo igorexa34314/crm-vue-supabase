@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex flex-row align-center">
-			<h3 class="title text-h5 text-sm-h4 flex-grow-1 my-2 text-title">{{ t('pageTitles.bill') }}</h3>
+			<h3 class="title text-h5 text-sm-h4 flex-grow-1 my-2 text-title">{{ $t('pageTitles.bill') }}</h3>
 			<v-btn color="success" @click="refreshCurrency(1500)">
 				<v-icon :icon="mdiRefresh" />
 			</v-btn>
@@ -27,7 +27,6 @@
 import MyBill from '@/components/home/MyBill.vue';
 import { inject, defineAsyncComponent } from 'vue';
 import { useHead } from '@unhead/vue';
-import { useI18n } from 'vue-i18n';
 import { currencyKey } from '@/injection-keys';
 import { mdiRefresh } from '@mdi/js';
 import { useTheme } from 'vuetify';
@@ -41,14 +40,13 @@ useHead({ title: 'pageTitles.bill' });
 
 const CurrencyRates = defineAsyncComponent(() => import('@/components/home/CurrencyRates.vue'));
 
-const { t } = useI18n({ useScope: 'global' });
 const theme = useTheme();
 const userStore = useUserStore();
 
 const { currency, isLoading, isReady, refresh: refreshCurrency } = inject(currencyKey)!;
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .v-theme--light .v-table {
 	--v-border-opacity: 0.18;
 }

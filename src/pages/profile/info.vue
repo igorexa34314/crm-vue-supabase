@@ -1,113 +1,111 @@
 <template>
-	<v-form
-		v-if="info && Object.keys(info).length"
-		ref="form"
-		@submit.prevent="submitHandler"
-		class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
-		<LocalizedInput
-			v-model="formState.username"
-			:rules="validations.username"
-			variant="underlined"
-			:label="t('user.username')"
-			class="mb-5"
-			required />
-
-		<div class="d-flex flex-column items-center mb-4 flex-sm-row">
+	<div>
+		<v-form v-if="info" ref="form" @submit.prevent="submitHandler" class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
 			<LocalizedInput
-				v-model="formState.first_name"
-				:rules="validations.firstName"
+				v-model="formState.username"
+				:rules="validations.username"
 				variant="underlined"
-				:label="t('user.firstName')"
-				class="mr-sm-3" />
+				:label="$t('user.username')"
+				class="mb-5"
+				required />
 
-			<LocalizedInput
-				v-model="formState.last_name"
-				:rules="validations.lastName"
-				variant="underlined"
-				:label="t('user.lastName')"
-				class="ml-sm-3" />
-		</div>
+			<div class="d-flex flex-column items-center mb-4 flex-sm-row">
+				<LocalizedInput
+					v-model="formState.first_name"
+					:rules="validations.firstName"
+					variant="underlined"
+					:label="$t('user.firstName')"
+					class="mr-sm-3" />
 
-		<div class="d-flex flex-column flex-md-row">
-			<div class="flex-fill d-flex flex-column">
-				<v-birthday-picker
-					v-model="datePickerDate"
-					:label="t('user.birthday')"
-					class="flex-fill"
-					:month-formatter="month => d(month, { month: 'long' })" />
-
-				<v-radio-group v-model="formState.gender" :label="t('user.gender.label')" class="text-input">
-					<v-radio
-						v-for="gender in genderItems"
-						:key="gender.value"
-						:label="t(`user.gender.${gender.title}`)"
-						:value="gender.value"
-						color="radio" />
-				</v-radio-group>
+				<LocalizedInput
+					v-model="formState.last_name"
+					:rules="validations.lastName"
+					variant="underlined"
+					:label="$t('user.lastName')"
+					class="ml-sm-3" />
 			</div>
-			<div
-				:style="{ 'max-width': smAndDown ? 'none' : '40%', width: '100%' }"
-				class="d-flex flex-column pl-4 mt-md-0 my-4">
-				<v-card variant="flat" :max-width="smAndDown ? 200 : 250" class="mb-5" elevation="4">
-					<v-img :src="info.avatar_url || '/img/avatar-placeholder.jpg'" alt="Ваш аватар" cover eager>
-						<template #placeholder>
-							<ImageLoader />
-						</template>
-					</v-img>
-				</v-card>
-				<div class="mb-3 text-subtitle">{{ t('upload_avatar') }}</div>
-				<LocalizedFileInput
-					v-model="formState.avatar"
-					:label="t('user.avatar')"
-					:rules="validations.file"
-					variant="solo"
-					:placeholder="t('upload_avatar')"
-					accept="image/* "
-					:density="xs ? 'compact' : 'comfortable'"
-					style="max-width: 550px" />
+
+			<div class="d-flex flex-column flex-md-row">
+				<div class="flex-fill d-flex flex-column">
+					<v-birthday-picker
+						v-model="datePickerDate"
+						:label="$t('user.birthday')"
+						class="flex-fill"
+						:month-formatter="month => $d(month, { month: 'long' })" />
+
+					<v-radio-group v-model="formState.gender" :label="$t('user.gender.label')" class="text-input">
+						<v-radio
+							v-for="gender in genderItems"
+							:key="gender.value"
+							:label="$t(`user.gender.${gender.title}`)"
+							:value="gender.value"
+							color="radio" />
+					</v-radio-group>
+				</div>
+				<div
+					:style="{ 'max-width': $vuetify.display.smAndDown ? 'none' : '40%', width: '100%' }"
+					class="d-flex flex-column pl-4 mt-md-0 my-4">
+					<v-card variant="flat" :max-width="$vuetify.display.smAndDown ? 200 : 250" class="mb-5" elevation="4">
+						<v-img :src="info.avatar_url || '/img/avatar-placeholder.jpg'" alt="Ваш аватар" cover eager>
+							<template #placeholder>
+								<ImageLoader />
+							</template>
+						</v-img>
+					</v-card>
+					<div class="mb-3 text-subtitle">{{ $t('upload_avatar') }}</div>
+					<LocalizedFileInput
+						v-model="formState.avatar"
+						:label="$t('user.avatar')"
+						:rules="validations.file"
+						variant="solo"
+						:placeholder="$t('upload_avatar')"
+						accept="image/* "
+						:density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+						style="max-width: 550px" />
+				</div>
 			</div>
-		</div>
 
-		<LocalizedTextarea
-			v-model="formState.bio"
-			rows="1"
-			auto-grow
-			:label="t('user.bio')"
-			:rules="validations.bio"
-			class="mb-4" />
+			<LocalizedTextarea
+				v-model="formState.bio"
+				rows="1"
+				auto-grow
+				:label="$t('user.bio')"
+				:rules="validations.bio"
+				class="mb-4" />
 
-		<div class="d-flex flex-column items-center mt-4 flex-sm-row">
-			<v-select
-				v-model="formState.locale"
-				:items="locales"
-				:label="t('lang')"
-				item-title="native_name"
-				item-value="code"
-				variant="underlined"
-				class="mr-sm-4 text-input" />
+			<div class="d-flex flex-column items-center mt-4 flex-sm-row">
+				<v-select
+					v-model="formState.locale"
+					:items="locales"
+					:label="$t('lang')"
+					item-title="native_name"
+					item-value="code"
+					variant="underlined"
+					class="mr-sm-4 text-input" />
 
-			<v-select
-				v-model="formState.currency"
-				:items="currencies"
-				:label="t('currency')"
-				item-title="title"
-				item-value="value"
-				variant="underlined"
-				class="ml-sm-4 text-input" />
-		</div>
+				<v-select
+					v-model="formState.currency"
+					:items="currencies"
+					:label="$t('currency')"
+					item-title="title"
+					item-value="value"
+					variant="underlined"
+					class="ml-sm-4 text-input" />
+			</div>
 
-		<v-btn
-			type="submit"
-			color="success"
-			:class="xs ? 'mt-3' : 'mt-5'"
-			:loading="loading"
-			:disabled="isInfoEqualsToStore && !formState.avatar.length">
-			{{ t('update') }}
-			<v-icon :icon="mdiSend" class="ml-3" />
-		</v-btn>
-	</v-form>
+			<v-btn
+				type="submit"
+				color="success"
+				:class="$vuetify.display.xs ? 'mt-3' : 'mt-5'"
+				:loading="loading"
+				:disabled="isInfoEqualsToStore && !formState.avatar.length">
+				{{ $t('update') }}
+				<v-icon :icon="mdiSend" class="ml-3" />
+			</v-btn>
+		</v-form>
 
-	<app-loader v-else page class="mt-5" />
+		<app-loader v-else page class="mt-5" />
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -123,7 +121,6 @@ import { useI18n } from 'vue-i18n';
 import { computedInject, useAsyncState } from '@vueuse/core';
 import { fetchAvailableLocales } from '@/api/locale';
 import { user as validations } from '@/utils/validations';
-import { useDisplay } from 'vuetify';
 import { currencyKey } from '@/injection-keys';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { defaultLocale } from '@/constants/i18n';
@@ -134,8 +131,7 @@ import { updateInfo, updateAvatar, type UserInfo } from '@/api/user';
 import type { CurrencyRates } from '@/api/currency';
 
 const { showMessage } = useSnackbarStore();
-const { t, te, d } = useI18n();
-const { xs, smAndDown } = useDisplay();
+const { t, te } = useI18n();
 const userStore = useUserStore();
 
 const currencies = computedInject(currencyKey, data => {

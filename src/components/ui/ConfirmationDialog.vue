@@ -23,12 +23,12 @@
 					<v-spacer />
 					<slot name="cancel" v-bind="{ cancelEvent: cancel }">
 						<v-btn color="red-darken-1" variant="text" @click="cancel">
-							<span class="text-h6">{{ cancelLabel || t('cancel') }}</span>
+							<span class="text-h6">{{ cancelLabel || $t('cancel') }}</span>
 						</v-btn>
 					</slot>
 					<slot name="submit" v-bind="{ submitEvent: submit }">
 						<v-btn ref="submitBtn" color="green-darken-1" variant="text" @click="submit">
-							<span class="text-h6">{{ submitLabel || t('submit') }}</span>
+							<span class="text-h6">{{ submitLabel || $t('submit') }}</span>
 						</v-btn>
 					</slot>
 				</v-card-actions>
@@ -40,7 +40,6 @@
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue';
 import { type VBtn, type VDialog, VFadeTransition } from 'vuetify/components';
-import { useI18n } from 'vue-i18n';
 
 const { maxWidth = '550px', width = '100%' } = defineProps<{
 	maxWidth?: string | number;
@@ -66,8 +65,6 @@ const slots = defineSlots<{
 	cancel(arg: { cancelEvent: () => void }): any;
 	submit(arg: { submitEvent: () => void }): any;
 }>();
-
-const { t } = useI18n({ useScope: 'global' });
 
 const confirmationDialog = defineModel<boolean>();
 

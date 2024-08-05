@@ -9,8 +9,7 @@
 				:icon="passFieldState.showPass ? mdiEye : mdiEyeOff"
 				@mousedown="passFieldState.showPass = true"
 				@mouseup="passFieldState.showPass = false"
-				class="mr-2"
-				style="cursor: pointer" />
+				class="mr-2 cursor-pointer" />
 		</template>
 	</LocalizedInput>
 
@@ -19,8 +18,8 @@
 		:type="passFieldState.showRepeater ? 'text' : 'password'"
 		v-bind="{
 			rules: validations.repeater(password),
-			label: t(repeaterLabel),
-			placeholder: t(repeaterPlaceholder),
+			label: $t(repeaterLabel),
+			placeholder: $t(repeaterPlaceholder),
 			variant,
 			class: repeaterClass,
 		}"
@@ -32,8 +31,7 @@
 				:icon="passFieldState.showRepeater ? mdiEye : mdiEyeOff"
 				@mousedown="passFieldState.showRepeater = true"
 				@mouseup="passFieldState.showRepeater = false"
-				class="mr-2"
-				style="cursor: pointer" />
+				class="mr-2 cursor-pointer" />
 		</template>
 	</LocalizedInput>
 </template>
@@ -43,7 +41,6 @@ import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 import { reactive } from 'vue';
 import { user as validations } from '@/utils/validations';
-import { useI18n } from 'vue-i18n';
 import type { VTextField } from 'vuetify/components';
 
 defineOptions({
@@ -71,8 +68,6 @@ const {
 }>();
 
 const password = defineModel<string>({ default: '' });
-
-const { t } = useI18n();
 
 const passFieldState = reactive({
 	showPass: false,

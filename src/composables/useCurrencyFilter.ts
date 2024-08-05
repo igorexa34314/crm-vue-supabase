@@ -4,7 +4,7 @@ import type { CurrencyRates } from '@/api/currency';
 import { serverCurrency } from '@/constants/currency';
 
 export const useCurrencyFilter = () => {
-	const { currency, isLoading } = inject(currencyKey, {} as CurrencyReturn);
+	const { currency } = inject(currencyKey, {} as CurrencyReturn);
 
 	const currencyFilter = computed(
 		() => (amount: number, options?: { currency?: CurrencyRates; type?: 'direct' | 'reverse' }) => {
@@ -19,8 +19,5 @@ export const useCurrencyFilter = () => {
 		}
 	);
 
-	return {
-		cf: currencyFilter,
-		isLoading,
-	};
+	return currencyFilter;
 };

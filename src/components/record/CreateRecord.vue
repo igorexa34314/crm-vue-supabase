@@ -4,18 +4,18 @@
 		v-if="categories.length"
 		@submit.prevent="submitHandler"
 		class="record-form mt-8"
-		:class="xs ? 'px-2' : 'px-4'">
+		:class="$vuetify.display.xs ? 'px-2' : 'px-4'">
 		<v-select
 			v-model="formState.category_id"
 			:items="categories"
 			item-title="title"
 			item-value="id"
-			:label="t('select_category')"
+			:label="$t('select_category')"
 			variant="underlined"
 			class="text-input" />
 
 		<v-radio-group v-model="formState.type" class="mt-3 text-input">
-			<v-radio v-for="tp in recordTypes" :key="tp" :label="t(tp)" :value="tp" density="comfortable" color="radio" />
+			<v-radio v-for="tp in recordTypes" :key="tp" :label="$t(tp)" :value="tp" density="comfortable" color="radio" />
 		</v-radio-group>
 
 		<LocalizedInput
@@ -23,7 +23,7 @@
 			:rules="validations.amount"
 			type="number"
 			variant="underlined"
-			:label="t('amount') + ` (${info?.currency})`"
+			:label="$t('amount') + ` (${info?.currency})`"
 			class="mt-2"
 			required />
 
@@ -31,26 +31,26 @@
 			v-model="formState.description"
 			:rules="validations.description"
 			variant="underlined"
-			:label="t('description')"
+			:label="$t('description')"
 			class="mt-2"
 			rows="1"
 			auto-grow />
 
 		<div class="mt-4">
-			<div class="mb-3 text-subtitle">{{ t('record_details') }}</div>
+			<div class="mb-3 text-subtitle">{{ $t('record_details') }}</div>
 			<LocalizedFileInput
 				v-model="formState.details"
-				:label="t('upload_details')"
+				:label="$t('upload_details')"
 				:rules="validations.details"
 				variant="outlined"
-				:placeholder="t('upload_details')"
+				:placeholder="$t('upload_details')"
 				density="compact"
 				style="max-width: 550px"
 				multiple />
 		</div>
 
-		<v-btn type="submit" color="success" :loading="loading" :class="xs ? 'mt-4' : 'mt-7'">
-			{{ t('create') }}
+		<v-btn type="submit" color="success" :loading="loading" :class="$vuetify.display.xs ? 'mt-4' : 'mt-7'">
+			{{ $t('create') }}
 			<v-icon :icon="mdiSend" class="ml-3" />
 		</v-btn>
 	</v-form>
@@ -67,7 +67,6 @@ import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
 import { useI18n } from 'vue-i18n';
 import { record as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
-import { useDisplay } from 'vuetify';
 import { defaultRecordAmount, defaultBill, recordTypes } from '@/constants/app';
 import { serverCurrency } from '@/constants/currency';
 import type { VForm } from 'vuetify/components';
@@ -92,9 +91,8 @@ const emit = defineEmits<{
 
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
-const { cf } = useCurrencyFilter();
+const cf = useCurrencyFilter();
 const userStore = useUserStore();
-const { xs } = useDisplay();
 
 const info = computed(() => userStore.info);
 

@@ -22,9 +22,6 @@ export type RecordWithDetails = RecordWithCategory & { details: RecordDetail[] }
 export type RecordForm = TablesInsert<'records'> & { details: File[] };
 export type RecordDataToUpdate = Omit<TablesInsert<'records'>, 'category_id'>;
 
-export type SortOrder = 'asc' | 'desc' | undefined;
-export type SortFields = keyof Record;
-
 export const createRecord = async ({ details, ...record }: RecordForm) => {
 	const { error, data } = await supabase.from('records').insert(record).select(recordWithCategoryQuery).single();
 	if (error) throw errorHandler(error);
@@ -35,8 +32,8 @@ export const createRecord = async ({ details, ...record }: RecordForm) => {
 };
 
 export const fetchRecordsWithCategory = async (options?: {
-	sortBy?: SortFields;
-	order?: SortOrder;
+	sortBy?: keyof Record;
+	order?: 'asc' | 'desc';
 	page?: number;
 	perPage?: number;
 }) => {

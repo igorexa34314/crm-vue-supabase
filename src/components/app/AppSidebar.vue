@@ -10,25 +10,22 @@
 				:exact="link.exact"
 				color="primary"
 				class="px-5">
-				<span class="font-weight-bold text-primary">{{ t('menu.' + link.title) }}</span>
+				<span class="font-weight-bold text-primary">{{ $t('menu.' + link.title) }}</span>
 			</v-list-item>
 		</v-list>
 	</v-navigation-drawer>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
 import type { RouteLocationRaw } from 'vue-router';
 
 const drawer = defineModel<boolean>();
 
-const { t } = useI18n();
-
 const links: { title: string; to: RouteLocationRaw; exact?: boolean }[] = [
 	{ title: 'bill', to: '/', exact: true },
-	{ title: 'history', to: '/history' },
+	{ title: 'history', to: '/records' },
 	{ title: 'plan', to: '/planning' },
-	{ title: 'newRecord', to: '/record' },
+	{ title: 'newRecord', to: '/records/create' },
 	{ title: 'categories', to: '/categories' },
 ];
 </script>
