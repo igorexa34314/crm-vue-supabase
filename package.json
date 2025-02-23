@@ -1,6 +1,6 @@
 {
 	"name": "crm-vue-supabase",
-	"version": "2.1.0",
+	"version": "2.2.0",
 	"private": true,
 	"description": "CRM System based on Vue 3 with Supabase SDK",
 	"author": "igorexa34314",
