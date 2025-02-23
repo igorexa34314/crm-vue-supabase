@@ -1,38 +1,38 @@
 name: ci
 
 permissions:
-  contents: read
+   contents: read
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-  workflow_dispatch: {}
-  merge_group: {}
+   push:
+      branches:
+         - main
+   pull_request:
+      branches:
+         - main
+   workflow_dispatch: {}
+   merge_group: {}
 
 jobs:
-  ci:
-    runs-on: ubuntu-latest
+   ci:
+      runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
-      # workaround for npm registry key change
-      # ref. `pnpm@10.1.0` / `pnpm@9.15.4` cannot be installed due to key id mismatch · Issue #612 · nodejs/corepack
-      # - https://github.com/nodejs/corepack/issues/612#issuecomment-2629496091
-      - run: npm i -g corepack@latest && corepack enable
-      - uses: actions/setup-node@v4.2.0
+      steps:
+         - uses: actions/checkout@v4
+         # workaround for npm registry key change
+         # ref. `pnpm@10.1.0` / `pnpm@9.15.4` cannot be installed due to key id mismatch · Issue #612 · nodejs/corepack
+         # - https://github.com/nodejs/corepack/issues/612#issuecomment-2629496091
+         - run: npm i -g corepack@latest && corepack enable
+         - uses: actions/setup-node@v4.2.0
 
-      - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+         - name: 📦 Install dependencies
+           run: pnpm install --frozen-lockfile
 
-      - name: 🚧 Set up project
-        run: pnpm nuxi prepare
+         - name: 🚧 Set up project
+           run: pnpm nuxi prepare
 
-      - name: 📝 Lint
-        run: pnpm lint
+         - name: 📝 Lint
+           run: pnpm lint
 
-      - name: 💪 Type check
-        run: pnpm typecheck
+         - name: 💪 Type check
+           run: pnpm typecheck
