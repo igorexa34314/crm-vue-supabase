@@ -11,10 +11,10 @@
 	},
 	"scripts": {
 		"dev": "vite",
-		"build": "run-p type-check \"build-only {@}\" --",
+		"build": "run-p typecheck \"build-only {@}\" --",
 		"preview": "vite preview",
 		"build-only": "vite build",
-		"analyze": "run-s type-check \"build --mode=analyze\"",
+		"analyze": "vite build --mode=analyze",
 		"typecheck": "vue-tsc --build",
 		"lint": "eslint . --cache",
 		"lint:fix": "eslint . --fix --cache",
