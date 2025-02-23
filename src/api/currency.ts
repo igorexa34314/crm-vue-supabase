@@ -1,5 +1,6 @@
 import { errorHandler } from '@/utils/errorHandler';
 import { availableCurrencies, serverCurrency } from '@/constants/currency';
+import { joinURL } from 'ufo';
 
 export type CurrencyRates = (typeof availableCurrencies)[number];
 export interface Currency {
@@ -28,9 +29,11 @@ interface API_RESPONSE_ERROR {
 const apiUrl = import.meta.env.VITE_EXCHANGER_API_URL;
 const apiKey = import.meta.env.VITE_EXCHANGER_API_KEY;
 
-export const fetchCurrency = async <Base extends string = typeof serverCurrency>(base: Base): Promise<Currency> => {
+export const fetchCurrency = async <Base extends string = typeof serverCurrency>(
+	base: Base
+): Promise<Currency> => {
 	try {
-		const response = await fetch(`${apiUrl}/${base}`, {
+		const response = await fetch(joinURL(apiUrl, base), {
 			method: 'GET',
 			headers: {
 				Authorization: `Bearer ${apiKey}`,

@@ -1,9 +1,9 @@
-import { defineStore } from 'pinia';
+import { defineStore, acceptHMRUpdate } from 'pinia';
 import { watch } from 'vue';
 import { useTheme } from 'vuetify';
 import { useLocalStorage } from '@vueuse/core';
 
-const DARK_MODE_KEY: string = import.meta.env.VITE_APP_DARK_MODE_KEY || 'darkMode';
+const DARK_MODE_KEY = 'dark-mode';
 
 export const useDarkModeStore = defineStore(DARK_MODE_KEY, () => {
 	const theme = useTheme();
@@ -14,8 +14,12 @@ export const useDarkModeStore = defineStore(DARK_MODE_KEY, () => {
 		newVal => {
 			theme.global.name.value = newVal ? 'dark' : 'light';
 		},
-		{ immediate: true }
+		{ immediate: true, flush: 'sync' }
 	);
 
 	return { darkMode };
 });
+
+if (import.meta.hot) {
+	import.meta.hot.accept(acceptHMRUpdate(useDarkModeStore, import.meta.hot));
+}

@@ -1,6 +1,6 @@
-export const localeKey = import.meta.env.VITE_APP_LOCALE_KEY || 'lang';
+export const localeKey = 'lang';
 
-export const defaultLocale = import.meta.env.VITE_APP_DEFAULT_LOCALE || 'uk-UA';
+export const defaultLocale = 'uk-UA';
 export const availableLocales = ['ru-RU', 'uk-UA', 'en-US'] as const;
 
 export const numberFormats = {
@@ -49,11 +49,13 @@ export const datetimeFormats = {
 			weekday: 'long',
 			hour: '2-digit',
 			minute: '2-digit',
+			second: '2-digit',
 		},
 		daytime: {
 			weekday: 'long',
 			hour: '2-digit',
 			minute: '2-digit',
+			second: '2-digit',
 		},
 		time: {
 			hour: '2-digit',

@@ -6,5 +6,5 @@ export const validateToken = async (token: string) => {
 		body: { token },
 	});
 	if (error) throw errorHandler(error);
-	return JSON.parse(data);
+	return JSON.parse(data) as { success: boolean };
 };

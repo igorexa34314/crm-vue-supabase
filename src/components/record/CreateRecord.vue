@@ -15,7 +15,13 @@
 			class="text-input" />
 
 		<v-radio-group v-model="formState.type" class="mt-3 text-input">
-			<v-radio v-for="tp in recordTypes" :key="tp" :label="$t(tp)" :value="tp" density="comfortable" color="radio" />
+			<v-radio
+				v-for="tp in recordTypes"
+				:key="tp"
+				:label="$t(tp)"
+				:value="tp"
+				density="comfortable"
+				color="radio" />
 		</v-radio-group>
 
 		<LocalizedInput
@@ -49,7 +55,11 @@
 				multiple />
 		</div>
 
-		<v-btn type="submit" color="success" :loading="loading" :class="$vuetify.display.xs ? 'mt-4' : 'mt-7'">
+		<v-btn
+			type="submit"
+			color="success"
+			:loading="loading"
+			:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'">
 			{{ $t('create') }}
 			<v-icon :icon="mdiSend" class="ml-3" />
 		</v-btn>
@@ -61,15 +71,14 @@ import LocalizedFileInput from '@/components/ui/LocalizedFileInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, useTemplateRef } from 'vue';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useI18n } from 'vue-i18n';
 import { record as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
 import { defaultRecordAmount, defaultBill, recordTypes } from '@/constants/app';
 import { serverCurrency } from '@/constants/currency';
-import type { VForm } from 'vuetify/components';
 import type { Category } from '@/api/category';
 import type { Record, RecordForm } from '@/api/record';
 
@@ -96,7 +105,7 @@ const userStore = useUserStore();
 
 const info = computed(() => userStore.info);
 
-const form = ref<VForm | null>(null);
+const formRef = useTemplateRef('form');
 
 const defaultFormValues = {
 	amount: Math.round(cf.value(defaultAmount) / 10) * 10,
@@ -117,7 +126,7 @@ const canCreateRecord = computed(
 );
 
 const submitHandler = async () => {
-	const valid = (await form.value?.validate())?.valid;
+	const valid = (await formRef.value?.validate())?.valid;
 	if (valid && canCreateRecord.value) {
 		const { amount, ...data } = formState.value;
 		emit('createRecord', { ...data, amount: cf.value(amount, { type: 'reverse' }) });

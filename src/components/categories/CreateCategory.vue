@@ -21,7 +21,11 @@
 				class="mt-6"
 				required />
 
-			<v-btn color="success" type="submit" :class="$vuetify.display.xs ? 'mt-4' : 'mt-7'" :loading="loading">
+			<v-btn
+				color="success"
+				type="submit"
+				:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'"
+				:loading="loading">
 				{{ $t('create') }}
 				<v-icon :icon="mdiSend" class="ml-3" />
 			</v-btn>
@@ -32,16 +36,15 @@
 <script setup lang="ts">
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { createCategory, type Category, type CategoryData } from '@/api/category';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { category as validations } from '@/utils/validations';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import { defaultCategoryLimit } from '@/constants/app';
-import type { VForm } from 'vuetify/components';
 
 const { defaultLimit = defaultCategoryLimit } = defineProps<{
 	defaultLimit?: number;
@@ -57,7 +60,7 @@ const cf = useCurrencyFilter();
 const { showMessage } = useSnackbarStore();
 
 const { userCurrency } = storeToRefs(useUserStore());
-const form = ref<VForm | null>(null);
+const formRef = useTemplateRef('form');
 const loading = ref(false);
 
 const formState = ref<CategoryData>({
@@ -66,7 +69,7 @@ const formState = ref<CategoryData>({
 });
 
 const submitHandler = async () => {
-	const valid = (await form.value?.validate())?.valid;
+	const valid = (await formRef.value?.validate())?.valid;
 	if (valid) {
 		try {
 			const { limit, ...data } = formState.value;
@@ -77,7 +80,7 @@ const submitHandler = async () => {
 			});
 			if (category) {
 				emit('created', category);
-				form.value?.reset();
+				formRef.value?.reset();
 				formState.value.limit = Math.floor(cf.value(defaultLimit) / 100) * 100;
 				showMessage(t('category_created'));
 			} else {

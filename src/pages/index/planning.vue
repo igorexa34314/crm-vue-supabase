@@ -1,7 +1,10 @@
 <template>
 	<div>
-		<div class="title mt-2 mt-sm-4 d-flex flex-column flex-sm-row align-sm-center mb-3 text-title">
-			<h3 class="text-h5 text-sm-h4 ml-2 flex-grow-1 mb-3 mb-sm-0">{{ $t('pageTitles.plan') }}</h3>
+		<div
+			class="title mt-2 mt-sm-4 d-flex flex-column flex-sm-row align-sm-center mb-3 text-title">
+			<h3 class="text-h5 text-sm-h4 ml-2 flex-grow-1 mb-3 mb-sm-0">
+				{{ $t('pageTitles.plan') }}
+			</h3>
 			<v-skeleton-loader
 				v-if="isCurrencyLoading || !userStore.info?.bill"
 				type="heading"
@@ -18,14 +21,17 @@
 		<app-loader v-if="isStatsLoading" class="mt-10" page />
 
 		<div v-else-if="!catStats.length" class="mt-10 text-center text-h6">
-			{{ $t('no_categories') + '. ' }}<router-link to="/categories">{{ $t('create_category') + '. ' }}</router-link>
+			{{ $t('no_categories') + '. '
+			}}<router-link to="/categories">{{ $t('create_category') + '. ' }}</router-link>
 		</div>
 
 		<section v-else class="mt-10 px-4">
 			<div v-for="(cat, index) of catStats" :key="cat.id || index" class="mt-8">
 				<div class="d-flex flex-row align-center justify-space-between">
 					<div class="category-title mr-4">
-						<strong class="text-truncate font-weight-bold text-primary flex-fill">{{ cat.title + ':' }}</strong>
+						<strong class="text-truncate font-weight-bold text-primary flex-fill">{{
+							cat.title + ':'
+						}}</strong>
 					</div>
 
 					<div class="category-spent">
@@ -59,11 +65,16 @@
 					location="bottom"
 					:offset="[0, -30]"
 					target="cursor"
-					:content-class="cat.limit - cat.spend < 0 ? 'bg-deep-orange-darken-3' : 'bg-light-green-darken-1'">
+					:content-class="
+						cat.limit - cat.spend < 0 ? 'bg-deep-orange-darken-3' : 'bg-light-green-darken-1'
+					">
 					{{
 						(cat.limit - cat.spend < 0 ? $t('exceeding') : $t('left')) +
 						' ' +
-						$n(Math.abs(cf(cat.limit) - cf(cat.spend)), { key: 'currency', currency: userCurrency })
+						$n(Math.abs(cf(cat.limit) - cf(cat.spend)), {
+							key: 'currency',
+							currency: userCurrency,
+						})
 					}}
 					<template #activator="{ props }">
 						<div v-bind="props" class="py-2">
@@ -92,7 +103,7 @@ import { useHead } from '@unhead/vue';
 import { useAsyncState } from '@vueuse/core';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currency-filter';
 import { defaultBill } from '@/constants/app';
 import { currencyKey, type CurrencyReturn } from '@/injection-keys';
 
@@ -107,12 +118,16 @@ const cf = useCurrencyFilter();
 
 const bill = computed(() => userStore.info?.bill || defaultBill);
 
-const { state: catStats, isLoading: isStatsLoading } = useAsyncState(fetchCategoriesSpendStats, [], {
-	onError: e => {
-		const { showMessage } = useSnackbarStore();
-		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
-	},
-});
+const { state: catStats, isLoading: isStatsLoading } = useAsyncState(
+	fetchCategoriesSpendStats,
+	[],
+	{
+		onError: e => {
+			const { showMessage } = useSnackbarStore();
+			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
+		},
+	}
+);
 </script>
 
 <style lang="scss" scoped>

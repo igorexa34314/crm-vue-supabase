@@ -1,9 +1,12 @@
 <template>
 	<v-text-field
-		v-bind="{ variant }"
-		validate-on="blur lazy"
-		class="text-input"
-		:density="$vuetify.display.xs ? 'compact' : 'default'">
+		v-bind="{
+			variant,
+			validateOn,
+			density: density || ($vuetify.display.xs ? 'compact' : 'default'),
+			...props,
+		}"
+		class="text-input">
 		<template #message="{ message }">
 			{{ $t(message) }}
 		</template>
@@ -16,9 +19,20 @@
 <script setup lang="ts">
 import type { VTextField } from 'vuetify/components';
 
-const { variant = 'underlined' } = defineProps<{
-	variant?: VTextField['variant'];
-}>();
+type VTextFieldProps = VTextField['$props'];
+
+interface Props extends /* @vue-ignore */ VTextFieldProps {
+	variant?: VTextFieldProps['variant'];
+	validateOn?: VTextFieldProps['validateOn'];
+	density?: VTextFieldProps['density'];
+}
+
+const {
+	variant = 'underlined',
+	validateOn = 'blur lazy',
+	density,
+	...props
+} = defineProps<Props>();
 
 defineSlots<{
 	'append-inner': VTextField['$slots']['append-inner'];

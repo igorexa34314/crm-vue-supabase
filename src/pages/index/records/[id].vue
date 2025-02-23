@@ -16,7 +16,9 @@
 					<span
 						:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
 						class="ml-3 pb-1 px-2 text-center text-trend">
-						<v-icon :icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp" color="title" />
+						<v-icon
+							:icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
+							color="title" />
 					</span>
 				</v-card-title>
 				<div class="card-header-actions d-flex justify-end">
@@ -38,7 +40,11 @@
 			<v-card-text class="mt-4 text-h6 text-primary">
 				<p>{{ $t('description') + ': ' + record.description }}</p>
 				<p class="mt-4">
-					{{ $t('amount') + ': ' + $n(cf(record.amount), { key: 'currency', currency: userCurrency }) }}
+					{{
+						$t('amount') +
+						': ' +
+						$n(cf(record.amount), { key: 'currency', currency: userCurrency })
+					}}
 				</p>
 
 				<p class="mt-4 mb-5">{{ $t('category') + ': ' + record.category?.title }}</p>
@@ -51,13 +57,13 @@
 				<small class="text-right d-block mt-4 mt-sm-6 mr-1">
 					{{
 						$d(new Date(record.created_at), 'short') +
-						(record.updated_at ? ` (${$t('updated_short')}. ${$d(new Date(record.updated_at), 'short')})` : '')
+						(record.updated_at
+							? ` (${$t('updated_short')}. ${$d(new Date(record.updated_at), 'short')})`
+							: '')
 					}}
 				</small>
 			</v-card-text>
-
 			<UpdateRecordDialog
-				v-if="updateRecordDialog"
 				v-model="updateRecordDialog"
 				:record="record"
 				@update-record="handleRecordUpdate" />
@@ -76,10 +82,12 @@
 </template>
 
 <script setup lang="ts">
+import UpdateRecordDialog from '@/components/record/UpdateRecordDialog.vue';
+import DeleteRecordDialog from '@/components/record/DeleteRecordDialog.vue';
 import PageBreadcrumbs, { type Breadcrumb } from '@/components/ui/PageBreadcrumbs.vue';
 import RecordDetails from '@/components/record/RecordDetails.vue';
 import { mdiTrendingUp, mdiTrendingDown, mdiDelete, mdiPencil } from '@mdi/js';
-import { ref, computed, defineAsyncComponent } from 'vue';
+import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
 import { useRouter, useRoute } from 'vue-router';
@@ -94,14 +102,11 @@ import {
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currency-filter';
 
 useHead({ title: 'pageTitles.details' });
 
-const DeleteRecordDialog = defineAsyncComponent(() => import('@/components/record/DeleteRecordDialog.vue'));
-const UpdateRecordDialog = defineAsyncComponent(() => import('@/components/record/UpdateRecordDialog.vue'));
-
-const route = useRoute('/records/[id]');
+const route = useRoute('//records/[id]');
 const router = useRouter();
 const { t, n } = useI18n({ useScope: 'global' });
 const cf = useCurrencyFilter();
@@ -130,7 +135,7 @@ const deleteRecord = async () => {
 			await deleteRecordById(record.value?.id ?? route.params.id);
 			showMessage(t('record_deleted_succesfully'));
 			router.push('/records');
-		} catch (err) {
+		} catch {
 			showMessage(t('error_delete_record'), 'red-darken-3');
 		}
 	} else {
@@ -152,7 +157,7 @@ const handleRecordUpdate = async (recordData: RecordDataToUpdate) => {
 		const updatedRecord = await updateRecord(record.value?.id || route.params.id, recordData);
 		record.value = { ...record.value, ...updatedRecord } as RecordWithDetails;
 		showMessage(t('record_updated_succesfully'));
-	} catch (err) {
+	} catch {
 		showMessage(t('error_update_record'), 'red-darken-3');
 	} finally {
 		isLoading.value = false;

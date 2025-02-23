@@ -44,7 +44,12 @@
 				auto-grow />
 		</v-form>
 		<template #submit="{ submitEvent }">
-			<v-btn type="submit" form="update-record-form" color="green-darken-1" variant="text" @click="submitEvent">
+			<v-btn
+				type="submit"
+				form="update-record-form"
+				color="green-darken-1"
+				variant="text"
+				@click="submitEvent">
 				<span class="text-h6">{{ $t('submit') }}</span>
 			</v-btn>
 		</template>
@@ -55,14 +60,13 @@
 import ConfirmationDialog from '@/components/ui/ConfirmationDialog.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, useTemplateRef } from 'vue';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useI18n } from 'vue-i18n';
 import { record as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
 import { recordTypes } from '@/constants/app';
-import type { VForm } from 'vuetify/components';
 import type { RecordWithCategory, RecordDataToUpdate } from '@/api/record';
 
 const { record } = defineProps<{
@@ -81,7 +85,7 @@ const userStore = useUserStore();
 
 const info = computed(() => userStore.info);
 
-const form = ref<VForm | null>(null);
+const formRef = useTemplateRef('form');
 const formState = ref<RecordDataToUpdate>({
 	amount: cf.value(record.amount),
 	description: record.description,
@@ -99,16 +103,17 @@ watchEffect(() => {
 const canUpdateRecord = computed(
 	() =>
 		info.value!.bill >=
-		(formState.value.type === 'income' ? 1 : -1) * cf.value(formState.value.amount, { type: 'reverse' }) -
+		(formState.value.type === 'income' ? 1 : -1) *
+			cf.value(formState.value.amount, { type: 'reverse' }) -
 			record.amount
 );
 
 const submitHandler = async () => {
-	const valid = (await form.value?.validate())?.valid;
+	const valid = (await formRef.value?.validate())?.valid;
 	if (valid && canUpdateRecord.value) {
 		const { amount, ...data } = formState.value;
 		emit('updateRecord', { ...data, amount: cf.value(amount, { type: 'reverse' }) });
-		form.value?.reset();
+		formRef.value?.reset();
 	} else {
 		showMessage(
 			t('lack_of_amount') +

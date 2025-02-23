@@ -62,8 +62,8 @@ const slots = defineSlots<{
 	title: VDialog['$slots']['default'];
 	default: VDialog['$slots']['default'];
 	activator: VDialog['$slots']['activator'];
-	cancel(arg: { cancelEvent: () => void }): any;
-	submit(arg: { submitEvent: () => void }): any;
+	cancel(arg: { cancelEvent: () => void }): unknown;
+	submit(arg: { submitEvent: () => void }): unknown;
 }>();
 
 const confirmationDialog = defineModel<boolean>();

@@ -30,18 +30,17 @@
 <script setup lang="ts">
 import PassField from '@/components/ui/PassField.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { login } from '@/api/auth';
 import { user as validations } from '@/utils/validations';
-import type { VForm } from 'vuetify/components';
 
 const emit = defineEmits<{
 	success: [];
 	error: [err: unknown];
 }>();
 
-const form = ref<VForm | null>(null);
+const formRef = useTemplateRef('form');
 const loading = ref(false);
 
 const formState = ref({
@@ -50,7 +49,7 @@ const formState = ref({
 });
 
 const submitLogin = async () => {
-	const valid = (await form.value?.validate())?.valid;
+	const valid = (await formRef.value?.validate())?.valid;
 	if (valid) {
 		try {
 			loading.value = true;

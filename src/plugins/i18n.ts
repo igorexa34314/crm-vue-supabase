@@ -13,7 +13,8 @@ import { fetchLocaleTranslation } from '@/api/locale';
 import { availableLocales, localeKey, defaultLocale } from '@/constants/i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 
-export const getLocale = () => (JSON.parse(localStorage.getItem(localeKey) || 'null') as string) || defaultLocale;
+export const getLocale = () =>
+	(JSON.parse(localStorage.getItem(localeKey) || 'null') as string) || defaultLocale;
 
 export const loadMessages = async (locale: string) => {
 	try {
@@ -21,18 +22,20 @@ export const loadMessages = async (locale: string) => {
 		return messages;
 	} catch (err) {
 		try {
-			console.error('Unable to load translations with this locale. Loading fallback locale from server...');
+			console.error(
+				'Unable to load translations with this locale. Loading fallback locale from server...'
+			);
 			const messages = await fetchLocaleTranslation(defaultLocale);
 			return messages;
-		} catch (error) {
+		} catch {
 			console.error('Unable to load translations from server', err);
-			const fallbackMessages: Record<string, any> = await import('@intlify/unplugin-vue-i18n/messages');
-			return fallbackMessages;
+			const fallbackMessages = (await import('@intlify/unplugin-vue-i18n/messages'))['default'];
+			return fallbackMessages ? fallbackMessages[locale] : ({} as Record<string, unknown>);
 		}
 	}
 };
 
-export function setupI18n(locale: string, messages: Record<string, any>) {
+export function setupI18n(locale: string, messages: Record<string, unknown>) {
 	const i18n = createI18n({
 		legacy: false, // Vuetify and composition API does not support the legacy mode of vue-i18n
 		locale: locale ?? defaultLocale,
@@ -50,10 +53,15 @@ export function setupI18n(locale: string, messages: Record<string, any>) {
 			{} as Record<LocaleKey, DateTimeFormatSchema>
 		),
 	});
-	return i18n;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type
+	return i18n as I18n<any, {}, {}, string, false>;
 }
 
-export function setI18nLanguage(i18n: I18n<any, any, any, any, false>, locale: string = defaultLocale) {
+export function setI18nLanguage(
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type
+	i18n: I18n<any, {}, {}, string, false>,
+	locale: string = defaultLocale
+) {
 	i18n.global.locale.value = locale;
 	/**
 	 * NOTE:
@@ -65,7 +73,11 @@ export function setI18nLanguage(i18n: I18n<any, any, any, any, false>, locale: s
 	document.querySelector('html')?.setAttribute('lang', locale);
 }
 
-export const setI18nLocaleMessages = async (i18n: I18n<any, any, any, any, false>, locale: string = defaultLocale) => {
+export const setI18nLocaleMessages = async (
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type
+	i18n: I18n<any, {}, {}, string, false>,
+	locale: string = defaultLocale
+) => {
 	try {
 		// Load locale if not available yet.
 		if (!i18n.global.availableLocales.includes(locale)) {
@@ -76,8 +88,7 @@ export const setI18nLocaleMessages = async (i18n: I18n<any, any, any, any, false
 			localStorage.setItem(localeKey, JSON.stringify(locale));
 			setI18nLanguage(i18n, locale);
 		}
-	} catch (error) {
-		// @ts-ignore
-		useSnackbarStore().showMessage(i18n.global.t('error_loading_locale'));
+	} catch {
+		useSnackbarStore().showMessage(i18n.global.t('error_loading_locales'));
 	}
 };
