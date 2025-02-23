@@ -1,4 +1,4 @@
-@import './scrollbar';
+@use './scrollbar';
 
 .v-col-xs-12 {
 	@media (max-width: 600px) {

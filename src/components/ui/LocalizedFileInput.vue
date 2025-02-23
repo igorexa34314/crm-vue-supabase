@@ -1,5 +1,5 @@
 <template>
-	<v-file-input v-bind="{ variant }" validate-on="blur lazy" class="text-input" single-line>
+	<v-file-input v-bind="{ variant, validateOn, singleLine, ...props }" class="text-input">
 		<template #message="{ message }">
 			{{ $t(message) }}
 		</template>
@@ -9,7 +9,18 @@
 <script setup lang="ts">
 import type { VFileInput } from 'vuetify/components';
 
-const { variant = 'underlined' } = defineProps<{
-	variant?: VFileInput['variant'];
-}>();
+type VFileInputProps = VFileInput['$props'];
+
+interface Props extends /* @vue-ignore */ VFileInputProps {
+	variant?: VFileInputProps['variant'];
+	validateOn?: VFileInputProps['validateOn'];
+	singleLine?: VFileInputProps['singleLine'];
+}
+
+const {
+	variant = 'underlined',
+	validateOn = 'blur lazy',
+	singleLine = true,
+	...props
+} = defineProps<Props>();
 </script>

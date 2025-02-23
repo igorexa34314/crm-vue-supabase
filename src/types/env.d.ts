@@ -7,14 +7,6 @@ interface ImportMetaEnv {
 
 	// Currency name set on server (Currency name which values stored on in database)
 	readonly VITE_SERVER_CURRENCY: string;
-	readonly VITE_APP_DEFAULT_BILL: number;
-	readonly VITE_APP_DEFAULT_LOCALE: string;
-
-	// dark or light theme
-	readonly VITE_APP_DEFAULT_THEME: string;
-
-	readonly VITE_APP_LOCALE_KEY: string;
-	readonly VITE_APP_DARK_MODE_KEY: string;
 
 	readonly VITE_ENDPOINT_REDIRECT_URL: string;
 
@@ -32,5 +24,5 @@ interface ImportMetaEnv {
 }
 
 interface ImportMeta {
-  readonly env: ImportMetaEnv
+	readonly env: ImportMetaEnv;
 }

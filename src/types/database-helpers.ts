@@ -1,30 +1,6 @@
-import type { MessageSchema } from 'vue-i18n';
-import type { Database as DatabaseGenerated } from './database-generated.types';
-import type { MergeDeep } from 'type-fest';
-
-export type { Json, Enums, Tables } from './database-generated.types';
+import type { Database } from './database-generated';
 
 // Override the type for a specific column in a table
-export type Database = MergeDeep<
-	DatabaseGenerated,
-	{
-		public: {
-			Tables: {
-				locales: {
-					Row: {
-						translations: MessageSchema;
-					};
-					Insert: {
-						translations: MessageSchema;
-					};
-					Update: {
-						translations: MessageSchema;
-					};
-				};
-			};
-		};
-	}
->;
 
 type PublicSchema = Database[Extract<keyof Database, 'public'>];
 

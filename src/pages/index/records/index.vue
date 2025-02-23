@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<div class="title">
-			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2 text-title">{{ $t('pageTitles.history') }}</h3>
+			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2 text-title">
+				{{ $t('pageTitles.history') }}
+			</h3>
 		</div>
 		<v-divider color="black" thickness="1.5" class="bg-white mt-3 mb-6" />
 
@@ -27,7 +29,9 @@
 				@update:options="loadRecords" />
 		</section>
 
-		<div v-if="!categoriesLoading && !recordsLoading && !recordsData.records.length" class="text-center text-h6 mt-9">
+		<div
+			v-if="!categoriesLoading && !recordsLoading && !recordsData.records.length"
+			class="text-center text-h6 mt-9">
 			{{ $t('no_records') + '. ' }}
 			<router-link to="/records/create">{{ $t('create_record') }}</router-link>
 		</div>
@@ -42,7 +46,7 @@ import { fetchCategoriesSpendStats } from '@/api/category';
 import { fetchRecordsWithCategory, type Record } from '@/api/record';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useChart } from '@/composables/useChart';
+import { useChart } from '@/composables/chart';
 import { computed } from 'vue';
 import { useAsyncState } from '@vueuse/core';
 import { defaultRecordsPerPage } from '@/constants/app';
@@ -75,7 +79,9 @@ const { chartData, chartOptions } = useChart<'pie'>(catStats);
 const page = useRouteQuery('page', '1', { transform: Number });
 const perPage = useRouteQuery('perPage', `${defaultRecordsPerPage}`, { transform: Number });
 const sortKey = useRouteQuery<string>('sort', '');
-const sortOrder = useRouteQuery('order', undefined, { transform: v => (!v || v === 'desc' ? 'desc' : 'asc') });
+const sortOrder = useRouteQuery('order', undefined, {
+	transform: v => (!v || v === 'desc' ? 'desc' : 'asc'),
+});
 
 const sortBy = computed<VDataTableServer['sortBy']>({
 	get: () => [{ key: sortKey.value, order: sortOrder.value }] as VDataTableServer['sortBy'],

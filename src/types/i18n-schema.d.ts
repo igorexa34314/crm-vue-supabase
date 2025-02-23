@@ -7,7 +7,7 @@ declare module 'vue-i18n' {
 	// define the locale messages schema
 	export type LocaleKey = (typeof import('@/constants/i18n'))['availableLocales'][number];
 	export type MessageSchema = typeof import('@/locales/en-US.json');
-	export type DateTimeFormatSchema = typeof import('@/constants/i18n')['datetimeFormats'];
+	export type DateTimeFormatSchema = (typeof import('@/constants/i18n'))['datetimeFormats'];
 
 	export interface DefineLocaleMessage extends MessageSchema {}
 

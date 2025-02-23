@@ -5,7 +5,8 @@ import { errorHandler } from '@/utils/errorHandler';
 import { defaultRecordsPerPage } from '@/constants/app';
 import { validateFileName } from '@/utils/helpers';
 import { v4 as uuidv4 } from 'uuid';
-import type { Enums, Tables, TablesInsert, TablesUpdate } from '@/types/database.types';
+import type { TablesInsert, TablesUpdate } from '@/types/database-helpers';
+import type { Enums, Tables } from '@/types/database-generated';
 import type { Split } from 'type-fest';
 
 const recordQuery = 'id, description, amount, type, created_at, updated_at';
@@ -16,14 +17,18 @@ export type Record = Pick<Tables<'records'>, Split<typeof recordQuery, ', '>[num
 export type RecordType = Enums<'record_type'>;
 export type RecordDetail = Tables<'record_details'>;
 
-export type RecordWithCategory = Omit<Record, 'category_id'> & { category: Category | null };
+export type RecordWithCategory = Omit<Record, 'category_id'> & { category: Category };
 export type RecordWithDetails = RecordWithCategory & { details: RecordDetail[] };
 
 export type RecordForm = TablesInsert<'records'> & { details: File[] };
 export type RecordDataToUpdate = Omit<TablesInsert<'records'>, 'category_id'>;
 
 export const createRecord = async ({ details, ...record }: RecordForm) => {
-	const { error, data } = await supabase.from('records').insert(record).select(recordWithCategoryQuery).single();
+	const { error, data } = await supabase
+		.from('records')
+		.insert(record)
+		.select(recordWithCategoryQuery)
+		.single();
 	if (error) throw errorHandler(error);
 	if (details?.length) {
 		await uploadRecordDetails(data.id, details);
@@ -53,7 +58,11 @@ export const fetchRecordsWithCategory = async (options?: {
 };
 
 export const fetchRecordById = async (recordId: Record['id']) => {
-	const { error, data } = await supabase.from('records').select(recordWithDetailsQuery).eq('id', recordId).single();
+	const { error, data } = await supabase
+		.from('records')
+		.select(recordWithDetailsQuery)
+		.eq('id', recordId)
+		.single();
 	if (error) throw errorHandler(error);
 	return data;
 };

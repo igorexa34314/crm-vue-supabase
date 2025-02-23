@@ -15,11 +15,13 @@
 import { mdiWeatherNight, mdiWeatherSunny } from '@mdi/js';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { useDarkModeStore } from '@/stores/darkMode';
+import { useDarkModeStore } from '@/stores/dark-mode';
 
 const { darkMode } = storeToRefs(useDarkModeStore());
 
-const switchToggleStyle = computed(() => (darkMode.value ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)'));
+const switchToggleStyle = computed(() =>
+	darkMode.value ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)'
+);
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,7 @@
 # CRM System on Vue 3 Composition Api
 
-### This project is based on Vue 3 Composition API using Vuetify UI library. Bundled with Vite. 
+## This project is based on Vue 3 Composition API using Vuetify UI library. Bundled with Vite
+
 ### Powered on Supabase SDK
 
 [![crm-vue-supabase1.png](https://i.postimg.cc/htpV5nMD/crm-vue-supabase.png)](https://postimg.cc/DS4WSttH)
@@ -12,17 +13,16 @@ This CRM system allows you to calculate expenses by created categories, as well 
 The application contains pages: Your Account, History, Planning, New Entry, Category.
 
 Try it on:\
-[Netlify](https://crm-vue-supabase-igorexa34314.netlify.app "CRM Vue")\
-[Vercel](https://crm-vue-supabase.vercel.app "CRM Vue")\
-[Github Pages](https://igorexa34314.github.io/crm-vue-supabase "CRM Vue")
-
-
+[Netlify](https://crm-vue-supabase-igorexa34314.netlify.app "CRM Vue")
+\
 Copy repo code and setup it with package manager (pnpm recommended):
-```
+
+```bash
 git clone https://github.com/igorexa34314/crm-vue-supabase.git
 cd ./crm-vue-supabase
 ```
-```
+
+```bash
 pnpm i
 pnpm dev
 ```

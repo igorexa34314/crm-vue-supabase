@@ -30,3 +30,9 @@ loadMessages(locale).then(messages => {
 
 	app.mount('#app');
 });
+
+declare module 'vue' {
+	export interface GlobalComponents {
+		AppLoader: (typeof import('@/components/app/AppLoader.vue'))['default'];
+	}
+}

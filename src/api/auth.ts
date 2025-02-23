@@ -1,13 +1,18 @@
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/config/supabase';
 import { defaultBill } from '@/constants/app';
-import type { SignInWithOAuthCredentials, Subscription, User, UserAttributes } from '@supabase/supabase-js';
+import type {
+	SignInWithOAuthCredentials,
+	Subscription,
+	User,
+	UserAttributes,
+} from '@supabase/supabase-js';
 
 export interface UserCredentials extends Required<Pick<UserAttributes, 'email' | 'password'>> {
 	username?: string;
 }
 
-const supportedOAuthProviders = ['google', 'facebook', 'github'] as const;
+export const supportedOAuthProviders = ['google', 'facebook', 'github'] as const;
 
 let user: User | null = null;
 let subscription: Subscription;

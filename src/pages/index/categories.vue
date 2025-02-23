@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<div class="title mb-7">
-			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2 text-title">{{ $t('pageTitles.categories') }}</h3>
+			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2 text-title">
+				{{ $t('pageTitles.categories') }}
+			</h3>
 		</div>
 
 		<section class="mt-sm-10 mt-7">
@@ -39,7 +41,8 @@
 
 <script setup lang="ts">
 import CreateCategory from '@/components/categories/CreateCategory.vue';
-import { inject, defineAsyncComponent } from 'vue';
+import EditCategory from '@/components/categories/EditCategory.vue';
+import { inject } from 'vue';
 import { useHead } from '@unhead/vue';
 import { useAsyncState } from '@vueuse/core';
 import { fetchCategories, type Category } from '@/api/category';
@@ -50,14 +53,15 @@ import { currencyKey } from '@/injection-keys';
 
 useHead({ title: 'pageTitles.categories' });
 
-const EditCategory = defineAsyncComponent(() => import('@/components/categories/EditCategory.vue'));
-
 const { te, t } = useI18n({ useScope: 'global' });
 const { isLoading: isCurrencyLoading } = inject(currencyKey)!;
 const { state: categories, isLoading } = useAsyncState(fetchCategories, [], {
 	onError: e => {
 		const { showMessage } = useSnackbarStore();
-		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_load_categories'), 'red-darken-3');
+		showMessage(
+			te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_load_categories'),
+			'red-darken-3'
+		);
 	},
 });
 

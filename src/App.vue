@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import GlobalSnackbar from '@/components/app/GlobalSnackbar.vue';
-import { useDarkModeStore } from '@/stores/darkMode';
+import { useDarkModeStore } from '@/stores/dark-mode';
 import { useI18n } from 'vue-i18n';
 import { appTitle } from '@/constants/app';
 import { useSeoMeta } from '@unhead/vue';
@@ -30,5 +30,5 @@ useDarkModeStore();
 </script>
 
 <style lang="scss">
-@import '@/assets/styles/main.scss';
+@use '@/assets/styles/main.scss';
 </style>

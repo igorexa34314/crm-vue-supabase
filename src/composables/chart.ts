@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { useI18n } from 'vue-i18n';
 import { useTheme, useDisplay } from 'vuetify';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useUserStore } from '@/stores/user';
 import randomColor from 'randomcolor';
 

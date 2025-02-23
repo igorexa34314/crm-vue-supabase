@@ -10,11 +10,7 @@ import { useTheme } from 'vuetify';
 
 const theme = useTheme();
 
-const {
-	color,
-	screen,
-	page,
-} = defineProps<{
+const { color, screen, page } = defineProps<{
 	page?: boolean;
 	screen?: boolean;
 	color?: string;

@@ -1,7 +1,9 @@
 <template>
 	<v-expansion-panels class="record__details">
 		<v-expansion-panel bg-color="panel">
-			<v-expansion-panel-title class="text-subtitle-1">{{ $t('record_details') }}</v-expansion-panel-title>
+			<v-expansion-panel-title class="text-subtitle-1">{{
+				$t('record_details')
+			}}</v-expansion-panel-title>
 			<v-expansion-panel-text>
 				<div class="mt-2 d-flex flex-wrap">
 					<v-hover v-for="detail in details" :key="detail.id" #default="{ isHovering, props }">

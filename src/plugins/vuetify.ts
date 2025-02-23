@@ -6,9 +6,12 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
 import { useI18n, type I18n } from 'vue-i18n';
 
-const defaultTheme = import.meta.env.VITE_APP_DEFAULT_THEME || 'light';
+const defaultTheme = 'light';
 
-export default function setupVuetify<T extends I18n<any, any, any, any, false>>(i18n: T) {
+export default function setupVuetify(
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type
+	i18n: I18n<any, {}, {}, string, false>
+) {
 	return createVuetify({
 		locale: {
 			adapter: createVueI18nAdapter({ i18n, useI18n }),
