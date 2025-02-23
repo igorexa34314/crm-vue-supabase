@@ -8,13 +8,15 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-*.local
-*.env
-dist/
+.DS_Store
+dist
+dist-ssr
+coverage
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea
 .DS_Store
 *.suo
@@ -32,8 +34,16 @@ dist/
 !.yarn/sdks
 !.yarn/versions
 
-.vercel
-
 # rollup-plugin-visualizer
-bundle-stats.html
+stats.html
+
+# Env
 .env*.local
+*.local
+*.env
+
+# Typescript
+*.tsbuildinfo
+
+# Linters and formatters
+.eslintcache

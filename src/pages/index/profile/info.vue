@@ -1,6 +1,10 @@
 <template>
 	<div>
-		<v-form v-if="info" ref="form" @submit.prevent="submitHandler" class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
+		<v-form
+			v-if="info"
+			ref="form"
+			@submit.prevent="submitHandler"
+			class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
 			<LocalizedInput
 				v-model="formState.username"
 				:rules="validations.username"
@@ -33,7 +37,10 @@
 						class="flex-fill"
 						:month-formatter="month => $d(month, { month: 'long' })" />
 
-					<v-radio-group v-model="formState.gender" :label="$t('user.gender.label')" class="text-input">
+					<v-radio-group
+						v-model="formState.gender"
+						:label="$t('user.gender.label')"
+						class="text-input">
 						<v-radio
 							v-for="gender in genderItems"
 							:key="gender.value"
@@ -45,8 +52,16 @@
 				<div
 					:style="{ 'max-width': $vuetify.display.smAndDown ? 'none' : '40%', width: '100%' }"
 					class="d-flex flex-column pl-4 mt-md-0 my-4">
-					<v-card variant="flat" :max-width="$vuetify.display.smAndDown ? 200 : 250" class="mb-5" elevation="4">
-						<v-img :src="info.avatar_url || '/img/avatar-placeholder.jpg'" alt="Ваш аватар" cover eager>
+					<v-card
+						variant="flat"
+						:max-width="$vuetify.display.smAndDown ? 200 : 250"
+						class="mb-5"
+						elevation="4">
+						<v-img
+							:src="info.avatar_url || '/img/avatar-placeholder.jpg'"
+							alt="Ваш аватар"
+							cover
+							eager>
 							<template #placeholder>
 								<ImageLoader />
 							</template>
@@ -98,7 +113,7 @@
 				color="success"
 				:class="$vuetify.display.xs ? 'mt-3' : 'mt-5'"
 				:loading="loading"
-				:disabled="isInfoEqualsToStore && !formState.avatar.length">
+				:disabled="isInfoEqualsToStore && !formState.avatar">
 				{{ $t('update') }}
 				<v-icon :icon="mdiSend" class="ml-3" />
 			</v-btn>
@@ -114,7 +129,7 @@ import ImageLoader from '@/components/app/ImageLoader.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import { VBirthdayPicker } from 'vuetify-birthdaypicker';
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, useTemplateRef } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
@@ -126,7 +141,6 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { defaultLocale } from '@/constants/i18n';
 import { serverCurrency } from '@/constants/currency';
 import deepEqual from 'deep-equal';
-import type { VForm } from 'vuetify/components';
 import { updateInfo, updateAvatar, type UserInfo } from '@/api/user';
 import type { CurrencyRates } from '@/api/currency';
 
@@ -135,21 +149,26 @@ const { t, te } = useI18n();
 const userStore = useUserStore();
 
 const currencies = computedInject(currencyKey, data => {
-	const currencyNames = Object.keys(data?.currency.value?.rates || { [serverCurrency]: 1 }) as CurrencyRates[];
+	const currencyNames = Object.keys(
+		data?.currency.value?.rates || { [serverCurrency]: 1 }
+	) as CurrencyRates[];
 	return currencyNames.map(c => ({ title: t(`currencies.${c}`) + ` (${c})`, value: c }));
 });
 
 const info = computed(() => userStore.info);
 
-const form = ref<VForm | null>(null);
+const formRef = useTemplateRef('form');
 
-type NonUndefinedOrNullObjectFields<T extends { [key: string]: any }> = {
+type NonUndefinedOrNullObjectFields<T extends { [key: string]: unknown }> = {
 	[key in keyof T]: Exclude<T[key], null | undefined>;
 };
 
 type FormInfo = NonUndefinedOrNullObjectFields<UserInfo>;
 const formState = ref<
-	Partial<Omit<FormInfo, 'updated_at' | 'birthday_date'>> & { birthday_date: string | null; avatar: File[] }
+	Partial<Omit<FormInfo, 'updated_at' | 'birthday_date'>> & {
+		birthday_date: string | null;
+		avatar: File | null;
+	}
 >({
 	username: '',
 	first_name: '',
@@ -159,7 +178,7 @@ const formState = ref<
 	gender: 'unknown',
 	locale: defaultLocale,
 	currency: serverCurrency,
-	avatar: [],
+	avatar: null,
 });
 const datePickerDate = computed({
 	get: () => new Date(formState.value.birthday_date || new Date()),
@@ -197,22 +216,25 @@ const isInfoEqualsToStore = computed(() => {
 const loading = ref(false);
 
 const submitHandler = async () => {
-	const valid = (await form.value?.validate())?.valid;
+	const valid = (await formRef.value?.validate())?.valid;
 	if (valid) {
 		try {
 			const { avatar, ...userdata } = formState.value;
 			loading.value = true;
 			await updateInfo(userdata);
-			if (avatar.length) {
+			if (avatar) {
 				await updateAvatar(avatar);
 			}
 			showMessage(t('updateProfile_message'));
 		} catch (e) {
-			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_update_profile'), 'red-darken-3');
+			showMessage(
+				te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_update_profile'),
+				'red-darken-3'
+			);
 		} finally {
 			loading.value = false;
 		}
-		formState.value.avatar = [];
+		formState.value.avatar = null;
 	}
 };
 </script>

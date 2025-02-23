@@ -13,7 +13,6 @@
 			variant="underlined"
 			:label="$t('password')"
 			class="mt-5"
-			validate-on="lazy blur"
 			repeater
 			required />
 
@@ -24,22 +23,22 @@
 			:counter="64"
 			:label="$t('user.username')"
 			class="mt-5"
-			validate-on="lazy blur"
 			required />
 
 		<v-checkbox
 			v-model="formState.agree"
 			:rules="validations.agree"
 			class="mt-5"
-			validate-on="lazy blur"
 			:density="$vuetify.display.xs ? 'compact' : 'default'"
 			required>
 			<template #label>
 				<p>
 					{{ $t('agree_with').charAt(0).toUpperCase() + $t('agree_with').slice(1) + ' '
-					}}<a target="_blank" href="https://old.uinp.gov.ua/publication/derzhavnii-gimn-ukraini">{{
-						$t('app_rules')
-					}}</a>
+					}}<a
+						target="_blank"
+						href="https://old.uinp.gov.ua/publication/derzhavnii-gimn-ukraini"
+						>{{ $t('app_rules') }}</a
+					>
 				</p>
 			</template>
 		</v-checkbox>
@@ -59,13 +58,12 @@
 <script setup lang="ts">
 import PassField from '@/components/ui/PassField.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { register } from '@/api/auth';
 import { user as validations } from '@/utils/validations';
-import { useTurnstile } from '@/composables/useTurnstile';
+import { useTurnstile } from '@/composables/turnstile';
 import { validateToken } from '@/api/turnstile';
-import type { VForm } from 'vuetify/components';
 
 const emit = defineEmits<{
 	success: [];
@@ -74,7 +72,7 @@ const emit = defineEmits<{
 
 const turnstileToken = useTurnstile('.cf-turnstile');
 
-const form = ref<VForm | null>(null);
+const formRef = useTemplateRef('form');
 const loading = ref(false);
 const formState = ref({
 	email: '',
@@ -84,13 +82,15 @@ const formState = ref({
 });
 
 const submitRegister = async () => {
-	const valid = (await form.value?.validate())?.valid;
+	const valid = (await formRef.value?.validate())?.valid;
 	if (valid) {
 		try {
 			loading.value = true;
-			await validateToken(turnstileToken.value);
-			await register(formState.value);
-			emit('success');
+			const data = await validateToken(turnstileToken.value);
+			if (data.success) {
+				await register(formState.value);
+				emit('success');
+			}
 		} catch (e) {
 			emit('error', e);
 		} finally {

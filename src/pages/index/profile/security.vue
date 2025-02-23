@@ -1,6 +1,9 @@
 <template>
 	<div>
-		<v-form ref="form" @submit.prevent="submitHandler" class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
+		<v-form
+			ref="form"
+			@submit.prevent="submitHandler"
+			class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
 			<!-- <LocalizedInput v-model="formState.email" :rules="validations.email" variant="underlined" :label="$t('email')"
 			class="mb-5" required /> -->
 
@@ -42,18 +45,17 @@
 <script setup lang="ts">
 import PassField from '@/components/ui/PassField.vue';
 // import LocalizedInput from '@/components/ui/LocalizedInput.vue';
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
 import { useSnackbarStore } from '@/stores/snackbar';
-import type { VForm } from 'vuetify/components';
-import { changeUserPassword, changeUserEmail } from '@/api/auth';
+import { changeUserPassword /* changeUserEmail */ } from '@/api/auth';
 
 const { t, te } = useI18n();
 const { showMessage } = useSnackbarStore();
 
-const form = ref<VForm | null>(null);
+const formRef = useTemplateRef('form');
 
 const loading = ref(false);
 
@@ -64,7 +66,7 @@ const formState = ref({
 });
 
 const submitHandler = async () => {
-	const valid = (await form.value?.validate())?.valid;
+	const valid = (await formRef.value?.validate())?.valid;
 	if (valid) {
 		try {
 			loading.value = true;
@@ -77,7 +79,10 @@ const submitHandler = async () => {
 			// }
 		} catch (e) {
 			if (typeof e === 'string') {
-				showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64), 'red-darken-3');
+				showMessage(
+					te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64),
+					'red-darken-3'
+				);
 			} else {
 				showMessage(t('error_update_profile'), 'red-darken-3');
 			}

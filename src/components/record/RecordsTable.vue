@@ -2,7 +2,7 @@
 	<v-data-table-server
 		color="background"
 		:items-per-page="perPage"
-		v-model::page="page"
+		v-model:page="page"
 		v-model:sort-by="sortBy"
 		:headers="tableHeaders"
 		:items-length="totalRecords || records.length"
@@ -21,9 +21,13 @@
 			<tr>
 				<template v-for="column in columns" :key="column.key">
 					<td>
-						<span class="mr-2 cursor-pointer" @click="column.sortable ? toggleSort(column) : null">{{
-							$te(column.title ?? '') ? $t(column.title as string) : column.title
-						}}</span>
+						<span
+							class="mr-2 cursor-pointer"
+							@click="column.sortable ? toggleSort(column) : null"
+							>{{
+								$te(column.title ?? '') ? $t(column.title as string) : column.title
+							}}</span
+						>
 						<template v-if="isSorted(column)">
 							<v-icon :icon="getSortIcon(column)" />
 						</template>
@@ -95,11 +99,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import { mdiOpenInNew, mdiTrendingUp, mdiTrendingDown, mdiMenuUp, mdiMenuDown } from '@mdi/js';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
-import { useCurrencyFilter } from '@/composables/useCurrencyFilter';
+import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useDisplay } from 'vuetify';
 import { defaultRecordsPerPage } from '@/constants/app';
 import type { VDataTableServer } from 'vuetify/components';
@@ -116,7 +120,7 @@ const {
 	loading?: boolean;
 }>();
 
-const emit = defineEmits<{
+defineEmits<{
 	'update:options': [];
 }>();
 
@@ -125,10 +129,6 @@ const perPage = defineModel<VDataTableServer['itemsPerPage']>('perPage', {
 });
 const page = defineModel<number>('page', { default: 1, set: v => +v });
 const sortBy = defineModel<VDataTableServer['sortBy']>('sortBy');
-
-watch(page, () => {
-	emit('update:options');
-});
 
 const pageCount = computed(() => {
 	return Math.ceil(+totalRecords / +perPage.value);
@@ -160,6 +160,6 @@ const { userCurrency } = storeToRefs(useUserStore());
 const router = useRouter();
 
 const openRecord = (event: MouseEvent, { item: record }: { item: RecordWithCategory }) => {
-	router.push({ name: '/records/[id]', params: { id: record.id } });
+	router.push({ name: '//records/[id]', params: { id: record.id } });
 };
 </script>

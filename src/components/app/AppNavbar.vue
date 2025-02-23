@@ -4,7 +4,12 @@
 			<v-app-bar-nav-icon color="primary" @click.stop="emit('click')" />
 		</template>
 		<v-app-bar-title
-			:text="$d(nowDate, $vuetify.display.xs ? 'time' : $vuetify.display.smAndDown ? 'daytime' : 'long')"
+			:text="
+				$d(
+					nowDate,
+					$vuetify.display.xs ? 'time' : $vuetify.display.smAndDown ? 'daytime' : 'long'
+				)
+			"
 			class="app-title d-xs-none mt-1 text-primary" />
 		<v-spacer />
 		<DarkmodeToggle class="mr-7" />
@@ -34,7 +39,9 @@
 					<template #prepend>
 						<v-icon :icon="mdiAccountCircleOutline" class="mr-3" />
 					</template>
-					<v-list-item-title class="text-primary">{{ $t('pageTitles.profile') }}</v-list-item-title>
+					<v-list-item-title class="text-primary">{{
+						$t('pageTitles.profile')
+					}}</v-list-item-title>
 				</v-list-item>
 				<v-list-item :active="false" @click="emit('logout')">
 					<template #prepend>
@@ -44,7 +51,12 @@
 				</v-list-item>
 			</v-list>
 		</v-menu>
-		<v-skeleton-loader v-else type="list-item-avatar" width="100%" color="navbar" max-width="240px" />
+		<v-skeleton-loader
+			v-else
+			type="list-item-avatar"
+			width="100%"
+			color="navbar"
+			max-width="240px" />
 	</v-app-bar>
 </template>
 

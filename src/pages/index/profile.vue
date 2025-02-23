@@ -4,7 +4,11 @@
 			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2">{{ $t('pageTitles.profile') }}</h3>
 		</div>
 
-		<v-tabs :model-value="$route.name" density="comfortable" class="mt-6 mb-3 mb-sm-0" color="primary">
+		<v-tabs
+			:model-value="$route.name"
+			density="comfortable"
+			class="mt-6 mb-3 mb-sm-0"
+			color="primary">
 			<v-tab
 				v-for="tab in profileTabs"
 				:key="tab.path"
@@ -17,7 +21,9 @@
 		<div class="profile-tab__window">
 			<router-view #default="{ Component }">
 				<v-slide-x-transition hide-on-leave>
-					<component :is="Component" class="profile-tab__window-item mt-6 mt-sm-8 px-2 px-sm-4" />
+					<component
+						:is="Component"
+						class="profile-tab__window-item mt-6 mt-sm-8 px-2 px-sm-4" />
 				</v-slide-x-transition>
 			</router-view>
 		</div>
@@ -37,7 +43,7 @@ useHead({ title: 'pageTitles.profile' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
-const route = useRoute('/profile/info');
+const route = useRoute('//profile/info');
 const router = useRouter();
 
 watchEffect(() => {

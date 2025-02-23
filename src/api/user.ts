@@ -4,7 +4,7 @@ import { getUserId } from '@/api/auth';
 import { supabase } from '@/config/supabase';
 import { v4 as uuidv4 } from 'uuid';
 import { validateFileName } from '@/utils/helpers';
-import type { Tables } from '@/types/database.types';
+import type { Tables } from '@/types/database-generated';
 
 export interface UserCredentials {
 	uid: string;
@@ -56,18 +56,14 @@ export const updateInfo = async (data: Partial<UserInfo>) => {
 	return supabase.from('profiles').update(data).eq('id', uid);
 };
 
-export const updateAvatar = async (files: File[]) => {
-	if (files.length !== 1) {
-		throw new Error('You should profide only 1 file');
-	}
-	const avatar = files[0];
+export const updateAvatar = async (file: File) => {
 	const uid = await getUserId();
 	if (!uid) {
 		throw new Error('user_unauthenticated');
 	}
 	const { error, data } = await supabase.storage
 		.from('avatars')
-		.upload(`${uid}/${uuidv4()}__${validateFileName(avatar.name)}`, avatar);
+		.upload(`${uid}/${uuidv4()}__${validateFileName(file.name)}`, file);
 	if (error) throw errorHandler(error);
 	return data.path;
 };

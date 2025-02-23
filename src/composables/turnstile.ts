@@ -12,7 +12,7 @@ export const useTurnstile = (selector: MaybeRefOrGetter<string | HTMLElement>) =
 		`${import.meta.env.VITE_TURNSTILE_SCRIPT_SRC}?render=explicit&onload=onloadTurnstileCallback`,
 		// on script tag loaded.
 		() => {
-			(window as any).onloadTurnstileCallback = () => {
+			window.onloadTurnstileCallback = () => {
 				turnstileId =
 					turnstile.render(toValue(selector), {
 						sitekey,
@@ -41,3 +41,9 @@ export const useTurnstile = (selector: MaybeRefOrGetter<string | HTMLElement>) =
 
 	return turnstileToken;
 };
+
+declare global {
+	interface Window {
+		onloadTurnstileCallback: () => void;
+	}
+}

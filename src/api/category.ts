@@ -1,7 +1,8 @@
 import { getUserId } from '@/api/auth';
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/config/supabase';
-import type { Tables, TablesInsert, TablesUpdate } from '@/types/database.types';
+import type { TablesInsert, TablesUpdate } from '@/types/database-helpers';
+import type { Tables } from '@/types/database-generated';
 import type { Split } from 'type-fest';
 
 export const categoryQuery = 'id, title, limit';
@@ -22,18 +23,27 @@ export const fetchCategories = async () => {
 };
 
 export const fetchCategoriesSpendStats = async () => {
-	const { error, data } = await supabase.rpc('calculate_category_spend_for_auth_user').select(categorySpendStatsQuery);
+	const { error, data } = await supabase
+		.rpc('calculate_category_spend_for_auth_user')
+		.select(categorySpendStatsQuery);
 	if (error) throw errorHandler(error);
 	return data;
 };
 
 export const createCategory = async (categoryData: TablesInsert<'categories'>) => {
-	const { error, data } = await supabase.from('categories').insert(categoryData).select(categoryQuery).single();
+	const { error, data } = await supabase
+		.from('categories')
+		.insert(categoryData)
+		.select(categoryQuery)
+		.single();
 	if (error) throw errorHandler(error);
 	return data;
 };
 
-export const updateCategory = async (categoryId: Category['id'], categoryData: TablesUpdate<'categories'>) => {
+export const updateCategory = async (
+	categoryId: Category['id'],
+	categoryData: TablesUpdate<'categories'>
+) => {
 	const { error, data } = await supabase
 		.from('categories')
 		.update(categoryData)
@@ -51,7 +61,11 @@ export const deleteCategoryById = async (categoryId: Category['id']) => {
 };
 
 export const fetchCategoryById = async (id: Category['id']) => {
-	const { error, data } = await supabase.from('categories').select(categoryQuery).eq('id', id).single();
+	const { error, data } = await supabase
+		.from('categories')
+		.select(categoryQuery)
+		.eq('id', id)
+		.single();
 	if (error) throw errorHandler(error);
 	return data;
 };

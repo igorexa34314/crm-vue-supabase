@@ -1,53 +1,130 @@
 <template>
-	<div>
-		<div class="d-flex flex-row align-center">
-			<h3 class="title text-h5 text-sm-h4 flex-grow-1 my-2 text-title">{{ $t('pageTitles.bill') }}</h3>
-			<v-btn color="success" @click="refreshCurrency(1500)">
-				<v-icon :icon="mdiRefresh" />
-			</v-btn>
-		</div>
-		<v-divider color="black" thickness="1.5" class="bg-white mt-1 mb-5 mb-sm-8" />
+	<v-layout class="app-main-layout" full-height>
+		<app-loader v-if="loading" class="main-loader" />
 
-		<app-loader v-if="isLoading" :color="theme.global.current.value.dark ? '#FFFFFF' : '#1A237E'" class="mt-2" page />
+		<template v-else>
+			<AppNavbar @click="drawer = !drawer" @logout="handleLogout" />
+			<AppSidebar v-model="drawer" />
 
-		<template v-else-if="currency?.rates && isReady">
-			<v-row>
-				<v-col cols="4" lg="4" md="6" sm="12" class="v-col-xs-12">
-					<MyBill v-if="userStore.info?.bill && !isLoading && currency.rates" :rates="currency.rates" />
-				</v-col>
-				<v-col cols="8" lg="8" md="6" sm="12" class="v-col-xs-12">
-					<CurrencyRates v-if="currency.rates" :rates="currency.rates" :date="currency.date" />
-				</v-col>
-			</v-row>
+			<v-main class="app bg-background" style="min-height: 100dvh; min-height: 100vh">
+				<div class="app-content pa-sm-5 pa-4">
+					<router-view />
+				</div>
+			</v-main>
+
+			<v-tooltip
+				:text="$t('create_record')"
+				content-class="bg-fixed text-primary font-weight-medium">
+				<template #activator="{ props }">
+					<v-btn
+						color="fixed"
+						:size="
+							$vuetify.display.xs
+								? 'default'
+								: $vuetify.display.mdAndDown
+									? 'large'
+									: 'x-large'
+						"
+						class="fixed-action-btn"
+						to="/records/create"
+						position="fixed"
+						:icon="mdiPlus"
+						v-bind="props" />
+				</template>
+			</v-tooltip>
 		</template>
-	</div>
+	</v-layout>
 </template>
 
 <script setup lang="ts">
-import MyBill from '@/components/home/MyBill.vue';
-import { inject, defineAsyncComponent } from 'vue';
-import { useHead } from '@unhead/vue';
-import { currencyKey } from '@/injection-keys';
-import { mdiRefresh } from '@mdi/js';
-import { useTheme } from 'vuetify';
+import AppNavbar from '@/components/app/AppNavbar.vue';
+import AppSidebar from '@/components/app/AppSidebar.vue';
+import { ref, provide, onUnmounted, watch } from 'vue';
+import { fetchCurrency } from '@/api/currency';
 import { useUserStore } from '@/stores/user';
+import { mdiPlus } from '@mdi/js';
+import { fetchAndSubscribeInfo } from '@/api/user';
+import { useI18n } from 'vue-i18n';
+import { useSnackbarStore } from '@/stores/snackbar';
+import { useAsyncState } from '@vueuse/core';
+import { currencyKey } from '@/injection-keys';
+import { useRouter } from 'vue-router';
+import { logout } from '@/api/auth';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 definePage({
-	alias: ['/home'],
+	meta: { requiresAuth: true },
 });
 
-useHead({ title: 'pageTitles.bill' });
-
-const CurrencyRates = defineAsyncComponent(() => import('@/components/home/CurrencyRates.vue'));
-
-const theme = useTheme();
+const router = useRouter();
+const { t, te } = useI18n({ useScope: 'global' });
+const { showMessage } = useSnackbarStore();
 const userStore = useUserStore();
+const drawer = ref(true);
+const loading = ref(false);
 
-const { currency, isLoading, isReady, refresh: refreshCurrency } = inject(currencyKey)!;
+const {
+	state: currency,
+	isLoading,
+	isReady,
+	execute: loadCurrency,
+} = useAsyncState((currency?: string) => fetchCurrency(currency ?? userStore.userCurrency), null, {
+	resetOnExecute: false,
+	onError: e => {
+		showMessage(
+			te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_loading_currency'),
+			'red-darken-3'
+		);
+		userStore.resetUserCurrency();
+	},
+});
+
+provide(currencyKey, { currency, isLoading, isReady, refresh: loadCurrency });
+
+let userInfoChannel: RealtimeChannel | null = null;
+
+fetchAndSubscribeInfo()
+	.then(channel => {
+		userInfoChannel = channel;
+	})
+	.catch((e: unknown) => {
+		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
+	});
+
+watch(
+	() => userStore.userCurrency,
+	async newCurrency => {
+		await loadCurrency(undefined, newCurrency);
+	}
+);
+
+onUnmounted(() => {
+	userInfoChannel?.unsubscribe();
+	userStore.$reset();
+});
+
+const handleLogout = async () => {
+	try {
+		await logout();
+		router.push({ path: '/login', query: { message: 'logout' } });
+	} catch (e) {
+		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
+	}
+};
 </script>
 
 <style lang="scss" scoped>
-.v-theme--light .v-table {
-	--v-border-opacity: 0.18;
+.fixed-action-btn {
+	right: 0;
+	bottom: 0;
+	transform: translate(-70%, -70%);
+}
+
+.main-loader {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 100;
 }
 </style>

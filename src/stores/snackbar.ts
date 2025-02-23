@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore, acceptHMRUpdate } from 'pinia';
 import { readonly, shallowRef } from 'vue';
 
 export interface Snackbar {
@@ -20,3 +20,7 @@ export const useSnackbarStore = defineStore('snackbar', () => {
 
 	return { snackbar: readonly(snackbar), showMessage };
 });
+
+if (import.meta.hot) {
+	import.meta.hot.accept(acceptHMRUpdate(useSnackbarStore, import.meta.hot));
+}
