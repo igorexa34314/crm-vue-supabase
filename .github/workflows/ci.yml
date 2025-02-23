@@ -28,9 +28,6 @@ jobs:
          - name: 📦 Install dependencies
            run: pnpm install --frozen-lockfile
 
-         - name: 🚧 Set up project
-           run: pnpm nuxi prepare
-
          - name: 📝 Lint
            run: pnpm lint
 
