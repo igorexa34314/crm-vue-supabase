@@ -13,8 +13,8 @@ This CRM system allows you to calculate expenses by created categories, as well 
 The application contains pages: Your Account, History, Planning, New Entry, Category.
 
 Try it on:\
-[Netlify](https://crm-vue-supabase-igorexa34314.netlify.app "CRM Vue")\
-
+[Netlify](https://crm-vue-supabase-igorexa34314.netlify.app "CRM Vue")
+\
 Copy repo code and setup it with package manager (pnpm recommended):
 
 ```bash
