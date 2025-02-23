@@ -7,6 +7,7 @@ import type {
 	User,
 	UserAttributes,
 } from '@supabase/supabase-js';
+import { joinURL, withQuery } from 'ufo';
 
 export interface UserCredentials extends Required<Pick<UserAttributes, 'email' | 'password'>> {
 	username?: string;
@@ -62,12 +63,14 @@ export const register = async ({ email, password, username }: UserCredentials) =
 };
 
 export const changeUserEmail = async (newEmail: string) => {
+	const redirectUrl = import.meta.env.VITE_ENDPOINT_REDIRECT_URL;
+	const baseUrl = import.meta.env.BASE_URL;
 	const { data, error } = await supabase.auth.updateUser(
 		{ email: newEmail },
 		{
-			emailRedirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}${
-				import.meta.env.BASE_URL
-			}profile?message=password_changed`,
+			emailRedirectTo: withQuery(joinURL(redirectUrl, baseUrl, '/profile'), {
+				message: 'password_changed',
+			}),
 		}
 	);
 	if (error) throw errorHandler(error);
@@ -87,12 +90,14 @@ const signInWithOAuthProvider = async (
 	provider: (typeof supportedOAuthProviders)[number],
 	options: SignInWithOAuthCredentials['options'] = {}
 ) => {
+	const redirectUrl = import.meta.env.VITE_ENDPOINT_REDIRECT_URL;
+	const baseUrl = import.meta.env.BASE_URL;
 	const { data, error } = await supabase.auth.signInWithOAuth({
 		provider,
 		options: {
-			redirectTo: `${import.meta.env.VITE_ENDPOINT_REDIRECT_URL}${
-				import.meta.env.BASE_URL
-			}profile?message=login_success`,
+			redirectTo: withQuery(joinURL(redirectUrl, baseUrl, '/profile'), {
+				message: 'login_success',
+			}),
 			...options,
 		},
 	});
