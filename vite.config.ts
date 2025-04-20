@@ -39,6 +39,7 @@ export default defineConfig({
 			'@vueuse/router',
 			'vue-i18n',
 			'pinia',
+			'unplugin-vue-router/runtime',
 		],
 	},
 });
