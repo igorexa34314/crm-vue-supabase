@@ -22,13 +22,13 @@
 <script setup lang="ts">
 import LocalRegister from '@/components/auth/LocalRegister.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useHead } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { onMounted, onUnmounted, watchEffect } from 'vue';
 import { useUserStore } from '@/stores/user';
 
-useHead({ title: 'sign_in' });
+useSeoMeta({ title: 'sign_in' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const router = useRouter();

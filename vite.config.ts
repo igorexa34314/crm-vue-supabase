@@ -31,15 +31,14 @@ export default defineConfig({
 		VueDevTools(),
 	],
 	optimizeDeps: {
-		include: [
-			'uuid',
-			'chart.js',
-			'vue-chartjs',
+		include: ['uuid', 'chart.js', 'vue-chartjs', 'randomcolor', 'deep-equal'],
+		exclude: [
+			'vuetify',
 			'vuetify-birthdaypicker',
-			'randomcolor',
-			'deep-equal',
+			'@vueuse/core',
 			'@vueuse/router',
+			'vue-i18n',
+			'pinia',
 		],
-		exclude: ['vuetify'],
 	},
 });

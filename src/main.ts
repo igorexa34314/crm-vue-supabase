@@ -1,7 +1,7 @@
 import { createApp, watch } from 'vue';
 import App from '@/App.vue';
 import router from '@/router';
-import { createHead } from '@unhead/vue';
+import { createHead } from '@unhead/vue/client';
 import setupVuetify from '@/plugins/vuetify';
 import { getLocale, loadMessages, setupI18n, setI18nLocaleMessages } from '@/plugins/i18n';
 import pinia from '@/plugins/pinia';

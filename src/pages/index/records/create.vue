@@ -24,14 +24,14 @@
 import CreateRecord from '@/components/record/CreateRecord.vue';
 import { ref } from 'vue';
 import { useAsyncState } from '@vueuse/core';
-import { useHead } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { fetchCategories } from '@/api/category';
 import { createRecord, type RecordForm } from '@/api/record';
 import { defaultRecordAmount } from '@/constants/app';
 
-useHead({ title: 'pageTitles.newRecord' });
+useSeoMeta({ title: 'pageTitles.newRecord' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();

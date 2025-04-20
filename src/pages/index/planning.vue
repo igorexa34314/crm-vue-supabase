@@ -99,7 +99,7 @@ import { useI18n } from 'vue-i18n';
 import { fetchCategoriesSpendStats } from '@/api/category';
 import { computed, inject } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useHead } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 import { useAsyncState } from '@vueuse/core';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
@@ -107,7 +107,7 @@ import { useCurrencyFilter } from '@/composables/currency-filter';
 import { defaultBill } from '@/constants/app';
 import { currencyKey, type CurrencyReturn } from '@/injection-keys';
 
-useHead({ title: 'pageTitles.plan' });
+useSeoMeta({ title: 'pageTitles.plan' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const userStore = useUserStore();

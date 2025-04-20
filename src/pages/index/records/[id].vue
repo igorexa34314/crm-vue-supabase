@@ -91,7 +91,7 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAsyncState } from '@vueuse/core';
 import { useRouter, useRoute } from 'vue-router';
-import { useHead } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 import {
 	fetchRecordById,
 	deleteRecordById,
@@ -104,7 +104,7 @@ import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 
-useHead({ title: 'pageTitles.details' });
+useSeoMeta({ title: 'pageTitles.details' });
 
 const route = useRoute('//records/[id]');
 const router = useRouter();

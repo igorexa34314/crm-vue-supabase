@@ -32,14 +32,14 @@
 
 <script setup lang="ts">
 import { watchEffect } from 'vue';
-import { useHead } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 
 definePage({ redirect: '/profile/info' });
 
-useHead({ title: 'pageTitles.profile' });
+useSeoMeta({ title: 'pageTitles.profile' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();

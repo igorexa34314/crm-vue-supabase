@@ -43,7 +43,7 @@
 import CreateCategory from '@/components/categories/CreateCategory.vue';
 import EditCategory from '@/components/categories/EditCategory.vue';
 import { inject } from 'vue';
-import { useHead } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 import { useAsyncState } from '@vueuse/core';
 import { fetchCategories, type Category } from '@/api/category';
 import { useI18n } from 'vue-i18n';
@@ -51,7 +51,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { defaultCategoryLimit } from '@/constants/app';
 import { currencyKey } from '@/injection-keys';
 
-useHead({ title: 'pageTitles.categories' });
+useSeoMeta({ title: 'pageTitles.categories' });
 
 const { te, t } = useI18n({ useScope: 'global' });
 const { isLoading: isCurrencyLoading } = inject(currencyKey)!;
