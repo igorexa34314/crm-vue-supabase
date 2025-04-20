@@ -1,6 +1,10 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": ["config:recommended"],
-	"description": "Schedule on Monday mornings (before 4 AM)",
-	"schedule": ["* 0-3 * * 1"]
+	"extends": ["config:base", "schedule:weekly", "group:allNonMajor"],
+	"packageRules": [
+		{
+			"groupName": "vueuse",
+			"matchPackagePatterns": ["^@vueuse"]
+		}
+	]
 }
