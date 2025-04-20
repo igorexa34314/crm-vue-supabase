@@ -35,7 +35,7 @@
 import CurrencyRates from '@/components/home/CurrencyRates.vue';
 import MyBill from '@/components/home/MyBill.vue';
 import { inject } from 'vue';
-import { useHead } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 import { currencyKey } from '@/injection-keys';
 import { mdiRefresh } from '@mdi/js';
 import { useTheme } from 'vuetify';
@@ -45,7 +45,7 @@ definePage({
 	alias: ['home'],
 });
 
-useHead({ title: 'pageTitles.bill' });
+useSeoMeta({ title: 'pageTitles.bill' });
 
 const theme = useTheme();
 const userStore = useUserStore();

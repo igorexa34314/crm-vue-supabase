@@ -35,13 +35,13 @@ import GithubProvider from '@/components/auth/providers/GithubProvider.vue';
 import FacebookProvider from '@/components/auth/providers/FacebookProvider.vue';
 import GoogleProvider from '@/components/auth/providers/GoogleProvider.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useHead } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { onMounted, onUnmounted, watchEffect } from 'vue';
 import { useUserStore } from '@/stores/user';
 
-useHead({ title: 'login' });
+useSeoMeta({ title: 'login' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const router = useRouter();

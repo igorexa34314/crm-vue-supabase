@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import RecordsTable from '@/components/record/RecordsTable.vue';
-import { useHead } from '@unhead/vue';
+import { useSeoMeta } from '@unhead/vue';
 import { Pie } from 'vue-chartjs';
 import { fetchCategoriesSpendStats } from '@/api/category';
 import { fetchRecordsWithCategory, type Record } from '@/api/record';
@@ -53,7 +53,7 @@ import { defaultRecordsPerPage } from '@/constants/app';
 import { useRouteQuery } from '@vueuse/router';
 import type { VDataTableServer } from 'vuetify/components';
 
-useHead({ title: 'pageTitles.history' });
+useSeoMeta({ title: 'pageTitles.history' });
 
 const { t } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
