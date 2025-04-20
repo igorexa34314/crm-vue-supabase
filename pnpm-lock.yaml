@@ -108,9 +108,6 @@ importers:
       prettier:
         specifier: ^3.5.2
         version: 3.5.2
-      rollup-plugin-visualizer:
-        specifier: ^5.14.0
-        version: 5.14.0(rollup@4.34.8)
       sass-embedded:
         specifier: ^1.85.0
         version: 1.85.0
