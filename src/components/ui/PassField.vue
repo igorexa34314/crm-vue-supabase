@@ -42,6 +42,7 @@ import { mdiEye, mdiEyeOff } from '@mdi/js';
 import { reactive } from 'vue';
 import { user as validations } from '@/utils/validations';
 import type { VTextField } from 'vuetify/components';
+import type { ValidationRule } from 'vuetify';
 
 defineOptions({
 	inheritAttrs: false,
@@ -57,11 +58,11 @@ const {
 	repeaterPlaceholder = 'repeat_password',
 } = defineProps<{
 	repeater?: boolean;
-	label?: VTextField['label'];
-	repeaterLabel?: VTextField['label'];
-	placeholder?: VTextField['placeholder'];
-	repeaterPlaceholder?: VTextField['placeholder'];
-	rules?: VTextField['rules'];
+	label?: string;
+	repeaterLabel?: string;
+	placeholder?: string;
+	repeaterPlaceholder?: string;
+	rules?: ValidationRule[];
 	variant?: VTextField['variant'];
 	passClass?: string;
 	repeaterClass?: string;

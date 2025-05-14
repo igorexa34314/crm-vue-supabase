@@ -51,7 +51,7 @@ import { computed } from 'vue';
 import { useAsyncState } from '@vueuse/core';
 import { defaultRecordsPerPage } from '@/constants/app';
 import { useRouteQuery } from '@vueuse/router';
-import type { VDataTableServer } from 'vuetify/components';
+import type { DataTableSortItem } from 'vuetify';
 
 useSeoMeta({ title: 'pageTitles.history' });
 
@@ -83,8 +83,8 @@ const sortOrder = useRouteQuery('order', undefined, {
 	transform: v => (!v || v === 'desc' ? 'desc' : 'asc'),
 });
 
-const sortBy = computed<VDataTableServer['sortBy']>({
-	get: () => [{ key: sortKey.value, order: sortOrder.value }] as VDataTableServer['sortBy'],
+const sortBy = computed<DataTableSortItem[]>({
+	get: () => [{ key: sortKey.value, order: sortOrder.value }] as DataTableSortItem[],
 	set: value => {
 		sortKey.value = value[0].key;
 		sortOrder.value = !value[0].order || value[0].order === 'desc' ? 'desc' : 'asc';

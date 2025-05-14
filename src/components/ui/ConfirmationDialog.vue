@@ -50,7 +50,7 @@ const { maxWidth = '550px', width = '100%' } = defineProps<{
 	activator?: VDialog['activator'];
 	submitLabel?: string;
 	cancelLabel?: string;
-	contentClass?: VDialog['contentClass'];
+	contentClass?: unknown;
 }>();
 
 const emit = defineEmits<{
