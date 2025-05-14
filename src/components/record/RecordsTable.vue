@@ -104,9 +104,8 @@ import { mdiOpenInNew, mdiTrendingUp, mdiTrendingDown, mdiMenuUp, mdiMenuDown } 
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/currency-filter';
-import { useDisplay } from 'vuetify';
+import { useDisplay, type DataTableHeader, type DataTableSortItem } from 'vuetify';
 import { defaultRecordsPerPage } from '@/constants/app';
-import type { VDataTableServer } from 'vuetify/components';
 import type { RecordWithCategory } from '@/api/record';
 import { useRouter } from 'vue-router';
 
@@ -116,7 +115,7 @@ const {
 	loading,
 } = defineProps<{
 	records: RecordWithCategory[];
-	totalRecords?: VDataTableServer['itemsLength'];
+	totalRecords?: string | number;
 	loading?: boolean;
 }>();
 
@@ -124,11 +123,11 @@ defineEmits<{
 	'update:options': [];
 }>();
 
-const perPage = defineModel<VDataTableServer['itemsPerPage']>('perPage', {
+const perPage = defineModel<string | number>('perPage', {
 	default: defaultRecordsPerPage,
 });
 const page = defineModel<number>('page', { default: 1, set: v => +v });
-const sortBy = defineModel<VDataTableServer['sortBy']>('sortBy');
+const sortBy = defineModel<DataTableSortItem[]>('sortBy');
 
 const pageCount = computed(() => {
 	return Math.ceil(+totalRecords / +perPage.value);
@@ -150,7 +149,7 @@ const tableHeaders = computed(() =>
 			{ title: 'category', key: 'category_id', align: 'end' },
 			{ title: 'type', key: 'type', align: 'end' },
 			!smAndDown.value ? { title: 'open', key: 'open', align: 'end', sortable: false } : false,
-		] as NonNullable<VDataTableServer['headers']>
+		] as NonNullable<DataTableHeader[]>
 	).filter(Boolean)
 );
 
