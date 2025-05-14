@@ -16,6 +16,15 @@ import { useSnackbarStore } from '@/stores/snackbar';
 export const getLocale = () =>
 	(JSON.parse(localStorage.getItem(localeKey) || 'null') as string) || defaultLocale;
 
+const loadLocalMessages = async (locale: string) => {
+	const messages = (await import('@intlify/unplugin-vue-i18n/messages'))['default'];
+	if (!messages || typeof messages !== 'object') {
+		return {} as Record<string, unknown>;
+	}
+
+	return locale in messages ? messages[locale] : messages['en-US'];
+};
+
 export const loadMessages = async (locale: string) => {
 	try {
 		const messages = await fetchLocaleTranslation(locale);
@@ -23,14 +32,14 @@ export const loadMessages = async (locale: string) => {
 	} catch (err) {
 		try {
 			console.error(
-				'Unable to load translations with this locale. Loading fallback locale from server...'
+				'Unable to load translations with this locale from server. Loading translations for fallback locale...'
 			);
 			const messages = await fetchLocaleTranslation(defaultLocale);
 			return messages;
 		} catch {
 			console.error('Unable to load translations from server', err);
-			const fallbackMessages = (await import('@intlify/unplugin-vue-i18n/messages'))['default'];
-			return fallbackMessages ? fallbackMessages[locale] : ({} as Record<string, unknown>);
+			const fallbackMessages = await loadLocalMessages(locale);
+			return fallbackMessages;
 		}
 	}
 };
