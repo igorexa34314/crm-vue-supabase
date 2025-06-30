@@ -48,7 +48,7 @@
 		"@types/node": "^22.15.18",
 		"@types/randomcolor": "^0.5.9",
 		"@types/uuid": "^10.0.0",
-		"@vitejs/plugin-vue": "^5.2.4",
+		"@vitejs/plugin-vue": "^6.0.0",
 		"@vue/eslint-config-prettier": "^10.2.0",
 		"@vue/eslint-config-typescript": "^14.5.0",
 		"@vue/tsconfig": "^0.7.0",
