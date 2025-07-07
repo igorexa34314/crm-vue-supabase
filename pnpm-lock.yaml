@@ -19,10 +19,10 @@ importers:
         version: 2.0.11(vue@3.5.17(typescript@5.8.3))
       '@vueuse/core':
         specifier: ^13.2.0
-        version: 13.4.0(vue@3.5.17(typescript@5.8.3))
+        version: 13.5.0(vue@3.5.17(typescript@5.8.3))
       '@vueuse/router':
         specifier: ^13.2.0
-        version: 13.4.0(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))
+        version: 13.5.0(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))
       chart.js:
         specifier: ^4.4.9
         version: 4.5.0
@@ -1074,22 +1074,22 @@ packages:
       vue: ^3.0.0
       vuetify: ^3.0.0
 
-  '@vueuse/core@13.4.0':
-    resolution: {integrity: sha512-OnK7zW3bTq/QclEk17+vDFN3tuAm8ONb9zQUIHrYQkkFesu3WeGUx/3YzpEp+ly53IfDAT9rsYXgGW6piNZC5w==}
+  '@vueuse/core@13.5.0':
+    resolution: {integrity: sha512-wV7z0eUpifKmvmN78UBZX8T7lMW53Nrk6JP5+6hbzrB9+cJ3jr//hUlhl9TZO/03bUkMK6gGkQpqOPWoabr72g==}
     peerDependencies:
       vue: ^3.5.0
 
-  '@vueuse/metadata@13.4.0':
-    resolution: {integrity: sha512-CPDQ/IgOeWbqItg1c/pS+Ulum63MNbpJ4eecjFJqgD/JUCJ822zLfpw6M9HzSvL6wbzMieOtIAW/H8deQASKHg==}
+  '@vueuse/metadata@13.5.0':
+    resolution: {integrity: sha512-euhItU3b0SqXxSy8u1XHxUCdQ8M++bsRs+TYhOLDU/OykS7KvJnyIFfep0XM5WjIFry9uAPlVSjmVHiqeshmkw==}
 
-  '@vueuse/router@13.4.0':
-    resolution: {integrity: sha512-3NL9RFgTiWN4SVp6CUFK/9db10BnoLU3iX+TRgcG4HEuR7GC1g+yMqxe33L6kjUTv8Dc9WeaER714vGBc9Xyjg==}
+  '@vueuse/router@13.5.0':
+    resolution: {integrity: sha512-QI735rn3FPMnEAqiwJKdYN2byMn1orRBcBq9YuZS/QSYUNV7tR8jhU99s7Vix+BL0YEIk/nU7lUZA0IOCarGzg==}
     peerDependencies:
       vue: ^3.5.0
       vue-router: ^4.0.0
 
-  '@vueuse/shared@13.4.0':
-    resolution: {integrity: sha512-+AxuKbw8R1gYy5T21V5yhadeNM7rJqb4cPaRI9DdGnnNl3uqXh+unvQ3uCaA2DjYLbNr1+l7ht/B4qEsRegX6A==}
+  '@vueuse/shared@13.5.0':
+    resolution: {integrity: sha512-K7GrQIxJ/ANtucxIXbQlUHdB0TPA8c+q5i+zbrjxuhJCnJ9GtBg75sBSnvmLSxHKPg2Yo8w62PWksl9kwH0Q8g==}
     peerDependencies:
       vue: ^3.5.0
 
@@ -3633,22 +3633,22 @@ snapshots:
       vue: 3.5.17(typescript@5.8.3)
       vuetify: 3.8.11(typescript@5.8.3)(vite-plugin-vuetify@2.1.1)(vue@3.5.17(typescript@5.8.3))
 
-  '@vueuse/core@13.4.0(vue@3.5.17(typescript@5.8.3))':
+  '@vueuse/core@13.5.0(vue@3.5.17(typescript@5.8.3))':
     dependencies:
       '@types/web-bluetooth': 0.0.21
-      '@vueuse/metadata': 13.4.0
-      '@vueuse/shared': 13.4.0(vue@3.5.17(typescript@5.8.3))
+      '@vueuse/metadata': 13.5.0
+      '@vueuse/shared': 13.5.0(vue@3.5.17(typescript@5.8.3))
       vue: 3.5.17(typescript@5.8.3)
 
-  '@vueuse/metadata@13.4.0': {}
+  '@vueuse/metadata@13.5.0': {}
 
-  '@vueuse/router@13.4.0(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))':
+  '@vueuse/router@13.5.0(vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))':
     dependencies:
-      '@vueuse/shared': 13.4.0(vue@3.5.17(typescript@5.8.3))
+      '@vueuse/shared': 13.5.0(vue@3.5.17(typescript@5.8.3))
       vue: 3.5.17(typescript@5.8.3)
       vue-router: 4.5.1(vue@3.5.17(typescript@5.8.3))
 
-  '@vueuse/shared@13.4.0(vue@3.5.17(typescript@5.8.3))':
+  '@vueuse/shared@13.5.0(vue@3.5.17(typescript@5.8.3))':
     dependencies:
       vue: 3.5.17(typescript@5.8.3)
 
