@@ -86,8 +86,8 @@ const sortOrder = useRouteQuery('order', undefined, {
 const sortBy = computed<DataTableSortItem[]>({
 	get: () => [{ key: sortKey.value, order: sortOrder.value }] as DataTableSortItem[],
 	set: value => {
-		sortKey.value = value[0].key;
-		sortOrder.value = !value[0].order || value[0].order === 'desc' ? 'desc' : 'asc';
+		sortKey.value = value[0]?.key ?? sortKey.value;
+		sortOrder.value = !value[0]?.order || value[0].order === 'desc' ? 'desc' : 'asc';
 	},
 });
 

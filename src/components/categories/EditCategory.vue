@@ -97,12 +97,12 @@ const formRef = useTemplateRef('form');
 const loading = ref(false);
 const confirmationDialog = ref(false);
 
-const currentCategoryId = ref(categories[0].id);
+const currentCategoryId = ref<Category['id'] | undefined>(categories[0]?.id);
 
 watch(
 	() => categories.length,
 	() => {
-		currentCategoryId.value = categories[0].id;
+		currentCategoryId.value = categories[0]?.id;
 	}
 );
 
@@ -145,6 +145,9 @@ const submitHandler = async () => {
 };
 
 const deleteCategory = async () => {
+	if (!currentCategoryId.value) {
+		return;
+	}
 	try {
 		loading.value = true;
 		await deleteCategoryById(currentCategoryId.value);

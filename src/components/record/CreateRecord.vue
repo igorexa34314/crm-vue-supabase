@@ -107,18 +107,22 @@ const info = computed(() => userStore.info);
 
 const formRef = useTemplateRef('form');
 
+type RecordFormWithNullableId = Omit<RecordForm, 'category_id'> & {
+	category_id: RecordForm['category_id'] | undefined;
+};
+
 const defaultFormValues = {
 	amount: Math.round(cf.value(defaultAmount) / 10) * 10,
 	description: '',
 	type: defaultType,
 	details: [],
-	category_id: categories[0].id,
+	category_id: categories[0]?.id,
 };
 
 const formState = ref<RecordForm>({ ...defaultFormValues, details: [] });
 
 watchEffect(() => {
-	formState.value.category_id = categories[0].id;
+	formState.value.category_id = categories[0]?.id;
 	formState.value.amount = Math.round(cf.value(defaultAmount) / 10) * 10;
 });
 const canCreateRecord = computed(
@@ -126,10 +130,16 @@ const canCreateRecord = computed(
 );
 
 const submitHandler = async () => {
+	if (!formState.value.category_id) {
+		return;
+	}
 	const valid = (await formRef.value?.validate())?.valid;
 	if (valid && canCreateRecord.value) {
-		const { amount, ...data } = formState.value;
-		emit('createRecord', { ...data, amount: cf.value(amount, { type: 'reverse' }) });
+		emit('createRecord', {
+			...formState.value,
+			category_id: formState.value.category_id,
+			amount: cf.value(formState.value.amount, { type: 'reverse' }),
+		});
 		resetForm();
 	} else {
 		showMessage(

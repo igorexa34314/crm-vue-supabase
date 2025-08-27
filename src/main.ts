@@ -10,7 +10,7 @@ import AppLoader from '@/components/app/AppLoader.vue';
 
 const locale = getLocale();
 loadMessages(locale).then(messages => {
-	const i18n = setupI18n(locale, messages);
+	const i18n = setupI18n(locale, messages ?? {});
 
 	const app = createApp(App);
 	app.use(router).use(pinia).use(i18n);

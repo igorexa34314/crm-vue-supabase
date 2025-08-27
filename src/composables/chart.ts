@@ -63,11 +63,15 @@ export function useChart<T extends ChartType = ChartType>(
 					tooltip: {
 						enabled: true,
 						callbacks: {
-							label: (item: TooltipItem<'pie'>) =>
-								n(cf.value(item.dataset.data[item.dataIndex]), {
-									key: 'currency',
-									currency: userStore.userCurrency,
-								}),
+							label: (item: TooltipItem<'pie'>) => {
+								const value = item.dataset.data[item.dataIndex];
+								if (value) {
+									return n(cf.value(value), {
+										key: 'currency',
+										currency: userStore.userCurrency,
+									});
+								}
+							},
 						},
 					},
 				},
