@@ -79,6 +79,7 @@ import { record as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
 import { defaultRecordAmount, defaultBill, recordTypes } from '@/constants/app';
 import { serverCurrency } from '@/constants/currency';
+import { klona } from 'klona/json';
 import type { Category } from '@/api/category';
 import type { Record, RecordForm } from '@/api/record';
 
@@ -119,7 +120,7 @@ const defaultFormValues = {
 	category_id: categories[0]?.id,
 };
 
-const formState = ref<RecordForm>({ ...defaultFormValues, details: [] });
+const formState = ref<RecordFormWithNullableId>(klona(defaultFormValues));
 
 watchEffect(() => {
 	formState.value.category_id = categories[0]?.id;
@@ -153,6 +154,6 @@ const submitHandler = async () => {
 	}
 };
 const resetForm = () => {
-	formState.value = { ...defaultFormValues, details: [] };
+	formState.value = klona(defaultFormValues);
 };
 </script>
