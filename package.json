@@ -42,7 +42,7 @@
 		"vuetify-birthdaypicker": "^0.0.3"
 	},
 	"devDependencies": {
-		"@intlify/unplugin-vue-i18n": "^6.0.8",
+		"@intlify/unplugin-vue-i18n": "^11.0.0",
 		"@tsconfig/node20": "^20.1.6",
 		"@types/cloudflare-turnstile": "^0.2.2",
 		"@types/deep-equal": "^1.0.4",
