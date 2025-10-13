@@ -14,7 +14,7 @@
 							@click="downloadDetail(detail)">
 							<div class="record-detail__file">
 								<small v-if="!isHovering" class="record-detail__ext text-primary">{{
-									detail.fullname.split('.').at(-1)
+									arrayAt(detail.fullname.split('.'), -1)
 								}}</small>
 								<v-icon :icon="mdiFile" size="88px" color="file-icon" />
 								<v-fade-transition>
@@ -42,6 +42,7 @@
 <script setup lang="ts">
 import { mdiFile, mdiDownload } from '@mdi/js';
 import { downloadRecordDetail, type RecordDetail } from '@/api/record';
+import { arrayAt } from '@/utils/helpers';
 
 defineProps<{
 	details: RecordDetail[];
