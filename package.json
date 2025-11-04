@@ -46,7 +46,7 @@
 		"@tsconfig/node22": "^22.0.2",
 		"@types/cloudflare-turnstile": "^0.2.2",
 		"@types/deep-equal": "^1.0.4",
-		"@types/node": "^22.18.0",
+		"@types/node": "^24.0.0",
 		"@types/randomcolor": "^0.5.9",
 		"@vitejs/plugin-vue": "^6.0.1",
 		"@vue/eslint-config-prettier": "^10.2.0",
