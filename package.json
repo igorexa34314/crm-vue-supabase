@@ -39,7 +39,7 @@
 		"vue-i18n": "^11.1.11",
 		"vue-router": "^4.5.1",
 		"vuetify": "^3.9.6",
-		"vuetify-birthdaypicker": "^0.0.3"
+		"vuetify-birthdaypicker": "^0.1.0"
 	},
 	"devDependencies": {
 		"@intlify/unplugin-vue-i18n": "^11.0.0",
@@ -68,7 +68,7 @@
 		"vite-plugin-vuetify": "^2.1.2",
 		"vue-tsc": "^3.0.6"
 	},
-	"packageManager": "pnpm@10.20.0",
+	"packageManager": "pnpm@10.21.0",
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"@parcel/watcher",
