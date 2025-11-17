@@ -6,7 +6,7 @@
 				{{ $t('pageTitles.plan') }}
 			</h3>
 			<v-skeleton-loader
-				v-if="isCurrencyLoading || !userStore.info?.bill"
+				v-if="isCurrencyPending || !userStore.info?.bill"
 				type="heading"
 				width="100%"
 				max-height="40px"
@@ -18,15 +18,17 @@
 		</div>
 		<v-divider color="black" thickness="1.5" class="bg-white mb-8" />
 
-		<app-loader v-if="isStatsLoading" class="mt-10" page />
+		<app-loader v-if="catSpendStatsState.status === 'pending'" class="mt-10" page />
 
-		<div v-else-if="!catStats.length" class="mt-10 text-center text-h6">
+		<div
+			v-else-if="catSpendStatsState.status === 'success' && !catSpendStatsState.data.length"
+			class="mt-10 text-center text-h6">
 			{{ $t('no_categories') + '. '
 			}}<router-link to="/categories">{{ $t('create_category') + '. ' }}</router-link>
 		</div>
 
-		<section v-else class="mt-10 px-4">
-			<div v-for="(cat, index) of catStats" :key="cat.id || index" class="mt-8">
+		<section v-else-if="catSpendStatsState.status === 'success'" class="mt-10 px-4">
+			<div v-for="(cat, index) of catSpendStatsState.data" :key="cat.id || index" class="mt-8">
 				<div class="d-flex flex-row align-center justify-space-between">
 					<div class="category-title mr-4">
 						<strong class="text-truncate font-weight-bold text-primary flex-fill">{{
@@ -36,7 +38,7 @@
 
 					<div class="category-spent">
 						<v-skeleton-loader
-							v-if="isCurrencyLoading"
+							v-if="isCurrencyPending"
 							type="list-item"
 							width="240px"
 							max-height="24px"
@@ -95,39 +97,26 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-import { fetchCategoriesSpendStats } from '@/api/category';
-import { computed, inject } from 'vue';
+import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useSeoMeta } from '@unhead/vue';
-import { useAsyncState } from '@vueuse/core';
 import { useUserStore } from '@/stores/user';
-import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { defaultBill } from '@/constants/app';
-import { currencyKey, type CurrencyReturn } from '@/injection-keys';
+import { useCurrencyQueryState } from '@/queries/currency';
+import { useCategoriesSpendStatsQuery } from '@/queries/categories';
 
 useSeoMeta({ title: 'pageTitles.plan' });
 
-const { t, te } = useI18n({ useScope: 'global' });
 const userStore = useUserStore();
 
 const { userCurrency } = storeToRefs(userStore);
-const { isLoading: isCurrencyLoading } = inject(currencyKey, {} as CurrencyReturn);
+const { isPending: isCurrencyPending } = useCurrencyQueryState();
 const cf = useCurrencyFilter();
 
 const bill = computed(() => userStore.info?.bill || defaultBill);
 
-const { state: catStats, isLoading: isStatsLoading } = useAsyncState(
-	fetchCategoriesSpendStats,
-	[],
-	{
-		onError: e => {
-			const { showMessage } = useSnackbarStore();
-			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
-		},
-	}
-);
+const { state: catSpendStatsState } = useCategoriesSpendStatsQuery();
 </script>
 
 <style lang="scss" scoped>

@@ -1,10 +1,10 @@
-import { computed, inject } from 'vue';
-import { currencyKey, type CurrencyReturn } from '@/injection-keys';
+import { computed } from 'vue';
 import type { CurrencyRates } from '@/api/currency';
 import { serverCurrency } from '@/constants/currency';
+import { useCurrencyQueryState } from '@/queries/currency';
 
 export const useCurrencyFilter = () => {
-	const { currency } = inject(currencyKey, {} as CurrencyReturn);
+	const { data: currency } = useCurrencyQueryState();
 
 	const currencyFilter = computed(
 		() =>

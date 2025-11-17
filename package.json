@@ -23,6 +23,7 @@
 	},
 	"dependencies": {
 		"@mdi/js": "^7.4.47",
+		"@pinia/colada": "^0.17.7",
 		"@supabase/supabase-js": "^2.56.0",
 		"@unhead/vue": "^2.0.14",
 		"@vueuse/core": "^14.0.0",

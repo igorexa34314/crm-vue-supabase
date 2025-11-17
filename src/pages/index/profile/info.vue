@@ -91,7 +91,7 @@
 			<div class="d-flex flex-column items-center mt-4 flex-sm-row">
 				<v-select
 					v-model="formState.locale"
-					:items="locales"
+					:items="localesState.data"
 					:label="$t('lang')"
 					item-title="native_name"
 					item-value="code"
@@ -129,28 +129,30 @@ import ImageLoader from '@/components/app/ImageLoader.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import { VBirthdayPicker } from 'vuetify-birthdaypicker';
-import { ref, computed, watchEffect, useTemplateRef } from 'vue';
+import { ref, computed, watchEffect, useTemplateRef, watch } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
-import { computedInject, useAsyncState } from '@vueuse/core';
 import { fetchAvailableLocales } from '@/api/locale';
 import { user as validations } from '@/utils/validations';
-import { currencyKey } from '@/injection-keys';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { defaultLocale } from '@/constants/i18n';
 import { serverCurrency } from '@/constants/currency';
 import deepEqual from 'deep-equal';
 import { updateInfo, updateAvatar, type UserInfo } from '@/api/user';
 import type { CurrencyRates } from '@/api/currency';
+import { useCurrencyQueryState } from '@/queries/currency';
+import { useQuery } from '@pinia/colada';
 
 const { showMessage } = useSnackbarStore();
 const { t, te } = useI18n();
 const userStore = useUserStore();
 
-const currencies = computedInject(currencyKey, data => {
+const { data: currency } = useCurrencyQueryState();
+
+const currencies = computed(() => {
 	const currencyNames = Object.keys(
-		data?.currency.value?.rates || { [serverCurrency]: 1 }
+		currency.value?.rates || { [serverCurrency]: 1 }
 	) as CurrencyRates[];
 	return currencyNames.map(c => ({ title: t(`currencies.${c}`) + ` (${c})`, value: c }));
 });
@@ -184,10 +186,16 @@ const datePickerDate = computed({
 	get: () => new Date(formState.value.birthday_date || new Date()),
 	set: val => (formState.value.birthday_date = val.toDateString()),
 });
-const { state: locales } = useAsyncState(fetchAvailableLocales, [], {
-	onError: () => {
+
+const { state: localesState, error: localesError } = useQuery({
+	key: ['locales'],
+	query: fetchAvailableLocales,
+});
+
+watch(localesError, e => {
+	if (e) {
 		showMessage(t('error_loading_locales'), 'red-darken-3');
-	},
+	}
 });
 
 const genderItems = [

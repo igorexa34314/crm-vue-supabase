@@ -2,9 +2,13 @@
 	<div>
 		<PageBreadcrumbs :breadcrumbs="breadcrumbs" />
 
-		<app-loader v-if="isLoading" page />
+		<app-loader v-if="recordState.status === 'pending' || isLoading" page />
 
-		<v-card v-else-if="record" class="mt-4 pa-3" max-width="800" color="card-1">
+		<v-card
+			v-else-if="recordState.status === 'success' && recordState.data && record"
+			class="mt-4 pa-3"
+			max-width="800"
+			color="card-1">
 			<div class="card-header d-flex justify-space-between">
 				<v-card-title class="flex-fill d-flex">
 					<div>
@@ -89,11 +93,9 @@ import RecordDetails from '@/components/record/RecordDetails.vue';
 import { mdiTrendingUp, mdiTrendingDown, mdiDelete, mdiPencil } from '@mdi/js';
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useAsyncState } from '@vueuse/core';
 import { useRouter, useRoute } from 'vue-router';
 import { useSeoMeta } from '@unhead/vue';
 import {
-	fetchRecordById,
 	deleteRecordById,
 	updateRecord,
 	type RecordDataToUpdate,
@@ -103,6 +105,7 @@ import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
+import { useRecordByIdQuery } from '@/queries/record';
 
 useSeoMeta({ title: 'pageTitles.details' });
 
@@ -113,17 +116,14 @@ const cf = useCurrencyFilter();
 const { showMessage } = useSnackbarStore();
 const { info, userCurrency } = storeToRefs(useUserStore());
 
+const isLoading = ref(false);
+
+const { state: recordState, data: record } = useRecordByIdQuery();
+
 const breadcrumbs = computed<Breadcrumb[]>(() => [
 	{ title: t('menu.history'), to: '/records' },
 	{ title: record.value?.type === 'income' ? 'Доход' : 'Расход', disabled: true },
 ]);
-
-const { state: record, isLoading } = useAsyncState(fetchRecordById(route.params.id), null, {
-	onError: e => {
-		console.error(e);
-		showMessage('no_record_found', 'red-darken-3');
-	},
-});
 
 const confirmationDialog = ref(false);
 const canDeleteRecord = computed(

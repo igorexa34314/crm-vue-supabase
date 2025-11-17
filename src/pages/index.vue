@@ -1,6 +1,6 @@
 <template>
 	<v-layout class="app-main-layout" full-height>
-		<app-loader v-if="loading" class="main-loader" />
+		<app-loader v-if="isCurrencyPending" class="main-loader" />
 
 		<template v-else>
 			<AppNavbar @click="drawer = !drawer" @logout="handleLogout" />
@@ -39,18 +39,16 @@
 <script setup lang="ts">
 import AppNavbar from '@/components/app/AppNavbar.vue';
 import AppSidebar from '@/components/app/AppSidebar.vue';
-import { ref, provide, onUnmounted, watch } from 'vue';
-import { fetchCurrency } from '@/api/currency';
+import { ref, onUnmounted } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { mdiPlus } from '@mdi/js';
 import { fetchAndSubscribeInfo } from '@/api/user';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useAsyncState } from '@vueuse/core';
-import { currencyKey } from '@/injection-keys';
 import { useRouter } from 'vue-router';
 import { logout } from '@/api/auth';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { useCurrencyQuery } from '@/queries/currency';
 
 definePage({
 	meta: { requiresAuth: true },
@@ -61,25 +59,8 @@ const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 const userStore = useUserStore();
 const drawer = ref(true);
-const loading = ref(false);
 
-const {
-	state: currency,
-	isLoading,
-	isReady,
-	execute: loadCurrency,
-} = useAsyncState((currency?: string) => fetchCurrency(currency ?? userStore.userCurrency), null, {
-	resetOnExecute: false,
-	onError: e => {
-		showMessage(
-			te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_loading_currency'),
-			'red-darken-3'
-		);
-		userStore.resetUserCurrency();
-	},
-});
-
-provide(currencyKey, { currency, isLoading, isReady, refresh: loadCurrency });
+const { isPending: isCurrencyPending } = useCurrencyQuery();
 
 let userInfoChannel: RealtimeChannel | null = null;
 
@@ -90,13 +71,6 @@ fetchAndSubscribeInfo()
 	.catch((e: unknown) => {
 		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
 	});
-
-watch(
-	() => userStore.userCurrency,
-	async newCurrency => {
-		await loadCurrency(undefined, newCurrency);
-	}
-);
 
 onUnmounted(() => {
 	userInfoChannel?.unsubscribe();

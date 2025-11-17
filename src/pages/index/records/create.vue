@@ -6,16 +6,20 @@
 			</h3>
 		</div>
 
-		<app-loader v-if="categoriesLoading" class="mt-10" page />
+		<app-loader v-if="categoriesState.status === 'pending'" class="mt-10" page />
 
-		<div v-else-if="!categories.length" class="mt-10 text-center text-h6">
+		<div
+			v-else-if="categoriesState.status === 'success' && !categoriesState.data.length"
+			class="mt-10 text-center text-h6">
 			{{ $t('no_categories') + '. ' }}
 			<router-link to="/categories">{{ $t('create_category') }}</router-link>
 		</div>
 
 		<CreateRecord
-			v-else
-			v-bind="{ categories, defaultRecordAmount, loading: createLoading }"
+			v-else-if="categoriesState.status === 'success'"
+			:categories="categoriesState.data"
+			:default-amount="defaultRecordAmount"
+			:loading="createLoading"
 			@create-record="handleRecordCreate" />
 	</div>
 </template>
@@ -23,27 +27,19 @@
 <script setup lang="ts">
 import CreateRecord from '@/components/record/CreateRecord.vue';
 import { ref } from 'vue';
-import { useAsyncState } from '@vueuse/core';
 import { useSeoMeta } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { fetchCategories } from '@/api/category';
 import { createRecord, type RecordForm } from '@/api/record';
 import { defaultRecordAmount } from '@/constants/app';
+import { useCategoriesQuery } from '@/queries/categories';
 
 useSeoMeta({ title: 'pageTitles.newRecord' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 
-const { state: categories, isLoading: categoriesLoading } = useAsyncState(fetchCategories, [], {
-	onError: e => {
-		showMessage(
-			te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_load_categories'),
-			'red-darken-3'
-		);
-	},
-});
+const { state: categoriesState } = useCategoriesQuery();
 
 const createLoading = ref(false);
 
