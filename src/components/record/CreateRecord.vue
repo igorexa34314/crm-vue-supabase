@@ -2,7 +2,7 @@
 	<v-form
 		ref="form"
 		v-if="categories.length"
-		@submit.prevent="submitHandler"
+		@submit.prevent="tryCreateRecord"
 		class="record-form mt-8"
 		:class="$vuetify.display.xs ? 'px-2' : 'px-4'">
 		<v-select
@@ -58,7 +58,7 @@
 		<v-btn
 			type="submit"
 			color="success"
-			:loading="loading"
+			:loading="createRecordAsyncStatus === 'loading'"
 			:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'">
 			{{ $t('create') }}
 			<v-icon :icon="mdiSend" class="ml-3" />
@@ -71,7 +71,7 @@ import LocalizedFileInput from '@/components/ui/LocalizedFileInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
-import { ref, computed, watchEffect, useTemplateRef } from 'vue';
+import { ref, computed, watchEffect, useTemplateRef, watch } from 'vue';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useI18n } from 'vue-i18n';
@@ -82,21 +82,16 @@ import { serverCurrency } from '@/constants/currency';
 import { klona } from 'klona/json';
 import type { Category } from '@/api/category';
 import type { Record, RecordForm } from '@/api/record';
+import { useCreateRecord } from '@/mutations/record';
 
 const {
 	categories,
 	defaultAmount = defaultRecordAmount,
 	defaultType = 'outcome',
-	loading,
 } = defineProps<{
 	categories: Category[];
 	defaultAmount?: number;
 	defaultType?: Record['type'];
-	loading?: boolean;
-}>();
-
-const emit = defineEmits<{
-	createRecord: [data: RecordForm];
 }>();
 
 const { showMessage } = useSnackbarStore();
@@ -122,6 +117,10 @@ const defaultFormValues = {
 
 const formState = ref<RecordFormWithNullableId>(klona(defaultFormValues));
 
+const resetForm = () => {
+	formState.value = klona(defaultFormValues);
+};
+
 watchEffect(() => {
 	formState.value.category_id = categories[0]?.id;
 	formState.value.amount = Math.round(cf.value(defaultAmount) / 10) * 10;
@@ -130,13 +129,15 @@ const canCreateRecord = computed(
 	() => formState.value.type === 'income' || cf.value(info.value!.bill) >= formState.value.amount
 );
 
-const submitHandler = async () => {
+const { mutateAsync: createRecord, asyncStatus: createRecordAsyncStatus } = useCreateRecord();
+
+const tryCreateRecord = async () => {
 	if (!formState.value.category_id) {
 		return;
 	}
 	const valid = (await formRef.value?.validate())?.valid;
 	if (valid && canCreateRecord.value) {
-		emit('createRecord', {
+		await createRecord({
 			...formState.value,
 			category_id: formState.value.category_id,
 			amount: cf.value(formState.value.amount, { type: 'reverse' }),
@@ -152,8 +153,5 @@ const submitHandler = async () => {
 			'red-darken-3'
 		);
 	}
-};
-const resetForm = () => {
-	formState.value = klona(defaultFormValues);
 };
 </script>

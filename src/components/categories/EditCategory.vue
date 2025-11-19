@@ -109,8 +109,8 @@ const isNewCategoryEquals = computed(() => {
 	return deepEqual(categoryData.value, { title, limit: cf.value(limit) }, { strict: true });
 });
 
-const { updateCategory, asyncStatus: updateCategoryAsyncStatus } = useUpdateCategory();
-const { deleteCategory } = useDeleteCategory();
+const { mutate: updateCategory, asyncStatus: updateCategoryAsyncStatus } = useUpdateCategory();
+const { mutate: deleteCategory } = useDeleteCategory();
 
 const tryUpdateCategory = async () => {
 	const valid = (await formRef.value?.validate())?.valid;

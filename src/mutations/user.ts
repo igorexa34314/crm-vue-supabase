@@ -13,7 +13,7 @@ export const useUpdateUserInfo = defineMutation(() => {
 
 	// const queryCache = useQueryCache();
 
-	const { mutate, ...mutation } = useMutation({
+	return useMutation({
 		mutation: async ({ avatar, ...userdata }: Partial<UserInfo> & { avatar: File | null }) => {
 			await apiUpdateInfo(userdata);
 			if (avatar) {
@@ -74,9 +74,4 @@ export const useUpdateUserInfo = defineMutation(() => {
 			showMessage(t('updateProfile_message'));
 		},
 	});
-
-	return {
-		...mutation,
-		updateInfo: mutate,
-	};
 });

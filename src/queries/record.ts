@@ -13,7 +13,7 @@ export const useRecordByIdQuery = defineQuery(() => {
 	const route = useRoute('//records/[id]');
 
 	const query = useQuery({
-		key: () => ['record', route.params.id],
+		key: () => ['record', { id: route.params.id }],
 		query: () => fetchRecordById(route.params.id),
 	});
 
@@ -58,7 +58,8 @@ export const useRecordsWithCategoryQuery = defineQuery(() => {
 
 	const query = useQuery({
 		key: () => [
-			'records-with-category',
+			'records',
+			{ withCategory: true },
 			{
 				page: page.value,
 				perPage: perPage.value,

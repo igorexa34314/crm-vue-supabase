@@ -18,43 +18,20 @@
 		<CreateRecord
 			v-else-if="categoriesState.status === 'success'"
 			:categories="categoriesState.data"
-			:default-amount="defaultRecordAmount"
-			:loading="createLoading"
-			@create-record="handleRecordCreate" />
+			:default-amount="defaultRecordAmount" />
 	</div>
 </template>
 
 <script setup lang="ts">
 import CreateRecord from '@/components/record/CreateRecord.vue';
-import { ref } from 'vue';
 import { useSeoMeta } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
-import { useSnackbarStore } from '@/stores/snackbar';
-import { createRecord, type RecordForm } from '@/api/record';
 import { defaultRecordAmount } from '@/constants/app';
 import { useCategoriesQuery } from '@/queries/category';
 
-const { t, te } = useI18n({ useScope: 'global' });
-const { showMessage } = useSnackbarStore();
+const { t } = useI18n({ useScope: 'global' });
 
 useSeoMeta({ title: () => t('pageTitles.newRecord') });
 
 const { state: categoriesState } = useCategoriesQuery();
-
-const createLoading = ref(false);
-
-const handleRecordCreate = async (formData: RecordForm) => {
-	try {
-		createLoading.value = true;
-		await createRecord(formData);
-		showMessage(t('createRecord_success'));
-	} catch (e) {
-		showMessage(
-			te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_create_record'),
-			'red-darken-3'
-		);
-	} finally {
-		createLoading.value = false;
-	}
-};
 </script>

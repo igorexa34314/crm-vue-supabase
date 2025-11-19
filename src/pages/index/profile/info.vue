@@ -222,26 +222,13 @@ const isInfoEqualsToStore = computed(() => {
 	return deepEqual(userdata, formInfo, { strict: true });
 });
 
-const {
-	updateInfo,
-	status: updateInfoStatus,
-	asyncStatus: updateInfoAsyncStatus,
-} = useUpdateUserInfo();
+const { mutateAsync: updateInfo, asyncStatus: updateInfoAsyncStatus } = useUpdateUserInfo();
 
 const submitHandler = async () => {
 	const valid = (await formRef.value?.validate())?.valid;
 	if (valid) {
-		updateInfo(formState.value);
+		await updateInfo(formState.value);
 		formState.value.avatar = null;
 	}
 };
-
-watch(
-	() => updateInfoStatus.value === 'success',
-	isSuccess => {
-		if (isSuccess) {
-			formState.value.avatar = null;
-		}
-	}
-);
 </script>
