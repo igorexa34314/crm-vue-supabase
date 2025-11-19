@@ -144,6 +144,7 @@ import type { CurrencyRates } from '@/api/currency';
 import { useCurrencyQueryState } from '@/queries/currency';
 import { useQuery } from '@pinia/colada';
 import { useUpdateUserInfo } from '@/mutations/user';
+import { Constants } from '@/types/database-generated';
 
 const { showMessage } = useSnackbarStore();
 const { t } = useI18n();
@@ -199,11 +200,10 @@ watch(localesError, e => {
 	}
 });
 
-const genderItems = [
-	{ title: 'male', value: 'male' },
-	{ title: 'female', value: 'female' },
-	{ title: 'unknown', value: 'unknown' },
-] satisfies { title: string; value: UserInfo['gender'] }[];
+const genderItems = Constants.public.Enums.user_gender.map(g => ({
+	title: `${g}`,
+	value: g,
+}));
 
 //fillInfo
 watchEffect(() => {

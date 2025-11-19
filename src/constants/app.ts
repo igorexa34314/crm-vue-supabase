@@ -1,5 +1,7 @@
+import { Constants } from '@/types/database-generated';
+
 // App vars
-export const recordTypes = ['income', 'outcome'] as const;
+export const recordTypes = Constants.public.Enums.record_type;
 export const appTitle = import.meta.env.VITE_APP_TITLE || 'CRM VUE';
 export const defaultBill = 1000;
 export const defaultCategoryLimit = 100;

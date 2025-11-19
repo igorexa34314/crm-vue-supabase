@@ -5,8 +5,7 @@ import { errorHandler } from '@/utils/errorHandler';
 import { defaultRecordsPerPage } from '@/constants/app';
 import { validateFileName } from '@/utils/helpers';
 import { v4 as uuidv4 } from 'uuid';
-import type { TablesInsert, TablesUpdate } from '@/types/database-helpers';
-import type { Enums, Tables } from '@/types/database-generated';
+import type { Enums, Tables, TablesInsert, TablesUpdate } from '@/types/database-generated';
 import type { Split } from 'type-fest';
 
 export const recordQuery = 'id, description, amount, type, created_at, updated_at';
