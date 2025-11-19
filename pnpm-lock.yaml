@@ -69,6 +69,9 @@ importers:
       '@intlify/unplugin-vue-i18n':
         specifier: ^11.0.0
         version: 11.0.1(@vue/compiler-dom@3.5.24)(eslint@9.39.1(jiti@2.6.1))(rollup@4.53.2)(typescript@5.9.3)(vue-i18n@11.1.12(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3))
+      '@pinia/colada-devtools':
+        specifier: ^0.1.8
+        version: 0.1.8
       '@tsconfig/node22':
         specifier: ^22.0.2
         version: 22.0.4
@@ -823,6 +826,9 @@ packages:
   '@parcel/watcher@2.5.1':
     resolution: {integrity: sha512-dfUnCxiN9H4ap84DvD2ubjw+3vUNpstxa0TneY/Paat8a3R4uQZDLSvWjmznAY/DoahqTHl9V46HF/Zs3F29pg==}
     engines: {node: '>= 10.0.0'}
+
+  '@pinia/colada-devtools@0.1.8':
+    resolution: {integrity: sha512-93FcI8b42/cBdTwl3HEKBp4/CPt3edAlXaFe1AYI3GD7zdn8jIS2Sahb6ja36booLaapNkh10Jc1cAX3kVpr8w==}
 
   '@pinia/colada@0.17.7':
     resolution: {integrity: sha512-BCcM8gTdaLZHm/5VjWCchEPqHXpGPR5B42VQLB8J6mJrX2S2gPRVrjPHmLd+4QfLPSrc4bZf7ERXelsJ7n9JAw==}
@@ -3353,6 +3359,8 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.5.1
       '@parcel/watcher-win32-x64': 2.5.1
     optional: true
+
+  '@pinia/colada-devtools@0.1.8': {}
 
   '@pinia/colada@0.17.7(pinia@3.0.4(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3))':
     dependencies:

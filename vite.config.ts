@@ -41,6 +41,8 @@ export default defineConfig({
 			'pinia',
 			'unplugin-vue-router/runtime',
 			'klona/json',
+			'@pinia/colada',
+			'@pinia/colada-devtools',
 		],
 	},
 });
