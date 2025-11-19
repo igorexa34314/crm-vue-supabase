@@ -112,7 +112,7 @@
 				type="submit"
 				color="success"
 				:class="$vuetify.display.xs ? 'mt-3' : 'mt-5'"
-				:loading="loading"
+				:loading="updateInfoAsyncStatus === 'loading'"
 				:disabled="isInfoEqualsToStore && !formState.avatar">
 				{{ $t('update') }}
 				<v-icon :icon="mdiSend" class="ml-3" />
@@ -139,13 +139,14 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { defaultLocale } from '@/constants/i18n';
 import { serverCurrency } from '@/constants/currency';
 import deepEqual from 'deep-equal';
-import { updateInfo, updateAvatar, type UserInfo } from '@/api/user';
+import { type UserInfo } from '@/api/user';
 import type { CurrencyRates } from '@/api/currency';
 import { useCurrencyQueryState } from '@/queries/currency';
 import { useQuery } from '@pinia/colada';
+import { useUpdateUserInfo } from '@/mutations/user';
 
 const { showMessage } = useSnackbarStore();
-const { t, te } = useI18n();
+const { t } = useI18n();
 const userStore = useUserStore();
 
 const { data: currency } = useCurrencyQueryState();
@@ -202,7 +203,7 @@ const genderItems = [
 	{ title: 'male', value: 'male' },
 	{ title: 'female', value: 'female' },
 	{ title: 'unknown', value: 'unknown' },
-];
+] satisfies { title: string; value: UserInfo['gender'] }[];
 
 //fillInfo
 watchEffect(() => {
@@ -221,28 +222,26 @@ const isInfoEqualsToStore = computed(() => {
 	return deepEqual(userdata, formInfo, { strict: true });
 });
 
-const loading = ref(false);
+const {
+	updateInfo,
+	status: updateInfoStatus,
+	asyncStatus: updateInfoAsyncStatus,
+} = useUpdateUserInfo();
 
 const submitHandler = async () => {
 	const valid = (await formRef.value?.validate())?.valid;
 	if (valid) {
-		try {
-			const { avatar, ...userdata } = formState.value;
-			loading.value = true;
-			await updateInfo(userdata);
-			if (avatar) {
-				await updateAvatar(avatar);
-			}
-			showMessage(t('updateProfile_message'));
-		} catch (e) {
-			showMessage(
-				te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_update_profile'),
-				'red-darken-3'
-			);
-		} finally {
-			loading.value = false;
-		}
+		updateInfo(formState.value);
 		formState.value.avatar = null;
 	}
 };
+
+watch(
+	() => updateInfoStatus.value === 'success',
+	isSuccess => {
+		if (isSuccess) {
+			formState.value.avatar = null;
+		}
+	}
+);
 </script>

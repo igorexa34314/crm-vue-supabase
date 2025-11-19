@@ -28,13 +28,13 @@ import { useI18n } from 'vue-i18n';
 import { onMounted, onUnmounted, watchEffect } from 'vue';
 import { useUserStore } from '@/stores/user';
 
-useSeoMeta({ title: 'sign_in' });
-
 const { t, te } = useI18n({ useScope: 'global' });
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
 const { showMessage } = useSnackbarStore();
+
+useSeoMeta({ title: () => t('sign_in') });
 
 onMounted(() => {
 	if (!userStore.info?.locale) {

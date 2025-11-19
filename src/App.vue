@@ -16,14 +16,11 @@
 <script setup lang="ts">
 import GlobalSnackbar from '@/components/app/GlobalSnackbar.vue';
 import { useDarkModeStore } from '@/stores/dark-mode';
-import { useI18n } from 'vue-i18n';
 import { appTitle } from '@/constants/app';
 import { useSeoMeta } from '@unhead/vue';
 
-const { t } = useI18n({ useScope: 'global' });
-
 useSeoMeta({
-	titleTemplate: (title?: string) => (title ? `${t(title)} | ${appTitle}` : appTitle),
+	titleTemplate: (title?: string) => (title ? `${title} | ${appTitle}` : appTitle),
 });
 
 useDarkModeStore();

@@ -107,14 +107,14 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useRecordByIdQuery } from '@/queries/record';
 
-useSeoMeta({ title: 'pageTitles.details' });
-
 const route = useRoute('//records/[id]');
 const router = useRouter();
 const { t, n } = useI18n({ useScope: 'global' });
 const cf = useCurrencyFilter();
 const { showMessage } = useSnackbarStore();
 const { info, userCurrency } = storeToRefs(useUserStore());
+
+useSeoMeta({ title: () => t('pageTitles.details') });
 
 const isLoading = ref(false);
 

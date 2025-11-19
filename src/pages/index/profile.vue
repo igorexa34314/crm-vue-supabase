@@ -39,12 +39,12 @@ import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 
 definePage({ redirect: '/profile/info' });
 
-useSeoMeta({ title: 'pageTitles.profile' });
-
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 const route = useRoute('//profile/info');
 const router = useRouter();
+
+useSeoMeta({ title: () => t('pageTitles.profile') });
 
 watchEffect(() => {
 	const { message, ...q } = route.query;

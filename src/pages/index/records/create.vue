@@ -32,12 +32,12 @@ import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { createRecord, type RecordForm } from '@/api/record';
 import { defaultRecordAmount } from '@/constants/app';
-import { useCategoriesQuery } from '@/queries/categories';
-
-useSeoMeta({ title: 'pageTitles.newRecord' });
+import { useCategoriesQuery } from '@/queries/category';
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
+
+useSeoMeta({ title: () => t('pageTitles.newRecord') });
 
 const { state: categoriesState } = useCategoriesQuery();
 

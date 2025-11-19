@@ -1,21 +1,22 @@
-import { fetchCurrency, type Currency } from '@/api/currency';
+import { fetchCurrency } from '@/api/currency';
+import type { UserInfo } from '@/api/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useUserStore } from '@/stores/user';
-import { defineQuery, useQuery, useQueryState } from '@pinia/colada';
+import { defineQuery, defineQueryOptions, useQuery, useQueryState } from '@pinia/colada';
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const createCurrencyKey = (userCurrency: string) => ['currency', userCurrency];
+export const currencyQuery = defineQueryOptions((currency: UserInfo['currency']) => ({
+	key: ['currency', currency],
+	query: () => fetchCurrency(currency),
+}));
 
 export const useCurrencyQuery = defineQuery(() => {
 	const userStore = useUserStore();
 	const { t, te } = useI18n({ useScope: 'global' });
 	const { showMessage } = useSnackbarStore();
 
-	const query = useQuery({
-		key: () => createCurrencyKey(userStore.userCurrency),
-		query: () => fetchCurrency(userStore.userCurrency),
-	});
+	const query = useQuery(currencyQuery, () => userStore.userCurrency);
 
 	watch(query.error, e => {
 		if (e) {
@@ -33,5 +34,5 @@ export const useCurrencyQuery = defineQuery(() => {
 export function useCurrencyQueryState() {
 	const userStore = useUserStore();
 
-	return useQueryState<Currency>(() => createCurrencyKey(userStore.userCurrency));
+	return useQueryState(() => currencyQuery(userStore.userCurrency).key);
 }

@@ -35,6 +35,7 @@ import MyBill from '@/components/home/MyBill.vue';
 import { useSeoMeta } from '@unhead/vue';
 import { mdiRefresh } from '@mdi/js';
 import { useTheme } from 'vuetify';
+import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyQuery } from '@/queries/currency';
 import { useThrottleFn } from '@vueuse/core';
@@ -43,10 +44,11 @@ definePage({
 	alias: ['home'],
 });
 
-useSeoMeta({ title: 'pageTitles.bill' });
-
+const { t } = useI18n({ useScope: 'global' });
 const theme = useTheme();
 const userStore = useUserStore();
+
+useSeoMeta({ title: () => t('pageTitles.bill') });
 
 const { state: currencyState, refetch: refetchCurrency } = useCurrencyQuery();
 

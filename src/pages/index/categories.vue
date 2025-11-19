@@ -40,12 +40,15 @@
 <script setup lang="ts">
 import CreateCategory from '@/components/categories/CreateCategory.vue';
 import EditCategory from '@/components/categories/EditCategory.vue';
+import { useI18n } from 'vue-i18n';
 import { useSeoMeta } from '@unhead/vue';
 import { defaultCategoryLimit } from '@/constants/app';
 import { useCurrencyQueryState } from '@/queries/currency';
-import { useCategoriesQuery } from '@/queries/categories';
+import { useCategoriesQuery } from '@/queries/category';
 
-useSeoMeta({ title: 'pageTitles.categories' });
+const { t } = useI18n({ useScope: 'global' });
+
+useSeoMeta({ title: () => t('pageTitles.categories') });
 
 const { isPending: isCurrencyPending } = useCurrencyQueryState();
 

@@ -98,18 +98,20 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useSeoMeta } from '@unhead/vue';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { defaultBill } from '@/constants/app';
 import { useCurrencyQueryState } from '@/queries/currency';
-import { useCategoriesSpendStatsQuery } from '@/queries/categories';
+import { useCategoriesSpendStatsQuery } from '@/queries/category';
 
-useSeoMeta({ title: 'pageTitles.plan' });
+const { t } = useI18n({ useScope: 'global' });
+
+useSeoMeta({ title: () => t('pageTitles.plan') });
 
 const userStore = useUserStore();
-
 const { userCurrency } = storeToRefs(userStore);
 const { isPending: isCurrencyPending } = useCurrencyQueryState();
 const cf = useCurrencyFilter();

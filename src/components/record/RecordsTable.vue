@@ -7,15 +7,14 @@
 		:headers="tableHeaders"
 		:items-length="totalRecords || records.length"
 		:items="records"
+		item-value="id"
 		:loading="loading"
 		:sort-desc-icon="mdiMenuDown"
 		:sort-asc-icon="mdiMenuUp"
-		hide-default-footer
 		hover
 		:row-props="{ class: 'record-row' }"
 		:cell-props="{ class: 'text-left' }"
 		class="records-table"
-		@update:options="$emit('update:options')"
 		@click:row="openRecord">
 		<template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
 			<tr>
@@ -83,7 +82,7 @@
 			</v-tooltip>
 		</template>
 
-		<template #bottom>
+		<template #bottom="{ pageCount }">
 			<v-pagination
 				v-model="page"
 				:length="pageCount"
@@ -94,7 +93,6 @@
 				color="primary"
 				:disabled="loading" />
 		</template>
-		<template #loading></template>
 	</v-data-table-server>
 </template>
 
@@ -115,23 +113,15 @@ const {
 	loading,
 } = defineProps<{
 	records: RecordWithCategory[];
-	totalRecords?: string | number;
+	totalRecords?: number;
 	loading?: boolean;
-}>();
-
-defineEmits<{
-	'update:options': [];
 }>();
 
 const perPage = defineModel<string | number>('perPage', {
 	default: defaultRecordsPerPage,
 });
-const page = defineModel<number>('page', { default: 1, set: v => +v });
+const page = defineModel<number>('page', { default: 1 });
 const sortBy = defineModel<DataTableSortItem[]>('sortBy');
-
-const pageCount = computed(() => {
-	return Math.ceil(+totalRecords / +perPage.value);
-});
 
 const { smAndDown } = useDisplay();
 

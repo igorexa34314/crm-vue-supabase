@@ -4,7 +4,7 @@
 			<h4 class="text-h6 text-sm-h6 mb-5 mb-sm-7 text-subtitle">{{ $t('edit') }}</h4>
 		</div>
 
-		<v-form ref="form" @submit.prevent="updateCategory">
+		<v-form ref="form" @submit.prevent="tryUpdateCategory">
 			<v-select
 				v-model="currentCategoryId"
 				:items="categories"
@@ -37,7 +37,7 @@
 					type="submit"
 					:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'"
 					:disabled="isNewCategoryEquals"
-					:loading="updateCategoryStatus === 'pending'">
+					:loading="updateCategoryAsyncStatus === 'loading'">
 					{{ $t('update') }}
 					<v-icon :icon="mdiSend" class="ml-3" />
 				</v-btn>
@@ -52,7 +52,9 @@
 					<v-icon :icon="mdiDelete" class="ml-3" />
 				</v-btn>
 
-				<DeleteCategoryDialog v-model="confirmationDialog" @delete-category="deleteCategory" />
+				<DeleteCategoryDialog
+					v-model="confirmationDialog"
+					@delete-category="tryDeleteCategory" />
 			</div>
 		</v-form>
 	</div>
@@ -63,29 +65,20 @@ import DeleteCategoryDialog from '@/components/categories/DeleteCategoryDialog.v
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref, watchEffect, watch, computed, useTemplateRef } from 'vue';
 import { mdiSend, mdiDelete } from '@mdi/js';
-import {
-	updateCategory as apiUpdateCategory,
-	deleteCategoryById as apiDeleteCategoryById,
-	type Category,
-	type CategoryData,
-} from '@/api/category';
-import { useSnackbarStore } from '@/stores/snackbar';
-import { useI18n } from 'vue-i18n';
+import { type Category, type CategoryData } from '@/api/category';
 import { category as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { storeToRefs } from 'pinia';
 import deepEqual from 'deep-equal';
 import { defaultCategoryLimit } from '@/constants/app';
-import { defineMutation, useMutation, useQueryCache } from '@pinia/colada';
+import { useDeleteCategory, useUpdateCategory } from '@/mutations/category';
 
 const { categories, defaultLimit = defaultCategoryLimit } = defineProps<{
 	categories: Category[];
 	defaultLimit?: number;
 }>();
 
-const { t, te } = useI18n();
-const { showMessage } = useSnackbarStore();
 const cf = useCurrencyFilter();
 const { userCurrency } = storeToRefs(useUserStore());
 
@@ -116,136 +109,19 @@ const isNewCategoryEquals = computed(() => {
 	return deepEqual(categoryData.value, { title, limit: cf.value(limit) }, { strict: true });
 });
 
-const queryCache = useQueryCache();
+const { updateCategory, asyncStatus: updateCategoryAsyncStatus } = useUpdateCategory();
+const { deleteCategory } = useDeleteCategory();
 
-const useUpdateCategory = defineMutation(() => {
-	const { mutate, status, ...mutation } = useMutation({
-		mutation: (categoryData: CategoryData) =>
-			apiUpdateCategory(currentCategoryId.value!, categoryData),
-		onMutate: categoryData => {
-			// save the old value of categories
-			const oldCategories = queryCache.getQueryData<Category[]>(['categories']);
+const tryUpdateCategory = async () => {
+	const valid = (await formRef.value?.validate())?.valid;
+	if (valid && currentCategoryId.value) {
+		updateCategory({ id: currentCategoryId.value, data: categoryData.value });
+	}
+};
 
-			const updatedCategory: Category = { id: currentCategoryId.value!, ...categoryData };
-
-			// create a new array with the updated category
-			const newCategories = oldCategories?.map(c =>
-				c.id === currentCategoryId.value ? updatedCategory : c
-			);
-
-			// update the cache with the new categories
-			queryCache.setQueryData(['categories'], newCategories);
-
-			// we cancel (without refetching) all queries that depend on the categories
-			// to prevent them from updating the cache with an outdated value
-			queryCache.cancelQueries({ key: ['categories'] });
-
-			// pass the updated, old & new categories to the other hooks
-			// to handle rollbacks
-			return { oldCategories, newCategories, updatedCategory };
-		},
-		// on both error and success
-		onSettled() {
-			// invalidate the query to refetch the new data
-			queryCache.invalidateQueries({ key: ['categories'] });
-		},
-		onError: (error, categoryData, { newCategories, oldCategories }) => {
-			// before applying the rollback, we need to check if the value in the cache
-			// is the same because the cache could have been updated by another mutation
-			// or query
-			if (newCategories === queryCache.getQueryData(['categories'])) {
-				queryCache.setQueryData(['categories'], oldCategories);
-			}
-
-			// handle the error
-			showMessage(
-				te(error.message) ? t(error.message) : t('error_update_category'),
-				'red-darken-3'
-			);
-		},
-		onSuccess: category => {
-			// update the category with the information from the server
-			// since we are invalidating queries, this allows us to progressively
-			// update the categories even if the user is submitting multiple mutations
-			// successively
-			const categories = queryCache.getQueryData<Category[]>(['categories']) || [];
-
-			// replace the category we added in `onMutate()` with the one from the server
-			const newCategories = categories?.map(c => (c.id === category.id ? category : c));
-
-			queryCache.setQueryData(['categories'], newCategories);
-
-			showMessage(t('category_updated'));
-		},
-	});
-
-	return {
-		...mutation,
-		updateCategory: async () => {
-			const valid = (await formRef.value?.validate())?.valid;
-			if (valid && currentCategoryId.value) {
-				mutate(categoryData.value);
-			}
-		},
-		updateCategoryStatus: status,
-	};
-});
-
-const useDeleteCategory = defineMutation(() => {
-	const { mutate, status, ...mutation } = useMutation({
-		mutation: (categoryId: Category['id']) => apiDeleteCategoryById(categoryId),
-		onMutate: categoryId => {
-			// save the old value of categories
-			const oldCategories = queryCache.getQueryData<Category[]>(['categories']);
-
-			// create a new array without the deleted category
-			const newCategories = oldCategories?.filter(cat => cat.id !== categoryId);
-
-			// update the cache with the new categories
-			queryCache.setQueryData(['categories'], newCategories);
-
-			// we cancel (without refetching) all queries that depend on the categories
-			// to prevent them from updating the cache with an outdated value
-			queryCache.cancelQueries({ key: ['categories'] });
-
-			// pass the old & new categories to the other hooks
-			// to handle rollback
-			return { oldCategories, newCategories };
-		},
-		onSettled() {
-			// invalidate the query to refetch the new data
-			queryCache.invalidateQueries({ key: ['categories'] });
-		},
-		onError: (error, categoryId, { newCategories, oldCategories }) => {
-			// before applying the rollback, we need to check if the value in the cache
-			// is the same because the cache could have been updated by another mutation
-			// or query
-			if (newCategories === queryCache.getQueryData(['categories'])) {
-				queryCache.setQueryData(['categories'], oldCategories);
-			}
-
-			// handle the error
-			showMessage(
-				te(error.message) ? t(error.message) : t('error_update_category'),
-				'red-darken-3'
-			);
-		},
-		onSuccess: () => {
-			showMessage(t('category_updated'));
-		},
-	});
-
-	return {
-		...mutation,
-		deleteCategory: () => {
-			if (currentCategoryId.value) {
-				mutate(currentCategoryId.value);
-			}
-		},
-		deleteCategoryStatus: status,
-	};
-});
-
-const { updateCategory, updateCategoryStatus } = useUpdateCategory();
-const { deleteCategory, deleteCategoryStatus } = useDeleteCategory();
+const tryDeleteCategory = () => {
+	if (currentCategoryId.value) {
+		deleteCategory(currentCategoryId.value);
+	}
+};
 </script>

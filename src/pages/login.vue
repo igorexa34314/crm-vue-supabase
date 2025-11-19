@@ -41,13 +41,13 @@ import { useI18n } from 'vue-i18n';
 import { onMounted, onUnmounted, watchEffect } from 'vue';
 import { useUserStore } from '@/stores/user';
 
-useSeoMeta({ title: 'login' });
-
 const { t, te } = useI18n({ useScope: 'global' });
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
 const { showMessage } = useSnackbarStore();
+
+useSeoMeta({ title: () => t('login') });
 
 onMounted(() => {
 	if (!userStore.info?.locale) {

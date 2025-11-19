@@ -9,9 +9,9 @@ import type { TablesInsert, TablesUpdate } from '@/types/database-helpers';
 import type { Enums, Tables } from '@/types/database-generated';
 import type { Split } from 'type-fest';
 
-const recordQuery = 'id, description, amount, type, created_at, updated_at';
-const recordWithCategoryQuery = `${recordQuery}, category:categories (${categoryQuery})`;
-const recordWithDetailsQuery = `${recordWithCategoryQuery}, details:record_details(*)`;
+export const recordQuery = 'id, description, amount, type, created_at, updated_at';
+export const recordWithCategoryQuery = `${recordQuery}, category:categories (${categoryQuery})`;
+export const recordWithDetailsQuery = `${recordWithCategoryQuery}, details:record_details(*)`;
 
 export type Record = Pick<Tables<'records'>, Split<typeof recordQuery, ', '>[number]>;
 export type RecordType = Enums<'record_type'>;
