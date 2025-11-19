@@ -40,6 +40,7 @@ export default defineConfig({
 			'vue-i18n',
 			'pinia',
 			'unplugin-vue-router/runtime',
+			'klona/json',
 		],
 	},
 });
