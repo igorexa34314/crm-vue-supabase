@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import AppNavbar from '@/components/app/AppNavbar.vue';
 import AppSidebar from '@/components/app/AppSidebar.vue';
-import { ref, onUnmounted } from 'vue';
+import { ref, onUnmounted, watchEffect } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { mdiPlus } from '@mdi/js';
 import { fetchAndSubscribeInfo } from '@/api/user';
@@ -49,6 +49,7 @@ import { useRouter } from 'vue-router';
 import { logout } from '@/api/auth';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { useCurrencyQuery } from '@/queries/currency';
+import { useDisplay } from 'vuetify';
 
 definePage({
 	meta: { requiresAuth: true },
@@ -58,7 +59,13 @@ const router = useRouter();
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 const userStore = useUserStore();
-const drawer = ref(true);
+const { mobile } = useDisplay();
+
+const drawer = ref(!mobile.value);
+
+watchEffect(() => {
+	drawer.value = !mobile.value;
+});
 
 const { isPending: isCurrencyPending } = useCurrencyQuery();
 
