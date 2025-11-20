@@ -70,9 +70,13 @@
 			<UpdateRecordDialog
 				v-model="updateRecordDialog"
 				:record="record"
-				@update-record="handleRecordUpdate" />
+				:loading="updateRecordAsyncStatus === 'loading'"
+				@update-record="tryUpdateRecord" />
 
-			<DeleteRecordDialog v-model="confirmationDialog" @delete-record="deleteRecord" />
+			<DeleteRecordDialog
+				v-model="confirmationDialog"
+				:loading="deleteRecordAsyncStatus === 'loading'"
+				@delete-record="tryDeleteRecord" />
 		</v-card>
 
 		<div v-else class="mt-7 text-center text-primary text-h6">
@@ -95,17 +99,13 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter, useRoute } from 'vue-router';
 import { useSeoMeta } from '@unhead/vue';
-import {
-	deleteRecordById,
-	updateRecord,
-	type RecordDataToUpdate,
-	type RecordWithDetails,
-} from '@/api/record';
+import { type RecordDataToUpdate } from '@/api/record';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useRecordByIdQuery } from '@/queries/record';
+import { useDeleteRecord, useUpdateRecord } from '@/mutations/record';
 
 const route = useRoute('//records/[id]');
 const router = useRouter();
@@ -129,15 +129,14 @@ const confirmationDialog = ref(false);
 const canDeleteRecord = computed(
 	() => record.value?.type === 'outcome' || info.value!.bill >= (record.value?.amount || 0)
 );
-const deleteRecord = async () => {
+
+const { mutateAsync: updateRecord, asyncStatus: updateRecordAsyncStatus } = useUpdateRecord();
+const { mutateAsync: deleteRecord, asyncStatus: deleteRecordAsyncStatus } = useDeleteRecord();
+
+const tryDeleteRecord = async () => {
 	if (canDeleteRecord.value) {
-		try {
-			await deleteRecordById(record.value?.id ?? route.params.id);
-			showMessage(t('record_deleted_succesfully'));
-			router.push('/records');
-		} catch {
-			showMessage(t('error_delete_record'), 'red-darken-3');
-		}
+		await deleteRecord(record.value?.id ?? route.params.id);
+		router.push('/records');
 	} else {
 		showMessage(
 			t('lack_of_amount') +
@@ -151,16 +150,12 @@ const deleteRecord = async () => {
 };
 
 const updateRecordDialog = ref(false);
-const handleRecordUpdate = async (recordData: RecordDataToUpdate) => {
-	try {
-		isLoading.value = true;
-		const updatedRecord = await updateRecord(record.value?.id || route.params.id, recordData);
-		record.value = { ...record.value, ...updatedRecord } as RecordWithDetails;
-		showMessage(t('record_updated_succesfully'));
-	} catch {
-		showMessage(t('error_update_record'), 'red-darken-3');
-	} finally {
-		isLoading.value = false;
-	}
+
+const tryUpdateRecord = async (recordData: RecordDataToUpdate) => {
+	await updateRecord({
+		id: record.value?.id || route.params.id,
+		data: recordData,
+	});
+	updateRecordDialog.value = false;
 };
 </script>

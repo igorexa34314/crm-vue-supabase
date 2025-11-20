@@ -17,7 +17,7 @@ export const useCreateCategory = defineMutation(() => {
 	const queryCache = useQueryCache();
 
 	return useMutation({
-		mutation: (categoryData: CategoryData) => apiCreateCategory(categoryData),
+		mutation: apiCreateCategory,
 		onMutate: categoryData => {
 			// save the old value of categories
 			const oldCategories = queryCache.getQueryData<Category[]>(['categories']);
@@ -144,7 +144,7 @@ export const useDeleteCategory = defineMutation(() => {
 	const queryCache = useQueryCache();
 
 	return useMutation({
-		mutation: (categoryId: Category['id']) => apiDeleteCategoryById(categoryId),
+		mutation: apiDeleteCategoryById,
 		onMutate: categoryId => {
 			// save the old value of categories
 			const oldCategories = queryCache.getQueryData<Category[]>(['categories']);

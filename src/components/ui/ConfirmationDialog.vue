@@ -4,7 +4,8 @@
 		:transition="{ component: VFadeTransition }"
 		:attach="attach"
 		width="auto"
-		content-class="w-100">
+		content-class="w-100"
+		@after-leave="$emit('afterLeave')">
 		<template #activator="slotProps">
 			<slot name="activator" v-bind="slotProps"></slot>
 		</template>
@@ -21,14 +22,19 @@
 				</v-card-text>
 				<v-card-actions class="mt-4 mt-sm-6">
 					<v-spacer />
-					<slot name="cancel" v-bind="{ cancelEvent: cancel }">
+					<slot name="cancel">
 						<v-btn color="red-darken-1" variant="text" @click="cancel">
 							<span class="text-h6">{{ cancelLabel || $t('cancel') }}</span>
 						</v-btn>
 					</slot>
-					<slot name="submit" v-bind="{ submitEvent: submit }">
-						<v-btn ref="submitBtn" color="green-darken-1" variant="text" @click="submit">
-							<span class="text-h6">{{ submitLabel || $t('submit') }}</span>
+					<slot name="ok">
+						<v-btn
+							ref="submitBtn"
+							:loading="loading"
+							color="green-darken-1"
+							variant="text"
+							@click="ok">
+							<span class="text-h6">{{ okLabel || $t('submit') }}</span>
 						</v-btn>
 					</slot>
 				</v-card-actions>
@@ -41,29 +47,40 @@
 import { ref, watch, nextTick } from 'vue';
 import { type VBtn, type VDialog, VFadeTransition } from 'vuetify/components';
 
-const { maxWidth = '550px', width = '100%' } = defineProps<{
+const {
+	maxWidth = '550px',
+	width = '100%',
+	title,
+	text,
+	okLabel,
+	cancelLabel,
+	contentClass,
+	loading,
+} = defineProps<{
 	maxWidth?: string | number;
 	width?: string | number;
 	title?: string;
 	text?: string;
 	attach?: VDialog['attach'];
 	activator?: VDialog['activator'];
-	submitLabel?: string;
+	okLabel?: string;
 	cancelLabel?: string;
 	contentClass?: unknown;
+	loading?: boolean;
 }>();
 
 const emit = defineEmits<{
-	onSubmit: [];
-	onCancel: [];
+	ok: [];
+	cancel: [];
+	afterLeave: [];
 }>();
 
 const slots = defineSlots<{
 	title: VDialog['$slots']['default'];
 	default: VDialog['$slots']['default'];
 	activator: VDialog['$slots']['activator'];
-	cancel(arg: { cancelEvent: () => void }): unknown;
-	submit(arg: { submitEvent: () => void }): unknown;
+	cancel(): unknown;
+	ok(): unknown;
 }>();
 
 const confirmationDialog = defineModel<boolean>();
@@ -74,18 +91,19 @@ watch(
 	confirmationDialog,
 	newVal => {
 		if (newVal) {
-			nextTick().then(() => (submitBtn.value?.$el as HTMLButtonElement | null)?.focus());
+			nextTick(() => {
+				(submitBtn.value?.$el as HTMLButtonElement | null)?.focus();
+			});
 		}
 	},
 	{ flush: 'post' }
 );
 
 const cancel = () => {
-	emit('onCancel');
 	confirmationDialog.value = false;
+	emit('cancel');
 };
-const submit = () => {
-	emit('onSubmit');
-	confirmationDialog.value = false;
+const ok = () => {
+	emit('ok');
 };
 </script>

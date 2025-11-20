@@ -54,6 +54,7 @@
 
 				<DeleteCategoryDialog
 					v-model="confirmationDialog"
+					:loading="deleteCategoryAsyncStatus === 'loading'"
 					@delete-category="tryDeleteCategory" />
 			</div>
 		</v-form>
@@ -110,7 +111,7 @@ const isNewCategoryEquals = computed(() => {
 });
 
 const { mutate: updateCategory, asyncStatus: updateCategoryAsyncStatus } = useUpdateCategory();
-const { mutate: deleteCategory } = useDeleteCategory();
+const { mutateAsync: deleteCategory, asyncStatus: deleteCategoryAsyncStatus } = useDeleteCategory();
 
 const tryUpdateCategory = async () => {
 	const valid = (await formRef.value?.validate())?.valid;
@@ -119,9 +120,10 @@ const tryUpdateCategory = async () => {
 	}
 };
 
-const tryDeleteCategory = () => {
+const tryDeleteCategory = async () => {
 	if (currentCategoryId.value) {
-		deleteCategory(currentCategoryId.value);
+		await deleteCategory(currentCategoryId.value);
 	}
+	confirmationDialog.value = false;
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-	<ConfirmationDialog>
+	<ConfirmationDialog v-model="confirmDialog" @after-leave="resetForm">
 		<div class="text-h6 text-center text-title mb-3">{{ $t('edit_record') }}</div>
 		<v-form
 			ref="form"
@@ -43,13 +43,13 @@
 				rows="1"
 				auto-grow />
 		</v-form>
-		<template #submit="{ submitEvent }">
+		<template #ok>
 			<v-btn
 				type="submit"
+				:loading="loading"
 				form="update-record-form"
 				color="green-darken-1"
-				variant="text"
-				@click="submitEvent">
+				variant="text">
 				<span class="text-h6">{{ $t('submit') }}</span>
 			</v-btn>
 		</template>
@@ -69,7 +69,7 @@ import { useUserStore } from '@/stores/user';
 import { recordTypes } from '@/constants/app';
 import type { RecordWithCategory, RecordDataToUpdate } from '@/api/record';
 
-const { record } = defineProps<{
+const { record, loading } = defineProps<{
 	record: RecordWithCategory;
 	loading?: boolean;
 }>();
@@ -84,6 +84,8 @@ const cf = useCurrencyFilter();
 const userStore = useUserStore();
 
 const info = computed(() => userStore.info);
+
+const confirmDialog = defineModel<boolean>();
 
 const formRef = useTemplateRef('form');
 const formState = ref<RecordDataToUpdate>({
@@ -113,7 +115,6 @@ const submitHandler = async () => {
 	if (valid && canUpdateRecord.value) {
 		const { amount, ...data } = formState.value;
 		emit('updateRecord', { ...data, amount: cf.value(amount, { type: 'reverse' }) });
-		formRef.value?.reset();
 	} else {
 		showMessage(
 			t('lack_of_amount') +
@@ -129,5 +130,9 @@ const submitHandler = async () => {
 			'red-darken-3'
 		);
 	}
+};
+
+const resetForm = () => {
+	formRef.value?.reset();
 };
 </script>
