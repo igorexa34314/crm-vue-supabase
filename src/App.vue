@@ -4,14 +4,12 @@
 	<GlobalSnackbar />
 
 	<router-view #default="{ Component }">
-		<template v-if="Component">
-			<Suspense>
-				<component :is="Component" />
-				<template #fallback>
-					<app-loader class="mt-7" page />
-				</template>
-			</Suspense>
-		</template>
+		<Suspense v-if="Component">
+			<component :is="Component" />
+			<template #fallback>
+				<app-loader class="mt-7" page />
+			</template>
+		</Suspense>
 	</router-view>
 </template>
 
