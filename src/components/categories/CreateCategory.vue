@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
-import { ref, useTemplateRef, watch } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { type CategoryData } from '@/api/category';
 import { category as validations } from '@/utils/validations';
 import { useCurrencyFilter } from '@/composables/currency-filter';
