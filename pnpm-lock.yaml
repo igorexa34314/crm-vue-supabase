@@ -66,9 +66,9 @@ importers:
       '@intlify/unplugin-vue-i18n':
         specifier: ^11.0.0
         version: 11.0.1(@vue/compiler-dom@3.5.25)(eslint@9.39.1(jiti@2.6.1))(rollup@4.53.3)(typescript@5.9.3)(vue-i18n@11.2.2(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
-      '@tsconfig/node22':
-        specifier: ^22.0.2
-        version: 22.0.5
+      '@tsconfig/node24':
+        specifier: ^24.0.0
+        version: 24.0.3
       '@types/cloudflare-turnstile':
         specifier: ^0.2.2
         version: 0.2.2
@@ -830,8 +830,8 @@ packages:
     resolution: {integrity: sha512-BaC9sv5+HGNy1ulZwY8/Ev7EjfYYmWD4fOMw9bDBqTawEj6JHAiOHeTwXLRzVaeSay4p17xYLN2NSCoGgXMQnw==}
     engines: {node: '>=20.0.0'}
 
-  '@tsconfig/node22@22.0.5':
-    resolution: {integrity: sha512-hLf2ld+sYN/BtOJjHUWOk568dvjFQkHnLNa6zce25GIH+vxKfvTgm3qpaH6ToF5tu/NN0IH66s+Bb5wElHrLcw==}
+  '@tsconfig/node24@24.0.3':
+    resolution: {integrity: sha512-vcERKtKQKHgzt/vfS3Gjasd8SUI2a0WZXpgJURdJsMySpS5+ctgbPfuLj2z/W+w4lAfTWxoN4upKfu2WzIRYnw==}
 
   '@types/cloudflare-turnstile@0.2.2':
     resolution: {integrity: sha512-3Yf7b1Glci+V2bFWwWBbZkRgTuegp7RDgNTOG4U0UNPB9RV4AWvwqg2/qqLff8G+SwKFNXoXvTkqaRBZrAFdKA==}
@@ -3224,7 +3224,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@tsconfig/node22@22.0.5': {}
+  '@tsconfig/node24@24.0.3': {}
 
   '@types/cloudflare-turnstile@0.2.2': {}
 
