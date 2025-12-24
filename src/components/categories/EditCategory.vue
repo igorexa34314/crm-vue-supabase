@@ -91,7 +91,7 @@ const confirmationDialog = ref(false);
 const currentCategoryId = ref<Category['id'] | undefined>(categories[0]?.id);
 
 watch(
-	() => categories.length,
+	() => categories,
 	() => {
 		currentCategoryId.value = categories[0]?.id;
 	}
@@ -103,13 +103,22 @@ const categoryData = ref<CategoryData>({
 });
 
 watchEffect(() => {
-	const category = categories.find(({ id }) => id === currentCategoryId.value)!;
-	categoryData.value = { title: category.title, limit: cf(category.limit) };
+	const category = categories.find(({ id }) => id === currentCategoryId.value);
+	if (category) {
+		categoryData.value = { title: category.title, limit: cf(category.limit) };
+	}
 });
 
 const isNewCategoryEquals = computed(() => {
-	const { title, limit } = categories.find(cat => cat.id === currentCategoryId.value)!;
-	return deepEqual(categoryData.value, { title, limit: cf(limit) }, { strict: true });
+	const category = categories.find(cat => cat.id === currentCategoryId.value);
+	if (category) {
+		return deepEqual(
+			categoryData.value,
+			{ title: category.title, limit: cf(category.limit) },
+			{ strict: true }
+		);
+	}
+	return false;
 });
 
 const { mutate: updateCategory, asyncStatus: updateCategoryAsyncStatus } = useUpdateCategory();
