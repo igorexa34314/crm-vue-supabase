@@ -18,7 +18,7 @@
 		@click:row="openRecord">
 		<template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
 			<tr>
-				<template v-for="column in columns" :key="column.key">
+				<template v-for="(column, idx) in columns" :key="column.key ?? idx">
 					<td>
 						<span
 							class="mr-2 cursor-pointer"
