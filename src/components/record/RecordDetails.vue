@@ -7,11 +7,12 @@
 			<v-expansion-panel-text>
 				<div class="mt-2 d-flex flex-wrap">
 					<v-hover v-for="detail in details" :key="detail.id" #default="{ isHovering, props }">
-						<div
+						<a
 							v-bind="props"
 							class="record-detail cursor-pointer mb-2 text-fixed d-flex flex-column align-center"
 							:class="{ 'mr-3': details.length > 1 }"
-							@click="downloadDetail(detail)">
+							:title="detail.fullname"
+							@click.prevent="downloadDetail(detail)">
 							<div class="record-detail__file">
 								<small
 									v-if="!isHovering"
@@ -29,11 +30,11 @@
 								</v-fade-transition>
 							</div>
 							<span
-								class="record-detail__filename text-title text-center text-subtitle-2 w-100 text-truncate"
+								class="record-detail__filename text-title text-center text-subtitle-2 w-100"
 								:style="{ 'text-decoration': isHovering ? 'underline' : 'none' }"
 								>{{ detail.fullname }}</span
 							>
-						</div>
+						</a>
 					</v-hover>
 				</div>
 			</v-expansion-panel-text>
