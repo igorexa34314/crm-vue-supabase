@@ -1,8 +1,7 @@
 import { getUserId } from '@/api/auth';
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/config/supabase';
-import type { TablesInsert, TablesUpdate } from '@/types/database-helpers';
-import type { Tables } from '@/types/database-generated';
+import type { TablesInsert, TablesUpdate, Tables } from '@/types/database-generated';
 import type { Split } from 'type-fest';
 
 export const categoryQuery = 'id, title, limit';

@@ -2,9 +2,9 @@
 	<v-form
 		ref="form"
 		v-if="categories.length"
-		@submit.prevent="submitHandler"
+		@submit.prevent="tryCreateRecord"
 		class="record-form mt-8"
-		:class="$vuetify.display.xs ? 'px-2' : 'px-4'">
+		:class="xs ? 'px-2' : 'px-4'">
 		<v-select
 			v-model="formState.category_id"
 			:items="categories"
@@ -58,8 +58,8 @@
 		<v-btn
 			type="submit"
 			color="success"
-			:loading="loading"
-			:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'">
+			:loading="createRecordAsyncStatus === 'loading'"
+			:class="xs ? 'mt-4' : 'mt-7'">
 			{{ $t('create') }}
 			<v-icon :icon="mdiSend" class="ml-3" />
 		</v-btn>
@@ -82,25 +82,22 @@ import { serverCurrency } from '@/constants/currency';
 import { klona } from 'klona/json';
 import type { Category } from '@/api/category';
 import type { Record, RecordForm } from '@/api/record';
+import { useCreateRecord } from '@/mutations/record';
+import { useDisplay } from 'vuetify';
 
 const {
 	categories,
 	defaultAmount = defaultRecordAmount,
 	defaultType = 'outcome',
-	loading,
 } = defineProps<{
 	categories: Category[];
 	defaultAmount?: number;
 	defaultType?: Record['type'];
-	loading?: boolean;
-}>();
-
-const emit = defineEmits<{
-	createRecord: [data: RecordForm];
 }>();
 
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
+const { xs } = useDisplay();
 const cf = useCurrencyFilter();
 const userStore = useUserStore();
 
@@ -113,7 +110,7 @@ type RecordFormWithNullableId = Omit<RecordForm, 'category_id'> & {
 };
 
 const defaultFormValues = {
-	amount: Math.round(cf.value(defaultAmount) / 10) * 10,
+	amount: Math.round(cf(defaultAmount) / 10) * 10,
 	description: '',
 	type: defaultType,
 	details: [],
@@ -122,38 +119,41 @@ const defaultFormValues = {
 
 const formState = ref<RecordFormWithNullableId>(klona(defaultFormValues));
 
+const resetForm = () => {
+	formState.value = klona(defaultFormValues);
+};
+
 watchEffect(() => {
 	formState.value.category_id = categories[0]?.id;
-	formState.value.amount = Math.round(cf.value(defaultAmount) / 10) * 10;
+	formState.value.amount = Math.round(cf(defaultAmount) / 10) * 10;
 });
 const canCreateRecord = computed(
-	() => formState.value.type === 'income' || cf.value(info.value!.bill) >= formState.value.amount
+	() => formState.value.type === 'income' || cf(info.value!.bill) >= formState.value.amount
 );
 
-const submitHandler = async () => {
+const { mutateAsync: createRecord, asyncStatus: createRecordAsyncStatus } = useCreateRecord();
+
+const tryCreateRecord = async () => {
 	if (!formState.value.category_id) {
 		return;
 	}
 	const valid = (await formRef.value?.validate())?.valid;
 	if (valid && canCreateRecord.value) {
-		emit('createRecord', {
+		await createRecord({
 			...formState.value,
 			category_id: formState.value.category_id,
-			amount: cf.value(formState.value.amount, { type: 'reverse' }),
+			amount: cf(formState.value.amount, { type: 'reverse' }),
 		});
 		resetForm();
 	} else {
 		showMessage(
 			t('lack_of_amount') +
-				` (${n(formState.value.amount - cf.value(info.value?.bill || defaultBill), {
+				` (${n(formState.value.amount - cf(info.value?.bill || defaultBill), {
 					key: 'currency',
 					currency: info.value?.currency || serverCurrency,
 				})})`,
 			'red-darken-3'
 		);
 	}
-};
-const resetForm = () => {
-	formState.value = klona(defaultFormValues);
 };
 </script>

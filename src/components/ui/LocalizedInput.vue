@@ -3,7 +3,7 @@
 		v-bind="{
 			variant,
 			validateOn,
-			density: density || ($vuetify.display.xs ? 'compact' : 'default'),
+			density: density || (xs ? 'compact' : 'default'),
 			...props,
 		}"
 		class="text-input">
@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import { useDisplay } from 'vuetify';
 import type { VTextField } from 'vuetify/components';
 
 type VTextFieldProps = VTextField['$props'];
@@ -37,4 +38,6 @@ const {
 defineSlots<{
 	'append-inner': VTextField['$slots']['append-inner'];
 }>();
+
+const { xs } = useDisplay();
 </script>

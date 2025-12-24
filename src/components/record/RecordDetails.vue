@@ -7,15 +7,18 @@
 			<v-expansion-panel-text>
 				<div class="mt-2 d-flex flex-wrap">
 					<v-hover v-for="detail in details" :key="detail.id" #default="{ isHovering, props }">
-						<div
+						<a
 							v-bind="props"
 							class="record-detail cursor-pointer mb-2 text-fixed d-flex flex-column align-center"
 							:class="{ 'mr-3': details.length > 1 }"
-							@click="downloadDetail(detail)">
+							:title="detail.fullname"
+							@click.prevent="downloadDetail(detail)">
 							<div class="record-detail__file">
-								<small v-if="!isHovering" class="record-detail__ext text-primary">{{
-									arrayAt(detail.fullname.split('.'), -1)
-								}}</small>
+								<small
+									v-if="!isHovering"
+									class="record-detail__ext text-truncate text-primary"
+									>{{ arrayAt(detail.fullname.split('.'), -1) }}</small
+								>
 								<v-icon :icon="mdiFile" size="88px" color="file-icon" />
 								<v-fade-transition>
 									<v-icon
@@ -27,11 +30,11 @@
 								</v-fade-transition>
 							</div>
 							<span
-								class="record-detail__filename text-title text-center text-subtitle-2 w-100 text-truncate"
+								class="record-detail__filename text-title text-center text-subtitle-2 w-100"
 								:style="{ 'text-decoration': isHovering ? 'underline' : 'none' }"
 								>{{ detail.fullname }}</span
 							>
-						</div>
+						</a>
 					</v-hover>
 				</div>
 			</v-expansion-panel-text>
@@ -67,12 +70,16 @@ const downloadDetail = async (detail: RecordDetail) => {
 		position: relative;
 	}
 	&__ext {
+		margin: 0 auto;
+		max-width: 75%;
 		display: inline-block;
 		position: absolute;
-		left: 50%;
+		left: 0;
+		text-align: center;
+		right: 0;
 		top: 50%;
 		z-index: 100;
-		transform: translate(-50%, -25%);
+		transform: translateY(-25%);
 	}
 }
 .download-icon {

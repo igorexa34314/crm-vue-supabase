@@ -3,7 +3,7 @@
 		v-bind="{
 			variant,
 			validateOn,
-			density: density || ($vuetify.display.xs ? 'compact' : 'default'),
+			density: density || (xs ? 'compact' : 'default'),
 			...props,
 		}"
 		class="text-input">
@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+import { useDisplay } from 'vuetify';
 import type { VTextarea } from 'vuetify/components';
 
 type VTextareaProps = VTextarea['$props'];
@@ -30,4 +31,6 @@ const {
 	density,
 	...props
 } = defineProps<Props>();
+
+const { xs } = useDisplay();
 </script>

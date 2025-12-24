@@ -5,6 +5,7 @@ import { createHead } from '@unhead/vue/client';
 import setupVuetify from '@/plugins/vuetify';
 import { getLocale, loadMessages, setupI18n, setI18nLocaleMessages } from '@/plugins/i18n';
 import pinia from '@/plugins/pinia';
+import piniaColadaPlugin from '@/plugins/pinia-colada';
 import { useUserStore } from '@/stores/user';
 import AppLoader from '@/components/app/AppLoader.vue';
 
@@ -13,7 +14,7 @@ loadMessages(locale).then(messages => {
 	const i18n = setupI18n(locale, messages ?? {});
 
 	const app = createApp(App);
-	app.use(router).use(pinia).use(i18n);
+	app.use(router).use(pinia).use(piniaColadaPlugin).use(i18n);
 
 	const userStore = useUserStore();
 

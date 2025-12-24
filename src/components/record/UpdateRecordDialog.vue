@@ -1,12 +1,12 @@
 <template>
-	<ConfirmationDialog>
+	<ConfirmationDialog v-model="confirmDialog" @after-leave="resetForm">
 		<div class="text-h6 text-center text-title mb-3">{{ $t('edit_record') }}</div>
 		<v-form
 			ref="form"
 			@submit.prevent="submitHandler"
 			id="update-record-form"
 			class="record-form mt-8"
-			:class="$vuetify.display.xs ? 'px-2' : 'px-4'">
+			:class="xs ? 'px-2' : 'px-4'">
 			<LocalizedInput
 				v-if="record.category"
 				:model-value="record.category.title"
@@ -43,13 +43,13 @@
 				rows="1"
 				auto-grow />
 		</v-form>
-		<template #submit="{ submitEvent }">
+		<template #ok>
 			<v-btn
 				type="submit"
+				:loading="loading"
 				form="update-record-form"
 				color="green-darken-1"
-				variant="text"
-				@click="submitEvent">
+				variant="text">
 				<span class="text-h6">{{ $t('submit') }}</span>
 			</v-btn>
 		</template>
@@ -68,8 +68,9 @@ import { record as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
 import { recordTypes } from '@/constants/app';
 import type { RecordWithCategory, RecordDataToUpdate } from '@/api/record';
+import { useDisplay } from 'vuetify';
 
-const { record } = defineProps<{
+const { record, loading } = defineProps<{
 	record: RecordWithCategory;
 	loading?: boolean;
 }>();
@@ -80,21 +81,24 @@ const emit = defineEmits<{
 
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
+const { xs } = useDisplay();
 const cf = useCurrencyFilter();
 const userStore = useUserStore();
 
 const info = computed(() => userStore.info);
 
+const confirmDialog = defineModel<boolean>();
+
 const formRef = useTemplateRef('form');
 const formState = ref<RecordDataToUpdate>({
-	amount: cf.value(record.amount),
+	amount: cf(record.amount),
 	description: record.description,
 	type: record.type,
 });
 
 watchEffect(() => {
 	formState.value = {
-		amount: cf.value(record.amount),
+		amount: cf(record.amount),
 		description: record.description,
 		type: record.type,
 	};
@@ -104,7 +108,7 @@ const canUpdateRecord = computed(
 	() =>
 		info.value!.bill >=
 		(formState.value.type === 'income' ? 1 : -1) *
-			cf.value(formState.value.amount, { type: 'reverse' }) -
+			cf(formState.value.amount, { type: 'reverse' }) -
 			record.amount
 );
 
@@ -112,14 +116,13 @@ const submitHandler = async () => {
 	const valid = (await formRef.value?.validate())?.valid;
 	if (valid && canUpdateRecord.value) {
 		const { amount, ...data } = formState.value;
-		emit('updateRecord', { ...data, amount: cf.value(amount, { type: 'reverse' }) });
-		formRef.value?.reset();
+		emit('updateRecord', { ...data, amount: cf(amount, { type: 'reverse' }) });
 	} else {
 		showMessage(
 			t('lack_of_amount') +
 				` (${n(
 					(formState.value.type === 'income' ? 1 : -1) *
-						(cf.value(formState.value.amount, { type: 'reverse' }) - record.amount) -
+						(cf(formState.value.amount, { type: 'reverse' }) - record.amount) -
 						info.value!.bill,
 					{
 						key: 'currency',
@@ -129,5 +132,9 @@ const submitHandler = async () => {
 			'red-darken-3'
 		);
 	}
+};
+
+const resetForm = () => {
+	formRef.value?.reset();
 };
 </script>

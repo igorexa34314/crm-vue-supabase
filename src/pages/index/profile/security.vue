@@ -32,9 +32,9 @@
 			<v-btn
 				type="submit"
 				color="success"
-				:class="$vuetify.display.xs ? 'mt-3' : 'mt-5'"
+				:class="xs ? 'mt-3' : 'mt-5'"
 				:disabled="!formState.newPass"
-				:loading="loading">
+				:loading="changeUserPasswordAsyncStatus === 'loading'">
 				{{ $t('update') }}
 				<v-icon :icon="mdiSend" class="ml-3" />
 			</v-btn>
@@ -47,17 +47,13 @@ import PassField from '@/components/ui/PassField.vue';
 // import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref, useTemplateRef } from 'vue';
 import { mdiSend } from '@mdi/js';
-import { useI18n } from 'vue-i18n';
 import { user as validations } from '@/utils/validations';
-import { useSnackbarStore } from '@/stores/snackbar';
-import { changeUserPassword /* changeUserEmail */ } from '@/api/auth';
+import { /* useChangeUserEmail, */ useChangeUserPassword } from '@/mutations/auth';
+import { useDisplay } from 'vuetify';
 
-const { t, te } = useI18n();
-const { showMessage } = useSnackbarStore();
+const { xs } = useDisplay();
 
 const formRef = useTemplateRef('form');
-
-const loading = ref(false);
 
 const formState = ref({
 	email: '',
@@ -65,30 +61,19 @@ const formState = ref({
 	newPass: '',
 });
 
+const { mutate: changeUserPassword, asyncStatus: changeUserPasswordAsyncStatus } =
+	useChangeUserPassword();
+// const { mutate: changeUserEmail } = useChangeUserEmail();
+
 const submitHandler = async () => {
 	const valid = (await formRef.value?.validate())?.valid;
 	if (valid) {
-		try {
-			loading.value = true;
-			if (formState.value.oldPass && formState.value.newPass) {
-				await changeUserPassword(formState.value.oldPass, formState.value.newPass);
-				showMessage(t('updatePass_message'));
-			}
-			// if (email) {
-			// 	await changeUserEmail(email);
-			// }
-		} catch (e) {
-			if (typeof e === 'string') {
-				showMessage(
-					te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64),
-					'red-darken-3'
-				);
-			} else {
-				showMessage(t('error_update_profile'), 'red-darken-3');
-			}
-		} finally {
-			loading.value = false;
+		if (formState.value.oldPass && formState.value.newPass) {
+			changeUserPassword(formState.value);
 		}
+		// if (formState.value.email) {
+		// 	changeUserEmail(formState.value.email);
+		// }
 	}
 };
 </script>

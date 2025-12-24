@@ -6,59 +6,32 @@
 			</h3>
 		</div>
 
-		<app-loader v-if="categoriesLoading" class="mt-10" page />
+		<app-loader v-if="categoriesState.status === 'pending'" class="mt-10" page />
 
-		<div v-else-if="!categories.length" class="mt-10 text-center text-h6">
+		<div
+			v-else-if="categoriesState.status === 'success' && !categoriesState.data.length"
+			class="mt-10 text-center text-h6">
 			{{ $t('no_categories') + '. ' }}
 			<router-link to="/categories">{{ $t('create_category') }}</router-link>
 		</div>
 
 		<CreateRecord
-			v-else
-			v-bind="{ categories, defaultRecordAmount, loading: createLoading }"
-			@create-record="handleRecordCreate" />
+			v-else-if="categoriesState.status === 'success'"
+			:categories="categoriesState.data"
+			:default-amount="defaultRecordAmount" />
 	</div>
 </template>
 
 <script setup lang="ts">
 import CreateRecord from '@/components/record/CreateRecord.vue';
-import { ref } from 'vue';
-import { useAsyncState } from '@vueuse/core';
 import { useSeoMeta } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
-import { useSnackbarStore } from '@/stores/snackbar';
-import { fetchCategories } from '@/api/category';
-import { createRecord, type RecordForm } from '@/api/record';
 import { defaultRecordAmount } from '@/constants/app';
+import { useCategoriesQuery } from '@/queries/category';
 
-useSeoMeta({ title: 'pageTitles.newRecord' });
+const { t } = useI18n({ useScope: 'global' });
 
-const { t, te } = useI18n({ useScope: 'global' });
-const { showMessage } = useSnackbarStore();
+useSeoMeta({ title: () => t('pageTitles.newRecord') });
 
-const { state: categories, isLoading: categoriesLoading } = useAsyncState(fetchCategories, [], {
-	onError: e => {
-		showMessage(
-			te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_load_categories'),
-			'red-darken-3'
-		);
-	},
-});
-
-const createLoading = ref(false);
-
-const handleRecordCreate = async (formData: RecordForm) => {
-	try {
-		createLoading.value = true;
-		await createRecord(formData);
-		showMessage(t('createRecord_success'));
-	} catch (e) {
-		showMessage(
-			te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_create_record'),
-			'red-darken-3'
-		);
-	} finally {
-		createLoading.value = false;
-	}
-};
+const { state: categoriesState } = useCategoriesQuery();
 </script>

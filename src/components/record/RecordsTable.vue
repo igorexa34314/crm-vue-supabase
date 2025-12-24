@@ -7,19 +7,18 @@
 		:headers="tableHeaders"
 		:items-length="totalRecords || records.length"
 		:items="records"
+		item-value="id"
 		:loading="loading"
 		:sort-desc-icon="mdiMenuDown"
 		:sort-asc-icon="mdiMenuUp"
-		hide-default-footer
 		hover
 		:row-props="{ class: 'record-row' }"
 		:cell-props="{ class: 'text-left' }"
 		class="records-table"
-		@update:options="$emit('update:options')"
 		@click:row="openRecord">
 		<template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
 			<tr>
-				<template v-for="column in columns" :key="column.key">
+				<template v-for="(column, idx) in columns" :key="column.key ?? idx">
 					<td>
 						<span
 							class="mr-2 cursor-pointer"
@@ -44,7 +43,7 @@
 		</template>
 
 		<template #item.created_at="{ item: record }">
-			{{ $d(new Date(record.created_at), $vuetify.display.smAndDown ? 'shortdate' : 'short') }}
+			{{ $d(new Date(record.created_at), smAndDown ? 'shortdate' : 'short') }}
 		</template>
 
 		<template #item.category_id="{ item: record }">
@@ -57,10 +56,10 @@
 				class="py-2 px-3 text-center text-trend">
 				<v-icon
 					:icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
-					:class="{ 'mr-2': !$vuetify.display.smAndDown }"
-					:size="$vuetify.display.xs ? 'small' : 'default'" />
+					:class="{ 'mr-2': !smAndDown }"
+					:size="xs ? 'small' : 'default'" />
 				{{
-					$vuetify.display.smAndDown
+					smAndDown
 						? ''
 						: record.type === 'income'
 							? $t('income').toLowerCase()
@@ -83,18 +82,17 @@
 			</v-tooltip>
 		</template>
 
-		<template #bottom>
+		<template #bottom="{ pageCount }">
 			<v-pagination
 				v-model="page"
 				:length="pageCount"
-				:total-visible="$vuetify.display.xs ? 3 : 4"
+				:total-visible="xs ? 3 : 4"
 				class="mt-4"
 				density="comfortable"
-				:size="$vuetify.display.xs ? 'small' : 'default'"
+				:size="xs ? 'small' : 'default'"
 				color="primary"
 				:disabled="loading" />
 		</template>
-		<template #loading></template>
 	</v-data-table-server>
 </template>
 
@@ -115,25 +113,17 @@ const {
 	loading,
 } = defineProps<{
 	records: RecordWithCategory[];
-	totalRecords?: string | number;
+	totalRecords?: number;
 	loading?: boolean;
-}>();
-
-defineEmits<{
-	'update:options': [];
 }>();
 
 const perPage = defineModel<string | number>('perPage', {
 	default: defaultRecordsPerPage,
 });
-const page = defineModel<number>('page', { default: 1, set: v => +v });
+const page = defineModel<number>('page', { default: 1 });
 const sortBy = defineModel<DataTableSortItem[]>('sortBy');
 
-const pageCount = computed(() => {
-	return Math.ceil(+totalRecords / +perPage.value);
-});
-
-const { smAndDown } = useDisplay();
+const { xs, smAndDown } = useDisplay();
 
 const tableHeaders = computed(() =>
 	(

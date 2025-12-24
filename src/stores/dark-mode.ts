@@ -12,9 +12,13 @@ export const useDarkModeStore = defineStore(DARK_MODE_KEY, () => {
 	watch(
 		darkMode,
 		newVal => {
-			theme.global.name.value = newVal ? 'dark' : 'light';
+			if (newVal) {
+				theme.change('dark');
+			} else {
+				theme.change('light');
+			}
 		},
-		{ immediate: true, flush: 'sync' }
+		{ immediate: true }
 	);
 
 	return { darkMode };

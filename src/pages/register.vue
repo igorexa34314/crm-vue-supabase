@@ -1,6 +1,6 @@
 <template>
 	<v-layout class="app bg-grey-darken-2 d-flex justify-center align-center overflow-hidden">
-		<v-card width="100%" :max-width="$vuetify.display.xs ? 400 : 450" class="pa-3 pa-sm-4">
+		<v-card width="100%" :max-width="xs ? 400 : 450" class="pa-3 pa-sm-4">
 			<v-card-title class="mb-2 text-center text-title">{{
 				$t('home_bookkeeping')
 			}}</v-card-title>
@@ -27,14 +27,16 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
 import { onMounted, onUnmounted, watchEffect } from 'vue';
 import { useUserStore } from '@/stores/user';
-
-useSeoMeta({ title: 'sign_in' });
+import { useDisplay } from 'vuetify';
 
 const { t, te } = useI18n({ useScope: 'global' });
+const { xs } = useDisplay();
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
 const { showMessage } = useSnackbarStore();
+
+useSeoMeta({ title: () => t('sign_in') });
 
 onMounted(() => {
 	if (!userStore.info?.locale) {

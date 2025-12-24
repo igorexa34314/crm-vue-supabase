@@ -50,11 +50,12 @@
 					</v-radio-group>
 				</div>
 				<div
-					:style="{ 'max-width': $vuetify.display.smAndDown ? 'none' : '40%', width: '100%' }"
+					:style="{ 'max-width': smAndDown ? 'none' : '40%', width: '100%' }"
 					class="d-flex flex-column pl-4 mt-md-0 my-4">
 					<v-card
 						variant="flat"
-						:max-width="$vuetify.display.smAndDown ? 200 : 250"
+						:width="smAndDown ? 200 : 250"
+						:height="smAndDown ? 200 : 250"
 						class="mb-5"
 						elevation="4">
 						<v-img
@@ -75,7 +76,7 @@
 						variant="solo"
 						:placeholder="$t('upload_avatar')"
 						accept="image/* "
-						:density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+						:density="xs ? 'compact' : 'comfortable'"
 						style="max-width: 550px" />
 				</div>
 			</div>
@@ -91,7 +92,7 @@
 			<div class="d-flex flex-column items-center mt-4 flex-sm-row">
 				<v-select
 					v-model="formState.locale"
-					:items="locales"
+					:items="localesState.data"
 					:label="$t('lang')"
 					item-title="native_name"
 					item-value="code"
@@ -111,8 +112,8 @@
 			<v-btn
 				type="submit"
 				color="success"
-				:class="$vuetify.display.xs ? 'mt-3' : 'mt-5'"
-				:loading="loading"
+				:class="xs ? 'mt-3' : 'mt-5'"
+				:loading="updateInfoAsyncStatus === 'loading'"
 				:disabled="isInfoEqualsToStore && !formState.avatar">
 				{{ $t('update') }}
 				<v-icon :icon="mdiSend" class="ml-3" />
@@ -129,28 +130,34 @@ import ImageLoader from '@/components/app/ImageLoader.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import { VBirthdayPicker } from 'vuetify-birthdaypicker';
-import { ref, computed, watchEffect, useTemplateRef } from 'vue';
+import { ref, computed, watchEffect, useTemplateRef, watch } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
-import { computedInject, useAsyncState } from '@vueuse/core';
 import { fetchAvailableLocales } from '@/api/locale';
 import { user as validations } from '@/utils/validations';
-import { currencyKey } from '@/injection-keys';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { defaultLocale } from '@/constants/i18n';
 import { serverCurrency } from '@/constants/currency';
 import deepEqual from 'deep-equal';
-import { updateInfo, updateAvatar, type UserInfo } from '@/api/user';
+import { type UserInfo } from '@/api/user';
 import type { CurrencyRates } from '@/api/currency';
+import { useCurrencyQueryState } from '@/queries/currency';
+import { useQuery } from '@pinia/colada';
+import { useUpdateUserInfo } from '@/mutations/user';
+import { Constants } from '@/types/database-generated';
+import { useDisplay } from 'vuetify';
 
 const { showMessage } = useSnackbarStore();
-const { t, te } = useI18n();
+const { t } = useI18n();
+const { xs, smAndDown } = useDisplay();
 const userStore = useUserStore();
 
-const currencies = computedInject(currencyKey, data => {
+const { data: currency } = useCurrencyQueryState();
+
+const currencies = computed(() => {
 	const currencyNames = Object.keys(
-		data?.currency.value?.rates || { [serverCurrency]: 1 }
+		currency.value?.rates || { [serverCurrency]: 1 }
 	) as CurrencyRates[];
 	return currencyNames.map(c => ({ title: t(`currencies.${c}`) + ` (${c})`, value: c }));
 });
@@ -184,17 +191,22 @@ const datePickerDate = computed({
 	get: () => new Date(formState.value.birthday_date || new Date()),
 	set: val => (formState.value.birthday_date = val.toDateString()),
 });
-const { state: locales } = useAsyncState(fetchAvailableLocales, [], {
-	onError: () => {
-		showMessage(t('error_loading_locales'), 'red-darken-3');
-	},
+
+const { state: localesState, error: localesError } = useQuery({
+	key: ['locales'],
+	query: fetchAvailableLocales,
 });
 
-const genderItems = [
-	{ title: 'male', value: 'male' },
-	{ title: 'female', value: 'female' },
-	{ title: 'unknown', value: 'unknown' },
-];
+watch(localesError, e => {
+	if (e) {
+		showMessage(t('error_loading_locales'), 'red-darken-3');
+	}
+});
+
+const genderItems = Constants.public.Enums.user_gender.map(g => ({
+	title: `${g}`,
+	value: g,
+}));
 
 //fillInfo
 watchEffect(() => {
@@ -213,27 +225,12 @@ const isInfoEqualsToStore = computed(() => {
 	return deepEqual(userdata, formInfo, { strict: true });
 });
 
-const loading = ref(false);
+const { mutateAsync: updateInfo, asyncStatus: updateInfoAsyncStatus } = useUpdateUserInfo();
 
 const submitHandler = async () => {
 	const valid = (await formRef.value?.validate())?.valid;
 	if (valid) {
-		try {
-			const { avatar, ...userdata } = formState.value;
-			loading.value = true;
-			await updateInfo(userdata);
-			if (avatar) {
-				await updateAvatar(avatar);
-			}
-			showMessage(t('updateProfile_message'));
-		} catch (e) {
-			showMessage(
-				te(`warnings.${e}`) ? t(`warnings.${e}`) : t('error_update_profile'),
-				'red-darken-3'
-			);
-		} finally {
-			loading.value = false;
-		}
+		await updateInfo(formState.value);
 		formState.value.avatar = null;
 	}
 };

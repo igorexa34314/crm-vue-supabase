@@ -1,29 +1,27 @@
 <template>
+	<PiniaColadaDevtools />
+
 	<GlobalSnackbar />
 
 	<router-view #default="{ Component }">
-		<template v-if="Component">
-			<Suspense>
-				<component :is="Component" />
-				<template #fallback>
-					<app-loader class="mt-7" page />
-				</template>
-			</Suspense>
-		</template>
+		<Suspense v-if="Component">
+			<component :is="Component" />
+			<template #fallback>
+				<app-loader class="mt-7" page />
+			</template>
+		</Suspense>
 	</router-view>
 </template>
 
 <script setup lang="ts">
+import { PiniaColadaDevtools } from '@pinia/colada-devtools';
 import GlobalSnackbar from '@/components/app/GlobalSnackbar.vue';
 import { useDarkModeStore } from '@/stores/dark-mode';
-import { useI18n } from 'vue-i18n';
 import { appTitle } from '@/constants/app';
 import { useSeoMeta } from '@unhead/vue';
 
-const { t } = useI18n({ useScope: 'global' });
-
 useSeoMeta({
-	titleTemplate: (title?: string) => (title ? `${t(title)} | ${appTitle}` : appTitle),
+	titleTemplate: (title?: string) => (title ? `${title} | ${appTitle}` : appTitle),
 });
 
 useDarkModeStore();
