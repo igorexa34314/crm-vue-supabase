@@ -13,9 +13,11 @@
 							:class="{ 'mr-3': details.length > 1 }"
 							@click="downloadDetail(detail)">
 							<div class="record-detail__file">
-								<small v-if="!isHovering" class="record-detail__ext text-primary">{{
-									arrayAt(detail.fullname.split('.'), -1)
-								}}</small>
+								<small
+									v-if="!isHovering"
+									class="record-detail__ext text-truncate text-primary"
+									>{{ arrayAt(detail.fullname.split('.'), -1) }}</small
+								>
 								<v-icon :icon="mdiFile" size="88px" color="file-icon" />
 								<v-fade-transition>
 									<v-icon
@@ -67,12 +69,16 @@ const downloadDetail = async (detail: RecordDetail) => {
 		position: relative;
 	}
 	&__ext {
+		margin: 0 auto;
+		max-width: 75%;
 		display: inline-block;
 		position: absolute;
-		left: 50%;
+		left: 0;
+		text-align: center;
+		right: 0;
 		top: 50%;
 		z-index: 100;
-		transform: translate(-50%, -25%);
+		transform: translateY(-25%);
 	}
 }
 .download-icon {
