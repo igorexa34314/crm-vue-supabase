@@ -14,7 +14,7 @@
 				:key="tab.path"
 				:to="tab.path"
 				:value="tab.path"
-				:size="$vuetify.display.xs ? 'small' : 'default'"
+				:size="xs ? 'small' : 'default'"
 				:text="$t(`tabs.${tab.title}`)" />
 		</v-tabs>
 
@@ -36,10 +36,12 @@ import { useSeoMeta } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
+import { useDisplay } from 'vuetify';
 
 definePage({ redirect: '/profile/info' });
 
 const { t, te } = useI18n({ useScope: 'global' });
+const { xs } = useDisplay();
 const { showMessage } = useSnackbarStore();
 const route = useRoute('//profile/info');
 const router = useRouter();

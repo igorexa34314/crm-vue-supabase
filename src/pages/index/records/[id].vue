@@ -13,7 +13,7 @@
 				<v-card-title class="flex-fill d-flex">
 					<div>
 						{{
-							(!$vuetify.display.xs ? `${$t('pageTitles.details')} - ` : '') +
+							(!xs ? `${$t('pageTitles.details')} - ` : '') +
 							`${record.category?.title} (${$t(record.type).toLowerCase()})`
 						}}
 					</div>
@@ -28,13 +28,13 @@
 				<div class="card-header-actions d-flex justify-end">
 					<v-btn
 						:icon="mdiPencil"
-						:size="$vuetify.display.xs ? '46px' : 'default'"
+						:size="xs ? '46px' : 'default'"
 						variant="text"
 						color="primary"
 						@click="updateRecordDialog = true" />
 					<v-btn
 						:icon="mdiDelete"
-						:size="$vuetify.display.xs ? '46px' : 'default'"
+						:size="xs ? '46px' : 'default'"
 						variant="text"
 						color="primary"
 						@click="confirmationDialog = true" />
@@ -106,7 +106,9 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useRecordByIdQuery } from '@/queries/record';
 import { useDeleteRecord, useUpdateRecord } from '@/mutations/record';
+import { useDisplay } from 'vuetify';
 
+const { xs } = useDisplay();
 const route = useRoute('//records/[id]');
 const router = useRouter();
 const { t, n } = useI18n({ useScope: 'global' });

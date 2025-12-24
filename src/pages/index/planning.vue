@@ -47,15 +47,15 @@
 							{{
 								$n(cf(cat.spend), {
 									key: 'currency',
-									currencyDisplay: $vuetify.display.xs ? 'narrowSymbol' : 'symbol',
+									currencyDisplay: xs ? 'narrowSymbol' : 'symbol',
 									currency: userCurrency,
 								}) +
 								' ' +
-								($vuetify.display.xs ? '/' : $t('out_of')) +
+								(xs ? '/' : $t('out_of')) +
 								' ' +
 								$n(cf(cat.limit), {
 									key: 'currency',
-									currencyDisplay: $vuetify.display.xs ? 'narrowSymbol' : 'symbol',
+									currencyDisplay: xs ? 'narrowSymbol' : 'symbol',
 									currency: userCurrency,
 								})
 							}}
@@ -106,8 +106,10 @@ import { useCurrencyFilter } from '@/composables/currency-filter';
 import { defaultBill } from '@/constants/app';
 import { useCurrencyQueryState } from '@/queries/currency';
 import { useCategoriesSpendStatsQuery } from '@/queries/category';
+import { useDisplay } from 'vuetify';
 
 const { t } = useI18n({ useScope: 'global' });
+const { xs } = useDisplay();
 
 useSeoMeta({ title: () => t('pageTitles.plan') });
 

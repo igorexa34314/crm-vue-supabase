@@ -3,15 +3,10 @@
 		<v-card-title class="text-h5 mb-5 text-h6 text-sm-h5">{{
 			$t('currency_account')
 		}}</v-card-title>
-		<v-card-text
-			class="text-h5 text-primary"
-			:class="$vuetify.display.xs ? 'text-h6' : 'text-h5'">
-			<div v-for="cur in currencies" :key="cur" :class="$vuetify.display.xs ? 'mt-5' : 'mt-7'">
+		<v-card-text class="text-h5 text-primary" :class="xs ? 'text-h6' : 'text-h5'">
+			<div v-for="cur in currencies" :key="cur" :class="xs ? 'mt-5' : 'mt-7'">
 				<span class="mx-2">{{ $n(getCurrency(cur), { key: 'currency', currency: cur }) }}</span>
-				<v-divider
-					thickness="2.5"
-					color="divider"
-					:class="$vuetify.display.xs ? 'mt-2' : 'mt-4'" />
+				<v-divider thickness="2.5" color="divider" :class="xs ? 'mt-2' : 'mt-4'" />
 			</div>
 		</v-card-text>
 	</v-card>
@@ -24,7 +19,9 @@ import { useUserStore } from '@/stores/user';
 import type { Currency, CurrencyRates } from '@/api/currency';
 import { defaultBill } from '@/constants/app';
 import { serverCurrency } from '@/constants/currency';
+import { useDisplay } from 'vuetify';
 
+const { xs } = useDisplay();
 const userStore = useUserStore();
 
 const { rates } = defineProps<{

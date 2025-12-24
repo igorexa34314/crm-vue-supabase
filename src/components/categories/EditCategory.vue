@@ -35,7 +35,7 @@
 				<v-btn
 					color="success"
 					type="submit"
-					:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'"
+					:class="xs ? 'mt-4' : 'mt-7'"
 					:disabled="isNewCategoryEquals"
 					:loading="updateCategoryAsyncStatus === 'loading'">
 					{{ $t('update') }}
@@ -45,7 +45,7 @@
 				<v-btn
 					color="success"
 					type="button"
-					:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'"
+					:class="xs ? 'mt-4' : 'mt-7'"
 					class="ml-sm-6 ml-4"
 					@click="confirmationDialog = true">
 					{{ $t('delete') }}
@@ -74,12 +74,14 @@ import { storeToRefs } from 'pinia';
 import deepEqual from 'deep-equal';
 import { defaultCategoryLimit } from '@/constants/app';
 import { useDeleteCategory, useUpdateCategory } from '@/mutations/category';
+import { useDisplay } from 'vuetify';
 
 const { categories, defaultLimit = defaultCategoryLimit } = defineProps<{
 	categories: Category[];
 	defaultLimit?: number;
 }>();
 
+const { xs } = useDisplay();
 const cf = useCurrencyFilter();
 const { userCurrency } = storeToRefs(useUserStore());
 

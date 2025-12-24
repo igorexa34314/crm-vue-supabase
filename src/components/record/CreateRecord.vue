@@ -4,7 +4,7 @@
 		v-if="categories.length"
 		@submit.prevent="tryCreateRecord"
 		class="record-form mt-8"
-		:class="$vuetify.display.xs ? 'px-2' : 'px-4'">
+		:class="xs ? 'px-2' : 'px-4'">
 		<v-select
 			v-model="formState.category_id"
 			:items="categories"
@@ -59,7 +59,7 @@
 			type="submit"
 			color="success"
 			:loading="createRecordAsyncStatus === 'loading'"
-			:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'">
+			:class="xs ? 'mt-4' : 'mt-7'">
 			{{ $t('create') }}
 			<v-icon :icon="mdiSend" class="ml-3" />
 		</v-btn>
@@ -83,6 +83,7 @@ import { klona } from 'klona/json';
 import type { Category } from '@/api/category';
 import type { Record, RecordForm } from '@/api/record';
 import { useCreateRecord } from '@/mutations/record';
+import { useDisplay } from 'vuetify';
 
 const {
 	categories,
@@ -96,6 +97,7 @@ const {
 
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
+const { xs } = useDisplay();
 const cf = useCurrencyFilter();
 const userStore = useUserStore();
 

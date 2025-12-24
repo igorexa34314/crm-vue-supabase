@@ -29,7 +29,7 @@
 			v-model="formState.agree"
 			:rules="validations.agree"
 			class="mt-5"
-			:density="$vuetify.display.xs ? 'compact' : 'default'"
+			:density="xs ? 'compact' : 'default'"
 			required>
 			<template #label>
 				<p>
@@ -64,12 +64,14 @@ import { register } from '@/api/auth';
 import { user as validations } from '@/utils/validations';
 import { useTurnstile } from '@/composables/turnstile';
 import { validateToken } from '@/api/turnstile';
+import { useDisplay } from 'vuetify';
 
 const emit = defineEmits<{
 	success: [];
 	error: [err: unknown];
 }>();
 
+const { xs } = useDisplay();
 const turnstileToken = useTurnstile('.cf-turnstile');
 
 const formRef = useTemplateRef('form');

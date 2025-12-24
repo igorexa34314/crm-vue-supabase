@@ -32,7 +32,7 @@
 			<v-btn
 				type="submit"
 				color="success"
-				:class="$vuetify.display.xs ? 'mt-3' : 'mt-5'"
+				:class="xs ? 'mt-3' : 'mt-5'"
 				:disabled="!formState.newPass"
 				:loading="changeUserPasswordAsyncStatus === 'loading'">
 				{{ $t('update') }}
@@ -49,6 +49,9 @@ import { ref, useTemplateRef } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { user as validations } from '@/utils/validations';
 import { /* useChangeUserEmail, */ useChangeUserPassword } from '@/mutations/auth';
+import { useDisplay } from 'vuetify';
+
+const { xs } = useDisplay();
 
 const formRef = useTemplateRef('form');
 

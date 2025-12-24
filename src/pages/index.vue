@@ -18,13 +18,7 @@
 				<template #activator="{ props }">
 					<v-btn
 						color="fixed"
-						:size="
-							$vuetify.display.xs
-								? 'default'
-								: $vuetify.display.mdAndDown
-									? 'large'
-									: 'x-large'
-						"
+						:size="xs ? 'default' : mdAndDown ? 'large' : 'x-large'"
 						class="fixed-action-btn"
 						to="/records/create"
 						position="fixed"
@@ -59,7 +53,7 @@ const router = useRouter();
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 const userStore = useUserStore();
-const { mobile } = useDisplay();
+const { mobile, xs, mdAndDown } = useDisplay();
 
 const drawer = ref(!mobile.value);
 

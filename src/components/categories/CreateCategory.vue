@@ -21,11 +21,7 @@
 				class="mt-6"
 				required />
 
-			<v-btn
-				color="success"
-				type="submit"
-				:class="$vuetify.display.xs ? 'mt-4' : 'mt-7'"
-				:loading="loading">
+			<v-btn color="success" type="submit" :class="xs ? 'mt-4' : 'mt-7'" :loading="loading">
 				{{ $t('create') }}
 				<v-icon :icon="mdiSend" class="ml-3" />
 			</v-btn>
@@ -44,11 +40,13 @@ import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 import { defaultCategoryLimit } from '@/constants/app';
 import { useCreateCategory } from '@/mutations/category';
+import { useDisplay } from 'vuetify';
 
 const { defaultLimit = defaultCategoryLimit } = defineProps<{
 	defaultLimit?: number;
 }>();
 
+const { xs } = useDisplay();
 const cf = useCurrencyFilter();
 
 const { userCurrency } = storeToRefs(useUserStore());

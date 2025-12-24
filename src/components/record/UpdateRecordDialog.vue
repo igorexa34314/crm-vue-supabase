@@ -6,7 +6,7 @@
 			@submit.prevent="submitHandler"
 			id="update-record-form"
 			class="record-form mt-8"
-			:class="$vuetify.display.xs ? 'px-2' : 'px-4'">
+			:class="xs ? 'px-2' : 'px-4'">
 			<LocalizedInput
 				v-if="record.category"
 				:model-value="record.category.title"
@@ -68,6 +68,7 @@ import { record as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';
 import { recordTypes } from '@/constants/app';
 import type { RecordWithCategory, RecordDataToUpdate } from '@/api/record';
+import { useDisplay } from 'vuetify';
 
 const { record, loading } = defineProps<{
 	record: RecordWithCategory;
@@ -80,6 +81,7 @@ const emit = defineEmits<{
 
 const { showMessage } = useSnackbarStore();
 const { t, n } = useI18n();
+const { xs } = useDisplay();
 const cf = useCurrencyFilter();
 const userStore = useUserStore();
 

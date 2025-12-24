@@ -43,7 +43,7 @@
 		</template>
 
 		<template #item.created_at="{ item: record }">
-			{{ $d(new Date(record.created_at), $vuetify.display.smAndDown ? 'shortdate' : 'short') }}
+			{{ $d(new Date(record.created_at), smAndDown ? 'shortdate' : 'short') }}
 		</template>
 
 		<template #item.category_id="{ item: record }">
@@ -56,10 +56,10 @@
 				class="py-2 px-3 text-center text-trend">
 				<v-icon
 					:icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
-					:class="{ 'mr-2': !$vuetify.display.smAndDown }"
-					:size="$vuetify.display.xs ? 'small' : 'default'" />
+					:class="{ 'mr-2': !smAndDown }"
+					:size="xs ? 'small' : 'default'" />
 				{{
-					$vuetify.display.smAndDown
+					smAndDown
 						? ''
 						: record.type === 'income'
 							? $t('income').toLowerCase()
@@ -86,10 +86,10 @@
 			<v-pagination
 				v-model="page"
 				:length="pageCount"
-				:total-visible="$vuetify.display.xs ? 3 : 4"
+				:total-visible="xs ? 3 : 4"
 				class="mt-4"
 				density="comfortable"
-				:size="$vuetify.display.xs ? 'small' : 'default'"
+				:size="xs ? 'small' : 'default'"
 				color="primary"
 				:disabled="loading" />
 		</template>
@@ -123,7 +123,7 @@ const perPage = defineModel<string | number>('perPage', {
 const page = defineModel<number>('page', { default: 1 });
 const sortBy = defineModel<DataTableSortItem[]>('sortBy');
 
-const { smAndDown } = useDisplay();
+const { xs, smAndDown } = useDisplay();
 
 const tableHeaders = computed(() =>
 	(

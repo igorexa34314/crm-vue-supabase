@@ -50,13 +50,9 @@
 					</v-radio-group>
 				</div>
 				<div
-					:style="{ 'max-width': $vuetify.display.smAndDown ? 'none' : '40%', width: '100%' }"
+					:style="{ 'max-width': smAndDown ? 'none' : '40%', width: '100%' }"
 					class="d-flex flex-column pl-4 mt-md-0 my-4">
-					<v-card
-						variant="flat"
-						:max-width="$vuetify.display.smAndDown ? 200 : 250"
-						class="mb-5"
-						elevation="4">
+					<v-card variant="flat" :max-width="smAndDown ? 200 : 250" class="mb-5" elevation="4">
 						<v-img
 							:src="info.avatar_url || '/img/avatar-placeholder.jpg'"
 							alt="Ваш аватар"
@@ -75,7 +71,7 @@
 						variant="solo"
 						:placeholder="$t('upload_avatar')"
 						accept="image/* "
-						:density="$vuetify.display.xs ? 'compact' : 'comfortable'"
+						:density="xs ? 'compact' : 'comfortable'"
 						style="max-width: 550px" />
 				</div>
 			</div>
@@ -111,7 +107,7 @@
 			<v-btn
 				type="submit"
 				color="success"
-				:class="$vuetify.display.xs ? 'mt-3' : 'mt-5'"
+				:class="xs ? 'mt-3' : 'mt-5'"
 				:loading="updateInfoAsyncStatus === 'loading'"
 				:disabled="isInfoEqualsToStore && !formState.avatar">
 				{{ $t('update') }}
@@ -145,9 +141,11 @@ import { useCurrencyQueryState } from '@/queries/currency';
 import { useQuery } from '@pinia/colada';
 import { useUpdateUserInfo } from '@/mutations/user';
 import { Constants } from '@/types/database-generated';
+import { useDisplay } from 'vuetify';
 
 const { showMessage } = useSnackbarStore();
 const { t } = useI18n();
+const { xs, smAndDown } = useDisplay();
 const userStore = useUserStore();
 
 const { data: currency } = useCurrencyQueryState();

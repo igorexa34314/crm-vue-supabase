@@ -11,7 +11,7 @@
 
 		<div
 			v-else-if="catSpendStatsState.status === 'success' && catSpendStatsState.data.length"
-			:style="{ 'max-width': $vuetify.display.xs ? '380px' : '550px' }"
+			:style="{ 'max-width': xs ? '380px' : '550px' }"
 			class="history-chart mx-auto">
 			<Pie id="category-stats-chart" :options="chartOptions" :data="chartData">
 				Canvas element is not supported in your browser
@@ -50,9 +50,10 @@ import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 import { useCategoriesSpendStatsQuery } from '@/queries/category';
 import { useRecordsWithCategoryQuery, isRecordProperty } from '@/queries/record';
-import type { DataTableSortItem } from 'vuetify';
+import { useDisplay, type DataTableSortItem } from 'vuetify';
 
 const { t } = useI18n({ useScope: 'global' });
+const { xs } = useDisplay();
 
 useSeoMeta({ title: () => t('pageTitles.history') });
 
