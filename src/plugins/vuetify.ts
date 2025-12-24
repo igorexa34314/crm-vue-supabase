@@ -1,4 +1,5 @@
 // Vuetify
+// @ts-expect-error no types
 import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
@@ -66,7 +67,7 @@ export default function setupVuetify(
 						progress: '#000000',
 						subtitle: '#393646',
 						sidebar: '#DEF5E5',
-						'file-icon': '#D4E157',
+						'file-icon': '#c1d31cff',
 						tooltip: '#FFE1E1',
 						input: '#000000',
 						radio: '#FF9100',
