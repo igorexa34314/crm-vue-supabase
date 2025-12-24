@@ -3,7 +3,7 @@
 		v-model="confirmationDialog"
 		:title="$t('delete_category_confirmation')"
 		:loading="loading"
-		@submit="$emit('deleteCategory')" />
+		@ok="$emit('deleteCategory')" />
 </template>
 
 <script setup lang="ts">
