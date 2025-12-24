@@ -71,7 +71,7 @@ import LocalizedFileInput from '@/components/ui/LocalizedFileInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { mdiSend } from '@mdi/js';
-import { ref, computed, watchEffect, useTemplateRef, watch } from 'vue';
+import { ref, computed, watchEffect, useTemplateRef } from 'vue';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useI18n } from 'vue-i18n';
@@ -108,7 +108,7 @@ type RecordFormWithNullableId = Omit<RecordForm, 'category_id'> & {
 };
 
 const defaultFormValues = {
-	amount: Math.round(cf.value(defaultAmount) / 10) * 10,
+	amount: Math.round(cf(defaultAmount) / 10) * 10,
 	description: '',
 	type: defaultType,
 	details: [],
@@ -123,10 +123,10 @@ const resetForm = () => {
 
 watchEffect(() => {
 	formState.value.category_id = categories[0]?.id;
-	formState.value.amount = Math.round(cf.value(defaultAmount) / 10) * 10;
+	formState.value.amount = Math.round(cf(defaultAmount) / 10) * 10;
 });
 const canCreateRecord = computed(
-	() => formState.value.type === 'income' || cf.value(info.value!.bill) >= formState.value.amount
+	() => formState.value.type === 'income' || cf(info.value!.bill) >= formState.value.amount
 );
 
 const { mutateAsync: createRecord, asyncStatus: createRecordAsyncStatus } = useCreateRecord();
@@ -140,13 +140,13 @@ const tryCreateRecord = async () => {
 		await createRecord({
 			...formState.value,
 			category_id: formState.value.category_id,
-			amount: cf.value(formState.value.amount, { type: 'reverse' }),
+			amount: cf(formState.value.amount, { type: 'reverse' }),
 		});
 		resetForm();
 	} else {
 		showMessage(
 			t('lack_of_amount') +
-				` (${n(formState.value.amount - cf.value(info.value?.bill || defaultBill), {
+				` (${n(formState.value.amount - cf(info.value?.bill || defaultBill), {
 					key: 'currency',
 					currency: info.value?.currency || serverCurrency,
 				})})`,

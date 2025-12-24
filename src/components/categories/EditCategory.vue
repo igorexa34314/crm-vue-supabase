@@ -97,17 +97,17 @@ watch(
 
 const categoryData = ref<CategoryData>({
 	title: '',
-	limit: Math.round(cf.value(defaultLimit) / 100) * 100,
+	limit: Math.round(cf(defaultLimit) / 100) * 100,
 });
 
 watchEffect(() => {
 	const category = categories.find(({ id }) => id === currentCategoryId.value)!;
-	categoryData.value = { title: category.title, limit: cf.value(category.limit) };
+	categoryData.value = { title: category.title, limit: cf(category.limit) };
 });
 
 const isNewCategoryEquals = computed(() => {
 	const { title, limit } = categories.find(cat => cat.id === currentCategoryId.value)!;
-	return deepEqual(categoryData.value, { title, limit: cf.value(limit) }, { strict: true });
+	return deepEqual(categoryData.value, { title, limit: cf(limit) }, { strict: true });
 });
 
 const { mutate: updateCategory, asyncStatus: updateCategoryAsyncStatus } = useUpdateCategory();

@@ -89,14 +89,14 @@ const confirmDialog = defineModel<boolean>();
 
 const formRef = useTemplateRef('form');
 const formState = ref<RecordDataToUpdate>({
-	amount: cf.value(record.amount),
+	amount: cf(record.amount),
 	description: record.description,
 	type: record.type,
 });
 
 watchEffect(() => {
 	formState.value = {
-		amount: cf.value(record.amount),
+		amount: cf(record.amount),
 		description: record.description,
 		type: record.type,
 	};
@@ -106,7 +106,7 @@ const canUpdateRecord = computed(
 	() =>
 		info.value!.bill >=
 		(formState.value.type === 'income' ? 1 : -1) *
-			cf.value(formState.value.amount, { type: 'reverse' }) -
+			cf(formState.value.amount, { type: 'reverse' }) -
 			record.amount
 );
 
@@ -114,13 +114,13 @@ const submitHandler = async () => {
 	const valid = (await formRef.value?.validate())?.valid;
 	if (valid && canUpdateRecord.value) {
 		const { amount, ...data } = formState.value;
-		emit('updateRecord', { ...data, amount: cf.value(amount, { type: 'reverse' }) });
+		emit('updateRecord', { ...data, amount: cf(amount, { type: 'reverse' }) });
 	} else {
 		showMessage(
 			t('lack_of_amount') +
 				` (${n(
 					(formState.value.type === 'income' ? 1 : -1) *
-						(cf.value(formState.value.amount, { type: 'reverse' }) - record.amount) -
+						(cf(formState.value.amount, { type: 'reverse' }) - record.amount) -
 						info.value!.bill,
 					{
 						key: 'currency',

@@ -66,7 +66,7 @@ export function useChart<T extends ChartType = ChartType>(
 							label: (item: TooltipItem<'pie'>) => {
 								const value = item.dataset.data[item.dataIndex];
 								if (value) {
-									return n(cf.value(value), {
+									return n(cf(value), {
 										key: 'currency',
 										currency: userStore.userCurrency,
 									});

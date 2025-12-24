@@ -57,7 +57,7 @@ const loading = ref(false);
 
 const formState = ref<CategoryData>({
 	title: '',
-	limit: Math.floor(cf.value(defaultLimit) / 10) * 10,
+	limit: Math.floor(cf(defaultLimit) / 10) * 10,
 });
 
 const { mutateAsync: createCategory } = useCreateCategory();
@@ -69,10 +69,10 @@ const tryCreateCategory = async () => {
 
 		await createCategory({
 			...data,
-			limit: cf.value(limit, { type: 'reverse' }),
+			limit: cf(limit, { type: 'reverse' }),
 		});
 		formRef.value?.reset();
-		formState.value.limit = Math.floor(cf.value(defaultLimit) / 100) * 100;
+		formState.value.limit = Math.floor(cf(defaultLimit) / 100) * 100;
 	}
 };
 </script>

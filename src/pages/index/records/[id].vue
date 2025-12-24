@@ -140,7 +140,7 @@ const tryDeleteRecord = async () => {
 	} else {
 		showMessage(
 			t('lack_of_amount') +
-				` (${n(cf.value((record.value?.amount || 0) - info.value!.bill), {
+				` (${n(cf((record.value?.amount || 0) - info.value!.bill), {
 					key: 'currency',
 					currency: userCurrency.value,
 				})})`,
