@@ -13,6 +13,7 @@
 			</v-main>
 
 			<v-tooltip
+				v-if="route.name !== '//records/create'"
 				:text="$t('create_record')"
 				content-class="bg-fixed text-primary font-weight-medium">
 				<template #activator="{ props }">
@@ -39,7 +40,7 @@ import { mdiPlus } from '@mdi/js';
 import { fetchAndSubscribeInfo } from '@/api/user';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { logout } from '@/api/auth';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { useCurrencyQuery } from '@/queries/currency';
@@ -50,6 +51,7 @@ definePage({
 });
 
 const router = useRouter();
+const route = useRoute();
 const { t, te } = useI18n({ useScope: 'global' });
 const { showMessage } = useSnackbarStore();
 const userStore = useUserStore();
