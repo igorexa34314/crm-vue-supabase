@@ -52,7 +52,12 @@
 				<div
 					:style="{ 'max-width': smAndDown ? 'none' : '40%', width: '100%' }"
 					class="d-flex flex-column pl-4 mt-md-0 my-4">
-					<v-card variant="flat" :max-width="smAndDown ? 200 : 250" class="mb-5" elevation="4">
+					<v-card
+						variant="flat"
+						:width="smAndDown ? 200 : 250"
+						:height="smAndDown ? 200 : 250"
+						class="mb-5"
+						elevation="4">
 						<v-img
 							:src="info.avatar_url || '/img/avatar-placeholder.jpg'"
 							alt="Ваш аватар"
