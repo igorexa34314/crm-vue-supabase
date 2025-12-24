@@ -45,7 +45,7 @@
 	"devDependencies": {
 		"@intlify/unplugin-vue-i18n": "^11.0.0",
 		"@pinia/colada-devtools": "^0.1.8",
-		"@tsconfig/node22": "^22.0.2",
+		"@tsconfig/node24": "^24.0.3",
 		"@types/cloudflare-turnstile": "^0.2.2",
 		"@types/deep-equal": "^1.0.4",
 		"@types/node": "^24.0.0",
