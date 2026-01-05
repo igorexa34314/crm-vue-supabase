@@ -70,7 +70,7 @@
 		"vite-plugin-vuetify": "^2.1.2",
 		"vue-tsc": "^3.0.6"
 	},
-	"packageManager": "pnpm@10.26.2",
+	"packageManager": "pnpm@10.27.0",
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"@parcel/watcher",
