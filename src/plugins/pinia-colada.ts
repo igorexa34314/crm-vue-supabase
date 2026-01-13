@@ -7,6 +7,7 @@ const piniaColadaPlugin: Plugin = {
 			queryOptions: {
 				// change the stale time for all queries
 				staleTime: 30000, // 30 seconds
+				refetchOnWindowFocus: false,
 			},
 			mutationOptions: {
 				// add global mutation options here
