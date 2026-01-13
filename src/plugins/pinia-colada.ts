@@ -5,8 +5,8 @@ const piniaColadaPlugin: Plugin = {
 	install(app) {
 		app.use(PiniaColada, {
 			queryOptions: {
-				// change the stale time for all queries to 0ms
-				staleTime: 0,
+				// change the stale time for all queries
+				staleTime: 30000, // 30 seconds
 			},
 			mutationOptions: {
 				// add global mutation options here
