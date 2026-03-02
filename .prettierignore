@@ -1,0 +1,3 @@
+types/i18n-schema.d.ts
+types/typed-router.d.ts
+types/database-generated.ts
