@@ -3,7 +3,7 @@ import { URL, fileURLToPath } from 'node:url';
 
 import vue from '@vitejs/plugin-vue';
 import VueDevTools from 'vite-plugin-vue-devtools';
-import VueRouter from 'unplugin-vue-router/vite';
+import VueRouter from 'vue-router/vite';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 
@@ -39,7 +39,7 @@ export default defineConfig({
 			'@vueuse/router',
 			'vue-i18n',
 			'pinia',
-			'unplugin-vue-router/runtime',
+			'vue-router/experimental',
 			'klona/json',
 			'@pinia/colada',
 			'@pinia/colada-devtools',

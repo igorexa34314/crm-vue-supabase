@@ -43,7 +43,7 @@ definePage({ redirect: '/profile/info' });
 const { t, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
 const { showMessage } = useSnackbarStore();
-const route = useRoute('//profile/info');
+const route = useRoute();
 const router = useRouter();
 
 useSeoMeta({ title: () => t('pageTitles.profile') });
