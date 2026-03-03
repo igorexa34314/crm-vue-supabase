@@ -6,7 +6,7 @@ import { defineQuery, defineQueryOptions, useQuery, useQueryState } from '@pinia
 import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-export const currencyQuery = defineQueryOptions((currency: UserInfo['currency']) => ({
+const currencyQuery = defineQueryOptions((currency: UserInfo['currency']) => ({
 	key: ['currency', currency],
 	query: () => fetchCurrency(currency),
 }));
@@ -16,7 +16,7 @@ export const useCurrencyQuery = defineQuery(() => {
 	const { t, te } = useI18n({ useScope: 'global' });
 	const { showMessage } = useSnackbarStore();
 
-	const query = useQuery(currencyQuery, () => userStore.userCurrency);
+	const query = useQuery(() => currencyQuery(userStore.userCurrency));
 
 	watch(query.error, e => {
 		if (e) {
