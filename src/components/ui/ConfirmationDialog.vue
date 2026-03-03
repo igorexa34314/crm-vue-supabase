@@ -13,7 +13,7 @@
 			<v-card v-bind="{ maxWidth, width }" :class="contentClass" class="mx-auto pt-2 pt-sm-4">
 				<v-card-title
 					v-if="title || slots.title"
-					class="text-h5 text-center"
+					class="text-headline-medium text-center"
 					style="white-space: inherit; line-height: 1.4; hyphens: none">
 					<slot name="title" v-bind="{ isActive }">{{ title }}</slot>
 				</v-card-title>
@@ -24,7 +24,7 @@
 					<v-spacer />
 					<slot name="cancel">
 						<v-btn color="red-darken-1" variant="text" @click="cancel">
-							<span class="text-h6">{{ cancelLabel || $t('cancel') }}</span>
+							<span class="text-headline-small">{{ cancelLabel || $t('cancel') }}</span>
 						</v-btn>
 					</slot>
 					<slot name="ok">
@@ -34,7 +34,7 @@
 							color="green-darken-1"
 							variant="text"
 							@click="ok">
-							<span class="text-h6">{{ okLabel || $t('submit') }}</span>
+							<span class="text-headline-small">{{ okLabel || $t('submit') }}</span>
 						</v-btn>
 					</slot>
 				</v-card-actions>

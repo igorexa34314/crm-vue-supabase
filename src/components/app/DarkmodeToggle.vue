@@ -7,7 +7,8 @@
 		:true-icon="mdiWeatherNight"
 		hide-details
 		density="compact"
-		style="max-width: fit-content">
+		style="max-width: fit-content"
+		:style="{ '--v-track-bg': `${switchToggleStyle}` }">
 	</v-switch>
 </template>
 
@@ -25,6 +26,8 @@ const switchToggleStyle = computed(() =>
 </script>
 
 <style lang="scss" scoped>
+@use '@/assets/styles/settings' as *;
+
 .darkmode-toggle {
 	@media (max-width: 670px) {
 		transform: scale(0.85);
@@ -33,7 +36,7 @@ const switchToggleStyle = computed(() =>
 		transform: scale(0.82);
 	}
 	&:deep(.v-switch__track) {
-		background-color: v-bind(switchToggleStyle) !important;
+		background-color: var(--v-track-bg, #{$switch-track-background});
 	}
 }
 </style>

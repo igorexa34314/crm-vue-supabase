@@ -1,6 +1,6 @@
 <template>
 	<ConfirmationDialog v-model="confirmDialog" @after-leave="resetForm">
-		<div class="text-h6 text-center text-title mb-3">{{ $t('edit_record') }}</div>
+		<div class="text-headline-small text-center text-title mb-3">{{ $t('edit_record') }}</div>
 		<v-form
 			ref="form"
 			@submit.prevent="submitHandler"
@@ -50,7 +50,7 @@
 				form="update-record-form"
 				color="green-darken-1"
 				variant="text">
-				<span class="text-h6">{{ $t('submit') }}</span>
+				<span class="text-headline-small">{{ $t('submit') }}</span>
 			</v-btn>
 		</template>
 	</ConfirmationDialog>

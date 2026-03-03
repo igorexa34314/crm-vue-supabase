@@ -27,7 +27,12 @@ export default defineConfig({
 		vue({
 			template: { transformAssetUrls },
 		}),
-		vuetify({ autoImport: { labs: true }, styles: 'sass' }),
+		vuetify({
+			autoImport: { labs: true },
+			styles: {
+				configFile: 'src/assets/styles/settings.scss',
+			},
+		}),
 		VueDevTools(),
 	],
 	optimizeDeps: {

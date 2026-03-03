@@ -1,5 +1,4 @@
 // Vuetify
-import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 // I18n
@@ -21,6 +20,16 @@ export default function setupVuetify(
 			aliases,
 			sets: {
 				mdi,
+			},
+		},
+		display: {
+			thresholds: {
+				xs: 0,
+				sm: 600,
+				md: 960,
+				lg: 1280,
+				xl: 1920,
+				xxl: 2560,
 			},
 		},
 		theme: {

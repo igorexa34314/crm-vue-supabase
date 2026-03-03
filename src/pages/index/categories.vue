@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="title mb-7">
-			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2 text-title">
+			<h3 class="text-headline-medium text-sm-headline-large mt-2 mt-sm-4 ml-2 text-title">
 				{{ $t('pageTitles.categories') }}
 			</h3>
 		</div>
@@ -11,7 +11,7 @@
 
 			<template v-else-if="categoriesState.status === 'success'">
 				<v-row :class="xs ? 'px-2' : 'px-4'">
-					<v-col cols="6" md="6" sm="12" xs="12" class="create-category v-col-xs-12">
+					<v-col cols="12" md="6" sm="12" class="create-category">
 						<CreateCategory
 							:default-limit="100"
 							:class="{
@@ -20,7 +20,7 @@
 							}" />
 					</v-col>
 
-					<v-col cols="6" md="6" sm="12" xs="12" class="edit-category v-col-xs-12">
+					<v-col cols="12" md="6" sm="12" class="edit-category">
 						<EditCategory
 							v-if="categoriesState.data.length"
 							:categories="categoriesState.data"

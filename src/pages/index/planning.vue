@@ -2,7 +2,7 @@
 	<div>
 		<div
 			class="title mt-2 mt-sm-4 d-flex flex-column flex-sm-row align-sm-center mb-3 text-title">
-			<h3 class="text-h5 text-sm-h4 ml-2 flex-grow-1 mb-3 mb-sm-0">
+			<h3 class="text-headline-medium text-sm-headline-large ml-2 flex-grow-1 mb-3 mb-sm-0">
 				{{ $t('pageTitles.plan') }}
 			</h3>
 			<v-skeleton-loader
@@ -12,7 +12,7 @@
 				max-height="40px"
 				color="background"
 				max-width="260px" />
-			<h4 v-else class="text-h5 text-sm-h4 text-end">
+			<h4 v-else class="text-headline-medium text-sm-headline-large text-end">
 				{{ $n(cf(bill), { key: 'currency', currency: userCurrency }) }}
 			</h4>
 		</div>
@@ -22,7 +22,7 @@
 
 		<div
 			v-else-if="catSpendStatsState.status === 'success' && !catSpendStatsState.data.length"
-			class="mt-10 text-center text-h6">
+			class="mt-10 text-center text-headline-small">
 			{{ $t('no_categories') + '. '
 			}}<router-link to="/categories">{{ $t('create_category') + '. ' }}</router-link>
 		</div>

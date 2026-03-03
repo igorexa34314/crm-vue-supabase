@@ -9,7 +9,7 @@
 				<LocalRegister @success="onRegisterSuccess" @error="onRegisterError" />
 			</v-card-text>
 
-			<v-card-actions class="justify-center text-subtitle-1">
+			<v-card-actions class="justify-center text-body-large">
 				<p class="text-center text-primary">
 					{{ $t('have_account') + '? ' }}
 					<router-link to="/login">{{ $t('login') + '!' }}</router-link>

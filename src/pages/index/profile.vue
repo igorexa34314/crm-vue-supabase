@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<div class="title text-title">
-			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2">{{ $t('pageTitles.profile') }}</h3>
+			<h3 class="text-headline-medium text-sm-headline-large mt-2 mt-sm-4 ml-2">
+				{{ $t('pageTitles.profile') }}
+			</h3>
 		</div>
 
 		<v-tabs

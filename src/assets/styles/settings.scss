@@ -1,0 +1,16 @@
+@forward 'vuetify/settings' with (
+	$grid-breakpoints: (
+		'xs': 0px,
+		'sm': 600px,
+		'md': 960px,
+		'lg': 1280px,
+		'xl': 1920px,
+		'xxl': 2560px,
+	),
+
+	// v-btn
+	$button-text-transform: 'uppercase',
+
+	// v-badge
+	$badge-dot-border-radius: 50%
+);

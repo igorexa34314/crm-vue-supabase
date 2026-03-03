@@ -7,7 +7,7 @@
 			<!-- <LocalizedInput v-model="formState.email" :rules="validations.email" variant="underlined" :label="$t('email')"
 			class="mb-5" required /> -->
 
-			<h4 class="text-subtitle-1 text-sm-h5 mb-3">{{ $t('change_password') }}</h4>
+			<h4 class="text-body-large text-sm-headline-medium mb-3">{{ $t('change_password') }}</h4>
 
 			<PassField
 				v-model="formState.oldPass"

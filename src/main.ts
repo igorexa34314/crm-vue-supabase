@@ -8,6 +8,7 @@ import pinia from '@/plugins/pinia';
 import piniaColadaPlugin from '@/plugins/pinia-colada';
 import { useUserStore } from '@/stores/user';
 import AppLoader from '@/components/app/AppLoader.vue';
+import '@/assets/styles/main.scss';
 
 const locale = getLocale();
 loadMessages(locale).then(messages => {
