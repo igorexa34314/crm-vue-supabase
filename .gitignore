@@ -34,9 +34,6 @@ coverage
 !.yarn/sdks
 !.yarn/versions
 
-# rollup-plugin-visualizer
-stats.html
-
 # Env
 .env*.local
 *.local
