@@ -19,7 +19,7 @@
 		"lint": "eslint . --cache",
 		"lint:fix": "eslint . --fix --cache",
 		"format": "prettier --write --cache src/",
-		"generate:types": "pnpx supabase gen types typescript --project-id sxjleofipivdmluufxic > ./src/types/database-generated.ts"
+		"supabase:types": "supabase gen types --lang=typescript --project-id sxjleofipivdmluufxic > ./src/types/database-generated.ts"
 	},
 	"dependencies": {
 		"@mdi/js": "^7.4.47",
