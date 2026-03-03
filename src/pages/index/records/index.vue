@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="title">
-			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2 text-title">
+			<h3 class="text-headline-medium text-sm-headline-large mt-2 mt-sm-4 ml-2 text-title">
 				{{ $t('pageTitles.history') }}
 			</h3>
 		</div>
@@ -34,7 +34,7 @@
 				recordsState.status !== 'pending' &&
 				!recordsState.data?.records.length
 			"
-			class="text-center text-h6 mt-9">
+			class="text-center text-headline-small mt-9">
 			{{ $t('no_records') + '. ' }}
 			<router-link to="/records/create">{{ $t('create_record') }}</router-link>
 		</div>

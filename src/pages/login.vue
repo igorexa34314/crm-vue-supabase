@@ -16,7 +16,7 @@
 			</v-card-text>
 
 			<v-card-actions class="mt-1 mt-sm-3 justify-center pa-2 pa-sm-4">
-				<div class="text-center text-subtitle-1 text-primary">
+				<div class="text-center text-body-large text-primary">
 					{{ $t('no_account') + '? ' }}
 					<router-link to="/register"> {{ $t('sign_in') }}</router-link>
 				</div>

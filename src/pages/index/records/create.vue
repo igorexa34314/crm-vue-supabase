@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="title">
-			<h3 class="text-h5 text-sm-h4 mt-2 mt-sm-4 ml-2 text-title">
+			<h3 class="text-headline-medium text-sm-headline-large mt-2 mt-sm-4 ml-2 text-title">
 				{{ $t('pageTitles.newRecord') }}
 			</h3>
 		</div>
@@ -10,7 +10,7 @@
 
 		<div
 			v-else-if="categoriesState.status === 'success' && !categoriesState.data.length"
-			class="mt-10 text-center text-h6">
+			class="mt-10 text-center text-headline-small">
 			{{ $t('no_categories') + '. ' }}
 			<router-link to="/categories">{{ $t('create_category') }}</router-link>
 		</div>

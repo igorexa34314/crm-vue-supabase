@@ -1,18 +1,34 @@
+@use 'vuetify/styles';
 @use './scrollbar';
 
-.v-col-xs-12 {
-	@media (max-width: 600px) {
-		flex: 0 0 100% !important;
-		max-width: 100% !important;
+@layer vuetify-core.reset {
+	ul,
+	ol,
+	figure,
+	details,
+	summary {
+		padding: 0;
+		margin: 0;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin: 0;
 	}
 }
 
-.d-xs-none {
-	@media (max-width: 420px) {
-		display: none !important;
+@layer overrides {
+	.d-xs-none {
+		@media (max-width: 420px) {
+			display: none;
+		}
 	}
-}
 
-.v-list-item__prepend > .v-icon ~ .v-list-item__spacer {
-	display: none;
+	.v-list-item__prepend > .v-icon ~ .v-list-item__spacer {
+		display: none;
+	}
 }

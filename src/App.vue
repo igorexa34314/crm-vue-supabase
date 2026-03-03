@@ -26,7 +26,3 @@ useSeoMeta({
 
 useDarkModeStore();
 </script>
-
-<style lang="scss">
-@use '@/assets/styles/main.scss';
-</style>

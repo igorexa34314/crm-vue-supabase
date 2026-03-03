@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex flex-row align-center">
-			<h3 class="title text-h5 text-sm-h4 flex-grow-1 my-2 text-title">
+			<h3 class="title text-headline-medium text-sm-headline-large flex-grow-1 my-2 text-title">
 				{{ $t('pageTitles.bill') }}
 			</h3>
 			<v-btn color="success" @click="refetchCurrencyThrottled">
@@ -18,10 +18,10 @@
 
 		<template v-else-if="currencyState.status === 'success' && currencyState.data.rates">
 			<v-row>
-				<v-col cols="4" lg="4" md="6" sm="12" class="v-col-xs-12">
+				<v-col cols="12" lg="4" md="6" sm="12">
 					<MyBill v-if="userStore.info?.bill" :rates="currencyState.data.rates" />
 				</v-col>
-				<v-col cols="8" lg="8" md="6" sm="12" class="v-col-xs-12">
+				<v-col cols="12" lg="8" md="6" sm="12">
 					<CurrencyRates :rates="currencyState.data.rates" :date="currencyState.data.date" />
 				</v-col>
 			</v-row>

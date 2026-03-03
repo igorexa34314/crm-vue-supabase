@@ -41,7 +41,7 @@
 				</div>
 			</div>
 
-			<v-card-text class="mt-4 text-h6 text-primary">
+			<v-card-text class="mt-4 text-headline-small text-primary">
 				<p>{{ $t('description') + ': ' + record.description }}</p>
 				<p class="mt-4">
 					{{
@@ -79,7 +79,7 @@
 				@delete-record="tryDeleteRecord" />
 		</v-card>
 
-		<div v-else class="mt-7 text-center text-primary text-h6">
+		<div v-else class="mt-7 text-center text-primary text-headline-small">
 			<strong>
 				{{ `${$t('record_with_id')}: ` }}
 				<span class="text-decoration-underline font-italic">{{ route.params.id }}</span>
