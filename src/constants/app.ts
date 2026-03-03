@@ -1,4 +1,4 @@
-import { Constants } from '@/types/database-generated';
+import { Constants } from '@/types/database-types';
 
 // App vars
 export const recordTypes = Constants.public.Enums.record_type;

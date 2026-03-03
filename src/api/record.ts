@@ -1,26 +1,33 @@
 import { getUserId } from '@/api/auth';
-import { categoryQuery, type Category } from '@/api/category';
 import { supabase } from '@/config/supabase';
 import { errorHandler } from '@/utils/errorHandler';
 import { defaultRecordsPerPage } from '@/constants/app';
 import { validateFileName } from '@/utils/helpers';
 import { v4 as uuidv4 } from 'uuid';
-import type { Enums, Tables, TablesInsert, TablesUpdate } from '@/types/database-generated';
-import type { Split } from 'type-fest';
+import type { QueryData } from '@supabase/supabase-js';
+import type { Enums, Tables, TablesInsert, TablesUpdate } from '@/types/database-types';
 
-export const recordQuery = 'id, description, amount, type, created_at, updated_at';
-export const recordWithCategoryQuery = `${recordQuery}, category:categories (${categoryQuery})`;
-export const recordWithDetailsQuery = `${recordWithCategoryQuery}, details:record_details(*)`;
+const recordQuery = 'id, description, amount, type, created_at, updated_at';
+const recordWithCategoryQuery = `${recordQuery}, category:categories (id, title, limit)`;
+const recordWithDetailsQuery = `${recordWithCategoryQuery}, details:record_details(*)`;
 
-export type Record = Pick<Tables<'records'>, Split<typeof recordQuery, ', '>[number]>;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
+const _recordQueryBuilder = supabase.from('records').select(recordQuery);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
+const _recordWithCategoryQueryBuilder = supabase
+	.from('records')
+	.select(recordWithCategoryQuery, { count: 'exact' });
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
+const _recordWithDetailsQueryBuilder = supabase.from('records').select(recordWithDetailsQuery);
+
+export type Record = QueryData<typeof _recordQueryBuilder>[number];
 export type RecordType = Enums<'record_type'>;
 export type RecordDetail = Tables<'record_details'>;
-
-export type RecordWithCategory = Omit<Record, 'category_id'> & { category: Category };
-export type RecordWithDetails = RecordWithCategory & { details: RecordDetail[] };
+export type RecordWithCategory = QueryData<typeof _recordWithCategoryQueryBuilder>[number];
+export type RecordWithDetails = QueryData<typeof _recordWithDetailsQueryBuilder>[number];
 
 export type RecordForm = TablesInsert<'records'> & { details: File[] };
-export type RecordDataToUpdate = Omit<TablesInsert<'records'>, 'category_id'>;
+export type RecordDataToUpdate = Omit<TablesUpdate<'records'>, 'category_id'>;
 
 export const createRecord = async ({ details, ...record }: RecordForm) => {
 	const { error, data } = await supabase

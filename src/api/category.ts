@@ -1,13 +1,15 @@
 import { getUserId } from '@/api/auth';
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/config/supabase';
-import type { TablesInsert, TablesUpdate, Tables } from '@/types/database-generated';
-import type { Split } from 'type-fest';
+import type { QueryData } from '@supabase/supabase-js';
+import type { TablesInsert, TablesUpdate } from '@/types/database-types';
 
-export const categoryQuery = 'id, title, limit';
-export const categorySpendStatsQuery = `${categoryQuery}, percent, spend`;
+const categoryQuery = 'id, title, limit';
 
-export type Category = Pick<Tables<'categories'>, Split<typeof categoryQuery, ', '>[number]>;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
+const _categoryQueryBuilder = supabase.from('categories').select(categoryQuery);
+
+export type Category = QueryData<typeof _categoryQueryBuilder>[number];
 export type CategoryData = TablesInsert<'categories'>;
 
 export const fetchCategories = async () => {
@@ -24,7 +26,7 @@ export const fetchCategories = async () => {
 export const fetchCategoriesSpendStats = async () => {
 	const { error, data } = await supabase
 		.rpc('calculate_category_spend_for_auth_user')
-		.select(categorySpendStatsQuery);
+		.select(`${categoryQuery}, percent, spend`);
 	if (error) throw errorHandler(error);
 	return data;
 };

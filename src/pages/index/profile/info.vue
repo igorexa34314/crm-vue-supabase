@@ -145,7 +145,7 @@ import type { CurrencyRates } from '@/api/currency';
 import { useCurrencyQueryState } from '@/queries/currency';
 import { useQuery } from '@pinia/colada';
 import { useUpdateUserInfo } from '@/mutations/user';
-import { Constants } from '@/types/database-generated';
+import { Constants } from '@/types/database-types';
 import { useDisplay } from 'vuetify';
 
 const { showMessage } = useSnackbarStore();

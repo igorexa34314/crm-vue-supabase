@@ -1,4 +1,4 @@
-import { recordQuery, fetchRecordById, fetchRecordsWithCategory, type Record } from '@/api/record';
+import { fetchRecordById, fetchRecordsWithCategory, type Record } from '@/api/record';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { defineQuery, useQuery } from '@pinia/colada';
 import { useRouteQuery } from '@vueuse/router';
@@ -89,5 +89,14 @@ export const useRecordsWithCategoryQuery = defineQuery(() => {
 });
 
 export function isRecordProperty(prop: string): prop is keyof Record {
-	return recordQuery.split(', ').includes(prop);
+	return (
+		[
+			'id',
+			'amount',
+			'description',
+			'type',
+			'updated_at',
+			'created_at',
+		] as const satisfies (keyof Record)[]
+	).some(field => field === prop);
 }
