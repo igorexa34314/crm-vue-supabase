@@ -5,7 +5,7 @@ import { defaultRecordsPerPage } from '@/constants/app';
 import { validateFileName } from '@/utils/helpers';
 import { v4 as uuidv4 } from 'uuid';
 import type { QueryData } from '@supabase/supabase-js';
-import type { Enums, Tables, TablesInsert, TablesUpdate } from '@/types/database-generated';
+import type { Enums, Tables, TablesInsert, TablesUpdate } from '@/types/database-types';
 
 const recordQuery = 'id, description, amount, type, created_at, updated_at';
 const recordWithCategoryQuery = `${recordQuery}, category:categories (id, title, limit)`;

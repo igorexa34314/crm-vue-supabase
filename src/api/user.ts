@@ -4,7 +4,7 @@ import { getUserId } from '@/api/auth';
 import { supabase } from '@/config/supabase';
 import { v4 as uuidv4 } from 'uuid';
 import { validateFileName } from '@/utils/helpers';
-import type { Tables } from '@/types/database-generated';
+import type { Tables } from '@/types/database-types';
 
 export interface UserCredentials {
 	uid: string;

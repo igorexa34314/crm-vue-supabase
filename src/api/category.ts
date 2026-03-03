@@ -2,7 +2,7 @@ import { getUserId } from '@/api/auth';
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/config/supabase';
 import type { QueryData } from '@supabase/supabase-js';
-import type { TablesInsert, TablesUpdate } from '@/types/database-generated';
+import type { TablesInsert, TablesUpdate } from '@/types/database-types';
 
 const categoryQuery = 'id, title, limit';
 
