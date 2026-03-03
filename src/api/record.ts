@@ -12,19 +12,19 @@ const recordWithCategoryQuery = `${recordQuery}, category:categories (id, title,
 const recordWithDetailsQuery = `${recordWithCategoryQuery}, details:record_details(*)`;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
-const recordQueryBuilder = supabase.from('records').select(recordQuery);
+const _recordQueryBuilder = supabase.from('records').select(recordQuery);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
-const recordWithCategoryQueryBuilder = supabase
+const _recordWithCategoryQueryBuilder = supabase
 	.from('records')
 	.select(recordWithCategoryQuery, { count: 'exact' });
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
-const recordWithDetailsQueryBuilder = supabase.from('records').select(recordWithDetailsQuery);
+const _recordWithDetailsQueryBuilder = supabase.from('records').select(recordWithDetailsQuery);
 
-export type Record = QueryData<typeof recordQueryBuilder>[number];
+export type Record = QueryData<typeof _recordQueryBuilder>[number];
 export type RecordType = Enums<'record_type'>;
 export type RecordDetail = Tables<'record_details'>;
-export type RecordWithCategory = QueryData<typeof recordWithCategoryQueryBuilder>[number];
-export type RecordWithDetails = QueryData<typeof recordWithDetailsQueryBuilder>[number];
+export type RecordWithCategory = QueryData<typeof _recordWithCategoryQueryBuilder>[number];
+export type RecordWithDetails = QueryData<typeof _recordWithDetailsQueryBuilder>[number];
 
 export type RecordForm = TablesInsert<'records'> & { details: File[] };
 export type RecordDataToUpdate = Omit<TablesUpdate<'records'>, 'category_id'>;

@@ -6,14 +6,17 @@ import type { TablesInsert, TablesUpdate } from '@/types/database-types';
 
 const categoryQuery = 'id, title, limit';
 
-const categoryQueryBuilder = supabase.from('categories').select(categoryQuery);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
+const _categoryQueryBuilder = supabase.from('categories').select(categoryQuery);
 
-export type Category = QueryData<typeof categoryQueryBuilder>[number];
+export type Category = QueryData<typeof _categoryQueryBuilder>[number];
 export type CategoryData = TablesInsert<'categories'>;
 
 export const fetchCategories = async () => {
 	const uid = await getUserId();
-	const { error, data } = await categoryQueryBuilder
+	const { error, data } = await supabase
+		.from('categories')
+		.select(categoryQuery)
 		.eq('user_id', uid)
 		.order('created_at', { ascending: false });
 	if (error) throw errorHandler(error);
