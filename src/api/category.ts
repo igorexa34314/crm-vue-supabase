@@ -1,20 +1,19 @@
 import { getUserId } from '@/api/auth';
 import { errorHandler } from '@/utils/errorHandler';
 import { supabase } from '@/config/supabase';
-import type { TablesInsert, TablesUpdate, Tables } from '@/types/database-generated';
-import type { Split } from 'type-fest';
+import type { QueryData } from '@supabase/supabase-js';
+import type { TablesInsert, TablesUpdate } from '@/types/database-generated';
 
-export const categoryQuery = 'id, title, limit';
-export const categorySpendStatsQuery = `${categoryQuery}, percent, spend`;
+const categoryQuery = 'id, title, limit';
 
-export type Category = Pick<Tables<'categories'>, Split<typeof categoryQuery, ', '>[number]>;
+const categoryQueryBuilder = supabase.from('categories').select(categoryQuery);
+
+export type Category = QueryData<typeof categoryQueryBuilder>[number];
 export type CategoryData = TablesInsert<'categories'>;
 
 export const fetchCategories = async () => {
 	const uid = await getUserId();
-	const { error, data } = await supabase
-		.from('categories')
-		.select(categoryQuery)
+	const { error, data } = await categoryQueryBuilder
 		.eq('user_id', uid)
 		.order('created_at', { ascending: false });
 	if (error) throw errorHandler(error);
@@ -24,7 +23,7 @@ export const fetchCategories = async () => {
 export const fetchCategoriesSpendStats = async () => {
 	const { error, data } = await supabase
 		.rpc('calculate_category_spend_for_auth_user')
-		.select(categorySpendStatsQuery);
+		.select(`${categoryQuery}, percent, spend`);
 	if (error) throw errorHandler(error);
 	return data;
 };
