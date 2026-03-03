@@ -13,9 +13,11 @@ const recordWithDetailsQuery = `${recordWithCategoryQuery}, details:record_detai
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
 const recordQueryBuilder = supabase.from('records').select(recordQuery);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
 const recordWithCategoryQueryBuilder = supabase
 	.from('records')
 	.select(recordWithCategoryQuery, { count: 'exact' });
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- used for type inference
 const recordWithDetailsQueryBuilder = supabase.from('records').select(recordWithDetailsQuery);
 
 export type Record = QueryData<typeof recordQueryBuilder>[number];
@@ -48,7 +50,9 @@ export const fetchRecordsWithCategory = async (options?: {
 }) => {
 	const uid = await getUserId();
 
-	const { error, data, count } = await recordWithCategoryQueryBuilder
+	const { error, data, count } = await supabase
+		.from('records')
+		.select(recordWithCategoryQuery, { count: 'exact' })
 		.eq('user_id', uid)
 		.order(options?.sortBy || 'created_at', { ascending: options?.order === 'asc' })
 		.range(
@@ -60,7 +64,11 @@ export const fetchRecordsWithCategory = async (options?: {
 };
 
 export const fetchRecordById = async (recordId: Record['id']) => {
-	const { error, data } = await recordWithDetailsQueryBuilder.eq('id', recordId).single();
+	const { error, data } = await supabase
+		.from('records')
+		.select(recordWithDetailsQuery)
+		.eq('id', recordId)
+		.single();
 	if (error) throw errorHandler(error);
 	return data;
 };
