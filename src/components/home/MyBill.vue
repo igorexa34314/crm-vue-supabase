@@ -13,13 +13,12 @@
 </template>
 
 <script setup lang="ts">
-import { VDivider } from 'vuetify/lib/components/index.mjs';
 import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
-import type { Currency, CurrencyRates } from '@/api/currency';
 import { defaultBill } from '@/constants/app';
 import { serverCurrency } from '@/constants/currency';
 import { useDisplay } from 'vuetify';
+import type { Currency, CurrencyRates } from '@/api/currency';
 
 const { xs } = useDisplay();
 const userStore = useUserStore();
