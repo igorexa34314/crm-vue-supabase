@@ -21,10 +21,10 @@ importers:
         specifier: ^2.1.12
         version: 2.1.12(vue@3.5.30(typescript@5.9.3))
       '@vueuse/core':
-        specifier: ^14.0.0
+        specifier: ^14.2.1
         version: 14.2.1(vue@3.5.30(typescript@5.9.3))
       '@vueuse/router':
-        specifier: ^14.0.0
+        specifier: ^14.2.1
         version: 14.2.1(vue-router@5.0.3(@pinia/colada@1.0.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.30(typescript@5.9.3)))(vue@3.5.30(typescript@5.9.3)))(@vue/compiler-sfc@3.5.30)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.30(typescript@5.9.3)))(vue@3.5.30(typescript@5.9.3)))(vue@3.5.30(typescript@5.9.3))
       chart.js:
         specifier: ^4.5.1
