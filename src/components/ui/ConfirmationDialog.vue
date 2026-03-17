@@ -45,7 +45,8 @@
 
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue';
-import { type VBtn, type VDialog, VFadeTransition } from 'vuetify/components';
+import { VFadeTransition } from 'vuetify/components/transitions';
+import type { VBtn, VDialog } from 'vuetify/components';
 
 const {
 	maxWidth = '550px',
