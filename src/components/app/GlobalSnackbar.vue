@@ -8,7 +8,7 @@
 		variant="elevated"
 		elevation="3"
 		transition="slide-y-transition">
-		<p class="px-2 font-weight-medium">{{ sbProps.text }}</p>
+		<p class="px-2 my-1 font-weight-medium">{{ sbProps.text }}</p>
 
 		<template #actions>
 			<v-btn variant="text" color="white" @click="sbProps.show = false">
