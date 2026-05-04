@@ -70,8 +70,8 @@ importers:
         specifier: ^11.1.2
         version: 11.1.2(@vue/compiler-dom@3.5.33)(eslint@10.2.1(jiti@2.6.1))(rollup@4.55.1)(typescript@5.9.3)(vite@7.3.2(@types/node@24.12.2)(jiti@2.6.1)(sass-embedded@1.99.0)(sass@1.99.0)(yaml@2.8.2))(vue-i18n@11.4.0(vue@3.5.33(typescript@5.9.3)))(vue@3.5.33(typescript@5.9.3))
       '@pinia/colada-devtools':
-        specifier: ^0.4.5
-        version: 0.4.5
+        specifier: ^1.0.0
+        version: 1.0.0
       '@tsconfig/node24':
         specifier: ^24.0.4
         version: 24.0.4
@@ -847,8 +847,8 @@ packages:
     resolution: {integrity: sha512-tmmZ3lQxAe/k/+rNnXQRawJ4NjxO2hqiOLTHvWchtGZULp4RyFeh6aU4XdOYBFe2KE1oShQTv4AblOs2iOrNnQ==}
     engines: {node: '>= 10.0.0'}
 
-  '@pinia/colada-devtools@0.4.5':
-    resolution: {integrity: sha512-YSUa5nVmtbcQG+to7qysixNcB49bxEMUo+VvkU9YFrUNFPhPVUl+tMx3Xx79J024MEV46nQkyf1+hpQ4kwSsyg==}
+  '@pinia/colada-devtools@1.0.0':
+    resolution: {integrity: sha512-DS23RyFqQ+Gy2B4Wu5GjRLEeCRKZCnP0txjFxN04CMyt6quYudCdq4JnFByT6Km2aNd/TjjENFdfJK/gd8A+Sg==}
 
   '@pinia/colada@1.2.0':
     resolution: {integrity: sha512-uEi4BtAQIn3AmlYvIYblJJIIJpNriwBwNFWkpTvSXBwqCZmQPiDjpv0GngFjuvq4ewdY6IMTvpIlec6tzydqog==}
@@ -3432,7 +3432,7 @@ snapshots:
       '@parcel/watcher-win32-x64': 2.5.6
     optional: true
 
-  '@pinia/colada-devtools@0.4.5': {}
+  '@pinia/colada-devtools@1.0.0': {}
 
   '@pinia/colada@1.2.0(pinia@3.0.4(typescript@5.9.3)(vue@3.5.33(typescript@5.9.3)))(vue@3.5.33(typescript@5.9.3))':
     dependencies:
