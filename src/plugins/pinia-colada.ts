@@ -27,9 +27,9 @@ const PiniaColadaQueryErrorHandlingPlugin = (i18n: I18n): PiniaColadaPlugin => {
 							: entry.meta.errorMessage;
 					const message =
 						metaErrorMessage ||
-						// @ts-expect-error - Too difficult to type this correctly, we can ignore it for now
 						(te(`warnings.${error.message}`)
-							? t(`warnings.${error.message}`)
+							? // @ts-expect-error - Too difficult to type this correctly, we can ignore it for now
+								t(`warnings.${error.message}`)
 							: error.message);
 
 					showMessage(message, 'red-darken-3');
