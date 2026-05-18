@@ -9,6 +9,7 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { defineMutation, useMutation, useQueryCache } from '@pinia/colada';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuidV4 } from 'uuid';
+import { categoriesQuery } from '@/queries/category';
 
 export const useCreateCategory = defineMutation(() => {
 	const { t, te } = useI18n();
@@ -146,33 +147,40 @@ export const useDeleteCategory = defineMutation(() => {
 	return useMutation({
 		mutation: apiDeleteCategoryById,
 		onMutate: categoryId => {
+			const categoriesQueryKey = categoriesQuery.key;
 			// save the old value of categories
-			const oldCategories = queryCache.getQueryData<Category[]>(['categories']);
+			const oldCategories = queryCache.getQueryData(categoriesQueryKey);
 
 			// create a new array without the deleted category
 			const newCategories = oldCategories?.filter(cat => cat.id !== categoryId);
 
 			// update the cache with the new categories
-			queryCache.setQueryData(['categories'], newCategories);
+			if (newCategories) {
+				queryCache.setQueryData(categoriesQueryKey, newCategories);
+			}
 
 			// we cancel (without refetching) all queries that depend on the categories
 			// to prevent them from updating the cache with an outdated value
-			queryCache.cancelQueries({ key: ['categories'] });
+			queryCache.cancelQueries({ key: categoriesQueryKey, exact: true });
 
 			// pass the old & new categories to the other hooks
 			// to handle rollback
 			return { oldCategories, newCategories };
 		},
 		onSettled() {
+			const categoriesQueryKey = categoriesQuery.key;
+
 			// invalidate the query to refetch the new data
-			queryCache.invalidateQueries({ key: ['categories'] });
+			queryCache.invalidateQueries({ key: categoriesQueryKey, exact: true });
 		},
 		onError: (error, categoryId, { newCategories, oldCategories }) => {
+			const categoriesQueryKey = categoriesQuery.key;
+
 			// before applying the rollback, we need to check if the value in the cache
 			// is the same because the cache could have been updated by another mutation
 			// or query
-			if (newCategories === queryCache.getQueryData(['categories'])) {
-				queryCache.setQueryData(['categories'], oldCategories);
+			if (oldCategories && newCategories === queryCache.getQueryData(categoriesQueryKey)) {
+				queryCache.setQueryData(categoriesQueryKey, oldCategories);
 			}
 
 			// handle the error

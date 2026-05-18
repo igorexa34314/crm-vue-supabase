@@ -15,7 +15,7 @@ loadMessages(locale).then(messages => {
 	const i18n = setupI18n(locale, messages ?? {});
 
 	const app = createApp(App);
-	app.use(router).use(pinia).use(piniaColadaPlugin).use(i18n);
+	app.use(router).use(pinia).use(i18n).use(piniaColadaPlugin, i18n);
 
 	const userStore = useUserStore();
 

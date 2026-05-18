@@ -1,34 +1,25 @@
 import { fetchRecordById, fetchRecordsWithCategory, type Record } from '@/api/record';
-import { useSnackbarStore } from '@/stores/snackbar';
 import { defineQuery, useQuery } from '@pinia/colada';
 import { useRouteQuery } from '@vueuse/router';
 import { defaultRecordsPerPage } from '@/constants/app';
-import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 export const useRecordByIdQuery = defineQuery(() => {
 	const { t } = useI18n({ useScope: 'global' });
-	const { showMessage } = useSnackbarStore();
 	const route = useRoute('//records/[id]');
 
-	const query = useQuery({
+	return useQuery({
 		key: () => ['record', { id: route.params.id }],
 		query: () => fetchRecordById(route.params.id),
+		meta: {
+			errorMessage: () => t('no_record_found'),
+		},
 	});
-
-	watch(query.error, e => {
-		if (e) {
-			showMessage(t('no_record_found'), 'red-darken-3');
-		}
-	});
-
-	return query;
 });
 
 export const useRecordsWithCategoryQuery = defineQuery(() => {
 	const { t } = useI18n({ useScope: 'global' });
-	const { showMessage } = useSnackbarStore();
 
 	// Init Records table pagination and sorting
 	const page = useRouteQuery<string, number>('page', '1', {
@@ -77,12 +68,9 @@ export const useRecordsWithCategoryQuery = defineQuery(() => {
 			return { records, totalRecords: count || records.length };
 		},
 		placeholderData: previousData => previousData ?? { records: [], totalRecords: 0 },
-	});
-
-	watch(query.error, e => {
-		if (e) {
-			showMessage(t('error_loading_records_or_categories'), 'red-darken-3');
-		}
+		meta: {
+			errorMessage: () => t('error_loading_records_or_categories'),
+		},
 	});
 
 	return { ...query, page, perPage, sortKey, sortOrder };
