@@ -18,6 +18,9 @@ export const useCurrencyQuery = defineQuery(() => {
 		meta: {
 			errorMessage: e =>
 				te(`warnings.${e.message}`) ? t(`warnings.${e.message}`) : t('error_loading_currency'),
+			onError: () => {
+				userStore.resetUserCurrency();
+			},
 		},
 	}));
 
