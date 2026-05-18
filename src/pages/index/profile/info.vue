@@ -57,7 +57,7 @@
 						:width="smAndDown ? 200 : 250"
 						:height="smAndDown ? 200 : 250"
 						class="mb-5"
-						elevation="3">
+						elevation="1">
 						<v-img
 							:src="info.avatar_url || '/img/avatar-placeholder.jpg'"
 							alt="Ваш аватар"

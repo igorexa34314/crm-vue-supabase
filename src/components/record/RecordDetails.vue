@@ -1,7 +1,7 @@
 <template>
 	<v-expansion-panels class="record__details">
 		<v-expansion-panel bg-color="panel">
-			<v-expansion-panel-title class="text-subtitle-1">{{
+			<v-expansion-panel-title class="text-body-large">{{
 				$t('record_details')
 			}}</v-expansion-panel-title>
 			<v-expansion-panel-text>
@@ -30,7 +30,7 @@
 								</v-fade-transition>
 							</div>
 							<span
-								class="record-detail__filename text-title text-center text-subtitle-2 w-100"
+								class="record-detail__filename text-title text-center text-title-small w-100"
 								:style="{ 'text-decoration': isHovering ? 'underline' : 'none' }"
 								>{{ detail.fullname }}</span
 							>

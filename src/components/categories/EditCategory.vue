@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<div class="subtitle">
-			<h4 class="text-h6 text-sm-h6 mb-5 mb-sm-7 text-subtitle">{{ $t('edit') }}</h4>
+			<h4 class="text-title-large text-sm-title-large mb-5 mb-sm-7 text-subtitle">
+				{{ $t('edit') }}
+			</h4>
 		</div>
 
 		<v-form ref="form" @submit.prevent="tryUpdateCategory">

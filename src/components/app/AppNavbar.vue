@@ -17,7 +17,7 @@
 					class="py-1 d-flex px-sm-3 px-1 mr-md-7"
 					:append-icon="mdiTriangleSmallDown"
 					flat>
-					<div class="text-subtitle-1 font-weight-bold d-flex align-center">
+					<div class="text-body-large font-weight-bold d-flex align-center">
 						<v-img
 							:src="photoURL || '/img/avatar-placeholder.jpg'"
 							aspect-ratio="1"
