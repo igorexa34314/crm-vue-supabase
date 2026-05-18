@@ -11,9 +11,14 @@ const PiniaColadaQueryErrorHandlingPlugin = (i18n: I18n): PiniaColadaPlugin => {
 		queryCache.$onAction(({ name, args, onError }) => {
 			if (name === 'fetch') {
 				const [entry] = args;
+
 				onError(error => {
 					if (!(error instanceof Error)) {
 						return;
+					}
+
+					if (entry.meta.onError && typeof entry.meta.onError === 'function') {
+						entry.meta.onError(error, entry);
 					}
 
 					const metaErrorMessage =
