@@ -72,14 +72,6 @@
 		"vue-tsc": "^3.2.8"
 	},
 	"packageManager": "pnpm@11.1.2",
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"@parcel/watcher",
-			"esbuild",
-			"simple-git-hooks",
-			"supabase"
-		]
-	},
 	"simple-git-hooks": {
 		"pre-commit": "pnpm lint-staged"
 	},

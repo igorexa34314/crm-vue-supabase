@@ -1,0 +1,9 @@
+ignoreWorkspaceRootCheck: true
+
+allowBuilds:
+  "@parcel/watcher": false
+  esbuild: false
+  simple-git-hooks: true
+  supabase: true
+
+verifyDepsBeforeRun: install
