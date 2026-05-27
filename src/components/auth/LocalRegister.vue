@@ -43,7 +43,7 @@
 			</template>
 		</v-checkbox>
 
-		<div class="cf-turnstile"></div>
+		<CfTurnstile v-model="turnstileToken" />
 
 		<v-btn
 			:text="$t('sign_in')"
@@ -58,11 +58,11 @@
 <script setup lang="ts">
 import PassField from '@/components/ui/PassField.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
+import CfTurnstile from '@/components/auth/CfTurnstile.vue';
 import { ref, useTemplateRef } from 'vue';
 import { mdiSend } from '@mdi/js';
 import { register } from '@/api/auth';
 import { user as validations } from '@/utils/validations';
-import { useTurnstile } from '@/composables/turnstile';
 import { validateToken } from '@/api/turnstile';
 import { useDisplay } from 'vuetify';
 
@@ -72,8 +72,8 @@ const emit = defineEmits<{
 }>();
 
 const { xs } = useDisplay();
-const turnstileToken = useTurnstile('.cf-turnstile');
 
+const turnstileToken = ref('');
 const formRef = useTemplateRef('form');
 const loading = ref(false);
 const formState = ref({
