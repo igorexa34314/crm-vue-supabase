@@ -39,20 +39,20 @@ const PiniaColadaQueryErrorHandlingPlugin = (i18n: I18n): PiniaColadaPlugin => {
 	};
 };
 
-const piniaColadaPlugin: Plugin<I18n> = {
-	install(app, i18n) {
-		app.use(PiniaColada, {
-			queryOptions: {
-				// change the stale time for all queries
-				staleTime: 30000, // 30 seconds
-				refetchOnWindowFocus: false,
-			},
-			mutationOptions: {
-				// add global mutation options here
-			},
-			plugins: [PiniaColadaQueryErrorHandlingPlugin(i18n)],
-		});
-	},
-};
-
-export default piniaColadaPlugin;
+export default function setupPiniaColadaPlugin(i18n: I18n): Plugin {
+	return <Plugin>{
+		install(app) {
+			app.use(PiniaColada, {
+				queryOptions: {
+					// change the stale time for all queries
+					staleTime: 30000, // 30 seconds
+					refetchOnWindowFocus: false,
+				},
+				mutationOptions: {
+					// add global mutation options here
+				},
+				plugins: [PiniaColadaQueryErrorHandlingPlugin(i18n)],
+			});
+		},
+	};
+}
