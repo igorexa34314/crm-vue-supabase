@@ -5,9 +5,6 @@ import { useI18n, type I18n } from 'vue-i18n';
 import { defaultVuetifyTheme, vuetifyThemes } from '@/constants/themes';
 import * as breakpoints from '@/constants/breakpoints';
 
-import '@/assets/styles/layers.scss';
-import 'vuetify/styles';
-
 export default function setupVuetify(
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type
 	i18n: I18n<any, {}, {}, string, false>

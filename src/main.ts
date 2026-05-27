@@ -7,13 +7,16 @@ import { getLocale, loadMessages, setupI18n, setI18nLocaleMessages } from '@/plu
 import setupVuetify from '@/plugins/vuetify';
 import { useUserStore } from '@/stores/user';
 
+import '@/assets/styles/layers.scss';
+
+import 'unfonts.css';
+import 'virtual:uno.css';
+import 'vuetify/styles';
+
 import '@/assets/styles/main.scss';
 
 import App from '@/App.vue';
 import AppLoader from '@/components/app/AppLoader.vue';
-
-import 'unfonts.css';
-import 'virtual:uno.css';
 
 const locale = getLocale();
 loadMessages(locale).then(messages => {
