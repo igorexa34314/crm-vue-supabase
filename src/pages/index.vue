@@ -25,7 +25,7 @@
 						class="translate-[-70%,-70%] bottom-0 right-0"
 						to="/records/create"
 						position="fixed"
-						:icon="mdiPlus"
+						icon="i-mdi-plus"
 						v-bind="props" />
 				</template>
 			</v-tooltip>
@@ -38,7 +38,6 @@ import AppNavbar from '@/components/app/AppNavbar.vue';
 import AppSidebar from '@/components/app/AppSidebar.vue';
 import { ref, onUnmounted, watchEffect } from 'vue';
 import { useUserStore } from '@/stores/user';
-import { mdiPlus } from '@mdi/js';
 import { fetchAndSubscribeInfo } from '@/api/user';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';

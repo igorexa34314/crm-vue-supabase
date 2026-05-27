@@ -6,7 +6,7 @@
 		required>
 		<template #append-inner>
 			<v-icon
-				:icon="passFieldState.showPass ? mdiEye : mdiEyeOff"
+				:icon="passFieldState.showPass ? 'i-mdi-eye' : 'i-mdi-eye-off'"
 				@mousedown="passFieldState.showPass = true"
 				@mouseup="passFieldState.showPass = false"
 				class="mr-2 cursor-pointer" />
@@ -28,7 +28,7 @@
 		required>
 		<template #append-inner>
 			<v-icon
-				:icon="passFieldState.showRepeater ? mdiEye : mdiEyeOff"
+				:icon="passFieldState.showRepeater ? 'i-mdi-eye' : 'i-mdi-eye-off'"
 				@mousedown="passFieldState.showRepeater = true"
 				@mouseup="passFieldState.showRepeater = false"
 				class="mr-2 cursor-pointer" />
@@ -38,7 +38,6 @@
 
 <script setup lang="ts">
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
-import { mdiEye, mdiEyeOff } from '@mdi/js';
 import { reactive } from 'vue';
 import { user as validations } from '@/utils/validations';
 import type { VTextField } from 'vuetify/components';

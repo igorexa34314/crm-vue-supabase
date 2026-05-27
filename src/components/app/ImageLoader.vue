@@ -9,14 +9,12 @@
 			:bg-color="bgColor"
 			class="rounded-circle bg-[rgba(0,0,0,0.7)]"
 			@click.capture="emit('cancel')">
-			<v-icon :icon="mdiClose" :size="iconSize" />
+			<v-icon icon="i-mdi-close" :size="iconSize" />
 		</v-progress-circular>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { mdiClose } from '@mdi/js';
-
 const {
 	color = 'grey-lighten-4',
 	bgColor = 'grey-darken-4',

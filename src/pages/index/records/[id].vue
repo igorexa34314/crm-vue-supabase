@@ -21,19 +21,19 @@
 						:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
 						class="text-trend ml-3 px-2 pb-1 text-center">
 						<v-icon
-							:icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
+							:icon="record.type === 'outcome' ? 'i-mdi-trending-down' : 'i-mdi-trending-up'"
 							color="title" />
 					</span>
 				</v-card-title>
 				<div class="flex justify-end">
 					<v-btn
-						:icon="mdiPencil"
+						icon="i-mdi-pencil"
 						:size="xs ? '46px' : 'default'"
 						variant="text"
 						color="primary"
 						@click="updateRecordDialog = true" />
 					<v-btn
-						:icon="mdiDelete"
+						icon="i-mdi-delete"
 						:size="xs ? '46px' : 'default'"
 						variant="text"
 						color="primary"
@@ -82,7 +82,7 @@
 		<div v-else class="text-headline-small text-primary mt-7 text-center">
 			<strong>
 				{{ `${$t('record_with_id')}: ` }}
-				<span class="text-decoration-underline font-italic">{{ route.params.id }}</span>
+				<span class="underline font-italic">{{ route.params.id }}</span>
 				{{ $t('not_found') }}
 			</strong>
 		</div>
@@ -94,7 +94,6 @@ import UpdateRecordDialog from '@/components/record/UpdateRecordDialog.vue';
 import DeleteRecordDialog from '@/components/record/DeleteRecordDialog.vue';
 import PageBreadcrumbs, { type Breadcrumb } from '@/components/ui/PageBreadcrumbs.vue';
 import RecordDetails from '@/components/record/RecordDetails.vue';
-import { mdiTrendingUp, mdiTrendingDown, mdiDelete, mdiPencil } from '@mdi/js';
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter, useRoute } from 'vue-router';

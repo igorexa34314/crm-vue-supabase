@@ -41,7 +41,7 @@
 					:disabled="isNewCategoryEquals"
 					:loading="updateCategoryAsyncStatus === 'loading'">
 					{{ $t('update') }}
-					<v-icon :icon="mdiSend" class="ml-3" />
+					<v-icon icon="i-mdi-send" class="ml-3" />
 				</v-btn>
 
 				<v-btn
@@ -51,7 +51,7 @@
 					class="ml-4 sm:ml-6"
 					@click="confirmationDialog = true">
 					{{ $t('delete') }}
-					<v-icon :icon="mdiDelete" class="ml-3" />
+					<v-icon icon="i-mdi-delete" class="ml-3" />
 				</v-btn>
 
 				<DeleteCategoryDialog
@@ -67,7 +67,6 @@
 import DeleteCategoryDialog from '@/components/categories/DeleteCategoryDialog.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref, watchEffect, watch, computed, useTemplateRef } from 'vue';
-import { mdiSend, mdiDelete } from '@mdi/js';
 import { type Category, type CategoryData } from '@/api/category';
 import { category as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';

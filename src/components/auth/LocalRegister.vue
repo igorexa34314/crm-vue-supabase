@@ -48,7 +48,7 @@
 		<v-btn
 			:text="$t('sign_in')"
 			type="submit"
-			v-bind="{ appendIcon: mdiSend, loading }"
+			v-bind="{ appendIcon: 'i-mdi-send', loading }"
 			color="success"
 			width="100%"
 			class="mt-4 sm:mt-7" />
@@ -60,7 +60,6 @@ import PassField from '@/components/ui/PassField.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import CfTurnstile from '@/components/auth/CfTurnstile.vue';
 import { ref, useTemplateRef } from 'vue';
-import { mdiSend } from '@mdi/js';
 import { register } from '@/api/auth';
 import { user as validations } from '@/utils/validations';
 import { validateToken } from '@/api/turnstile';

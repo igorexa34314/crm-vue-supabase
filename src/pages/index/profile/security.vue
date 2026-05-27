@@ -36,7 +36,7 @@
 				:disabled="!formState.newPass"
 				:loading="changeUserPasswordAsyncStatus === 'loading'">
 				{{ $t('update') }}
-				<v-icon :icon="mdiSend" class="ml-3" />
+				<v-icon icon="i-mdi-send" class="ml-3" />
 			</v-btn>
 		</v-form>
 	</div>
@@ -46,7 +46,6 @@
 import PassField from '@/components/ui/PassField.vue';
 // import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref, useTemplateRef } from 'vue';
-import { mdiSend } from '@mdi/js';
 import { user as validations } from '@/utils/validations';
 import { /* useChangeUserEmail, */ useChangeUserPassword } from '@/mutations/auth';
 import { useDisplay } from 'vuetify';

@@ -1,13 +1,12 @@
 <template>
 	<v-breadcrumbs :items="breadcrumbs">
 		<template #divider>
-			<v-icon :icon="mdiChevronRight" />
+			<v-icon icon="i-mdi-chevron-right" />
 		</template>
 	</v-breadcrumbs>
 </template>
 
 <script setup lang="ts">
-import { mdiChevronRight } from '@mdi/js';
 import type { RouteLocationRaw } from 'vue-router';
 
 export interface Breadcrumb {

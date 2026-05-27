@@ -1,4 +1,4 @@
-import { defineConfig, presetWind4, StaticRule } from 'unocss';
+import { defineConfig, presetWind4, presetIcons, type StaticRule } from 'unocss';
 import { createThemeVariants, elevationPresets } from 'unocss-preset-vuetify';
 import * as breakpoints from './src/constants/breakpoints';
 import { vuetifyThemes } from './src/constants/themes';
@@ -9,6 +9,26 @@ const elevationRules = Object.entries(elevationPresets.md3).map(
 );
 
 export default defineConfig({
+	presets: [
+		presetIcons({
+			prefix: 'i-', // Don’t change the default prefix i- of UnoCSS preset-icons, Vuetify icon sets rely on it.
+			processor: props => {
+				delete props.color;
+			},
+			collections: {
+				mdi: () => import('@iconify-json/mdi/icons.json').then(i => i.default),
+			},
+		}),
+		presetWind4({
+			preflights: {
+				reset: false,
+			},
+			dark: {
+				dark: '.v-theme--dark',
+				light: '.v-theme--light',
+			},
+		}),
+	],
 	theme: {
 		font: {
 			heading: '"Roboto", sans-serif',
@@ -20,17 +40,7 @@ export default defineConfig({
 		colors: createVuetifyThemeColors(vuetifyThemes),
 	},
 	variants: createVuetifyThemeVariants(vuetifyThemes),
-	presets: [
-		presetWind4({
-			preflights: {
-				reset: false,
-			},
-			dark: {
-				dark: '.v-theme--dark',
-				light: '.v-theme--light',
-			},
-		}),
-	],
+
 	outputToCssLayers: {
 		cssLayerName: layer => (layer === 'properties' ? null : `uno-${layer}`),
 	},

@@ -9,8 +9,8 @@
 		:items="records"
 		item-value="id"
 		:loading="loading"
-		:sort-desc-icon="mdiMenuDown"
-		:sort-asc-icon="mdiMenuUp"
+		sort-desc-icon="i-mdi-menu-down"
+		sort-asc-icon="i-mdi-menu-up"
 		hover
 		:row-props="{ class: 'record-row' }"
 		:cell-props="{ class: 'text-left' }"
@@ -55,7 +55,7 @@
 				:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
 				class="text-trend px-3 py-2 text-center">
 				<v-icon
-					:icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
+					:icon="record.type === 'outcome' ? 'i-mdi-trending-down' : 'i-mdi-trending-up'"
 					:class="{ 'mr-2': !smAndDown }"
 					:size="xs ? 'small' : 'default'" />
 				{{
@@ -76,7 +76,7 @@
 				content-class="bg-tooltip font-medium text-primary">
 				<template #activator="{ props }">
 					<v-btn v-bind="props" color="success" @click.stop="openRecord($event, { item })">
-						<v-icon :icon="mdiOpenInNew" />
+						<v-icon icon="i-mdi-open-in-new" />
 					</v-btn>
 				</template>
 			</v-tooltip>
@@ -98,7 +98,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { mdiOpenInNew, mdiTrendingUp, mdiTrendingDown, mdiMenuUp, mdiMenuDown } from '@mdi/js';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/currency-filter';

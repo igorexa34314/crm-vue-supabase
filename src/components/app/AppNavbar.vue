@@ -15,7 +15,7 @@
 					variant="text"
 					v-bind="props"
 					class="px-1 py-1 flex md:mr-7 sm:px-3"
-					:append-icon="mdiTriangleSmallDown"
+					append-icon="i-mdi-triangle-small-down"
 					flat>
 					<div class="text-body-large font-bold flex items-center">
 						<v-img
@@ -32,7 +32,7 @@
 			<v-list density="comfortable">
 				<v-list-item :active="false" to="/profile">
 					<template #prepend>
-						<v-icon :icon="mdiAccountCircleOutline" class="mr-3" />
+						<v-icon icon="i-mdi-account-circle-outline" class="mr-3" />
 					</template>
 					<v-list-item-title class="text-primary">{{
 						$t('pageTitles.profile')
@@ -40,7 +40,7 @@
 				</v-list-item>
 				<v-list-item :active="false" @click="emit('logout')">
 					<template #prepend>
-						<v-icon :icon="mdiLogout" class="mr-3" />
+						<v-icon icon="i-mdi-logout" class="mr-3" />
 					</template>
 					<v-list-item-title class="text-primary">{{ $t('logout') }}</v-list-item-title>
 				</v-list-item>
@@ -57,7 +57,6 @@
 
 <script setup lang="ts">
 import DarkmodeToggle from '@/components/app/DarkmodeToggle.vue';
-import { mdiTriangleSmallDown, mdiAccountCircleOutline, mdiLogout } from '@mdi/js';
 import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';

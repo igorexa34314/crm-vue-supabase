@@ -5,7 +5,7 @@
 				{{ $t('pageTitles.bill') }}
 			</h3>
 			<v-btn color="success" @click="refetchCurrencyThrottled">
-				<v-icon :icon="mdiRefresh" />
+				<v-icon icon="i-mdi-refresh" />
 			</v-btn>
 		</div>
 		<v-divider color="black" thickness="1.5" class="mb-5 mt-1 bg-white sm:mb-8" />
@@ -33,7 +33,6 @@
 import CurrencyRates from '@/components/home/CurrencyRates.vue';
 import MyBill from '@/components/home/MyBill.vue';
 import { useSeoMeta } from '@unhead/vue';
-import { mdiRefresh } from '@mdi/js';
 import { useTheme } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';

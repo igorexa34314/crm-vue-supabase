@@ -116,7 +116,7 @@
 				:loading="updateInfoAsyncStatus === 'loading'"
 				:disabled="isInfoEqualsToStore && !formState.avatar">
 				{{ $t('update') }}
-				<v-icon :icon="mdiSend" class="ml-3" />
+				<v-icon icon="i-mdi-send" class="ml-3" />
 			</v-btn>
 		</v-form>
 
@@ -131,7 +131,6 @@ import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import { VBirthdayPicker } from 'vuetify-birthdaypicker';
 import { ref, computed, watchEffect, useTemplateRef, watch } from 'vue';
-import { mdiSend } from '@mdi/js';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
 import { fetchAvailableLocales } from '@/api/locale';

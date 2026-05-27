@@ -25,7 +25,7 @@
 
 			<v-btn color="success" type="submit" :class="xs ? 'mt-4' : 'mt-7'" :loading="loading">
 				{{ $t('create') }}
-				<v-icon :icon="mdiSend" class="ml-3" />
+				<v-icon icon=" i-mdi-send" class="ml-3" />
 			</v-btn>
 		</v-form>
 	</div>
@@ -33,7 +33,6 @@
 
 <script setup lang="ts">
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
-import { mdiSend } from '@mdi/js';
 import { ref, useTemplateRef } from 'vue';
 import { type CategoryData } from '@/api/category';
 import { category as validations } from '@/utils/validations';

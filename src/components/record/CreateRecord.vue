@@ -61,7 +61,7 @@
 			:loading="createRecordAsyncStatus === 'loading'"
 			:class="xs ? 'mt-4' : 'mt-7'">
 			{{ $t('create') }}
-			<v-icon :icon="mdiSend" class="ml-3" />
+			<v-icon icon="i-mdi-send" class="ml-3" />
 		</v-btn>
 	</v-form>
 </template>
@@ -70,7 +70,6 @@
 import LocalizedFileInput from '@/components/ui/LocalizedFileInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
-import { mdiSend } from '@mdi/js';
 import { ref, computed, watchEffect, useTemplateRef } from 'vue';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';

@@ -19,11 +19,11 @@
 									class="text-primary mx-auto text-center max-w-3/4 inline-block text-truncate left-0 right-0 top-1/2 z-100 -translate-y-1/4"
 									>{{ arrayAt(detail.fullname.split('.'), -1) }}</small
 								>
-								<v-icon :icon="mdiFile" size="88px" color="file-icon" />
+								<v-icon icon="i-mdi-file" size="88px" color="file-icon" />
 								<v-fade-transition>
 									<v-icon
 										v-if="isHovering"
-										:icon="mdiDownload"
+										icon="i-mdi-download"
 										class="left-1/2 top-1/2 pos-absolute z-100 -translate-x-1/2 -translate-y-1/2"
 										size="24px"
 										color="primary" />
@@ -43,7 +43,6 @@
 </template>
 
 <script setup lang="ts">
-import { mdiFile, mdiDownload } from '@mdi/js';
 import { downloadRecordDetail, type RecordDetail } from '@/api/record';
 import { arrayAt } from '@/utils/helpers';
 

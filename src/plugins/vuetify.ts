@@ -1,5 +1,5 @@
 import { createVuetify } from 'vuetify';
-import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
+import { aliases, mdi } from 'vuetify/iconsets/mdi-unocss';
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
 import { useI18n, type I18n } from 'vue-i18n';
 import { defaultVuetifyTheme, vuetifyThemes } from '@/constants/themes';

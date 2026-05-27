@@ -12,14 +12,13 @@
 
 		<template #actions>
 			<v-btn variant="text" color="white" @click="sbProps.show = false">
-				<v-icon :icon="mdiClose" />
+				<v-icon icon="i-mdi-close" />
 			</v-btn>
 		</template>
 	</v-snackbar>
 </template>
 
 <script setup lang="ts">
-import { mdiClose } from '@mdi/js';
 import { ref } from 'vue';
 import { useSnackbarStore, type Snackbar } from '@/stores/snackbar';
 

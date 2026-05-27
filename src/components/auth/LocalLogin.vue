@@ -23,7 +23,7 @@
 			width="100%"
 			color="success"
 			class="mt-4 sm:mt-8"
-			v-bind="{ loading, appendIcon: mdiSend }" />
+			v-bind="{ loading, appendIcon: 'i-mdi-send' }" />
 	</v-form>
 </template>
 
@@ -31,7 +31,6 @@
 import PassField from '@/components/ui/PassField.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref, useTemplateRef } from 'vue';
-import { mdiSend } from '@mdi/js';
 import { login } from '@/api/auth';
 import { user as validations } from '@/utils/validations';
 
