@@ -10,17 +10,16 @@
 			<slot name="activator" v-bind="slotProps"></slot>
 		</template>
 		<template #default="{ isActive }">
-			<v-card v-bind="{ maxWidth, width }" :class="contentClass" class="mx-auto pt-2 pt-sm-4">
+			<v-card v-bind="{ maxWidth, width }" :class="contentClass" class="mx-auto pt-2 sm:pt-4">
 				<v-card-title
 					v-if="title || slots.title"
-					class="text-headline-medium text-center"
-					style="white-space: inherit; line-height: 1.4; hyphens: none">
+					class="text-headline-medium leading-[1.4] text-center hyphens-none">
 					<slot name="title" v-bind="{ isActive }">{{ title }}</slot>
 				</v-card-title>
 				<v-card-text v-if="text || slots.default">
 					<slot v-bind="{ isActive }">{{ text }}</slot>
 				</v-card-text>
-				<v-card-actions class="mt-4 mt-sm-6">
+				<v-card-actions class="mt-4 sm:mt-6">
 					<v-spacer />
 					<slot name="cancel">
 						<v-btn color="red-darken-1" variant="text" @click="cancel">

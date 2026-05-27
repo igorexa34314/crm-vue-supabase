@@ -1,13 +1,12 @@
 <template>
 	<v-switch
 		v-model="darkMode"
-		class="darkmode-toggle text-switch"
+		class="darkmode-toggle text-switch max-w-fit"
 		inset
 		:false-icon="mdiWeatherSunny"
 		:true-icon="mdiWeatherNight"
 		hide-details
 		density="compact"
-		style="max-width: fit-content"
 		:style="{ '--v-track-bg': `${switchToggleStyle}` }">
 	</v-switch>
 </template>

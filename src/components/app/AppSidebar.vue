@@ -10,7 +10,7 @@
 				:exact="link.exact"
 				color="primary"
 				class="px-5">
-				<span class="font-weight-bold text-primary">{{ $t('menu.' + link.title) }}</span>
+				<span class="text-primary font-bold">{{ $t('menu.' + link.title) }}</span>
 			</v-list-item>
 		</v-list>
 	</v-navigation-drawer>

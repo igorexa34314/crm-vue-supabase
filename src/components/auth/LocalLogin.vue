@@ -22,7 +22,7 @@
 			type="submit"
 			width="100%"
 			color="success"
-			class="mt-4 mt-sm-8"
+			class="mt-4 sm:mt-8"
 			v-bind="{ loading, appendIcon: mdiSend }" />
 	</v-form>
 </template>

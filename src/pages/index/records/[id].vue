@@ -6,11 +6,11 @@
 
 		<v-card
 			v-else-if="recordState.status === 'success' && recordState.data && record"
-			class="mt-4 pa-3"
+			class="mt-4 p-3"
 			max-width="800"
 			color="card-1">
-			<div class="card-header d-flex justify-space-between">
-				<v-card-title class="flex-fill d-flex">
+			<div class="flex justify-between">
+				<v-card-title class="flex grow">
 					<div>
 						{{
 							(!xs ? `${$t('pageTitles.details')} - ` : '') +
@@ -19,13 +19,13 @@
 					</div>
 					<span
 						:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
-						class="ml-3 pb-1 px-2 text-center text-trend">
+						class="text-trend ml-3 px-2 pb-1 text-center">
 						<v-icon
 							:icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
 							color="title" />
 					</span>
 				</v-card-title>
-				<div class="card-header-actions d-flex justify-end">
+				<div class="flex justify-end">
 					<v-btn
 						:icon="mdiPencil"
 						:size="xs ? '46px' : 'default'"
@@ -41,7 +41,7 @@
 				</div>
 			</div>
 
-			<v-card-text class="mt-4 text-headline-small text-primary">
+			<v-card-text class="text-headline-small text-primary mt-4">
 				<p>{{ $t('description') + ': ' + record.description }}</p>
 				<p class="mt-4">
 					{{
@@ -51,14 +51,14 @@
 					}}
 				</p>
 
-				<p class="mt-4 mb-5">{{ $t('category') + ': ' + record.category?.title }}</p>
+				<p class="mb-5 mt-4">{{ $t('category') + ': ' + record.category?.title }}</p>
 
 				<RecordDetails
 					v-if="record.details?.length"
 					:details="record.details"
-					class="record__details mt-4 mt-sm-6" />
+					class="mt-4 sm:mt-6" />
 
-				<small class="text-right d-block mt-4 mt-sm-6 mr-1">
+				<small class="mr-1 mt-4 text-right block sm:mt-6">
 					{{
 						$d(new Date(record.created_at), 'short') +
 						(record.updated_at
@@ -79,7 +79,7 @@
 				@delete-record="tryDeleteRecord" />
 		</v-card>
 
-		<div v-else class="mt-7 text-center text-primary text-headline-small">
+		<div v-else class="text-headline-small text-primary mt-7 text-center">
 			<strong>
 				{{ `${$t('record_with_id')}: ` }}
 				<span class="text-decoration-underline font-italic">{{ route.params.id }}</span>

@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex align-center justify-center fill-height">
+	<div class="flex h-full items-center justify-center">
 		<v-progress-circular
 			:model-value="modelValue"
 			:color="color"
@@ -7,7 +7,7 @@
 			:width="width"
 			indeterminate
 			:bg-color="bgColor"
-			class="image-loader"
+			class="rounded-circle bg-[rgba(0,0,0,0.7)]"
 			@click.capture="emit('cancel')">
 			<v-icon :icon="mdiClose" :size="iconSize" />
 		</v-progress-circular>
@@ -36,10 +36,3 @@ const emit = defineEmits<{
 	cancel: [];
 }>();
 </script>
-
-<style lang="scss" scoped>
-.image-loader {
-	border-radius: 50%;
-	background-color: rgba(0, 0, 0, 0.7);
-}
-</style>

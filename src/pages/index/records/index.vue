@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<div class="title">
-			<h3 class="text-headline-medium text-sm-headline-large mt-2 mt-sm-4 ml-2 text-title">
+		<div>
+			<h3 class="text-headline-medium text-title ml-2 mt-2 sm:text-headline-large sm:mt-4">
 				{{ $t('pageTitles.history') }}
 			</h3>
 		</div>
-		<v-divider color="black" thickness="1.5" class="bg-white mt-3 mb-6" />
+		<v-divider color="black" thickness="1.5" class="mb-6 mt-3 bg-white" />
 
 		<app-loader v-if="catSpendStatsState.status === 'pending'" class="mt-7" page />
 
@@ -18,7 +18,7 @@
 			</Pie>
 		</div>
 
-		<section class="mt-lg-6" v-if="catSpendStatsState.status !== 'pending'">
+		<section class="lg:mt-6" v-if="catSpendStatsState.status !== 'pending'">
 			<RecordsTable
 				v-model:page="page"
 				v-model:per-page="perPage"
@@ -34,7 +34,7 @@
 				recordsState.status !== 'pending' &&
 				!recordsState.data?.records.length
 			"
-			class="text-center text-headline-small mt-9">
+			class="text-headline-small mt-9 text-center">
 			{{ $t('no_records') + '. ' }}
 			<router-link to="/records/create">{{ $t('create_record') }}</router-link>
 		</div>

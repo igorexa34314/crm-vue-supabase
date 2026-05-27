@@ -5,7 +5,7 @@
 		</template>
 		<v-app-bar-title
 			:text="$d(nowDate, xs ? 'time' : smAndDown ? 'daytime' : 'long')"
-			class="app-title d-xs-none mt-1 text-primary" />
+			class="text-primary mt-1 hidden sm:block" />
 		<v-spacer />
 		<DarkmodeToggle class="mr-7" />
 		<v-menu v-if="userStore.info">
@@ -14,16 +14,16 @@
 					color="profile"
 					variant="text"
 					v-bind="props"
-					class="py-1 d-flex px-sm-3 px-1 mr-md-7"
+					class="px-1 py-1 flex md:mr-7 sm:px-3"
 					:append-icon="mdiTriangleSmallDown"
 					flat>
-					<div class="text-body-large font-weight-bold d-flex align-center">
+					<div class="text-body-large font-bold flex items-center">
 						<v-img
 							:src="photoURL || '/img/avatar-placeholder.jpg'"
 							aspect-ratio="1"
 							:width="xs ? 32 : 36"
 							alt="User avatar"
-							class="mr-2 mr-md-3"
+							class="mr-2 md:mr-3"
 							cover />
 						<span>{{ username }}</span>
 					</div>

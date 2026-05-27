@@ -53,7 +53,7 @@
 		<template #item.type="{ item: record }">
 			<span
 				:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
-				class="py-2 px-3 text-center text-trend">
+				class="text-trend px-3 py-2 text-center">
 				<v-icon
 					:icon="record.type === 'outcome' ? mdiTrendingDown : mdiTrendingUp"
 					:class="{ 'mr-2': !smAndDown }"
@@ -73,7 +73,7 @@
 				:text="$t('open_record')"
 				location="bottom"
 				open-delay="300"
-				content-class="bg-tooltip font-weight-medium text-primary">
+				content-class="bg-tooltip font-medium text-primary">
 				<template #activator="{ props }">
 					<v-btn v-bind="props" color="success" @click.stop="openRecord($event, { item })">
 						<v-icon :icon="mdiOpenInNew" />

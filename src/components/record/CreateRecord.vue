@@ -3,7 +3,7 @@
 		ref="form"
 		v-if="categories.length"
 		@submit.prevent="tryCreateRecord"
-		class="record-form mt-8"
+		class="mt-8"
 		:class="xs ? 'px-2' : 'px-4'">
 		<v-select
 			v-model="formState.category_id"
@@ -14,7 +14,7 @@
 			variant="underlined"
 			class="text-input" />
 
-		<v-radio-group v-model="formState.type" class="mt-3 text-input">
+		<v-radio-group v-model="formState.type" class="text-input mt-3">
 			<v-radio
 				v-for="tp in recordTypes"
 				:key="tp"
@@ -43,7 +43,7 @@
 			auto-grow />
 
 		<div class="mt-4">
-			<div class="mb-3 text-subtitle">{{ $t('record_details') }}</div>
+			<div class="text-subtitle mb-3">{{ $t('record_details') }}</div>
 			<LocalizedFileInput
 				v-model="formState.details"
 				:label="$t('upload_details')"
@@ -51,7 +51,7 @@
 				variant="outlined"
 				:placeholder="$t('upload_details')"
 				density="compact"
-				style="max-width: 550px"
+				class="max-w-[550px]"
 				multiple />
 		</div>
 

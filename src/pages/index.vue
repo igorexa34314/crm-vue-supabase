@@ -1,13 +1,15 @@
 <template>
-	<v-layout class="app-main-layout" full-height>
-		<app-loader v-if="isCurrencyPending" class="main-loader" />
+	<v-layout full-height>
+		<app-loader
+			v-if="isCurrencyPending"
+			class="left-1/2 top-1/2 pos-fixed z-100 -translate-x-1/2 -translate-y-1/2" />
 
 		<template v-else>
 			<AppNavbar @click="drawer = !drawer" @logout="handleLogout" />
 			<AppSidebar v-model="drawer" />
 
-			<v-main class="app bg-background" style="min-height: 100dvh; min-height: 100vh">
-				<div class="app-content pa-sm-5 pa-4">
+			<v-main class="bg-background min-h-[100dvh] min-h-[100vh]">
+				<div class="p-4 sm:p-5">
 					<router-view />
 				</div>
 			</v-main>
@@ -15,12 +17,12 @@
 			<v-tooltip
 				v-if="route.name !== '//records/create'"
 				:text="$t('create_record')"
-				content-class="bg-fixed text-primary font-weight-medium">
+				content-class="bg-fixed text-primary font-medium">
 				<template #activator="{ props }">
 					<v-btn
 						color="fixed"
 						:size="xs ? 'default' : mdAndDown ? 'large' : 'x-large'"
-						class="fixed-action-btn"
+						class="translate-[-70%,-70%] bottom-0 right-0"
 						to="/records/create"
 						position="fixed"
 						:icon="mdiPlus"
@@ -89,19 +91,3 @@ const handleLogout = async () => {
 	}
 };
 </script>
-
-<style lang="scss" scoped>
-.fixed-action-btn {
-	right: 0;
-	bottom: 0;
-	transform: translate(-70%, -70%);
-}
-
-.main-loader {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	z-index: 100;
-}
-</style>

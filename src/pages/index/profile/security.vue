@@ -3,11 +3,11 @@
 		<v-form
 			ref="form"
 			@submit.prevent="submitHandler"
-			class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
+			class="profile-form mt-6 px-2 sm:mt-8 sm:px-4">
 			<!-- <LocalizedInput v-model="formState.email" :rules="validations.email" variant="underlined" :label="$t('email')"
 			class="mb-5" required /> -->
 
-			<h4 class="text-body-large text-sm-headline-medium mb-3">{{ $t('change_password') }}</h4>
+			<h4 class="text-body-large mb-3 sm:text-headline-medium">{{ $t('change_password') }}</h4>
 
 			<PassField
 				v-model="formState.oldPass"

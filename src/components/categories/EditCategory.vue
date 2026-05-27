@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<div class="subtitle">
-			<h4 class="text-title-large text-sm-title-large mb-5 mb-sm-7 text-subtitle">
+		<div>
+			<h4 class="text-title-large text-subtitle mb-5 sm:text-title-large sm:mb-7">
 				{{ $t('edit') }}
 			</h4>
 		</div>
@@ -33,7 +33,7 @@
 				class="mt-6"
 				required />
 
-			<div class="d-flex items-center">
+			<div class="flex items-center">
 				<v-btn
 					color="success"
 					type="submit"
@@ -48,7 +48,7 @@
 					color="success"
 					type="button"
 					:class="xs ? 'mt-4' : 'mt-7'"
-					class="ml-sm-6 ml-4"
+					class="ml-4 sm:ml-6"
 					@click="confirmationDialog = true">
 					{{ $t('delete') }}
 					<v-icon :icon="mdiDelete" class="ml-3" />

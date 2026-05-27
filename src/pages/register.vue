@@ -1,7 +1,8 @@
 <template>
-	<v-layout class="app bg-grey-darken-2 d-flex justify-center align-center overflow-hidden">
-		<v-card width="100%" :max-width="xs ? 400 : 450" class="pa-3 pa-sm-4">
-			<v-card-title class="mb-2 text-center text-title">{{
+	<v-layout
+		class="bg-grey-darken-2 flex min-h-[100dvh] min-h-[100vh] items-center justify-center overflow-hidden">
+		<v-card width="100%" :max-width="xs ? 400 : 450" class="p-3 sm:p-4">
+			<v-card-title class="text-title mb-2 text-center">{{
 				$t('home_bookkeeping')
 			}}</v-card-title>
 
@@ -9,8 +10,8 @@
 				<LocalRegister @success="onRegisterSuccess" @error="onRegisterError" />
 			</v-card-text>
 
-			<v-card-actions class="justify-center text-body-large">
-				<p class="text-center text-primary">
+			<v-card-actions class="text-body-large justify-center">
+				<p class="text-primary text-center">
 					{{ $t('have_account') + '? ' }}
 					<router-link to="/login">{{ $t('login') + '!' }}</router-link>
 				</p>
@@ -72,10 +73,3 @@ const onRegisterError = async (e: unknown) => {
 	}
 };
 </script>
-
-<style lang="scss" scoped>
-.app {
-	min-height: 100dvh;
-	min-height: 100vh;
-}
-</style>

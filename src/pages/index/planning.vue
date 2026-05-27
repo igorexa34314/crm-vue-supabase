@@ -1,8 +1,7 @@
 <template>
 	<div>
-		<div
-			class="title mt-2 mt-sm-4 d-flex flex-column flex-sm-row align-sm-center mb-3 text-title">
-			<h3 class="text-headline-medium text-sm-headline-large ml-2 flex-grow-1 mb-3 mb-sm-0">
+		<div class="text-title mb-3 mt-2 flex flex-col sm:mt-4 sm:flex-row sm:items-center">
+			<h3 class="text-headline-medium mb-3 ml-2 flex-grow-1 sm:text-headline-large sm:mb-0">
 				{{ $t('pageTitles.plan') }}
 			</h3>
 			<v-skeleton-loader
@@ -12,26 +11,26 @@
 				max-height="40px"
 				color="background"
 				max-width="260px" />
-			<h4 v-else class="text-headline-medium text-sm-headline-large text-end">
+			<h4 v-else class="text-headline-medium text-end sm:text-headline-large">
 				{{ $n(cf(bill), { key: 'currency', currency: userCurrency }) }}
 			</h4>
 		</div>
-		<v-divider color="black" thickness="1.5" class="bg-white mb-8" />
+		<v-divider color="black" thickness="1.5" class="mb-8 bg-white" />
 
 		<app-loader v-if="catSpendStatsState.status === 'pending'" class="mt-10" page />
 
 		<div
 			v-else-if="catSpendStatsState.status === 'success' && !catSpendStatsState.data.length"
-			class="mt-10 text-center text-headline-small">
+			class="text-headline-small mt-10 text-center">
 			{{ $t('no_categories') + '. '
 			}}<router-link to="/categories">{{ $t('create_category') + '. ' }}</router-link>
 		</div>
 
 		<section v-else-if="catSpendStatsState.status === 'success'" class="mt-10 px-4">
 			<div v-for="(cat, index) of catSpendStatsState.data" :key="cat.id || index" class="mt-8">
-				<div class="d-flex flex-row align-center justify-space-between">
-					<div class="category-title mr-4">
-						<strong class="text-truncate font-weight-bold text-primary flex-fill">{{
+				<div class="flex flex-row items-center justify-between">
+					<div class="mr-4">
+						<strong class="text-primary font-bold grow text-truncate">{{
 							cat.title + ':'
 						}}</strong>
 					</div>
@@ -43,7 +42,7 @@
 							width="240px"
 							max-height="24px"
 							color="background" />
-						<span v-else class="text-primary text-end mr-sm-4">
+						<span v-else class="text-primary text-end sm:mr-4">
 							{{
 								$n(cf(cat.spend), {
 									key: 'currency',
@@ -85,8 +84,8 @@
 								:id="`progress-${cat.id}`"
 								:color="cat.percent >= 90 ? 'red' : cat.percent >= 60 ? 'yellow' : 'green'"
 								class="cursor-pointer"
-								rounded
 								rounded-bar
+								rounded
 								bg-color="progress" />
 						</div>
 					</template>

@@ -1,11 +1,11 @@
 <template>
 	<ConfirmationDialog v-model="confirmDialog" @after-leave="resetForm">
-		<div class="text-headline-small text-center text-title mb-3">{{ $t('edit_record') }}</div>
+		<div class="text-headline-small text-title mb-3 text-center">{{ $t('edit_record') }}</div>
 		<v-form
 			ref="form"
 			@submit.prevent="submitHandler"
 			id="update-record-form"
-			class="record-form mt-8"
+			class="mt-8"
 			:class="xs ? 'px-2' : 'px-4'">
 			<LocalizedInput
 				v-if="record.category"
@@ -15,7 +15,7 @@
 				class="mt-2"
 				readonly />
 
-			<v-radio-group v-model="formState.type" class="mt-2 text-input">
+			<v-radio-group v-model="formState.type" class="text-input mt-2">
 				<v-radio
 					v-for="tp in recordTypes"
 					:key="tp"

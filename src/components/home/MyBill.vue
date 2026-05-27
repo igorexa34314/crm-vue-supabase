@@ -1,6 +1,6 @@
 <template>
-	<v-card color="card-2" class="pa-4" elevation="1" min-height="300">
-		<v-card-title class="text-headline-small mb-5 text-title-large text-sm-headline-small">{{
+	<v-card color="card-2" class="p-4" elevation="1" min-height="300">
+		<v-card-title class="text-headline-small text-title-large mb-5 sm:text-headline-small">{{
 			$t('currency_account')
 		}}</v-card-title>
 		<v-card-text

@@ -1,5 +1,5 @@
 <template>
-	<v-form class="card-content" ref="form" @submit.prevent="submitRegister">
+	<v-form ref="form" @submit.prevent="submitRegister">
 		<LocalizedInput
 			v-model="formState.email"
 			:rules="validations.email"
@@ -51,7 +51,7 @@
 			v-bind="{ appendIcon: mdiSend, loading }"
 			color="success"
 			width="100%"
-			class="mt-4 mt-sm-7" />
+			class="mt-4 sm:mt-7" />
 	</v-form>
 </template>
 
