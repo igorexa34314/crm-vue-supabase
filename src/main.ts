@@ -2,8 +2,8 @@ import { createApp, watch } from 'vue';
 import router from '@/router';
 import { createHead } from '@unhead/vue/client';
 import setupVuetify from '@/plugins/vuetify';
+import { createPinia } from 'pinia';
 import { getLocale, loadMessages, setupI18n, setI18nLocaleMessages } from '@/plugins/i18n';
-import pinia from '@/plugins/pinia';
 import piniaColadaPlugin from '@/plugins/pinia-colada';
 import { useUserStore } from '@/stores/user';
 
@@ -17,12 +17,13 @@ import 'virtual:uno.css';
 
 const locale = getLocale();
 loadMessages(locale).then(messages => {
+	const pinia = createPinia();
 	const i18n = setupI18n(locale, messages ?? {});
 
 	const app = createApp(App);
 	app.use(router).use(pinia).use(i18n).use(piniaColadaPlugin, i18n);
 
-	const userStore = useUserStore();
+	const userStore = useUserStore(pinia);
 
 	watch(
 		() => userStore.info?.locale,
