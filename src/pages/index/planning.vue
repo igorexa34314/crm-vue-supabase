@@ -35,7 +35,7 @@
 						}}</strong>
 					</div>
 
-					<div class="category-spent">
+					<div class="text-right flex-[0_0_160px] sm:flex-[0_0_260px]">
 						<v-skeleton-loader
 							v-if="isCurrencyPending"
 							type="list-item"
@@ -121,13 +121,3 @@ const bill = computed(() => userStore.info?.bill || defaultBill);
 
 const { state: catSpendStatsState } = useCategoriesSpendStatsQuery();
 </script>
-
-<style lang="scss" scoped>
-.category {
-	&-spent {
-		@media (max-width: 360px) {
-			flex-basis: 130px;
-		}
-	}
-}
-</style>
