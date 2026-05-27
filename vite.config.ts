@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { URL, fileURLToPath } from 'node:url';
 
 import Fonts from 'unplugin-fonts/vite';
+import UnoCSS from 'unocss/vite';
 import vue from '@vitejs/plugin-vue';
 import VueDevTools from 'vite-plugin-vue-devtools';
 import VueRouter from 'vue-router/vite';
@@ -28,6 +29,7 @@ export default defineConfig({
 				],
 			},
 		}),
+		UnoCSS(),
 		VueI18nPlugin({
 			globalSFCScope: true,
 			include: [fileURLToPath(new URL('./src/locales/**', import.meta.url))],
