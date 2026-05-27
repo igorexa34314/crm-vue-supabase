@@ -8,7 +8,11 @@
 			:class="xs ? 'text-title-large' : 'text-headline-small'">
 			<div v-for="cur in currencies" :key="cur" :class="xs ? 'mt-5' : 'mt-7'">
 				<span class="mx-2">{{ $n(getCurrency(cur), { key: 'currency', currency: cur }) }}</span>
-				<v-divider thickness="2.5" color="divider" :class="xs ? 'mt-2' : 'mt-4'" />
+				<v-divider
+					thickness="2.5"
+					color="divider"
+					:class="xs ? 'mt-2' : 'mt-4'"
+					class="light:[--v-border-opacity:100]" />
 			</div>
 		</v-card-text>
 	</v-card>
@@ -36,9 +40,3 @@ const getCurrency = computed(() => (currency: CurrencyRates) => {
 	return +(base * rates[currency]).toFixed(2);
 });
 </script>
-
-<style lang="scss" scoped>
-.v-theme--light .v-divider {
-	--v-border-opacity: 1;
-}
-</style>

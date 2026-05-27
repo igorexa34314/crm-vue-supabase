@@ -54,9 +54,3 @@ const { state: currencyState, refetch: refetchCurrency } = useCurrencyQuery();
 
 const refetchCurrencyThrottled = useThrottleFn(refetchCurrency, 1500);
 </script>
-
-<style lang="scss" scoped>
-.v-theme--light .v-table {
-	--v-border-opacity: 0.18;
-}
-</style>

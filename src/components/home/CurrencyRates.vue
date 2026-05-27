@@ -6,7 +6,9 @@
 			}}</v-card-title>
 		</v-card-item>
 		<v-card-text>
-			<v-table class="bg-transparent" :density="xs ? 'comfortable' : 'default'">
+			<v-table
+				class="bg-transparent light:[--v-border-opacity:0.18]"
+				:density="xs ? 'comfortable' : 'default'">
 				<thead>
 					<tr>
 						<th class="text-body-large text-title font-bold">{{ $t('currency') }}</th>
