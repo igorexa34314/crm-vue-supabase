@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { PiniaColadaDevtools } from '@pinia/colada-devtools';
 import GlobalSnackbar from '@/components/app/GlobalSnackbar.vue';
-import { useDarkModeStore } from '@/stores/dark-mode';
+import { useDarkModePersistence } from '@/composables/dark-mode';
 import { appTitle } from '@/constants/app';
 import { useSeoMeta } from '@unhead/vue';
 
@@ -24,5 +24,5 @@ useSeoMeta({
 	titleTemplate: (title?: string) => (title ? `${title} | ${appTitle}` : appTitle),
 });
 
-useDarkModeStore();
+useDarkModePersistence();
 </script>

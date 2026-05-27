@@ -127,5 +127,7 @@
 	$alert-elevation: 0,
 	$avatar-elevation: 0,
 	$card-elevation: 0,
-	$card-hover-elevation: 0
+	$card-hover-elevation: 0,
+
+	$switch-track-background: var(--v-track-bg, rgb(var(--v-theme-surface-variant)))
 );
