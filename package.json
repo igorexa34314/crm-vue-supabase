@@ -52,6 +52,7 @@
 		"@types/deep-equal": "^1.0.4",
 		"@types/node": "^24.12.4",
 		"@types/randomcolor": "^0.5.9",
+		"@unocss/eslint-config": "^66.7.0",
 		"@unocss/preset-wind4": "^66.7.0",
 		"@vitejs/plugin-vue": "^6.0.7",
 		"@vue/eslint-config-prettier": "^10.2.0",
