@@ -19,7 +19,8 @@
 		"lint": "eslint . --cache",
 		"lint:fix": "eslint . --fix --cache",
 		"format": "prettier --write --cache src/",
-		"supabase:types": "supabase gen types --lang=typescript --project-id sxjleofipivdmluufxic > ./src/types/database-generated.ts"
+		"supabase:types": "supabase gen types --lang=typescript --project-id sxjleofipivdmluufxic > ./src/types/database-generated.ts",
+		"postinstall": "simple-git-hooks"
 	},
 	"dependencies": {
 		"@mdi/js": "^7.4.47",
@@ -57,7 +58,7 @@
 		"eslint": "^10.4.0",
 		"eslint-plugin-vue": "^10.9.1",
 		"jiti": "^2.7.0",
-		"lint-staged": "^17.0.5",
+		"nano-staged": "^1.0.2",
 		"npm-run-all2": "^9.0.1",
 		"prettier": "^3.8.3",
 		"sass-embedded": "^1.99.0",
@@ -73,9 +74,9 @@
 	},
 	"packageManager": "pnpm@11.1.2",
 	"simple-git-hooks": {
-		"pre-commit": "pnpm lint-staged"
+		"pre-commit": "./node_modules/.bin/nano-staged"
 	},
-	"lint-staged": {
+	"nano-staged": {
 		"*": "eslint --fix"
 	}
 }
