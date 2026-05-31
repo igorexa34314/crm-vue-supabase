@@ -6,7 +6,8 @@
 			variant="underlined"
 			label="Email"
 			class="mt-4"
-			required />
+			required
+			autocomplete="email" />
 
 		<PassField
 			v-model.trim="formState.password"
@@ -14,7 +15,7 @@
 			variant="underlined"
 			label="Пароль"
 			class="mt-6"
-			autocomplete="on"
+			autocomplete="current-password"
 			required />
 
 		<v-btn

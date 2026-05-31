@@ -5,7 +5,8 @@
 			:rules="validations.email"
 			variant="underlined"
 			:label="$t('email')"
-			required />
+			required
+			autocomplete="email" />
 
 		<PassField
 			v-model="formState.password"
@@ -14,6 +15,7 @@
 			:label="$t('password')"
 			class="mt-5"
 			repeater
+			autocomplete="new-password"
 			required />
 
 		<LocalizedInput
