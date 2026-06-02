@@ -1,5 +1,5 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { computed, readonly, shallowRef } from 'vue';
+import { computed, shallowRef } from 'vue';
 import { serverCurrency } from '@/constants/currency';
 import { defaultLocale, localeKey } from '@/constants/i18n';
 import type { UserInfo } from '@/api/user';
@@ -28,7 +28,7 @@ export const useUserStore = defineStore('user', () => {
 	};
 
 	return {
-		info: readonly(info),
+		info,
 		userCurrency,
 		setInfo,
 		setLocale,

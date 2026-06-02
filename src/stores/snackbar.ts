@@ -1,5 +1,5 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { readonly, shallowRef } from 'vue';
+import { shallowRef } from 'vue';
 
 export interface Snackbar {
 	text: string;
@@ -18,7 +18,7 @@ export const useSnackbarStore = defineStore('snackbar', () => {
 		snackbar.value = { text, color, timeout };
 	};
 
-	return { snackbar: readonly(snackbar), showMessage };
+	return { snackbar, showMessage };
 });
 
 if (import.meta.hot) {
