@@ -1,12 +1,36 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": ["config:recommended", "schedule:weekly", "group:allNonMajor"],
+	"extends": [
+		"config:recommended",
+		":maintainLockFilesWeekly",
+		":widenPeerDependencies",
+		":pinDevDependencies",
+		":semanticCommitTypeAll(chore)",
+		"group:allNonMajor"
+	],
+	"meteor": {
+		"enabled": false
+	},
+	"schedule": ["on Monday"],
 	"labels": ["dependencies"],
 	"rangeStrategy": "bump",
+	"npm": {
+		"commitMessageTopic": "{{prettyDepType}} {{depName}}"
+	},
 	"packageRules": [
+		{
+			"matchDepTypes": ["dependencies"],
+			"rangeStrategy": "update-lockfile"
+		},
 		{
 			"groupName": "vueuse",
 			"matchPackageNames": ["/^@vueuse/"]
+		},
+		{
+			"extends": ["packages:linters"],
+			"matchPackageNames": ["commitlint"],
+			"groupName": "all linters"
 		}
-	]
+	],
+	"postUpdateOptions": ["pnpmDedupe"]
 }
