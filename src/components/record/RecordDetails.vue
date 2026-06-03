@@ -16,7 +16,7 @@
 							<div class="relative">
 								<small
 									v-if="!isHovering"
-									class="text-primary mx-auto text-center max-w-3/4 inline-block text-truncate left-0 right-0 top-1/2 absolute z-[100] -translate-y-1/4"
+									class="text-primary mx-auto text-center max-w-3/4 inline-block truncate left-0 right-0 top-1/2 absolute z-[100] -translate-y-1/4"
 									>{{ arrayAt(detail.fullname.split('.'), -1) }}</small
 								>
 								<v-icon icon="i-mdi-file" size="88px" color="file-icon" />

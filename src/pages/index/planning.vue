@@ -30,7 +30,7 @@
 			<div v-for="(cat, index) of catSpendStatsState.data" :key="cat.id || index" class="mt-8">
 				<div class="flex flex-row items-center justify-between">
 					<div class="mr-4">
-						<strong class="text-primary font-bold grow text-truncate">{{
+						<strong class="text-primary font-bold grow min-w-0 truncate">{{
 							cat.title + ':'
 						}}</strong>
 					</div>

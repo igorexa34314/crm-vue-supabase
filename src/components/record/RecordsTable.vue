@@ -47,7 +47,7 @@
 		</template>
 
 		<template #item.category_id="{ item: record }">
-			<span class="text-truncate">{{ record.category?.title ?? '' }}</span>
+			<span class="truncate">{{ record.category?.title ?? '' }}</span>
 		</template>
 
 		<template #item.type="{ item: record }">
