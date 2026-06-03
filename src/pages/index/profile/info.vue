@@ -120,7 +120,7 @@
 			</v-btn>
 		</v-form>
 
-		<app-loader v-else page class="mt-5" />
+		<app-loader v-else page />
 	</div>
 </template>
 
