@@ -26,14 +26,14 @@ const { $onAction } = useSnackbarStore();
 
 const sbProps = ref<Snackbar & { show: boolean }>({
 	show: false,
-	color: 'snackbar-success',
+	color: '',
 	text: '',
 	timeout: 0,
 });
 
 $onAction(({ name, store, after }) => {
 	after(() => {
-		if (name === 'showMessage') {
+		if (name === 'showMessage' || name === 'showErrorMessage' || name === 'showSuccessMessage') {
 			sbProps.value = { ...store.snackbar, show: true };
 		}
 	});
