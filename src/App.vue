@@ -7,7 +7,7 @@
 		<Suspense v-if="Component">
 			<component :is="Component" />
 			<template #fallback>
-				<app-loader class="mt-7" page />
+				<app-loader page />
 			</template>
 		</Suspense>
 	</router-view>
