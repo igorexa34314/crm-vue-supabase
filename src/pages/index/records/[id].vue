@@ -18,7 +18,7 @@
 						}}
 					</div>
 					<span
-						:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
+						:class="record.type === 'outcome' ? 'bg-[#b71c1c]' : 'bg-[#388e3c]'"
 						class="text-trend ml-3 px-2 pb-1 text-center">
 						<v-icon
 							:icon="record.type === 'outcome' ? 'i-mdi-trending-down' : 'i-mdi-trending-up'"
@@ -112,7 +112,7 @@ const route = useRoute('//records/[id]');
 const router = useRouter();
 const { t, n } = useI18n({ useScope: 'global' });
 const cf = useCurrencyFilter();
-const { showMessage } = useSnackbarStore();
+const { showErrorMessage } = useSnackbarStore();
 const { info, userCurrency } = storeToRefs(useUserStore());
 
 useSeoMeta({ title: () => t('pageTitles.details') });
@@ -139,13 +139,12 @@ const tryDeleteRecord = async () => {
 		await deleteRecord(record.value?.id ?? route.params.id);
 		router.push('/records');
 	} else {
-		showMessage(
+		showErrorMessage(
 			t('lack_of_amount') +
 				` (${n(cf((record.value?.amount || 0) - info.value!.bill), {
 					key: 'currency',
 					currency: userCurrency.value,
-				})})`,
-			'red-darken-3'
+				})})`
 		);
 	}
 };

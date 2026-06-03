@@ -94,7 +94,7 @@ const {
 	defaultType?: Record['type'];
 }>();
 
-const { showMessage } = useSnackbarStore();
+const { showErrorMessage } = useSnackbarStore();
 const { t, n } = useI18n();
 const { xs } = useDisplay();
 const cf = useCurrencyFilter();
@@ -145,13 +145,12 @@ const tryCreateRecord = async () => {
 		});
 		resetForm();
 	} else {
-		showMessage(
+		showErrorMessage(
 			t('lack_of_amount') +
 				` (${n(formState.value.amount - cf(info.value?.bill || defaultBill), {
 					key: 'currency',
 					currency: info.value?.currency || serverCurrency,
-				})})`,
-			'red-darken-3'
+				})})`
 		);
 	}
 };

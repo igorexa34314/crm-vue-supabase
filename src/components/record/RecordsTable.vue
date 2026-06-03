@@ -52,7 +52,7 @@
 
 		<template #item.type="{ item: record }">
 			<span
-				:class="record.type === 'outcome' ? 'bg-red-darken-4' : 'bg-green-darken-2'"
+				:class="record.type === 'outcome' ? 'bg-[#b71c1c]' : 'bg-[#388e3c]'"
 				class="text-trend px-3 py-2 text-center">
 				<v-icon
 					:icon="record.type === 'outcome' ? 'i-mdi-trending-down' : 'i-mdi-trending-up'"

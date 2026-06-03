@@ -13,7 +13,7 @@ import { categoriesQuery } from '@/queries/category';
 
 export const useCreateCategory = defineMutation(() => {
 	const { t, te } = useI18n();
-	const { showMessage } = useSnackbarStore();
+	const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 	const queryCache = useQueryCache();
 
@@ -53,10 +53,7 @@ export const useCreateCategory = defineMutation(() => {
 			}
 
 			// handle the error
-			showMessage(
-				te(error.message) ? t(error.message) : t('error_create_category'),
-				'red-darken-3'
-			);
+			showErrorMessage(te(error.message) ? t(error.message) : t('error_create_category'));
 		},
 		onSuccess: (category, categoryData, { newCategory }) => {
 			// update the category with the information from the server
@@ -70,14 +67,14 @@ export const useCreateCategory = defineMutation(() => {
 
 			queryCache.setQueryData(['categories'], newCategories);
 
-			showMessage(t('category_updated'));
+			showSuccessMessage(t('category_updated'));
 		},
 	});
 });
 
 export const useUpdateCategory = defineMutation(() => {
 	const { t, te } = useI18n();
-	const { showMessage } = useSnackbarStore();
+	const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 	const queryCache = useQueryCache();
 
@@ -116,10 +113,7 @@ export const useUpdateCategory = defineMutation(() => {
 			}
 
 			// handle the error
-			showMessage(
-				te(error.message) ? t(error.message) : t('error_update_category'),
-				'red-darken-3'
-			);
+			showErrorMessage(te(error.message) ? t(error.message) : t('error_update_category'));
 		},
 		onSuccess: category => {
 			// update the category with the information from the server
@@ -133,14 +127,14 @@ export const useUpdateCategory = defineMutation(() => {
 
 			queryCache.setQueryData(['categories'], newCategories);
 
-			showMessage(t('category_updated'));
+			showSuccessMessage(t('category_updated'));
 		},
 	});
 });
 
 export const useDeleteCategory = defineMutation(() => {
 	const { t, te } = useI18n();
-	const { showMessage } = useSnackbarStore();
+	const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 	const queryCache = useQueryCache();
 
@@ -184,13 +178,10 @@ export const useDeleteCategory = defineMutation(() => {
 			}
 
 			// handle the error
-			showMessage(
-				te(error.message) ? t(error.message) : t('error_update_category'),
-				'red-darken-3'
-			);
+			showErrorMessage(te(error.message) ? t(error.message) : t('error_update_category'));
 		},
 		onSuccess: () => {
-			showMessage(t('category_updated'));
+			showSuccessMessage(t('category_updated'));
 		},
 	});
 });

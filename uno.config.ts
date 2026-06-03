@@ -146,6 +146,8 @@ export default defineConfig({
 		'text-success',
 		'bg-error',
 		'text-error',
+		'bg-snackbar-success',
+		'bg-snackbar-error',
 	],
 });
 

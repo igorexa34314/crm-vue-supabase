@@ -48,7 +48,7 @@
 				type="submit"
 				:loading="loading"
 				form="update-record-form"
-				color="green-darken-1"
+				color="snackbar-success"
 				variant="text">
 				<span class="text-headline-small">{{ $t('submit') }}</span>
 			</v-btn>
@@ -79,7 +79,7 @@ const emit = defineEmits<{
 	updateRecord: [data: RecordDataToUpdate];
 }>();
 
-const { showMessage } = useSnackbarStore();
+const { showErrorMessage } = useSnackbarStore();
 const { t, n } = useI18n();
 const { xs } = useDisplay();
 const cf = useCurrencyFilter();
@@ -118,7 +118,7 @@ const submitHandler = async () => {
 		const { amount, ...data } = formState.value;
 		emit('updateRecord', { ...data, amount: cf(amount ?? 0, { type: 'reverse' }) });
 	} else {
-		showMessage(
+		showErrorMessage(
 			t('lack_of_amount') +
 				` (${n(
 					(formState.value.type === 'income' ? 1 : -1) *
@@ -128,8 +128,7 @@ const submitHandler = async () => {
 						key: 'currency',
 						currency: info.value?.currency,
 					}
-				)})`,
-			'red-darken-3'
+				)})`
 		);
 	}
 };

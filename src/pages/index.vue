@@ -54,7 +54,7 @@ definePage({
 const router = useRouter();
 const route = useRoute();
 const { t, te } = useI18n({ useScope: 'global' });
-const { showMessage } = useSnackbarStore();
+const { showErrorMessage } = useSnackbarStore();
 const userStore = useUserStore();
 const { mobile, xs, mdAndDown } = useDisplay();
 
@@ -73,7 +73,7 @@ fetchAndSubscribeInfo()
 		userInfoChannel = channel;
 	})
 	.catch((e: unknown) => {
-		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
+		showErrorMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string));
 	});
 
 onUnmounted(() => {
@@ -86,7 +86,7 @@ const handleLogout = async () => {
 		await logout();
 		router.push({ path: '/login', query: { message: 'logout' } });
 	} catch (e) {
-		showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string), 'red-darken-3');
+		showErrorMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : (e as string));
 	}
 };
 </script>

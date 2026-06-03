@@ -147,7 +147,7 @@ import { useUpdateUserInfo } from '@/mutations/user';
 import { Constants } from '@/types/database-types';
 import { useDisplay } from 'vuetify';
 
-const { showMessage } = useSnackbarStore();
+const { showErrorMessage } = useSnackbarStore();
 const { t } = useI18n();
 const { xs, smAndDown } = useDisplay();
 const userStore = useUserStore();
@@ -198,7 +198,7 @@ const { state: localesState, error: localesError } = useQuery({
 
 watch(localesError, e => {
 	if (e) {
-		showMessage(t('error_loading_locales'), 'red-darken-3');
+		showErrorMessage(t('error_loading_locales'));
 	}
 });
 

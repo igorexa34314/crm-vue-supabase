@@ -16,8 +16,8 @@
 
 <script setup lang="ts">
 const {
-	color = 'grey-lighten-4',
-	bgColor = 'grey-darken-4',
+	color = '#f5f5f5',
+	bgColor = '#212121',
 	size = 50,
 	width = 4,
 	iconSize = 26,

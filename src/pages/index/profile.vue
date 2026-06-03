@@ -42,7 +42,7 @@ definePage({ redirect: '/profile/info' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
-const { showMessage } = useSnackbarStore();
+const { showSuccessMessage } = useSnackbarStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -51,7 +51,7 @@ useSeoMeta({ title: () => t('pageTitles.profile') });
 watchEffect(() => {
 	const { message, ...q } = route.query;
 	if (te(`${message}`)) {
-		showMessage(t(`${message}`));
+		showSuccessMessage(t(`${message}`));
 		router.replace({ query: q });
 	}
 });

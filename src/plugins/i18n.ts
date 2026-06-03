@@ -98,6 +98,6 @@ export const setI18nLocaleMessages = async (
 			setI18nLanguage(i18n, locale);
 		}
 	} catch {
-		useSnackbarStore().showMessage(i18n.global.t('error_loading_locales'));
+		useSnackbarStore().showErrorMessage(i18n.global.t('error_loading_locales'));
 	}
 };

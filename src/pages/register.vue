@@ -1,6 +1,6 @@
 <template>
 	<v-layout
-		class="bg-grey-darken-2 flex min-h-[100dvh] min-h-[100vh] items-center justify-center overflow-hidden">
+		class="bg-auth flex min-h-[100dvh] min-h-[100vh] items-center justify-center overflow-hidden">
 		<v-card width="100%" :max-width="xs ? 400 : 450" class="p-3 sm:p-4">
 			<v-card-title class="text-title mb-2 text-center">{{
 				$t('home_bookkeeping')
@@ -35,7 +35,7 @@ const { xs } = useDisplay();
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
-const { showMessage } = useSnackbarStore();
+const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 useSeoMeta({ title: () => t('sign_in') });
 
@@ -48,7 +48,7 @@ onMounted(() => {
 watchEffect(() => {
 	const { message, ...q } = route.query;
 	if (te(`warnings.${message}`)) {
-		showMessage(t(`warnings.${message}`));
+		showErrorMessage(t(`warnings.${message}`));
 		router.replace({ query: q });
 	}
 });
@@ -58,18 +58,18 @@ onUnmounted(() => {
 });
 
 const onRegisterSuccess = async () => {
-	showMessage(t('sign_in_success'));
+	showSuccessMessage(t('sign_in_success'));
 	router.push('/login');
 };
 const onRegisterError = async (e: unknown) => {
 	if (typeof e === 'string') {
 		if (e.includes('profiles_username_key')) {
-			showMessage(t(`warnings.username_exists`));
+			showErrorMessage(t(`warnings.username_exists`));
 		} else {
-			showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64), 'red-darken-3');
+			showErrorMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : e.substring(0, 64));
 		}
 	} else {
-		showMessage(t('error_register'), 'red-darken-3');
+		showErrorMessage(t('error_register'));
 	}
 };
 </script>

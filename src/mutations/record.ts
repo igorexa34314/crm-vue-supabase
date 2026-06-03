@@ -12,7 +12,7 @@ import {
 
 export const useCreateRecord = defineMutation(() => {
 	const { t, te } = useI18n();
-	const { showMessage } = useSnackbarStore();
+	const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 	const queryCache = useQueryCache();
 
@@ -26,20 +26,17 @@ export const useCreateRecord = defineMutation(() => {
 		},
 		onError: error => {
 			// handle the error
-			showMessage(
-				te(error.message) ? t(error.message) : t('error_create_record'),
-				'red-darken-3'
-			);
+			showErrorMessage(te(error.message) ? t(error.message) : t('error_create_record'));
 		},
 		onSuccess: () => {
-			showMessage(t('createRecord_success'));
+			showSuccessMessage(t('createRecord_success'));
 		},
 	});
 });
 
 export const useUpdateRecord = defineMutation(() => {
 	const { t, te } = useI18n();
-	const { showMessage } = useSnackbarStore();
+	const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 	const queryCache = useQueryCache();
 
@@ -80,24 +77,21 @@ export const useUpdateRecord = defineMutation(() => {
 			}
 
 			// handle the error
-			showMessage(
-				te(error.message) ? t(error.message) : t('error_update_record'),
-				'red-darken-3'
-			);
+			showErrorMessage(te(error.message) ? t(error.message) : t('error_update_record'));
 		},
 		onSuccess: (record, _, { newRecord }) => {
 			// update the record with the information from the server
 			// since we are invalidating queries, this allows us to progressively
 			queryCache.setQueryData(['record', { id: newRecord.id }], record);
 
-			showMessage(t('record_updated_succesfully'));
+			showSuccessMessage(t('record_updated_succesfully'));
 		},
 	});
 });
 
 export const useDeleteRecord = defineMutation(() => {
 	const { t, te } = useI18n();
-	const { showMessage } = useSnackbarStore();
+	const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 	const queryCache = useQueryCache();
 
@@ -110,13 +104,10 @@ export const useDeleteRecord = defineMutation(() => {
 		},
 		onError: error => {
 			// handle the error
-			showMessage(
-				te(error.message) ? t(error.message) : t('error_delete_record'),
-				'red-darken-3'
-			);
+			showErrorMessage(te(error.message) ? t(error.message) : t('error_delete_record'));
 		},
 		onSuccess: () => {
-			showMessage(t('record_deleted_succesfully'));
+			showSuccessMessage(t('record_deleted_succesfully'));
 		},
 	});
 });

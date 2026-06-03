@@ -66,9 +66,7 @@
 					location="bottom"
 					:offset="[0, -30]"
 					target="cursor"
-					:content-class="
-						cat.limit - cat.spend < 0 ? 'bg-deep-orange-darken-3' : 'bg-light-green-darken-1'
-					">
+					:content-class="cat.limit - cat.spend < 0 ? 'bg-[#d84315]' : 'bg-[#7cb342]'">
 					{{
 						(cat.limit - cat.spend < 0 ? $t('exceeding') : $t('left')) +
 						' ' +

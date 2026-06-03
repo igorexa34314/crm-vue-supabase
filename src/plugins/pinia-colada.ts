@@ -5,7 +5,7 @@ import type { I18n } from 'vue-i18n';
 
 const PiniaColadaQueryErrorHandlingPlugin = (i18n: I18n): PiniaColadaPlugin => {
 	return ({ queryCache, pinia }) => {
-		const { showMessage } = useSnackbarStore(pinia);
+		const { showErrorMessage } = useSnackbarStore(pinia);
 		const { t, te } = i18n.global;
 
 		queryCache.$onAction(({ name, args, onError }) => {
@@ -32,7 +32,7 @@ const PiniaColadaQueryErrorHandlingPlugin = (i18n: I18n): PiniaColadaPlugin => {
 								t(`warnings.${error.message}`)
 							: error.message);
 
-					showMessage(message, 'red-darken-3');
+					showErrorMessage(message);
 				});
 			}
 		});

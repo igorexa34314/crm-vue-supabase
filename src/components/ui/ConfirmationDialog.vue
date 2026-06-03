@@ -22,7 +22,7 @@
 				<v-card-actions class="mt-4 sm:mt-6">
 					<v-spacer />
 					<slot name="cancel">
-						<v-btn color="red-darken-1" variant="text" @click="cancel">
+						<v-btn color="snackbar-success" variant="text" @click="cancel">
 							<span class="text-headline-small">{{ cancelLabel || $t('cancel') }}</span>
 						</v-btn>
 					</slot>
@@ -30,7 +30,7 @@
 						<v-btn
 							ref="submitBtn"
 							:loading="loading"
-							color="green-darken-1"
+							color="snackbar-success"
 							variant="text"
 							@click="ok">
 							<span class="text-headline-small">{{ okLabel || $t('submit') }}</span>

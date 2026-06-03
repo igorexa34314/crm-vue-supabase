@@ -1,13 +1,13 @@
 <template>
 	<v-layout
-		class="bg-grey-darken-2 flex min-h-[100dvh] min-h-[100vh] items-center justify-center overflow-hidden">
+		class="bg-auth flex min-h-[100dvh] min-h-[100vh] items-center justify-center overflow-hidden">
 		<v-card :max-width="xs ? 400 : 450" width="100%" class="p-3 sm:p-4" color="background">
 			<v-card-title class="text-title text-center">{{ $t('home_bookkeeping') }}</v-card-title>
 
 			<v-card-text>
 				<LocalLogin @success="onLoginSuccess" @error="onLoginError" />
 
-				<div class="providers mt-6 flex items-center justify-center">
+				<div class="mt-6 flex items-center justify-center">
 					<GoogleProvider @error="onLoginError" />
 
 					<FacebookProvider @error="onLoginError" />
@@ -44,7 +44,7 @@ const { xs } = useDisplay();
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
-const { showMessage } = useSnackbarStore();
+const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 useSeoMeta({ title: () => t('login') });
 
@@ -57,7 +57,7 @@ onMounted(() => {
 watchEffect(() => {
 	const { message, ...q } = route.query;
 	if (te(`warnings.${message}`)) {
-		showMessage(t(`warnings.${message}`));
+		showErrorMessage(t(`warnings.${message}`));
 		router.replace({ query: q });
 	}
 });
@@ -67,10 +67,10 @@ onUnmounted(() => {
 });
 
 const onLoginSuccess = () => {
-	showMessage(t('login_success'));
+	showSuccessMessage(t('login_success'));
 	router.push('/');
 };
 const onLoginError = (e: unknown) => {
-	showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('login_error'), 'red-darken-3');
+	showErrorMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('login_error'));
 };
 </script>
