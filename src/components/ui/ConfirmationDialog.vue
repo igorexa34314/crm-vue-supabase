@@ -22,7 +22,7 @@
 				<v-card-actions class="mt-4 sm:mt-6">
 					<v-spacer />
 					<slot name="cancel">
-						<v-btn color="snackbar-success" variant="text" @click="cancel">
+						<v-btn color="snackbar-error" variant="text" @click="cancel">
 							<span class="text-headline-small">{{ cancelLabel || $t('cancel') }}</span>
 						</v-btn>
 					</slot>
