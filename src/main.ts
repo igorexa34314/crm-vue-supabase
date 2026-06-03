@@ -1,23 +1,35 @@
 import { createApp, watch } from 'vue';
-import App from '@/App.vue';
 import router from '@/router';
 import { createHead } from '@unhead/vue/client';
-import setupVuetify from '@/plugins/vuetify';
+import { createPinia } from 'pinia';
+import setupPiniaColadaPlugin from '@/plugins/pinia-colada';
 import { getLocale, loadMessages, setupI18n, setI18nLocaleMessages } from '@/plugins/i18n';
-import pinia from '@/plugins/pinia';
-import piniaColadaPlugin from '@/plugins/pinia-colada';
+import setupVuetify from '@/plugins/vuetify';
 import { useUserStore } from '@/stores/user';
-import AppLoader from '@/components/app/AppLoader.vue';
+
+import '@/assets/styles/layers.scss';
+
+import 'unfonts.css';
+import 'virtual:uno.css';
+import 'vuetify/styles';
+
 import '@/assets/styles/main.scss';
+
+import App from '@/App.vue';
+import AppLoader from '@/components/app/AppLoader.vue';
 
 const locale = getLocale();
 loadMessages(locale).then(messages => {
+	const app = createApp(App);
+
+	const pinia = createPinia();
+	const head = createHead();
+
 	const i18n = setupI18n(locale, messages ?? {});
 
-	const app = createApp(App);
-	app.use(router).use(pinia).use(i18n).use(piniaColadaPlugin, i18n);
+	app.use(router).use(pinia).use(i18n).use(setupPiniaColadaPlugin(i18n));
 
-	const userStore = useUserStore();
+	const userStore = useUserStore(pinia);
 
 	watch(
 		() => userStore.info?.locale,
@@ -28,7 +40,7 @@ loadMessages(locale).then(messages => {
 		}
 	);
 
-	app.use(createHead()).use(setupVuetify(i18n)).component('app-loader', AppLoader);
+	app.use(head).use(setupVuetify(i18n)).component('app-loader', AppLoader);
 
 	app.mount('#app');
 });

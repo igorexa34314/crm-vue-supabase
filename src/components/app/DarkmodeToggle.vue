@@ -1,42 +1,28 @@
 <template>
 	<v-switch
-		v-model="darkMode"
-		class="darkmode-toggle text-switch"
+		:model-value="darkMode"
+		class="text-switch max-w-fit scale-[0.85] md:scale-100 sm:scale-90 dark:[--v-track-bg:rgba(255,_255,_255,_0.4)] light:[--v-track-bg:rgba(0,_0,_0,_0.4)]"
 		inset
-		:false-icon="mdiWeatherSunny"
-		:true-icon="mdiWeatherNight"
+		false-icon="i-mdi-weather-sunny"
+		true-icon="i-mdi-weather-night"
 		hide-details
 		density="compact"
-		style="max-width: fit-content"
-		:style="{ '--v-track-bg': `${switchToggleStyle}` }">
+		@update:model-value="setDarkMode">
 	</v-switch>
 </template>
 
 <script setup lang="ts">
-import { mdiWeatherNight, mdiWeatherSunny } from '@mdi/js';
-import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
-import { useDarkModeStore } from '@/stores/dark-mode';
+import { useTheme } from 'vuetify';
 
-const { darkMode } = storeToRefs(useDarkModeStore());
+const theme = useTheme();
 
-const switchToggleStyle = computed(() =>
-	darkMode.value ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)'
-);
+const darkMode = computed(() => theme.global.current.value.dark);
+
+const setDarkMode = (value: boolean | null) => {
+	if (typeof value !== 'boolean') {
+		return;
+	}
+	theme.change(value ? 'dark' : 'light');
+};
 </script>
-
-<style lang="scss" scoped>
-@use '@/assets/styles/settings' as *;
-
-.darkmode-toggle {
-	@media (max-width: 670px) {
-		transform: scale(0.85);
-	}
-	@media (max-width: 420px) {
-		transform: scale(0.82);
-	}
-	&:deep(.v-switch__track) {
-		background-color: var(--v-track-bg, #{$switch-track-background});
-	}
-}
-</style>

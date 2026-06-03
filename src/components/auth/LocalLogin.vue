@@ -6,7 +6,8 @@
 			variant="underlined"
 			label="Email"
 			class="mt-4"
-			required />
+			required
+			autocomplete="email" />
 
 		<PassField
 			v-model.trim="formState.password"
@@ -14,7 +15,7 @@
 			variant="underlined"
 			label="Пароль"
 			class="mt-6"
-			autocomplete="on"
+			autocomplete="current-password"
 			required />
 
 		<v-btn
@@ -22,8 +23,8 @@
 			type="submit"
 			width="100%"
 			color="success"
-			class="mt-4 mt-sm-8"
-			v-bind="{ loading, appendIcon: mdiSend }" />
+			class="mt-4 sm:mt-8"
+			v-bind="{ loading, appendIcon: 'i-mdi-send' }" />
 	</v-form>
 </template>
 
@@ -31,7 +32,6 @@
 import PassField from '@/components/ui/PassField.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref, useTemplateRef } from 'vue';
-import { mdiSend } from '@mdi/js';
 import { login } from '@/api/auth';
 import { user as validations } from '@/utils/validations';
 

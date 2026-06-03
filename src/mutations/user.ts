@@ -9,7 +9,7 @@ import {
 
 export const useUpdateUserInfo = defineMutation(() => {
 	const { t, te } = useI18n();
-	const { showMessage } = useSnackbarStore();
+	const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 	// const queryCache = useQueryCache();
 
@@ -54,10 +54,7 @@ export const useUpdateUserInfo = defineMutation(() => {
 			// }
 
 			// handle the error
-			showMessage(
-				te(error.message) ? t(error.message) : t('error_update_profile'),
-				'red-darken-3'
-			);
+			showErrorMessage(te(error.message) ? t(error.message) : t('error_update_profile'));
 		},
 		onSuccess: (/* category, categoryData, { newCategory } */) => {
 			// update the category with the information from the server
@@ -71,7 +68,7 @@ export const useUpdateUserInfo = defineMutation(() => {
 
 			// queryCache.setQueryData(['categories'], newCategories);
 
-			showMessage(t('updateProfile_message'));
+			showSuccessMessage(t('updateProfile_message'));
 		},
 	});
 });

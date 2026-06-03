@@ -8,18 +8,17 @@
 		variant="elevated"
 		elevation="3"
 		transition="slide-y-transition">
-		<p class="px-2 my-1 font-weight-medium">{{ sbProps.text }}</p>
+		<p class="font-medium my-1 px-2">{{ sbProps.text }}</p>
 
 		<template #actions>
 			<v-btn variant="text" color="white" @click="sbProps.show = false">
-				<v-icon :icon="mdiClose" />
+				<v-icon icon="i-mdi-close" />
 			</v-btn>
 		</template>
 	</v-snackbar>
 </template>
 
 <script setup lang="ts">
-import { mdiClose } from '@mdi/js';
 import { ref } from 'vue';
 import { useSnackbarStore, type Snackbar } from '@/stores/snackbar';
 
@@ -34,7 +33,7 @@ const sbProps = ref<Snackbar & { show: boolean }>({
 
 $onAction(({ name, store, after }) => {
 	after(() => {
-		if (name === 'showMessage') {
+		if (name === 'showMessage' || name === 'showErrorMessage' || name === 'showSuccessMessage') {
 			sbProps.value = { ...store.snackbar, show: true };
 		}
 	});

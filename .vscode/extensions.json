@@ -1,3 +1,10 @@
 {
-	"recommendations": ["vue.volar", "dbaeumer.vscode-eslint", "lokalise.i18n-ally", "esbenp.prettier-vscode"]
+	"recommendations": [
+		"vue.volar",
+		"dbaeumer.vscode-eslint",
+		"lokalise.i18n-ally",
+		"esbenp.prettier-vscode",
+		"antfu.unocss",
+		"antfu.iconify"
+	]
 }

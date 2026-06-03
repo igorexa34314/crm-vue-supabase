@@ -1,12 +1,12 @@
 <template>
 	<div>
-		<div class="title mb-7">
-			<h3 class="text-headline-medium text-sm-headline-large mt-2 mt-sm-4 ml-2 text-title">
+		<div class="mb-7">
+			<h3 class="text-headline-medium text-title ml-2 mt-2 sm:text-headline-large sm:mt-4">
 				{{ $t('pageTitles.categories') }}
 			</h3>
 		</div>
 
-		<section class="mt-sm-10 mt-7">
+		<section class="mt-7 sm:mt-10">
 			<app-loader v-if="categoriesState.status === 'pending' || isCurrencyPending" page />
 
 			<template v-else-if="categoriesState.status === 'success'">
@@ -29,7 +29,7 @@
 								'pl-6': !smAndDown,
 								'px-3': smAndDown && !xs,
 							}"
-							class="mt-5 mt-sm-7 mt-md-0" />
+							class="mt-5 md:mt-0 sm:mt-7" />
 					</v-col>
 				</v-row>
 			</template>

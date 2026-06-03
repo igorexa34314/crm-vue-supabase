@@ -1,11 +1,12 @@
 <template>
-	<v-form class="card-content" ref="form" @submit.prevent="submitRegister">
+	<v-form ref="form" @submit.prevent="submitRegister">
 		<LocalizedInput
 			v-model="formState.email"
 			:rules="validations.email"
 			variant="underlined"
 			:label="$t('email')"
-			required />
+			required
+			autocomplete="email" />
 
 		<PassField
 			v-model="formState.password"
@@ -14,6 +15,7 @@
 			:label="$t('password')"
 			class="mt-5"
 			repeater
+			autocomplete="new-password"
 			required />
 
 		<LocalizedInput
@@ -48,10 +50,10 @@
 		<v-btn
 			:text="$t('sign_in')"
 			type="submit"
-			v-bind="{ appendIcon: mdiSend, loading }"
+			v-bind="{ appendIcon: 'i-mdi-send', loading }"
 			color="success"
 			width="100%"
-			class="mt-4 mt-sm-7" />
+			class="mt-4 sm:mt-7" />
 	</v-form>
 </template>
 
@@ -60,7 +62,6 @@ import PassField from '@/components/ui/PassField.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import CfTurnstile from '@/components/auth/CfTurnstile.vue';
 import { ref, useTemplateRef } from 'vue';
-import { mdiSend } from '@mdi/js';
 import { register } from '@/api/auth';
 import { user as validations } from '@/utils/validations';
 import { validateToken } from '@/api/turnstile';

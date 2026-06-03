@@ -8,7 +8,7 @@ import {
 
 export const useChangeUserPassword = defineMutation(() => {
 	const { t, te } = useI18n();
-	const { showMessage } = useSnackbarStore();
+	const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 	return useMutation({
 		mutation: async ({ oldPass, newPass }: { oldPass: string; newPass: string }) => {
@@ -16,20 +16,19 @@ export const useChangeUserPassword = defineMutation(() => {
 		},
 		onError: error => {
 			// handle the error
-			showMessage(
-				te(`warnings.${error.name}`) ? t(`warnings.${error.name}`) : t('error_update_profile'),
-				'red-darken-3'
+			showErrorMessage(
+				te(`warnings.${error.name}`) ? t(`warnings.${error.name}`) : t('error_update_profile')
 			);
 		},
 		onSuccess: () => {
-			showMessage(t('updatePass_message'));
+			showSuccessMessage(t('updatePass_message'));
 		},
 	});
 });
 
 export const useChangeUserEmail = defineMutation(() => {
 	const { t, te } = useI18n();
-	const { showMessage } = useSnackbarStore();
+	const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 	return useMutation({
 		mutation: async (newEmail: string) => {
@@ -37,13 +36,12 @@ export const useChangeUserEmail = defineMutation(() => {
 		},
 		onError: error => {
 			// handle the error
-			showMessage(
-				te(`warnings.${error.name}`) ? t(`warnings.${error.name}`) : t('error_update_profile'),
-				'red-darken-3'
+			showErrorMessage(
+				te(`warnings.${error.name}`) ? t(`warnings.${error.name}`) : t('error_update_profile')
 			);
 		},
 		onSuccess: () => {
-			showMessage(t('updateEmail_message'));
+			showSuccessMessage(t('updateEmail_message'));
 		},
 	});
 });

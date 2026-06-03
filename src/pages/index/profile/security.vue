@@ -3,11 +3,11 @@
 		<v-form
 			ref="form"
 			@submit.prevent="submitHandler"
-			class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
+			class="profile-form mt-6 px-2 sm:mt-8 sm:px-4">
 			<!-- <LocalizedInput v-model="formState.email" :rules="validations.email" variant="underlined" :label="$t('email')"
 			class="mb-5" required /> -->
 
-			<h4 class="text-body-large text-sm-headline-medium mb-3">{{ $t('change_password') }}</h4>
+			<h4 class="text-body-large mb-3 sm:text-headline-medium">{{ $t('change_password') }}</h4>
 
 			<PassField
 				v-model="formState.oldPass"
@@ -36,7 +36,7 @@
 				:disabled="!formState.newPass"
 				:loading="changeUserPasswordAsyncStatus === 'loading'">
 				{{ $t('update') }}
-				<v-icon :icon="mdiSend" class="ml-3" />
+				<v-icon icon="i-mdi-send" class="ml-3" />
 			</v-btn>
 		</v-form>
 	</div>
@@ -46,7 +46,6 @@
 import PassField from '@/components/ui/PassField.vue';
 // import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref, useTemplateRef } from 'vue';
-import { mdiSend } from '@mdi/js';
 import { user as validations } from '@/utils/validations';
 import { /* useChangeUserEmail, */ useChangeUserPassword } from '@/mutations/auth';
 import { useDisplay } from 'vuetify';

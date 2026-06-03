@@ -4,7 +4,7 @@
 			v-if="info"
 			ref="form"
 			@submit.prevent="submitHandler"
-			class="profile-form mt-6 mt-sm-8 px-2 px-sm-4">
+			class="profile-form mt-6 px-2 sm:mt-8 sm:px-4">
 			<LocalizedInput
 				v-model="formState.username"
 				:rules="validations.username"
@@ -13,28 +13,28 @@
 				class="mb-5"
 				required />
 
-			<div class="d-flex flex-column items-center mb-4 flex-sm-row">
+			<div class="mb-4 flex flex-col items-center sm:flex-row">
 				<LocalizedInput
 					v-model="formState.first_name"
 					:rules="validations.firstName"
 					variant="underlined"
 					:label="$t('user.firstName')"
-					class="mr-sm-3" />
+					class="sm:mr-3" />
 
 				<LocalizedInput
 					v-model="formState.last_name"
 					:rules="validations.lastName"
 					variant="underlined"
 					:label="$t('user.lastName')"
-					class="ml-sm-3" />
+					class="sm:ml-3" />
 			</div>
 
-			<div class="d-flex flex-column flex-md-row">
-				<div class="flex-fill d-flex flex-column">
+			<div class="flex flex-col md:flex-row">
+				<div class="flex grow flex-col">
 					<v-birthday-picker
 						v-model="datePickerDate"
 						:label="$t('user.birthday')"
-						class="flex-fill"
+						class="grow"
 						:month-formatter="month => $d(month, { month: 'long' })" />
 
 					<v-radio-group
@@ -51,13 +51,13 @@
 				</div>
 				<div
 					:style="{ 'max-width': smAndDown ? 'none' : '40%', width: '100%' }"
-					class="d-flex flex-column pl-4 mt-md-0 my-4">
+					class="my-4 pl-4 flex flex-col md:mt-0">
 					<v-card
 						variant="flat"
 						:width="smAndDown ? 200 : 250"
 						:height="smAndDown ? 200 : 250"
 						class="mb-5"
-						elevation="3">
+						elevation="1">
 						<v-img
 							:src="info.avatar_url || '/img/avatar-placeholder.jpg'"
 							alt="Ваш аватар"
@@ -68,7 +68,7 @@
 							</template>
 						</v-img>
 					</v-card>
-					<div class="mb-3 text-subtitle">{{ $t('upload_avatar') }}</div>
+					<div class="text-subtitle mb-3">{{ $t('upload_avatar') }}</div>
 					<LocalizedFileInput
 						v-model="formState.avatar"
 						:label="$t('user.avatar')"
@@ -77,7 +77,7 @@
 						:placeholder="$t('upload_avatar')"
 						accept="image/* "
 						:density="xs ? 'compact' : 'comfortable'"
-						style="max-width: 550px" />
+						class="max-w-[550px]" />
 				</div>
 			</div>
 
@@ -89,7 +89,7 @@
 				:rules="validations.bio"
 				class="mb-4" />
 
-			<div class="d-flex flex-column items-center mt-4 flex-sm-row">
+			<div class="mt-4 flex flex-col items-center sm:flex-row">
 				<v-select
 					v-model="formState.locale"
 					:items="localesState.data"
@@ -97,7 +97,7 @@
 					item-title="native_name"
 					item-value="code"
 					variant="underlined"
-					class="mr-sm-4 text-input" />
+					class="text-input sm:mr-4" />
 
 				<v-select
 					v-model="formState.currency"
@@ -106,7 +106,7 @@
 					item-title="title"
 					item-value="value"
 					variant="underlined"
-					class="ml-sm-4 text-input" />
+					class="text-input sm:ml-4" />
 			</div>
 
 			<v-btn
@@ -116,11 +116,11 @@
 				:loading="updateInfoAsyncStatus === 'loading'"
 				:disabled="isInfoEqualsToStore && !formState.avatar">
 				{{ $t('update') }}
-				<v-icon :icon="mdiSend" class="ml-3" />
+				<v-icon icon="i-mdi-send" class="ml-3" />
 			</v-btn>
 		</v-form>
 
-		<app-loader v-else page class="mt-5" />
+		<app-loader v-else page />
 	</div>
 </template>
 
@@ -131,7 +131,6 @@ import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import { VBirthdayPicker } from 'vuetify-birthdaypicker';
 import { ref, computed, watchEffect, useTemplateRef, watch } from 'vue';
-import { mdiSend } from '@mdi/js';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
 import { fetchAvailableLocales } from '@/api/locale';
@@ -148,7 +147,7 @@ import { useUpdateUserInfo } from '@/mutations/user';
 import { Constants } from '@/types/database-types';
 import { useDisplay } from 'vuetify';
 
-const { showMessage } = useSnackbarStore();
+const { showErrorMessage } = useSnackbarStore();
 const { t } = useI18n();
 const { xs, smAndDown } = useDisplay();
 const userStore = useUserStore();
@@ -199,7 +198,7 @@ const { state: localesState, error: localesError } = useQuery({
 
 watch(localesError, e => {
 	if (e) {
-		showMessage(t('error_loading_locales'), 'red-darken-3');
+		showErrorMessage(t('error_loading_locales'));
 	}
 });
 

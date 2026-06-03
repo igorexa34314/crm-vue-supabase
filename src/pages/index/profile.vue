@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<div class="title text-title">
-			<h3 class="text-headline-medium text-sm-headline-large mt-2 mt-sm-4 ml-2">
+		<div class="text-title">
+			<h3 class="text-headline-medium ml-2 mt-2 sm:text-headline-large sm:mt-4">
 				{{ $t('pageTitles.profile') }}
 			</h3>
 		</div>
@@ -9,7 +9,7 @@
 		<v-tabs
 			:model-value="$route.name"
 			density="comfortable"
-			class="mt-6 mb-3 mb-sm-0"
+			class="mb-3 mt-6 sm:mb-0"
 			color="primary">
 			<v-tab
 				v-for="tab in profileTabs"
@@ -20,12 +20,10 @@
 				:text="$t(`tabs.${tab.title}`)" />
 		</v-tabs>
 
-		<div class="profile-tab__window">
+		<div>
 			<router-view #default="{ Component }">
 				<v-slide-x-transition hide-on-leave>
-					<component
-						:is="Component"
-						class="profile-tab__window-item mt-6 mt-sm-8 px-2 px-sm-4" />
+					<component :is="Component" class="mt-6 px-2 sm:mt-8 sm:px-4" />
 				</v-slide-x-transition>
 			</router-view>
 		</div>
@@ -44,7 +42,7 @@ definePage({ redirect: '/profile/info' });
 
 const { t, te } = useI18n({ useScope: 'global' });
 const { xs } = useDisplay();
-const { showMessage } = useSnackbarStore();
+const { showSuccessMessage } = useSnackbarStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -53,7 +51,7 @@ useSeoMeta({ title: () => t('pageTitles.profile') });
 watchEffect(() => {
 	const { message, ...q } = route.query;
 	if (te(`${message}`)) {
-		showMessage(t(`${message}`));
+		showSuccessMessage(t(`${message}`));
 		router.replace({ query: q });
 	}
 });

@@ -1,7 +1,9 @@
 <template>
 	<div>
-		<div class="subtitle">
-			<h4 class="text-h6 text-sm-h5 mb-3 mb-sm-7 text-subtitle">{{ $t('create') }}</h4>
+		<div>
+			<h4 class="text-title-large text-subtitle mb-3 sm:text-headline-small sm:mb-7">
+				{{ $t('create') }}
+			</h4>
 		</div>
 
 		<v-form ref="form" @submit.prevent="tryCreateCategory">
@@ -23,7 +25,7 @@
 
 			<v-btn color="success" type="submit" :class="xs ? 'mt-4' : 'mt-7'" :loading="loading">
 				{{ $t('create') }}
-				<v-icon :icon="mdiSend" class="ml-3" />
+				<v-icon icon="i-mdi-send" class="ml-3" />
 			</v-btn>
 		</v-form>
 	</div>
@@ -31,7 +33,6 @@
 
 <script setup lang="ts">
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
-import { mdiSend } from '@mdi/js';
 import { ref, useTemplateRef } from 'vue';
 import { type CategoryData } from '@/api/category';
 import { category as validations } from '@/utils/validations';

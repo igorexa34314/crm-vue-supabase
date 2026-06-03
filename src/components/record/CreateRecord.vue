@@ -3,7 +3,7 @@
 		ref="form"
 		v-if="categories.length"
 		@submit.prevent="tryCreateRecord"
-		class="record-form mt-8"
+		class="mt-8"
 		:class="xs ? 'px-2' : 'px-4'">
 		<v-select
 			v-model="formState.category_id"
@@ -14,7 +14,7 @@
 			variant="underlined"
 			class="text-input" />
 
-		<v-radio-group v-model="formState.type" class="mt-3 text-input">
+		<v-radio-group v-model="formState.type" class="text-input mt-3">
 			<v-radio
 				v-for="tp in recordTypes"
 				:key="tp"
@@ -43,7 +43,7 @@
 			auto-grow />
 
 		<div class="mt-4">
-			<div class="mb-3 text-subtitle">{{ $t('record_details') }}</div>
+			<div class="text-subtitle mb-3">{{ $t('record_details') }}</div>
 			<LocalizedFileInput
 				v-model="formState.details"
 				:label="$t('upload_details')"
@@ -51,7 +51,7 @@
 				variant="outlined"
 				:placeholder="$t('upload_details')"
 				density="compact"
-				style="max-width: 550px"
+				class="max-w-[550px]"
 				multiple />
 		</div>
 
@@ -61,7 +61,7 @@
 			:loading="createRecordAsyncStatus === 'loading'"
 			:class="xs ? 'mt-4' : 'mt-7'">
 			{{ $t('create') }}
-			<v-icon :icon="mdiSend" class="ml-3" />
+			<v-icon icon="i-mdi-send" class="ml-3" />
 		</v-btn>
 	</v-form>
 </template>
@@ -70,7 +70,6 @@
 import LocalizedFileInput from '@/components/ui/LocalizedFileInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
-import { mdiSend } from '@mdi/js';
 import { ref, computed, watchEffect, useTemplateRef } from 'vue';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
@@ -95,7 +94,7 @@ const {
 	defaultType?: Record['type'];
 }>();
 
-const { showMessage } = useSnackbarStore();
+const { showErrorMessage } = useSnackbarStore();
 const { t, n } = useI18n();
 const { xs } = useDisplay();
 const cf = useCurrencyFilter();
@@ -146,13 +145,12 @@ const tryCreateRecord = async () => {
 		});
 		resetForm();
 	} else {
-		showMessage(
+		showErrorMessage(
 			t('lack_of_amount') +
 				` (${n(formState.value.amount - cf(info.value?.bill || defaultBill), {
 					key: 'currency',
 					currency: info.value?.currency || serverCurrency,
-				})})`,
-			'red-darken-3'
+				})})`
 		);
 	}
 };

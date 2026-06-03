@@ -1,14 +1,14 @@
 <template>
 	<div>
-		<div class="d-flex flex-row align-center">
-			<h3 class="title text-headline-medium text-sm-headline-large flex-grow-1 my-2 text-title">
+		<div class="flex flex-row items-center">
+			<h3 class="text-headline-medium text-title my-2 flex-grow-1 sm:text-headline-large">
 				{{ $t('pageTitles.bill') }}
 			</h3>
 			<v-btn color="success" @click="refetchCurrencyThrottled">
-				<v-icon :icon="mdiRefresh" />
+				<v-icon icon="i-mdi-refresh" />
 			</v-btn>
 		</div>
-		<v-divider color="black" thickness="1.5" class="bg-white mt-1 mb-5 mb-sm-8" />
+		<v-divider color="black" thickness="1.5" class="mb-5 mt-1 bg-white sm:mb-8" />
 
 		<app-loader
 			v-if="currencyState.status === 'pending'"
@@ -33,7 +33,6 @@
 import CurrencyRates from '@/components/home/CurrencyRates.vue';
 import MyBill from '@/components/home/MyBill.vue';
 import { useSeoMeta } from '@unhead/vue';
-import { mdiRefresh } from '@mdi/js';
 import { useTheme } from 'vuetify';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
@@ -54,9 +53,3 @@ const { state: currencyState, refetch: refetchCurrency } = useCurrencyQuery();
 
 const refetchCurrencyThrottled = useThrottleFn(refetchCurrency, 1500);
 </script>
-
-<style lang="scss" scoped>
-.v-theme--light .v-table {
-	--v-border-opacity: 0.18;
-}
-</style>

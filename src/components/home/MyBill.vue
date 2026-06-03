@@ -1,12 +1,18 @@
 <template>
-	<v-card color="card-2" class="pa-4" elevation="3" min-height="300">
-		<v-card-title class="text-h5 mb-5 text-h6 text-sm-h5">{{
+	<v-card color="card-2" class="p-4" elevation="1" min-height="300">
+		<v-card-title class="text-headline-small text-title-large mb-5 sm:text-headline-small">{{
 			$t('currency_account')
 		}}</v-card-title>
-		<v-card-text class="text-h5 text-primary" :class="xs ? 'text-h6' : 'text-h5'">
+		<v-card-text
+			class="text-headline-small text-primary"
+			:class="xs ? 'text-title-large' : 'text-headline-small'">
 			<div v-for="cur in currencies" :key="cur" :class="xs ? 'mt-5' : 'mt-7'">
 				<span class="mx-2">{{ $n(getCurrency(cur), { key: 'currency', currency: cur }) }}</span>
-				<v-divider thickness="2.5" color="divider" :class="xs ? 'mt-2' : 'mt-4'" />
+				<v-divider
+					thickness="2.5"
+					color="divider"
+					:class="xs ? 'mt-2' : 'mt-4'"
+					class="light:[--v-border-opacity:100]" />
 			</div>
 		</v-card-text>
 	</v-card>
@@ -34,9 +40,3 @@ const getCurrency = computed(() => (currency: CurrencyRates) => {
 	return +(base * rates[currency]).toFixed(2);
 });
 </script>
-
-<style lang="scss" scoped>
-.v-theme--light .v-divider {
-	--v-border-opacity: 1;
-}
-</style>

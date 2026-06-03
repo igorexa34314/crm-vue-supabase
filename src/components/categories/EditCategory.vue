@@ -1,7 +1,9 @@
 <template>
 	<div>
-		<div class="subtitle">
-			<h4 class="text-h6 text-sm-h6 mb-5 mb-sm-7 text-subtitle">{{ $t('edit') }}</h4>
+		<div>
+			<h4 class="text-title-large text-subtitle mb-5 sm:text-title-large sm:mb-7">
+				{{ $t('edit') }}
+			</h4>
 		</div>
 
 		<v-form ref="form" @submit.prevent="tryUpdateCategory">
@@ -31,7 +33,7 @@
 				class="mt-6"
 				required />
 
-			<div class="d-flex items-center">
+			<div class="flex items-center">
 				<v-btn
 					color="success"
 					type="submit"
@@ -39,17 +41,17 @@
 					:disabled="isNewCategoryEquals"
 					:loading="updateCategoryAsyncStatus === 'loading'">
 					{{ $t('update') }}
-					<v-icon :icon="mdiSend" class="ml-3" />
+					<v-icon icon="i-mdi-send" class="ml-3" />
 				</v-btn>
 
 				<v-btn
 					color="success"
 					type="button"
 					:class="xs ? 'mt-4' : 'mt-7'"
-					class="ml-sm-6 ml-4"
+					class="ml-4 sm:ml-6"
 					@click="confirmationDialog = true">
 					{{ $t('delete') }}
-					<v-icon :icon="mdiDelete" class="ml-3" />
+					<v-icon icon="i-mdi-delete" class="ml-3" />
 				</v-btn>
 
 				<DeleteCategoryDialog
@@ -65,7 +67,6 @@
 import DeleteCategoryDialog from '@/components/categories/DeleteCategoryDialog.vue';
 import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref, watchEffect, watch, computed, useTemplateRef } from 'vue';
-import { mdiSend, mdiDelete } from '@mdi/js';
 import { type Category, type CategoryData } from '@/api/category';
 import { category as validations } from '@/utils/validations';
 import { useUserStore } from '@/stores/user';

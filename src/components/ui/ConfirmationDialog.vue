@@ -4,26 +4,25 @@
 		:transition="{ component: VFadeTransition }"
 		:attach="attach"
 		width="auto"
-		content-class="w-100"
+		content-class="w-full"
 		@after-leave="$emit('afterLeave')">
 		<template #activator="slotProps">
 			<slot name="activator" v-bind="slotProps"></slot>
 		</template>
 		<template #default="{ isActive }">
-			<v-card v-bind="{ maxWidth, width }" :class="contentClass" class="mx-auto pt-2 pt-sm-4">
+			<v-card v-bind="{ maxWidth, width }" :class="contentClass" class="mx-auto pt-2 sm:pt-4">
 				<v-card-title
 					v-if="title || slots.title"
-					class="text-headline-medium text-center"
-					style="white-space: inherit; line-height: 1.4; hyphens: none">
+					class="text-headline-medium leading-[1.4] text-center hyphens-none">
 					<slot name="title" v-bind="{ isActive }">{{ title }}</slot>
 				</v-card-title>
 				<v-card-text v-if="text || slots.default">
 					<slot v-bind="{ isActive }">{{ text }}</slot>
 				</v-card-text>
-				<v-card-actions class="mt-4 mt-sm-6">
+				<v-card-actions class="mt-4 sm:mt-6">
 					<v-spacer />
 					<slot name="cancel">
-						<v-btn color="red-darken-1" variant="text" @click="cancel">
+						<v-btn color="snackbar-error" variant="text" @click="cancel">
 							<span class="text-headline-small">{{ cancelLabel || $t('cancel') }}</span>
 						</v-btn>
 					</slot>
@@ -31,7 +30,7 @@
 						<v-btn
 							ref="submitBtn"
 							:loading="loading"
-							color="green-darken-1"
+							color="snackbar-success"
 							variant="text"
 							@click="ok">
 							<span class="text-headline-small">{{ okLabel || $t('submit') }}</span>

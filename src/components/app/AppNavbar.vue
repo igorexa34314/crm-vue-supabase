@@ -5,7 +5,7 @@
 		</template>
 		<v-app-bar-title
 			:text="$d(nowDate, xs ? 'time' : smAndDown ? 'daytime' : 'long')"
-			class="app-title d-xs-none mt-1 text-primary" />
+			class="text-primary mt-1 hidden sm:block" />
 		<v-spacer />
 		<DarkmodeToggle class="mr-7" />
 		<v-menu v-if="userStore.info">
@@ -14,16 +14,16 @@
 					color="profile"
 					variant="text"
 					v-bind="props"
-					class="py-1 d-flex px-sm-3 px-1 mr-md-7"
-					:append-icon="mdiTriangleSmallDown"
+					class="px-1 py-1 flex md:mr-7 sm:px-3"
+					append-icon="i-mdi-triangle-small-down"
 					flat>
-					<div class="text-subtitle-1 font-weight-bold d-flex align-center">
+					<div class="text-body-large font-bold flex items-center">
 						<v-img
 							:src="photoURL || '/img/avatar-placeholder.jpg'"
 							aspect-ratio="1"
 							:width="xs ? 32 : 36"
 							alt="User avatar"
-							class="mr-2 mr-md-3"
+							class="mr-2 md:mr-3"
 							cover />
 						<span>{{ username }}</span>
 					</div>
@@ -32,7 +32,7 @@
 			<v-list density="comfortable">
 				<v-list-item :active="false" to="/profile">
 					<template #prepend>
-						<v-icon :icon="mdiAccountCircleOutline" class="mr-3" />
+						<v-icon icon="i-mdi-account-circle-outline" class="mr-3" />
 					</template>
 					<v-list-item-title class="text-primary">{{
 						$t('pageTitles.profile')
@@ -40,7 +40,7 @@
 				</v-list-item>
 				<v-list-item :active="false" @click="emit('logout')">
 					<template #prepend>
-						<v-icon :icon="mdiLogout" class="mr-3" />
+						<v-icon icon="i-mdi-logout" class="mr-3" />
 					</template>
 					<v-list-item-title class="text-primary">{{ $t('logout') }}</v-list-item-title>
 				</v-list-item>
@@ -57,7 +57,6 @@
 
 <script setup lang="ts">
 import DarkmodeToggle from '@/components/app/DarkmodeToggle.vue';
-import { mdiTriangleSmallDown, mdiAccountCircleOutline, mdiLogout } from '@mdi/js';
 import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';

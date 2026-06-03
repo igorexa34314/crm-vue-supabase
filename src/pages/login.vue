@@ -1,12 +1,13 @@
 <template>
-	<v-layout class="app bg-grey-darken-2 d-flex justify-center align-center overflow-hidden">
-		<v-card :max-width="xs ? 400 : 450" width="100%" class="pa-3 pa-sm-4" color="background">
-			<v-card-title class="text-center text-title">{{ $t('home_bookkeeping') }}</v-card-title>
+	<v-layout
+		class="bg-auth flex min-h-[100dvh] min-h-[100vh] items-center justify-center overflow-hidden">
+		<v-card :max-width="xs ? 400 : 450" width="100%" class="p-3 sm:p-4" color="background">
+			<v-card-title class="text-title text-center">{{ $t('home_bookkeeping') }}</v-card-title>
 
 			<v-card-text>
 				<LocalLogin @success="onLoginSuccess" @error="onLoginError" />
 
-				<div class="providers d-flex align-center mt-6 justify-center">
+				<div class="mt-6 flex items-center justify-center">
 					<GoogleProvider @error="onLoginError" />
 
 					<FacebookProvider @error="onLoginError" />
@@ -15,8 +16,8 @@
 				</div>
 			</v-card-text>
 
-			<v-card-actions class="mt-1 mt-sm-3 justify-center pa-2 pa-sm-4">
-				<div class="text-center text-body-large text-primary">
+			<v-card-actions class="mt-1 p-2 justify-center sm:mt-3 sm:p-4">
+				<div class="text-body-large text-primary text-center">
 					{{ $t('no_account') + '? ' }}
 					<router-link to="/register"> {{ $t('sign_in') }}</router-link>
 				</div>
@@ -43,7 +44,7 @@ const { xs } = useDisplay();
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
-const { showMessage } = useSnackbarStore();
+const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
 
 useSeoMeta({ title: () => t('login') });
 
@@ -56,7 +57,7 @@ onMounted(() => {
 watchEffect(() => {
 	const { message, ...q } = route.query;
 	if (te(`warnings.${message}`)) {
-		showMessage(t(`warnings.${message}`));
+		showErrorMessage(t(`warnings.${message}`));
 		router.replace({ query: q });
 	}
 });
@@ -66,17 +67,10 @@ onUnmounted(() => {
 });
 
 const onLoginSuccess = () => {
-	showMessage(t('login_success'));
+	showSuccessMessage(t('login_success'));
 	router.push('/');
 };
 const onLoginError = (e: unknown) => {
-	showMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('login_error'), 'red-darken-3');
+	showErrorMessage(te(`warnings.${e}`) ? t(`warnings.${e}`) : t('login_error'));
 };
 </script>
-
-<style lang="scss" scoped>
-.app {
-	min-height: 100dvh;
-	min-height: 100vh;
-}
-</style>
