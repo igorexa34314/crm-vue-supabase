@@ -25,7 +25,7 @@
 
 			<v-btn color="success" type="submit" :class="xs ? 'mt-4' : 'mt-7'" :loading="loading">
 				{{ $t('create') }}
-				<v-icon icon=" i-mdi-send" class="ml-3" />
+				<v-icon icon="i-mdi-send" class="ml-3" />
 			</v-btn>
 		</v-form>
 	</div>
