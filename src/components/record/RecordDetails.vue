@@ -13,10 +13,10 @@
 							:class="{ 'mr-3': details.length > 1 }"
 							:title="detail.fullname"
 							@click.prevent="downloadDetail(detail)">
-							<div class="pos-relative">
+							<div class="relative">
 								<small
 									v-if="!isHovering"
-									class="text-primary mx-auto text-center max-w-3/4 inline-block text-truncate left-0 right-0 top-1/2 z-100 -translate-y-1/4"
+									class="text-primary mx-auto text-center max-w-3/4 inline-block text-truncate left-0 right-0 top-1/2 absolute z-[100] -translate-y-1/4"
 									>{{ arrayAt(detail.fullname.split('.'), -1) }}</small
 								>
 								<v-icon icon="i-mdi-file" size="88px" color="file-icon" />
@@ -24,7 +24,7 @@
 									<v-icon
 										v-if="isHovering"
 										icon="i-mdi-download"
-										class="left-1/2 top-1/2 pos-absolute z-100 -translate-x-1/2 -translate-y-1/2"
+										class="left-1/2 top-1/2 absolute z-[100] -translate-x-1/2 -translate-y-1/2"
 										size="24px"
 										color="primary" />
 								</v-fade-transition>

@@ -2,7 +2,7 @@
 	<v-layout full-height>
 		<app-loader
 			v-if="isCurrencyPending"
-			class="left-1/2 top-1/2 pos-fixed z-100 -translate-x-1/2 -translate-y-1/2" />
+			class="left-1/2 top-1/2 fixed z-[100] -translate-x-1/2 -translate-y-1/2" />
 
 		<template v-else>
 			<AppNavbar @click="drawer = !drawer" @logout="handleLogout" />
@@ -22,9 +22,8 @@
 					<v-btn
 						color="fixed"
 						:size="xs ? 'default' : mdAndDown ? 'large' : 'x-large'"
-						class="translate-[-70%,-70%] bottom-0 right-0"
+						class="translate-[-70%,-70%] bottom-0 right-0 fixed"
 						to="/records/create"
-						position="fixed"
 						icon="i-mdi-plus"
 						v-bind="props" />
 				</template>

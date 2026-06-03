@@ -1,5 +1,5 @@
 <template>
-	<div :class="{ 'flex inset-0 items-center justify-center pos-fixed': page }">
+	<div :class="{ 'flex inset-0 items-center justify-center fixed': page }">
 		<div
 			class="h-[80px] w-[80px] inline-block scale-[0.7] relative md:scale-100"
 			:style="cssProps">
