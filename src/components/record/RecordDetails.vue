@@ -30,7 +30,7 @@
 								</v-fade-transition>
 							</div>
 							<span
-								class="text-title-small text-title text-center w-100"
+								class="text-title-small text-title text-center w-full"
 								:style="{ 'text-decoration': isHovering ? 'underline' : 'none' }"
 								>{{ detail.fullname }}</span
 							>

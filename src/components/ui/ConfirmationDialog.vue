@@ -4,7 +4,7 @@
 		:transition="{ component: VFadeTransition }"
 		:attach="attach"
 		width="auto"
-		content-class="w-100"
+		content-class="w-full"
 		@after-leave="$emit('afterLeave')">
 		<template #activator="slotProps">
 			<slot name="activator" v-bind="slotProps"></slot>
