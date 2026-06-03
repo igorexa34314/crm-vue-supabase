@@ -97,7 +97,7 @@
 					item-title="native_name"
 					item-value="code"
 					variant="underlined"
-					class="text-input sm:ml-4" />
+					class="text-input sm:mr-4" />
 
 				<v-select
 					v-model="formState.currency"
