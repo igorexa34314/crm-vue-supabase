@@ -1,6 +1,7 @@
 import pluginVue from 'eslint-plugin-vue';
+import { globalIgnores } from 'eslint/config';
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
-import skipFormatting from '@vue/eslint-config-prettier/skip-formatting';
+import skipFormatting from 'eslint-config-prettier/flat';
 import unocss from '@unocss/eslint-config/flat';
 
 // To allow more languages other than `ts` in `.vue` files, uncomment the following lines:
@@ -13,11 +14,8 @@ export default defineConfigWithVueTs(
 		name: 'app/files-to-lint',
 		files: ['**/*.{ts,mts,tsx,vue}'],
 	},
-	{
-		name: 'app/files-to-ignore',
-		ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**', 'functions/**'],
-	},
-	pluginVue.configs['flat/essential'],
+	globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**', 'functions/**']),
+	...pluginVue.configs['flat/essential'],
 	vueTsConfigs.recommended,
 	unocss,
 	skipFormatting,
