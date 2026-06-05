@@ -110,7 +110,7 @@ import { useDisplay } from 'vuetify';
 const { xs } = useDisplay();
 const route = useRoute('//records/[id]');
 const router = useRouter();
-const { t, n } = useI18n({ useScope: 'global' });
+const { t, n } = useI18n();
 const cf = useCurrencyFilter();
 const { showErrorMessage } = useSnackbarStore();
 const { info, userCurrency } = storeToRefs(useUserStore());

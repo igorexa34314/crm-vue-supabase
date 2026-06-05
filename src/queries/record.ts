@@ -6,7 +6,7 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 export const useRecordByIdQuery = defineQuery(() => {
-	const { t } = useI18n({ useScope: 'global' });
+	const { t } = useI18n();
 	const route = useRoute('//records/[id]');
 
 	return useQuery({
@@ -19,7 +19,7 @@ export const useRecordByIdQuery = defineQuery(() => {
 });
 
 export const useRecordsWithCategoryQuery = defineQuery(() => {
-	const { t } = useI18n({ useScope: 'global' });
+	const { t } = useI18n();
 
 	// Init Records table pagination and sorting
 	const page = useRouteQuery<string, number>('page', '1', {

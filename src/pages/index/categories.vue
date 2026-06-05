@@ -47,7 +47,7 @@ import { useCurrencyQueryState } from '@/queries/currency';
 import { useCategoriesQuery } from '@/queries/category';
 import { useDisplay } from 'vuetify';
 
-const { t } = useI18n({ useScope: 'global' });
+const { t } = useI18n();
 const { xs, smAndDown } = useDisplay();
 
 useSeoMeta({ title: () => t('pageTitles.categories') });

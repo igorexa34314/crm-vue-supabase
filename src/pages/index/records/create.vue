@@ -29,7 +29,7 @@ import { useI18n } from 'vue-i18n';
 import { defaultRecordAmount } from '@/constants/app';
 import { useCategoriesQuery } from '@/queries/category';
 
-const { t } = useI18n({ useScope: 'global' });
+const { t } = useI18n();
 
 useSeoMeta({ title: () => t('pageTitles.newRecord') });
 

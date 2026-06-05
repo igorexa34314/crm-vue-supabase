@@ -8,7 +8,7 @@ export const categoriesQuery = defineQueryOptions({
 });
 
 export const useCategoriesQuery = defineQuery(() => {
-	const { t, te } = useI18n({ useScope: 'global' });
+	const { t, te } = useI18n();
 
 	return useQuery({
 		...categoriesQuery,

@@ -39,7 +39,7 @@ import { onMounted, onUnmounted, watchEffect } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useDisplay } from 'vuetify';
 
-const { t, te } = useI18n({ useScope: 'global' });
+const { t, te } = useI18n();
 const { xs } = useDisplay();
 const router = useRouter();
 const route = useRoute();

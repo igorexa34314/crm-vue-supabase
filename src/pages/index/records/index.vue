@@ -52,7 +52,7 @@ import { useCategoriesSpendStatsQuery } from '@/queries/category';
 import { useRecordsWithCategoryQuery, isRecordProperty } from '@/queries/record';
 import { useDisplay, type DataTableSortItem } from 'vuetify';
 
-const { t } = useI18n({ useScope: 'global' });
+const { t } = useI18n();
 const { xs } = useDisplay();
 
 useSeoMeta({ title: () => t('pageTitles.history') });

@@ -105,7 +105,7 @@ import { useCurrencyQueryState } from '@/queries/currency';
 import { useCategoriesSpendStatsQuery } from '@/queries/category';
 import { useDisplay } from 'vuetify';
 
-const { t } = useI18n({ useScope: 'global' });
+const { t } = useI18n();
 const { xs } = useDisplay();
 
 useSeoMeta({ title: () => t('pageTitles.plan') });

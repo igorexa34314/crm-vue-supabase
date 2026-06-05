@@ -40,7 +40,7 @@ import { useDisplay } from 'vuetify';
 
 definePage({ redirect: '/profile/info' });
 
-const { t, te } = useI18n({ useScope: 'global' });
+const { t, te } = useI18n();
 const { xs } = useDisplay();
 const { showSuccessMessage } = useSnackbarStore();
 const route = useRoute();

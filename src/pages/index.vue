@@ -52,7 +52,7 @@ definePage({
 
 const router = useRouter();
 const route = useRoute();
-const { t, te } = useI18n({ useScope: 'global' });
+const { t, te } = useI18n();
 const { showErrorMessage } = useSnackbarStore();
 const userStore = useUserStore();
 const { mobile, xs, mdAndDown } = useDisplay();
