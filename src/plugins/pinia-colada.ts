@@ -1,6 +1,7 @@
-import type { Plugin } from 'vue';
+import { PiniaColadaCachePersister } from '@pinia/colada-plugin-cache-persister';
 import { PiniaColada, type PiniaColadaPlugin } from '@pinia/colada';
 import { useSnackbarStore } from '@/stores/snackbar';
+import type { Plugin } from 'vue';
 import type { I18n } from 'vue-i18n';
 
 const PiniaColadaQueryErrorHandlingPlugin = (i18n: I18n): PiniaColadaPlugin => {
@@ -51,7 +52,16 @@ export default function setupPiniaColadaPlugin(i18n: I18n): Plugin {
 				mutationOptions: {
 					// add global mutation options here
 				},
-				plugins: [PiniaColadaQueryErrorHandlingPlugin(i18n)],
+				plugins: [
+					PiniaColadaCachePersister({
+						// optional
+						key: 'pinia-colada-cache',
+						debounce: 1000,
+						// storage: localStorage,
+						// filter: { key: ['todos'] },
+					}),
+					PiniaColadaQueryErrorHandlingPlugin(i18n),
+				],
 			});
 		},
 	};
