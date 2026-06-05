@@ -3,6 +3,7 @@ import { PiniaColada, type PiniaColadaPlugin } from '@pinia/colada';
 import { useSnackbarStore } from '@/stores/snackbar';
 import type { Plugin } from 'vue';
 import type { I18n } from 'vue-i18n';
+import type { Pinia } from 'pinia';
 
 const PiniaColadaQueryErrorHandlingPlugin = (i18n: I18n): PiniaColadaPlugin => {
 	return ({ queryCache, pinia }) => {
@@ -40,10 +41,11 @@ const PiniaColadaQueryErrorHandlingPlugin = (i18n: I18n): PiniaColadaPlugin => {
 	};
 };
 
-export default function setupPiniaColadaPlugin(i18n: I18n): Plugin {
+export default function setupPiniaColadaPlugin(i18n: I18n, pinia?: Pinia): Plugin {
 	return <Plugin>{
 		install(app) {
 			app.use(PiniaColada, {
+				pinia,
 				queryOptions: {
 					// change the stale time for all queries
 					staleTime: 30000, // 30 seconds
