@@ -47,7 +47,8 @@ export default function setupPiniaColadaPlugin(i18n: I18n): Plugin {
 				queryOptions: {
 					// change the stale time for all queries
 					staleTime: 30000, // 30 seconds
-					refetchOnWindowFocus: false,
+					refetchOnWindowFocus: true,
+					refetchOnReconnect: true,
 				},
 				mutationOptions: {
 					// add global mutation options here
