@@ -5,7 +5,7 @@
 				{{ $t('pageTitles.plan') }}
 			</h3>
 			<v-skeleton-loader
-				v-if="isCurrencyPending || !userStore.info?.bill"
+				v-if="isCurrencyPending || !userInfo?.bill"
 				type="heading"
 				width="100%"
 				max-height="40px"
@@ -96,26 +96,24 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { storeToRefs } from 'pinia';
 import { useSeoMeta } from '@unhead/vue';
-import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { defaultBill } from '@/constants/app';
 import { useCurrencyQueryState } from '@/queries/currency';
 import { useCategoriesSpendStatsQuery } from '@/queries/category';
 import { useDisplay } from 'vuetify';
+import { useUserInfoQuery } from '@/queries/user';
 
 const { t } = useI18n();
 const { xs } = useDisplay();
 
 useSeoMeta({ title: () => t('pageTitles.plan') });
 
-const userStore = useUserStore();
-const { userCurrency } = storeToRefs(userStore);
+const { userInfo, userCurrency } = useUserInfoQuery();
 const { isPending: isCurrencyPending } = useCurrencyQueryState();
 const cf = useCurrencyFilter();
 
-const bill = computed(() => userStore.info?.bill || defaultBill);
+const bill = computed(() => userInfo.value?.bill || defaultBill);
 
 const { state: catSpendStatsState } = useCategoriesSpendStatsQuery();
 </script>

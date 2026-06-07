@@ -1,11 +1,13 @@
-import { createApp, watch } from 'vue';
+import { createApp } from 'vue';
 import router from '@/router';
 import { createHead } from '@unhead/vue/client';
 import { createPinia } from 'pinia';
 import setupPiniaColadaPlugin from '@/plugins/pinia-colada';
 import { getLocale, loadMessages, setupI18n, setI18nLocaleMessages } from '@/plugins/i18n';
 import setupVuetify from '@/plugins/vuetify';
-import { useUserStore } from '@/stores/user';
+import { useSnackbarStore } from '@/stores/snackbar';
+import { useQueryCache, type EntryKey, type EntryKeyTagged } from '@pinia/colada';
+import type { UserInfo } from '@/api/user';
 
 import '@/assets/styles/layers.scss';
 
@@ -29,21 +31,33 @@ loadMessages(locale).then(messages => {
 
 	app.use(router).use(pinia).use(i18n).use(setupPiniaColadaPlugin(i18n, pinia));
 
-	const userStore = useUserStore(pinia);
+	const queryCache = useQueryCache(pinia);
+	const { showErrorMessage } = useSnackbarStore(pinia);
 
-	watch(
-		() => userStore.info?.locale,
-		locale => {
-			if (locale) {
-				setI18nLocaleMessages(i18n, locale);
+	queryCache.$onAction(({ name, args, after }) => {
+		if (name === 'setQueryData') {
+			const [key, data] = args;
+			if (isUserQueryKey(key)) {
+				after(() => {
+					try {
+						const info = data as UserInfo;
+						setI18nLocaleMessages(i18n, info.locale);
+					} catch {
+						showErrorMessage(i18n.global.t('error_loading_locales'));
+					}
+				});
 			}
 		}
-	);
+	});
 
 	app.use(head).use(setupVuetify(i18n)).component('app-loader', AppLoader);
 
 	app.mount('#app');
 });
+
+function isUserQueryKey(key: EntryKey): key is EntryKeyTagged<UserInfo> {
+	return key.length === 1 && key[0] === 'user';
+}
 
 declare module 'vue' {
 	export interface GlobalComponents {

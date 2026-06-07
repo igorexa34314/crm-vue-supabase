@@ -37,20 +37,19 @@ import { ref, useTemplateRef } from 'vue';
 import { type CategoryData } from '@/api/category';
 import { category as validations } from '@/utils/validations';
 import { useCurrencyFilter } from '@/composables/currency-filter';
-import { useUserStore } from '@/stores/user';
-import { storeToRefs } from 'pinia';
 import { defaultCategoryLimit } from '@/constants/app';
 import { useCreateCategory } from '@/mutations/category';
 import { useDisplay } from 'vuetify';
+import type { UserInfo } from '@/api/user';
 
-const { defaultLimit = defaultCategoryLimit } = defineProps<{
+const { userCurrency, defaultLimit = defaultCategoryLimit } = defineProps<{
+	userCurrency: UserInfo['currency'];
 	defaultLimit?: number;
 }>();
 
 const { xs } = useDisplay();
 const cf = useCurrencyFilter();
 
-const { userCurrency } = storeToRefs(useUserStore());
 const formRef = useTemplateRef('form');
 const loading = ref(false);
 

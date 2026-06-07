@@ -19,10 +19,16 @@
 		<template v-else-if="currencyState.status === 'success' && currencyState.data.rates">
 			<v-row>
 				<v-col cols="12" lg="4" md="6" sm="12">
-					<MyBill v-if="userStore.info?.bill" :rates="currencyState.data.rates" />
+					<MyBill
+						v-if="userInfo?.bill"
+						:bill="userInfo.bill"
+						:rates="currencyState.data.rates" />
 				</v-col>
 				<v-col cols="12" lg="8" md="6" sm="12">
-					<CurrencyRates :rates="currencyState.data.rates" :date="currencyState.data.date" />
+					<CurrencyRates
+						:user-currency="userCurrency"
+						:rates="currencyState.data.rates"
+						:date="currencyState.data.date" />
 				</v-col>
 			</v-row>
 		</template>
@@ -35,9 +41,9 @@ import MyBill from '@/components/home/MyBill.vue';
 import { useSeoMeta } from '@unhead/vue';
 import { useTheme } from 'vuetify';
 import { useI18n } from 'vue-i18n';
-import { useUserStore } from '@/stores/user';
 import { useCurrencyQuery } from '@/queries/currency';
 import { useThrottleFn } from '@vueuse/core';
+import { useUserInfoQuery } from '@/queries/user';
 
 definePage({
 	alias: ['home'],
@@ -45,7 +51,7 @@ definePage({
 
 const { t } = useI18n();
 const theme = useTheme();
-const userStore = useUserStore();
+const { userInfo, userCurrency } = useUserInfoQuery();
 
 useSeoMeta({ title: () => t('pageTitles.bill') });
 

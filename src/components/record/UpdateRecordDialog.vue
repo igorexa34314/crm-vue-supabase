@@ -30,7 +30,7 @@
 				:rules="validations.amount"
 				type="number"
 				variant="underlined"
-				:label="$t('amount') + ` (${info?.currency})`"
+				:label="$t('amount') + ` (${userCurrency})`"
 				class="mt-2"
 				required />
 
@@ -65,12 +65,19 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useI18n } from 'vue-i18n';
 import { record as validations } from '@/utils/validations';
-import { useUserStore } from '@/stores/user';
-import { recordTypes } from '@/constants/app';
-import type { RecordWithCategory, RecordDataToUpdate } from '@/api/record';
+import { defaultBill, recordTypes } from '@/constants/app';
 import { useDisplay } from 'vuetify';
+import type { RecordWithCategory, RecordDataToUpdate } from '@/api/record';
+import type { UserInfo } from '@/api/user';
 
-const { record, loading } = defineProps<{
+const {
+	userCurrency,
+	bill = defaultBill,
+	record,
+	loading,
+} = defineProps<{
+	userCurrency: UserInfo['currency'];
+	bill?: UserInfo['bill'];
 	record: RecordWithCategory;
 	loading?: boolean;
 }>();
@@ -83,9 +90,6 @@ const { showErrorMessage } = useSnackbarStore();
 const { t, n } = useI18n();
 const { xs } = useDisplay();
 const cf = useCurrencyFilter();
-const userStore = useUserStore();
-
-const info = computed(() => userStore.info);
 
 const confirmDialog = defineModel<boolean>();
 
@@ -106,7 +110,7 @@ watchEffect(() => {
 
 const canUpdateRecord = computed(
 	() =>
-		info.value!.bill >=
+		(bill ?? defaultBill) >=
 		(formState.value.type === 'income' ? 1 : -1) *
 			cf(formState.value.amount ?? 0, { type: 'reverse' }) -
 			record.amount
@@ -123,10 +127,10 @@ const submitHandler = async () => {
 				` (${n(
 					(formState.value.type === 'income' ? 1 : -1) *
 						(cf(formState.value.amount ?? 0, { type: 'reverse' }) - record.amount) -
-						info.value!.bill,
+						(bill ?? defaultBill),
 					{
 						key: 'currency',
-						currency: info.value?.currency,
+						currency: userCurrency,
 					}
 				)})`
 		);

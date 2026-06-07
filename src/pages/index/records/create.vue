@@ -17,6 +17,8 @@
 
 		<CreateRecord
 			v-else-if="categoriesState.status === 'success'"
+			:user-currency="userCurrency"
+			:bill="userInfo?.bill"
 			:categories="categoriesState.data"
 			:default-amount="defaultRecordAmount" />
 	</div>
@@ -28,10 +30,12 @@ import { useSeoMeta } from '@unhead/vue';
 import { useI18n } from 'vue-i18n';
 import { defaultRecordAmount } from '@/constants/app';
 import { useCategoriesQuery } from '@/queries/category';
+import { useUserInfoQuery } from '@/queries/user';
 
 const { t } = useI18n();
 
 useSeoMeta({ title: () => t('pageTitles.newRecord') });
 
+const { userInfo, userCurrency } = useUserInfoQuery();
 const { state: categoriesState } = useCategoriesQuery();
 </script>

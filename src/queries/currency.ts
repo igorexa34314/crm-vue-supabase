@@ -1,8 +1,8 @@
 import { fetchCurrency } from '@/api/currency';
 import type { UserInfo } from '@/api/user';
-import { useUserStore } from '@/stores/user';
 import { defineQuery, defineQueryOptions, useQuery, useQueryState } from '@pinia/colada';
 import { useI18n } from 'vue-i18n';
+import { useUserInfoQueryState } from '@/queries/user';
 
 export const currencyQuery = defineQueryOptions((currency: UserInfo['currency']) => ({
 	key: ['currency', currency],
@@ -10,25 +10,20 @@ export const currencyQuery = defineQueryOptions((currency: UserInfo['currency'])
 }));
 
 export const useCurrencyQuery = defineQuery(() => {
-	const userStore = useUserStore();
-	const { t, te } = useI18n({ useScope: 'global' });
+	const { userCurrency } = useUserInfoQueryState();
+	const { t, te } = useI18n();
 
-	const query = useQuery(() => ({
-		...currencyQuery(userStore.userCurrency),
+	return useQuery(() => ({
+		...currencyQuery(userCurrency.value),
 		meta: {
 			errorMessage: e =>
 				te(`warnings.${e.message}`) ? t(`warnings.${e.message}`) : t('error_loading_currency'),
-			onError: () => {
-				userStore.resetUserCurrency();
-			},
 		},
 	}));
-
-	return query;
 });
 
 export function useCurrencyQueryState() {
-	const userStore = useUserStore();
+	const { userCurrency } = useUserInfoQueryState();
 
-	return useQueryState(() => currencyQuery(userStore.userCurrency).key);
+	return useQueryState(() => currencyQuery(userCurrency.value).key);
 }

@@ -8,7 +8,7 @@
 			class="text-primary mt-1 hidden sm:block" />
 		<v-spacer />
 		<DarkmodeToggle class="mr-7" />
-		<v-menu v-if="userStore.info">
+		<v-menu v-if="userInfo">
 			<template #activator="{ props }">
 				<v-btn
 					color="profile"
@@ -58,10 +58,14 @@
 <script setup lang="ts">
 import DarkmodeToggle from '@/components/app/DarkmodeToggle.vue';
 import { computed } from 'vue';
-import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
 import { useNow } from '@vueuse/core';
 import { useDisplay } from 'vuetify';
+import type { UserInfo } from '@/api/user';
+
+const { userInfo } = defineProps<{
+	userInfo?: UserInfo | null;
+}>();
 
 const emit = defineEmits<{
 	logout: [];
@@ -69,11 +73,10 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const userStore = useUserStore();
 const { xs, smAndDown } = useDisplay();
 
-const username = computed(() => (userStore.info ? `${userStore.info.username}` : t('guest')));
-const photoURL = computed(() => userStore.info?.avatar_url);
+const username = computed(() => (userInfo ? `${userInfo.username}` : t('guest')));
+const photoURL = computed(() => userInfo?.avatar_url);
 
 const nowDate = useNow({ interval: 1000 });
 </script>

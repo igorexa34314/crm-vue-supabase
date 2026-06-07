@@ -69,6 +69,8 @@
 			</v-card-text>
 			<UpdateRecordDialog
 				v-model="updateRecordDialog"
+				:user-currency="userCurrency"
+				:bill="userInfo?.bill"
 				:record="record"
 				:loading="updateRecordAsyncStatus === 'loading'"
 				@update-record="tryUpdateRecord" />
@@ -95,25 +97,24 @@ import DeleteRecordDialog from '@/components/record/DeleteRecordDialog.vue';
 import PageBreadcrumbs, { type Breadcrumb } from '@/components/ui/PageBreadcrumbs.vue';
 import RecordDetails from '@/components/record/RecordDetails.vue';
 import { ref, computed } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useRouter, useRoute } from 'vue-router';
 import { useSeoMeta } from '@unhead/vue';
-import { type RecordDataToUpdate } from '@/api/record';
 import { useI18n } from 'vue-i18n';
-import { useUserStore } from '@/stores/user';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useRecordByIdQuery } from '@/queries/record';
 import { useDeleteRecord, useUpdateRecord } from '@/mutations/record';
 import { useDisplay } from 'vuetify';
+import { useUserInfoQuery } from '@/queries/user';
+import type { RecordDataToUpdate } from '@/api/record';
 
 const { xs } = useDisplay();
 const route = useRoute('//records/[id]');
 const router = useRouter();
+const { userInfo, userCurrency } = useUserInfoQuery();
 const { t, n } = useI18n();
 const cf = useCurrencyFilter();
 const { showErrorMessage } = useSnackbarStore();
-const { info, userCurrency } = storeToRefs(useUserStore());
 
 useSeoMeta({ title: () => t('pageTitles.details') });
 
@@ -128,7 +129,7 @@ const breadcrumbs = computed<Breadcrumb[]>(() => [
 
 const confirmationDialog = ref(false);
 const canDeleteRecord = computed(
-	() => record.value?.type === 'outcome' || info.value!.bill >= (record.value?.amount || 0)
+	() => record.value?.type === 'outcome' || userInfo.value!.bill >= (record.value?.amount || 0)
 );
 
 const { mutateAsync: updateRecord, asyncStatus: updateRecordAsyncStatus } = useUpdateRecord();
@@ -141,7 +142,7 @@ const tryDeleteRecord = async () => {
 	} else {
 		showErrorMessage(
 			t('lack_of_amount') +
-				` (${n(cf((record.value?.amount || 0) - info.value!.bill), {
+				` (${n(cf((record.value?.amount || 0) - userInfo.value!.bill), {
 					key: 'currency',
 					currency: userCurrency.value,
 				})})`

@@ -11,7 +11,6 @@ import { datetimeFormats } from '@/constants/i18n';
 import { numberFormats } from '@/constants/i18n';
 import { fetchLocaleTranslation } from '@/api/locale';
 import { availableLocales, localeKey, defaultLocale } from '@/constants/i18n';
-import { useSnackbarStore } from '@/stores/snackbar';
 
 export const getLocale = () =>
 	(JSON.parse(localStorage.getItem(localeKey) || 'null') as string) || defaultLocale;
@@ -87,17 +86,13 @@ export const setI18nLocaleMessages = async (
 	i18n: I18n<any, {}, {}, string, false>,
 	locale: string = defaultLocale
 ) => {
-	try {
-		// Load locale if not available yet.
-		if (!i18n.global.availableLocales.includes(locale)) {
-			const messages = await loadMessages(locale);
-			// Add locale.
-			i18n.global.setLocaleMessage(locale, messages);
-			await nextTick();
-			localStorage.setItem(localeKey, JSON.stringify(locale));
-			setI18nLanguage(i18n, locale);
-		}
-	} catch {
-		useSnackbarStore().showErrorMessage(i18n.global.t('error_loading_locales'));
+	// Load locale if not available yet.
+	if (!i18n.global.availableLocales.includes(locale)) {
+		const messages = await loadMessages(locale);
+		// Add locale.
+		i18n.global.setLocaleMessage(locale, messages);
+		await nextTick();
+		localStorage.setItem(localeKey, JSON.stringify(locale));
+		setI18nLanguage(i18n, locale);
 	}
 };

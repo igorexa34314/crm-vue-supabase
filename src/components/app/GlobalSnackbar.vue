@@ -1,6 +1,6 @@
 <template>
 	<v-snackbar
-		v-model="sbProps.show"
+		v-model="show"
 		:color="sbProps.color"
 		:timeout="sbProps.timeout"
 		location="top"
@@ -11,7 +11,7 @@
 		<p class="font-medium my-1 px-2">{{ sbProps.text }}</p>
 
 		<template #actions>
-			<v-btn variant="text" color="white" @click="sbProps.show = false">
+			<v-btn variant="text" color="white" @click="show = false">
 				<v-icon icon="i-mdi-close" />
 			</v-btn>
 		</template>
@@ -19,22 +19,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useSnackbarStore, type Snackbar } from '@/stores/snackbar';
+const snackbarStore = useSnackbarStore();
 
-const { $onAction } = useSnackbarStore();
+const show = ref(false);
+const sbProps = computed<Snackbar>(() => ({
+	color: snackbarStore.snackbar.color,
+	text: snackbarStore.snackbar.text,
+	timeout: snackbarStore.snackbar.timeout,
+}));
 
-const sbProps = ref<Snackbar & { show: boolean }>({
-	show: false,
-	color: '',
-	text: '',
-	timeout: 0,
-});
-
-$onAction(({ name, store, after }) => {
+snackbarStore.$onAction(({ name, after }) => {
 	after(() => {
 		if (name === 'showMessage' || name === 'showErrorMessage' || name === 'showSuccessMessage') {
-			sbProps.value = { ...store.snackbar, show: true };
+			show.value = true;
 		}
 	});
 });

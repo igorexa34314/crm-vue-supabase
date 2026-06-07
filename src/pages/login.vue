@@ -35,24 +35,18 @@ import { useRoute, useRouter } from 'vue-router';
 import { useSeoMeta } from '@unhead/vue';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useI18n } from 'vue-i18n';
-import { onMounted, onUnmounted, watchEffect } from 'vue';
-import { useUserStore } from '@/stores/user';
+import { watchEffect } from 'vue';
 import { useDisplay } from 'vuetify';
+import { useUserInfoQuery } from '@/queries/user';
 
 const { t, te } = useI18n();
 const { xs } = useDisplay();
 const router = useRouter();
 const route = useRoute();
-const userStore = useUserStore();
 const { showSuccessMessage, showErrorMessage } = useSnackbarStore();
+useUserInfoQuery();
 
 useSeoMeta({ title: () => t('login') });
-
-onMounted(() => {
-	if (!userStore.info?.locale) {
-		userStore.setLocale();
-	}
-});
 
 watchEffect(() => {
 	const { message, ...q } = route.query;
@@ -60,10 +54,6 @@ watchEffect(() => {
 		showErrorMessage(t(`warnings.${message}`));
 		router.replace({ query: q });
 	}
-});
-
-onUnmounted(() => {
-	userStore.$reset();
 });
 
 const onLoginSuccess = () => {

@@ -30,20 +30,23 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/stores/user';
 import type { Currency, CurrencyRates } from '@/api/currency';
 import { useDisplay } from 'vuetify';
+import type { UserInfo } from '@/api/user';
 
-const { rates, date = new Date() } = defineProps<{
+const {
+	userCurrency,
+	rates,
+	date = new Date(),
+} = defineProps<{
+	userCurrency: UserInfo['currency'];
 	rates: Currency['rates'];
 	date?: Currency['date'];
 }>();
 
 const { xs, smAndDown } = useDisplay();
-const { userCurrency } = storeToRefs(useUserStore());
 
 const currencies = computed(
-	() => Object.keys(rates || {}).filter(cur => cur !== userCurrency.value) as CurrencyRates[]
+	() => Object.keys(rates || {}).filter(cur => cur !== userCurrency) as CurrencyRates[]
 );
 </script>

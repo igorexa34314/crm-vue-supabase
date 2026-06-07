@@ -29,7 +29,7 @@
 			:rules="validations.amount"
 			type="number"
 			variant="underlined"
-			:label="$t('amount') + ` (${info?.currency})`"
+			:label="$t('amount') + ` (${userCurrency})`"
 			class="mt-2"
 			required />
 
@@ -75,20 +75,24 @@ import { useSnackbarStore } from '@/stores/snackbar';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useI18n } from 'vue-i18n';
 import { record as validations } from '@/utils/validations';
-import { useUserStore } from '@/stores/user';
 import { defaultRecordAmount, defaultBill, recordTypes } from '@/constants/app';
 import { serverCurrency } from '@/constants/currency';
 import { klona } from 'klona/json';
-import type { Category } from '@/api/category';
-import type { Record, RecordForm } from '@/api/record';
 import { useCreateRecord } from '@/mutations/record';
 import { useDisplay } from 'vuetify';
+import type { Category } from '@/api/category';
+import type { Record, RecordForm } from '@/api/record';
+import type { UserInfo } from '@/api/user';
 
 const {
+	userCurrency,
+	bill = defaultBill,
 	categories,
 	defaultAmount = defaultRecordAmount,
 	defaultType = 'outcome',
 } = defineProps<{
+	userCurrency: UserInfo['currency'];
+	bill?: UserInfo['bill'];
 	categories: Category[];
 	defaultAmount?: number;
 	defaultType?: Record['type'];
@@ -98,9 +102,6 @@ const { showErrorMessage } = useSnackbarStore();
 const { t, n } = useI18n();
 const { xs } = useDisplay();
 const cf = useCurrencyFilter();
-const userStore = useUserStore();
-
-const info = computed(() => userStore.info);
 
 const formRef = useTemplateRef('form');
 
@@ -127,7 +128,7 @@ watchEffect(() => {
 	formState.value.amount = Math.round(cf(defaultAmount) / 10) * 10;
 });
 const canCreateRecord = computed(
-	() => formState.value.type === 'income' || cf(info.value!.bill) >= formState.value.amount
+	() => formState.value.type === 'income' || cf(bill) >= formState.value.amount
 );
 
 const { mutateAsync: createRecord, asyncStatus: createRecordAsyncStatus } = useCreateRecord();
@@ -147,9 +148,9 @@ const tryCreateRecord = async () => {
 	} else {
 		showErrorMessage(
 			t('lack_of_amount') +
-				` (${n(formState.value.amount - cf(info.value?.bill || defaultBill), {
+				` (${n(formState.value.amount - cf(bill || defaultBill), {
 					key: 'currency',
-					currency: info.value?.currency || serverCurrency,
+					currency: userCurrency || serverCurrency,
 				})})`
 		);
 	}

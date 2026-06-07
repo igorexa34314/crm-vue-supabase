@@ -98,19 +98,20 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/currency-filter';
 import { useDisplay, type DataTableHeader, type DataTableSortItem } from 'vuetify';
 import { defaultRecordsPerPage } from '@/constants/app';
-import type { RecordWithCategory } from '@/api/record';
 import { useRouter } from 'vue-router';
+import type { RecordWithCategory } from '@/api/record';
+import type { UserInfo } from '@/api/user';
 
 const {
+	userCurrency,
 	records,
 	totalRecords = 0,
 	loading,
 } = defineProps<{
+	userCurrency: UserInfo['currency'];
 	records: RecordWithCategory[];
 	totalRecords?: number;
 	loading?: boolean;
@@ -143,7 +144,6 @@ const tableHeaders = computed(() =>
 );
 
 const cf = useCurrencyFilter();
-const { userCurrency } = storeToRefs(useUserStore());
 
 const router = useRouter();
 

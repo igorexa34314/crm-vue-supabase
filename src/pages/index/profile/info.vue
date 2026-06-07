@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<v-form
-			v-if="info"
+			v-if="userInfo"
 			ref="form"
 			@submit.prevent="submitHandler"
 			class="profile-form mt-6 px-2 sm:mt-8 sm:px-4">
@@ -59,7 +59,7 @@
 						class="mb-5"
 						elevation="1">
 						<v-img
-							:src="info.avatar_url || '/img/avatar-placeholder.jpg'"
+							:src="userInfo.avatar_url || '/img/avatar-placeholder.jpg'"
 							alt="Ваш аватар"
 							cover
 							eager>
@@ -131,7 +131,6 @@ import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import LocalizedTextarea from '@/components/ui/LocalizedTextarea.vue';
 import { VBirthdayPicker } from 'vuetify-birthdaypicker';
 import { ref, computed, watchEffect, useTemplateRef, watch } from 'vue';
-import { useUserStore } from '@/stores/user';
 import { useI18n } from 'vue-i18n';
 import { fetchAvailableLocales } from '@/api/locale';
 import { user as validations } from '@/utils/validations';
@@ -146,11 +145,12 @@ import { useQuery } from '@pinia/colada';
 import { useUpdateUserInfo } from '@/mutations/user';
 import { Constants } from '@/types/database-types';
 import { useDisplay } from 'vuetify';
+import { useUserInfoQuery } from '@/queries/user';
 
 const { showErrorMessage } = useSnackbarStore();
 const { t } = useI18n();
 const { xs, smAndDown } = useDisplay();
-const userStore = useUserStore();
+const { userInfo } = useUserInfoQuery();
 
 const { data: currency } = useCurrencyQueryState();
 
@@ -160,8 +160,6 @@ const currencies = computed(() => {
 	) as CurrencyRates[];
 	return currencyNames.map(c => ({ title: t(`currencies.${c}`) + ` (${c})`, value: c }));
 });
-
-const info = computed(() => userStore.info);
 
 const formRef = useTemplateRef('form');
 
@@ -209,18 +207,18 @@ const genderItems = Constants.public.Enums.user_gender.map(g => ({
 
 //fillInfo
 watchEffect(() => {
-	if (info.value && Object.keys(info.value).length) {
-		const { updated_at, bill, id, avatar_url, ...userdata } = info.value;
+	if (userInfo.value && Object.keys(userInfo.value).length) {
+		const { updated_at, bill, id, avatar_url, ...userdata } = userInfo.value;
 		formState.value = { ...formState.value, ...userdata };
 	}
 });
 
 const isInfoEqualsToStore = computed(() => {
 	const { avatar, ...formInfo } = formState.value;
-	if (!info.value || !Object.keys(info.value).length) {
+	if (!userInfo.value || !Object.keys(userInfo.value).length) {
 		return false;
 	}
-	const { updated_at, bill, id, avatar_url, ...userdata } = info.value;
+	const { updated_at, bill, id, avatar_url, ...userdata } = userInfo.value;
 	return deepEqual(userdata, formInfo, { strict: true });
 });
 

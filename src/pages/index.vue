@@ -5,7 +5,7 @@
 			class="left-1/2 top-1/2 fixed z-[100] -translate-x-1/2 -translate-y-1/2" />
 
 		<template v-else>
-			<AppNavbar @click="drawer = !drawer" @logout="handleLogout" />
+			<AppNavbar :user-info="userInfo" @click="drawer = !drawer" @logout="handleLogout" />
 			<AppSidebar v-model="drawer" />
 
 			<v-main class="bg-background min-h-[100dvh] min-h-[100vh]">
@@ -36,8 +36,6 @@
 import AppNavbar from '@/components/app/AppNavbar.vue';
 import AppSidebar from '@/components/app/AppSidebar.vue';
 import { ref, onUnmounted, watchEffect } from 'vue';
-import { useUserStore } from '@/stores/user';
-import { fetchAndSubscribeInfo } from '@/api/user';
 import { useI18n } from 'vue-i18n';
 import { useSnackbarStore } from '@/stores/snackbar';
 import { useRoute, useRouter } from 'vue-router';
@@ -45,6 +43,7 @@ import { logout } from '@/api/auth';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { useCurrencyQuery } from '@/queries/currency';
 import { useDisplay } from 'vuetify';
+import { useUserInfoQuery, useUserInfoRealtimeSubscription } from '@/queries/user';
 
 definePage({
 	meta: { requiresAuth: true },
@@ -54,7 +53,7 @@ const router = useRouter();
 const route = useRoute();
 const { t, te } = useI18n();
 const { showErrorMessage } = useSnackbarStore();
-const userStore = useUserStore();
+const { userInfo } = useUserInfoQuery();
 const { mobile, xs, mdAndDown } = useDisplay();
 
 const drawer = ref(!mobile.value);
@@ -67,7 +66,7 @@ const { isPending: isCurrencyPending } = useCurrencyQuery();
 
 let userInfoChannel: RealtimeChannel | null = null;
 
-fetchAndSubscribeInfo()
+useUserInfoRealtimeSubscription()
 	.then(channel => {
 		userInfoChannel = channel;
 	})
@@ -77,7 +76,6 @@ fetchAndSubscribeInfo()
 
 onUnmounted(() => {
 	userInfoChannel?.unsubscribe();
-	userStore.$reset();
 });
 
 const handleLogout = async () => {

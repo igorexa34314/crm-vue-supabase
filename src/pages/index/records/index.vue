@@ -23,6 +23,7 @@
 				v-model:page="page"
 				v-model:per-page="perPage"
 				v-model:sort-by="sortBy"
+				:user-currency="userCurrency"
 				:total-records="recordsState.data?.totalRecords"
 				:records="recordsState.data?.records ?? []"
 				:loading="recordsState.status === 'pending' || recordsAsyncStatus === 'loading'" />
@@ -45,18 +46,35 @@
 import RecordsTable from '@/components/record/RecordsTable.vue';
 import { useSeoMeta } from '@unhead/vue';
 import { Pie } from 'vue-chartjs';
-import { useChart } from '@/composables/chart';
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
 import { useCategoriesSpendStatsQuery } from '@/queries/category';
 import { useRecordsWithCategoryQuery, isRecordProperty } from '@/queries/record';
-import { useDisplay, type DataTableSortItem } from 'vuetify';
+import { useUserInfoQuery } from '@/queries/user';
+import { computed } from 'vue';
+import {
+	Chart as ChartJS,
+	Title,
+	Tooltip,
+	Legend,
+	ArcElement,
+	PieController,
+	type ChartData,
+	type ChartOptions,
+} from 'chart.js';
+import { useTheme, useDisplay, type DataTableSortItem } from 'vuetify';
+import { useCurrencyFilter } from '@/composables/currency-filter';
+import randomColor from 'randomcolor';
 
-const { t } = useI18n();
+ChartJS.register(Title, Tooltip, Legend, PieController, ArcElement);
+
+const { t, n } = useI18n();
 const { xs } = useDisplay();
+const theme = useTheme();
+const cf = useCurrencyFilter();
 
 useSeoMeta({ title: () => t('pageTitles.history') });
 
+const { userCurrency } = useUserInfoQuery();
 const { state: catSpendStatsState, data: catSpendStats } = useCategoriesSpendStatsQuery();
 
 const inputChartData = computed(() => {
@@ -64,9 +82,6 @@ const inputChartData = computed(() => {
 		?.filter(cat => cat.spend > 0)
 		.map(c => ({ label: c.title, data: c.spend }));
 });
-
-// Draw chart from category spend stats
-const { chartData, chartOptions } = useChart<'pie'>(inputChartData);
 
 const sortBy = computed<DataTableSortItem[]>({
 	get: () => [{ key: sortKey.value, order: sortOrder.value }] as DataTableSortItem[],
@@ -85,4 +100,66 @@ const {
 	sortKey,
 	sortOrder,
 } = useRecordsWithCategoryQuery();
+
+const chartOptions = computed(
+	() =>
+		({
+			responsive: true,
+			plugins: {
+				title: {
+					display: true,
+					text: t('chart_title'),
+					color: theme.global.current.value.dark ? '#B8C7D3' : '#D50000',
+					font: {
+						size: xs.value ? 18 : 22,
+						lineHeight: '1.5',
+					},
+				},
+				legend: {
+					display: !xs.value,
+					position: 'left',
+					align: 'center',
+					labels: {
+						boxHeight: 30,
+						font: {
+							weight: 'bold',
+							size: 16,
+						},
+					},
+				},
+				tooltip: {
+					enabled: true,
+					callbacks: {
+						label: item => {
+							const value = item.dataset.data[item.dataIndex];
+							if (value) {
+								return n(cf(value), {
+									key: 'currency',
+									currency: userCurrency.value,
+								});
+							}
+						},
+					},
+				},
+			},
+		}) as ChartOptions<'pie'>
+);
+
+const chartData = computed(
+	() =>
+		({
+			labels: inputChartData.value?.map(d => d.label) || [],
+			datasets: [
+				{
+					data: inputChartData.value?.map(d => d.data),
+					backgroundColor: randomColor({
+						count: inputChartData.value?.length || 1,
+						hue: theme.global.current.value.dark ? '#0E5578' : 'random',
+						luminosity: theme.global.current.value.dark ? 'light' : 'bright',
+					}),
+					borderColor: theme.global.current.value.dark ? '#143c53' : '#8D6E63',
+				},
+			],
+		}) as unknown as ChartData<'pie'>
+);
 </script>

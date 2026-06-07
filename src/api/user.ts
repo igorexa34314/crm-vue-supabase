@@ -1,5 +1,4 @@
 import { errorHandler } from '@/utils/errorHandler';
-import { useUserStore } from '@/stores/user';
 import { getUserId } from '@/api/auth';
 import { supabase } from '@/config/supabase';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,7 +19,7 @@ export const getUserInfo = async () => {
 	return user;
 };
 
-export const subscribeInfo = async (cb: (pl: UserInfo) => void) => {
+export const subscribeUserInfo = async (cb: (pl: UserInfo) => void) => {
 	const uid = await getUserId();
 	return supabase
 		.channel('schema-db-changes')
@@ -42,21 +41,12 @@ export const subscribeInfo = async (cb: (pl: UserInfo) => void) => {
 		.subscribe();
 };
 
-export const fetchAndSubscribeInfo = async () => {
-	const { setInfo } = useUserStore();
-	const info = await getUserInfo();
-	setInfo(info);
-	return subscribeInfo(userInfo => {
-		setInfo(userInfo);
-	});
-};
-
-export const updateInfo = async (data: Partial<UserInfo>) => {
+export const updateUserInfo = async (data: Partial<UserInfo>) => {
 	const uid = await getUserId();
 	return supabase.from('profiles').update(data).eq('id', uid);
 };
 
-export const updateAvatar = async (file: File) => {
+export const updateUserAvatar = async (file: File) => {
 	const uid = await getUserId();
 	if (!uid) {
 		throw new Error('user_unauthenticated');

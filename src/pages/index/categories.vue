@@ -11,8 +11,9 @@
 
 			<template v-else-if="categoriesState.status === 'success'">
 				<v-row :class="xs ? 'px-2' : 'px-4'">
-					<v-col cols="12" md="6" sm="12" class="create-category">
+					<v-col cols="12" md="6" sm="12">
 						<CreateCategory
+							:user-currency="userCurrency"
 							:default-limit="100"
 							:class="{
 								'pr-6': !smAndDown,
@@ -20,9 +21,10 @@
 							}" />
 					</v-col>
 
-					<v-col cols="12" md="6" sm="12" class="edit-category">
+					<v-col cols="12" md="6" sm="12">
 						<EditCategory
 							v-if="categoriesState.data.length"
+							:user-currency="userCurrency"
 							:categories="categoriesState.data"
 							:default-limit="defaultCategoryLimit"
 							:class="{
@@ -46,12 +48,14 @@ import { defaultCategoryLimit } from '@/constants/app';
 import { useCurrencyQueryState } from '@/queries/currency';
 import { useCategoriesQuery } from '@/queries/category';
 import { useDisplay } from 'vuetify';
+import { useUserInfoQuery } from '@/queries/user';
 
 const { t } = useI18n();
 const { xs, smAndDown } = useDisplay();
 
 useSeoMeta({ title: () => t('pageTitles.categories') });
 
+const { userCurrency } = useUserInfoQuery();
 const { isPending: isCurrencyPending } = useCurrencyQueryState();
 
 const { state: categoriesState } = useCategoriesQuery();

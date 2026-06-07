@@ -69,22 +69,25 @@ import LocalizedInput from '@/components/ui/LocalizedInput.vue';
 import { ref, watchEffect, watch, computed, useTemplateRef } from 'vue';
 import { type Category, type CategoryData } from '@/api/category';
 import { category as validations } from '@/utils/validations';
-import { useUserStore } from '@/stores/user';
 import { useCurrencyFilter } from '@/composables/currency-filter';
-import { storeToRefs } from 'pinia';
 import deepEqual from 'deep-equal';
 import { defaultCategoryLimit } from '@/constants/app';
 import { useDeleteCategory, useUpdateCategory } from '@/mutations/category';
 import { useDisplay } from 'vuetify';
+import type { UserInfo } from '@/api/user';
 
-const { categories, defaultLimit = defaultCategoryLimit } = defineProps<{
+const {
+	userCurrency,
+	categories,
+	defaultLimit = defaultCategoryLimit,
+} = defineProps<{
+	userCurrency: UserInfo['currency'];
 	categories: Category[];
 	defaultLimit?: number;
 }>();
 
 const { xs } = useDisplay();
 const cf = useCurrencyFilter();
-const { userCurrency } = storeToRefs(useUserStore());
 
 const formRef = useTemplateRef('form');
 const confirmationDialog = ref(false);

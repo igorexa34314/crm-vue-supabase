@@ -20,23 +20,22 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useUserStore } from '@/stores/user';
-import { defaultBill } from '@/constants/app';
 import { serverCurrency } from '@/constants/currency';
 import { useDisplay } from 'vuetify';
 import type { Currency, CurrencyRates } from '@/api/currency';
+import type { UserInfo } from '@/api/user';
 
 const { xs } = useDisplay();
-const userStore = useUserStore();
 
-const { rates } = defineProps<{
+const { bill, rates } = defineProps<{
+	bill: UserInfo['bill'];
 	rates: Currency['rates'];
 }>();
 
 const currencies = computed(() => Object.keys(rates || {}) as CurrencyRates[]);
 
 const getCurrency = computed(() => (currency: CurrencyRates) => {
-	const base = (userStore.info?.bill ?? defaultBill) / rates[serverCurrency];
+	const base = bill / rates[serverCurrency];
 	return +(base * rates[currency]).toFixed(2);
 });
 </script>

@@ -1,11 +1,7 @@
 import { useSnackbarStore } from '@/stores/snackbar';
-import { defineMutation, useMutation, useQueryCache } from '@pinia/colada';
+import { defineMutation, useMutation /* , useQueryCache */ } from '@pinia/colada';
 import { useI18n } from 'vue-i18n';
-import {
-	updateInfo as apiUpdateInfo,
-	updateAvatar as apiUpdateAvatar,
-	type UserInfo,
-} from '@/api/user';
+import { updateUserInfo, updateUserAvatar, type UserInfo } from '@/api/user';
 
 export const useUpdateUserInfo = defineMutation(() => {
 	const { t, te } = useI18n();
@@ -15,9 +11,9 @@ export const useUpdateUserInfo = defineMutation(() => {
 
 	return useMutation({
 		mutation: async ({ avatar, ...userdata }: Partial<UserInfo> & { avatar: File | null }) => {
-			await apiUpdateInfo(userdata);
+			await updateUserInfo(userdata);
 			if (avatar) {
-				await apiUpdateAvatar(avatar);
+				await updateUserAvatar(avatar);
 			}
 		},
 		// onMutate: categoryData => {
