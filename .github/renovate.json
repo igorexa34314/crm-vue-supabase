@@ -4,7 +4,6 @@
 		"config:recommended",
 		":maintainLockFilesWeekly",
 		":widenPeerDependencies",
-		":pinDevDependencies",
 		":semanticCommitTypeAll(chore)",
 		"group:allNonMajor"
 	],
