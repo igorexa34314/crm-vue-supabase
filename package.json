@@ -56,7 +56,7 @@
 		"@unocss/preset-icons": "^66.7.2",
 		"@unocss/preset-wind4": "^66.7.2",
 		"@vitejs/plugin-vue": "^6.0.7",
-		"@vue/eslint-config-typescript": "^14.8.0",
+		"@vue/eslint-config-typescript": "^14.9.0",
 		"@vue/tsconfig": "^0.9.1",
 		"eslint": "^10.5.0",
 		"eslint-config-prettier": "^10.1.8",
