@@ -18,7 +18,7 @@ jobs:
       runs-on: ubuntu-latest
 
       steps:
-         - uses: actions/checkout@v6
+         - uses: actions/checkout@v7
          # workaround for npm registry key change
          - run: npm i -g corepack@latest && corepack enable
          - uses: actions/setup-node@v6.4.0
