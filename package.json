@@ -73,7 +73,7 @@
 		"unocss": "^66.7.5",
 		"unocss-preset-vuetify": "^0.3.0",
 		"unplugin-fonts": "^2.0.0",
-		"vite": "^7.3.6",
+		"vite": "^8.1.4",
 		"vite-bundle-analyzer": "^1.3.8",
 		"vite-plugin-vue-devtools": "^8.1.5",
 		"vite-plugin-vuetify": "^2.1.3",
