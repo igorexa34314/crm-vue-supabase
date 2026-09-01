@@ -69,7 +69,7 @@
 		"simple-git-hooks": "^2.14.0",
 		"supabase": "^2.116.0",
 		"type-fest": "^5.9.0",
-		"typescript": "^6.0.3",
+		"typescript": "^7.0.2",
 		"unocss": "^66.8.1",
 		"unocss-preset-vuetify": "^0.4.0",
 		"unplugin-fonts": "^2.0.0",
