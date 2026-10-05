@@ -231,8 +231,8 @@ importers:
         specifier: ^11.2.5
         version: 11.2.5(eslint@10.12.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))(vue-i18n@11.4.13(vue@3.5.43(typescript@6.0.3)))(vue@3.5.43(typescript@6.0.3))
       '@pinia/colada-devtools':
-        specifier: ^1.1.2
-        version: 1.1.2
+        specifier: ^2.0.1
+        version: 2.0.1(cac@7.0.0)(crossws@0.4.12(srvx@1.0.5))(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))
       '@tsconfig/node24':
         specifier: ^24.0.5
         version: 24.0.5
@@ -304,10 +304,10 @@ importers:
         version: 6.0.3
       unocss:
         specifier: ^66.10.5
-        version: 66.10.5(cac@7.0.0)(rolldown@1.2.11)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))
+        version: 66.10.5(@devframes/agentic@1.2.0)(cac@7.0.0)(rolldown@1.2.11)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))
       unocss-preset-vuetify:
         specifier: ^0.4.0
-        version: 0.4.0(unocss@66.10.5(cac@7.0.0)(rolldown@1.2.11)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1)))
+        version: 0.4.0(unocss@66.10.5(@devframes/agentic@1.2.0)(cac@7.0.0)(rolldown@1.2.11)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1)))
       unplugin-fonts:
         specifier: ^2.0.0
         version: 2.0.0(postcss@8.5.28)(rolldown@1.2.11)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))
@@ -484,6 +484,11 @@ packages:
   '@capsizecss/unpack@4.0.1':
     resolution: {integrity: sha512-CuNiSqg7+e1cO/GjffyMOm5Tt2jUF9CWHHnvQ/UkqvtkGfHdgwEC0wpmq7fkN3gxwpRnrAN0WzO3vREKmNolMQ==}
     engines: {node: '>=18'}
+
+  '@devframes/agentic@1.2.0':
+    resolution: {integrity: sha512-8FzqOO0TN7RLRhs4Z0svd8Cofs+ojgOtKIatUCPP42VvoockJ+5Eyh+1NQyw3BGAGlnXS8jCQVB0SYMECrcfjQ==}
+    peerDependencies:
+      devframe: 1.2.0
 
   '@ecies/ciphers@0.2.6':
     resolution: {integrity: sha512-patgsRPKGkhhoBjETV4XxD0En4ui5fbX0hzayqI3M8tvNMGUoUvmyYAIWwlxBc1KX5cturfqByYdj5bYGRpN9g==}
@@ -797,6 +802,18 @@ packages:
   '@kurkle/color@0.3.4':
     resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
 
+  '@modelcontextprotocol/client@2.3.0':
+    resolution: {integrity: sha512-pbHtGj6EeFCHngFE8gtNPaKrsj8Mb1IMw45BLcaPML/m2WTxI7pyYmeNQvaux88Lw8BSO5r7nyRbUyIkICmGrg==}
+    engines: {node: '>=20'}
+
+  '@modelcontextprotocol/core@2.3.0':
+    resolution: {integrity: sha512-09BHFaNVBe5pB2AhzCfLj0cqmsKLERvZQ4FblzP90UMGLaXVqdZPByFjURwsUYCmxonUW2yAwgTTvle+8O2/8w==}
+    engines: {node: '>=20'}
+
+  '@modelcontextprotocol/server@2.3.0':
+    resolution: {integrity: sha512-+6b0LdsQLmHsvS7J6sQJ4weTpzUn61fU1JKS+321/+IyDYoHW5CR2Tgqcs6GgAAQvlesCo6yX3xttgmx+XGtJw==}
+    engines: {node: '>=20'}
+
   '@noble/ciphers@1.3.0':
     resolution: {integrity: sha512-2I0gnIVPtfnMw9ee9h1dJG7tp81+8Ob3OJb3Mv37rx5L40/b0i7djjCVvGOVqc9AEIQyvyu1i6ypKdFw8R8gQw==}
     engines: {node: ^14.21.3 || >=16}
@@ -1031,8 +1048,25 @@ packages:
     resolution: {integrity: sha512-7FNeNl8NCE7aINx7WXiKQrPYZWC/hvrTsmk6zmxbI7LTXE7hVek/n8AfVgpe2y82zl3w0HvCHN0bVKMBoJcC0w==}
     engines: {node: '>= 10.0.0'}
 
-  '@pinia/colada-devtools@1.1.2':
-    resolution: {integrity: sha512-cD5y9N0hfveyuP8xB6Yh3W3UYVIf98Kq30bBHDnzxFSK/SFRLPJLWxRxLJdFTquWepInta/XYqcj3t+QQT3rLA==}
+  '@pinia/colada-devtools@2.0.1':
+    resolution: {integrity: sha512-cauBOHms+DDiM+2AN9hKnzkMqgE71MkPz+w7HTtiU3MDB2wNTUBxuwrZllR+7o+ZrDgKmsFLNKfE4JD7TFu0rQ==}
+    peerDependencies:
+      '@devframes/hub': ^1.0.0
+      '@devframes/hub-ui': ^1.0.0
+      '@devframes/vite': ^1.0.0
+      '@vitejs/devtools-kit': ^0.7.5
+      vite: ^7.0.0 || ^8.0.0
+    peerDependenciesMeta:
+      '@devframes/hub':
+        optional: true
+      '@devframes/hub-ui':
+        optional: true
+      '@devframes/vite':
+        optional: true
+      '@vitejs/devtools-kit':
+        optional: true
+      vite:
+        optional: true
 
   '@pinia/colada@1.4.7':
     resolution: {integrity: sha512-McnTYwanRsdvfSlIdvMy1MU45HpMnWiqOJ3A7OpniRPoRpI69YODYwCo+G++F+cIdsR2QzeNHKErhPWfgPSamg==}
@@ -1956,6 +1990,14 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
 
+  eventsource-parser@3.1.1:
+    resolution: {integrity: sha512-EKN1vKAMcZ8MlYMpaNuxN6R9yakzH6uajHcHVTqWJzvu5pWw9DyhbP35HH8MVBQ+dZjAfDxk+A8NiR9KWaXiyQ==}
+    engines: {node: '>=18.0.0'}
+
+  eventsource@3.0.7:
+    resolution: {integrity: sha512-CRT1WTyuQoD771GW56XEZFQ/ZoSfWid1alKGDYMmkt2yl8UXrVR4pspqWNEcqKvVIzg6PAltWjxcSSPrboA4iA==}
+    engines: {node: '>=18.0.0'}
+
   exsolve@1.1.1:
     resolution: {integrity: sha512-9U/jZUgjnSGyntRr6y5Muu1MJcwFl6kPu7k8qLF0IMNfLqvw0NZ4nnVDq0RVoZ0RvCyumib4Ez3KYrVfilrw+g==}
 
@@ -2564,6 +2606,10 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  pkce-challenge@5.0.1:
+    resolution: {integrity: sha512-wQ0b/W4Fr01qtpHlqSqspcj3EhBvimsdh0KlHhH8HRZnMsEa0ea2fTULOXOS9ccQr3om+GcGRk4e+isrZWV8qQ==}
+    engines: {node: '>=16.20.0'}
 
   pkg-types@1.3.1:
     resolution: {integrity: sha512-/Jm5M4RvtBFVkKWRu2BLUTNP8/M2a+UwuAX+ae4770q1qVGtfjG+WTCupoZixokjmHiry8uI+dlY8KXYV5HVVQ==}
@@ -3261,6 +3307,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+
 snapshots:
 
   '@antfu/install-pkg@2.1.0':
@@ -3476,6 +3525,17 @@ snapshots:
   '@capsizecss/unpack@4.0.1':
     dependencies:
       fontkitten: 1.0.3
+
+  '@devframes/agentic@1.2.0(crossws@0.4.12(srvx@1.0.5))(devframe@1.1.0)':
+    dependencies:
+      '@modelcontextprotocol/client': 2.3.0
+      '@modelcontextprotocol/server': 2.3.0
+      devframe: 1.1.0(@devframes/agentic@1.2.0)(cac@7.0.0)(srvx@1.0.5)
+      h3: 2.0.1-rc.32(crossws@0.4.12(srvx@1.0.5))
+      pathe: 2.0.3
+    transitivePeerDependencies:
+      - crossws
+      - ocache
 
   '@ecies/ciphers@0.2.6(@noble/ciphers@1.3.0)':
     dependencies:
@@ -3715,6 +3775,25 @@ snapshots:
 
   '@kurkle/color@0.3.4': {}
 
+  '@modelcontextprotocol/client@2.3.0':
+    dependencies:
+      '@modelcontextprotocol/core': 2.3.0
+      cross-spawn: 7.0.6
+      eventsource: 3.0.7
+      eventsource-parser: 3.1.1
+      jose: 6.2.12
+      pkce-challenge: 5.0.1
+      zod: 4.6.5
+
+  '@modelcontextprotocol/core@2.3.0':
+    dependencies:
+      zod: 4.6.5
+
+  '@modelcontextprotocol/server@2.3.0':
+    dependencies:
+      '@modelcontextprotocol/core': 2.3.0
+      zod: 4.6.5
+
   '@noble/ciphers@1.3.0': {}
 
   '@noble/curves@1.9.7':
@@ -3853,7 +3932,18 @@ snapshots:
       '@parcel/watcher-win32-x64': 2.6.0
     optional: true
 
-  '@pinia/colada-devtools@1.1.2': {}
+  '@pinia/colada-devtools@2.0.1(cac@7.0.0)(crossws@0.4.12(srvx@1.0.5))(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))':
+    dependencies:
+      '@devframes/agentic': 1.2.0(crossws@0.4.12(srvx@1.0.5))(devframe@1.1.0)
+      devframe: 1.1.0(@devframes/agentic@1.2.0)(cac@7.0.0)(srvx@1.0.5)
+      zod: 4.6.5
+    optionalDependencies:
+      vite: 8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1)
+    transitivePeerDependencies:
+      - cac
+      - crossws
+      - ocache
+      - srvx
 
   '@pinia/colada@1.4.7(pinia@4.0.3(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3)))(vue@3.5.43(typescript@6.0.3))':
     dependencies:
@@ -4185,12 +4275,12 @@ snapshots:
     dependencies:
       '@unocss/core': 66.10.5
 
-  '@unocss/inspector@66.10.5(cac@7.0.0)(srvx@1.0.5)':
+  '@unocss/inspector@66.10.5(@devframes/agentic@1.2.0)(cac@7.0.0)(srvx@1.0.5)':
     dependencies:
       '@unocss/config': 66.10.5
       '@unocss/core': 66.10.5
       '@unocss/rule-utils': 66.10.5
-      devframe: 1.1.0(cac@7.0.0)(srvx@1.0.5)
+      devframe: 1.1.0(@devframes/agentic@1.2.0)(cac@7.0.0)(srvx@1.0.5)
       tinyglobby: 0.2.17
       unplugin-utils: 0.3.2
     transitivePeerDependencies:
@@ -4289,12 +4379,12 @@ snapshots:
     dependencies:
       '@unocss/core': 66.10.5
 
-  '@unocss/vite@66.10.5(cac@7.0.0)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))':
+  '@unocss/vite@66.10.5(@devframes/agentic@1.2.0)(cac@7.0.0)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))':
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@unocss/config': 66.10.5
       '@unocss/core': 66.10.5
-      '@unocss/inspector': 66.10.5(cac@7.0.0)(srvx@1.0.5)
+      '@unocss/inspector': 66.10.5(@devframes/agentic@1.2.0)(cac@7.0.0)(srvx@1.0.5)
       chokidar: 5.0.0
       magic-string: 1.4.2
       pathe: 2.0.3
@@ -4695,13 +4785,14 @@ snapshots:
 
   detect-libc@2.1.2: {}
 
-  devframe@1.1.0(cac@7.0.0)(srvx@1.0.5):
+  devframe@1.1.0(@devframes/agentic@1.2.0)(cac@7.0.0)(srvx@1.0.5):
     dependencies:
       crossws: 0.4.12(srvx@1.0.5)
       h3: 2.0.1-rc.32(crossws@0.4.12(srvx@1.0.5))
       nostics: 1.3.0
       pathe: 2.0.3
     optionalDependencies:
+      '@devframes/agentic': 1.2.0(crossws@0.4.12(srvx@1.0.5))(devframe@1.1.0)
       cac: 7.0.0
     transitivePeerDependencies:
       - ocache
@@ -4883,6 +4974,12 @@ snapshots:
       '@types/estree': 1.0.9
 
   esutils@2.0.3: {}
+
+  eventsource-parser@3.1.1: {}
+
+  eventsource@3.0.7:
+    dependencies:
+      eventsource-parser: 3.1.1
 
   exsolve@1.1.1: {}
 
@@ -5461,6 +5558,8 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
+  pkce-challenge@5.0.1: {}
+
   pkg-types@1.3.1:
     dependencies:
       confbox: 0.1.8
@@ -5849,11 +5948,11 @@ snapshots:
       - unloader
       - webpack
 
-  unocss-preset-vuetify@0.4.0(unocss@66.10.5(cac@7.0.0)(rolldown@1.2.11)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))):
+  unocss-preset-vuetify@0.4.0(unocss@66.10.5(@devframes/agentic@1.2.0)(cac@7.0.0)(rolldown@1.2.11)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))):
     dependencies:
-      unocss: 66.10.5(cac@7.0.0)(rolldown@1.2.11)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))
+      unocss: 66.10.5(@devframes/agentic@1.2.0)(cac@7.0.0)(rolldown@1.2.11)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))
 
-  unocss@66.10.5(cac@7.0.0)(rolldown@1.2.11)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1)):
+  unocss@66.10.5(@devframes/agentic@1.2.0)(cac@7.0.0)(rolldown@1.2.11)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1)):
     dependencies:
       '@unocss/cli': 66.10.5
       '@unocss/core': 66.10.5
@@ -5872,7 +5971,7 @@ snapshots:
       '@unocss/transformer-compile-class': 66.10.5
       '@unocss/transformer-directives': 66.10.5
       '@unocss/transformer-variant-group': 66.10.5
-      '@unocss/vite': 66.10.5(cac@7.0.0)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))
+      '@unocss/vite': 66.10.5(@devframes/agentic@1.2.0)(cac@7.0.0)(srvx@1.0.5)(vite@8.3.2(@types/node@24.19.1)(jiti@2.7.0)(sass-embedded@1.105.1)(sass@1.105.1)(yaml@2.9.1))
     transitivePeerDependencies:
       - '@devframes/agentic'
       - cac
@@ -6177,3 +6276,5 @@ snapshots:
   yaml@2.9.1: {}
 
   yocto-queue@0.1.0: {}
+
+  zod@4.6.5: {}
