@@ -1,6 +1,4 @@
 <template>
-	<PiniaColadaDevtools />
-
 	<GlobalSnackbar />
 
 	<router-view #default="{ Component }">
@@ -14,7 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { PiniaColadaDevtools } from '@pinia/colada-devtools';
 import GlobalSnackbar from '@/components/app/GlobalSnackbar.vue';
 import { useDarkModePersistence } from '@/composables/dark-mode';
 import { appTitle } from '@/constants/app';

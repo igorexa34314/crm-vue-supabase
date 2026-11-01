@@ -7,3 +7,13 @@ allowBuilds:
   supabase: true
 
 verifyDepsBeforeRun: install
+
+permissions:
+  "@unhead/vue":
+    skills: true
+  "@vitejs/devtools-kit":
+    skills: true
+
+skills:
+  dirs:
+    - .agents/skills

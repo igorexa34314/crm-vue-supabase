@@ -20,9 +20,9 @@ import type {
 
 declare module 'vue-router' {
   interface TypesConfig {
-    ParamParsers:
-      | never
+    _ParamParsers: {}
     RouteNamedMap: import('vue-router/auto-routes').RouteNamedMap
+    _RouteFileInfoMap: import('vue-router/auto-routes')._RouteFileInfoMap
   }
 }
 
@@ -151,11 +151,15 @@ declare module 'vue-router/auto-routes' {
         | '//records/create'
       views:
         | 'default'
+      pathParamNames:
+        | never
     }
     'src/pages/index/index.vue': {
       routes:
         | '//'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/index/categories.vue': {
@@ -163,11 +167,15 @@ declare module 'vue-router/auto-routes' {
         | '//categories'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/index/planning.vue': {
       routes:
         | '//planning'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/index/profile.vue': {
@@ -177,11 +185,15 @@ declare module 'vue-router/auto-routes' {
         | '//profile/security'
       views:
         | 'default'
+      pathParamNames:
+        | never
     }
     'src/pages/index/profile/info.vue': {
       routes:
         | '//profile/info'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/index/profile/security.vue': {
@@ -189,11 +201,15 @@ declare module 'vue-router/auto-routes' {
         | '//profile/security'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/index/records/index.vue': {
       routes:
         | '//records/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/index/records/[id].vue': {
@@ -201,11 +217,15 @@ declare module 'vue-router/auto-routes' {
         | '//records/[id]'
       views:
         | never
+      pathParamNames:
+        | 'id'
     }
     'src/pages/index/records/create.vue': {
       routes:
         | '//records/create'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/login.vue': {
@@ -213,11 +233,15 @@ declare module 'vue-router/auto-routes' {
         | '/login'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/register.vue': {
       routes:
         | '/register'
       views:
+        | never
+      pathParamNames:
         | never
     }
   }

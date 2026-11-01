@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div>
-			<h4 class="text-title-large text-subtitle mb-3 sm:text-headline-small sm:mb-7">
+			<h4 class="text-subtitle text-title-large mb-3 sm:text-headline-small sm:mb-7">
 				{{ $t('create') }}
 			</h4>
 		</div>
