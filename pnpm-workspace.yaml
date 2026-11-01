@@ -7,3 +7,11 @@ allowBuilds:
   supabase: true
 
 verifyDepsBeforeRun: install
+
+permissions:
+  "@unhead/vue":
+    skills: true
+
+skills:
+  dirs:
+    - .agents/skills
