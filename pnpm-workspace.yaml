@@ -11,6 +11,8 @@ verifyDepsBeforeRun: install
 permissions:
   "@unhead/vue":
     skills: true
+  "@vitejs/devtools-kit":
+    skills: true
 
 skills:
   dirs:

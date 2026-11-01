@@ -4,10 +4,11 @@ import { URL, fileURLToPath } from 'node:url';
 import Fonts from 'unplugin-fonts/vite';
 import UnoCSS from 'unocss/vite';
 import vue from '@vitejs/plugin-vue';
-import VueDevTools from 'vite-plugin-vue-devtools';
 import VueRouter from 'vue-router/vite';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import VueDevTools from 'vite-plugin-vue-devtools';
+import { PiniaColadaDevtools } from '@pinia/colada-devtools/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,6 +17,11 @@ export default defineConfig({
 		alias: {
 			'@': fileURLToPath(new URL('./src', import.meta.url)),
 		},
+	},
+	devtools: {
+		enabled: true,
+		apply: 'serve',
+		mcp: true,
 	},
 	plugins: [
 		Fonts({
@@ -47,10 +53,19 @@ export default defineConfig({
 				configFile: 'src/assets/styles/settings.scss',
 			},
 		}),
+		// DevTools(),
 		VueDevTools(),
+		PiniaColadaDevtools(),
 	],
 	optimizeDeps: {
-		include: ['uuid', 'chart.js', 'vue-chartjs', 'randomcolor', 'deep-equal'],
+		include: [
+			'uuid',
+			'chart.js',
+			'vue-chartjs',
+			'randomcolor',
+			'deep-equal',
+			'vite-plugin-vue-devtools > @vue/devtools-agent > safe-stable-stringify',
+		],
 		exclude: [
 			'vuetify',
 			'vuetify-birthdaypicker',

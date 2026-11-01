@@ -2,6 +2,14 @@
 	"servers": {
 		"vuetify-mcp": {
 			"url": "https://mcp.vuetifyjs.com/mcp"
+		},
+		"vue-devtools": {
+			"command": "pnpm",
+			"args": [
+				"dlx",
+				"@vue/devtools-agent@9.0.0-rc.2",
+				"connect"
+			]
 		}
 	}
 }
