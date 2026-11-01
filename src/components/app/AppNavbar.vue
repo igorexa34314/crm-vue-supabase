@@ -75,5 +75,5 @@ const { xs, smAndDown } = useDisplay();
 const username = computed(() => (userStore.info ? `${userStore.info.username}` : t('guest')));
 const photoURL = computed(() => userStore.info?.avatar_url);
 
-const nowDate = useNow({ interval: 1000 });
+const nowDate = useNow();
 </script>
