@@ -69,7 +69,7 @@
 		"prettier": "^3.9.10",
 		"sass-embedded": "^1.107.1",
 		"simple-git-hooks": "^2.14.0",
-		"supabase": "^2.122.1",
+		"supabase": "^3.0.0",
 		"type-fest": "^5.10.0",
 		"typescript": "^6.0.3",
 		"unocss": "^66.12.0",
