@@ -19,7 +19,7 @@
 		"lint": "eslint . --cache",
 		"lint:fix": "eslint . --fix --cache",
 		"format": "prettier --write --cache src/",
-		"supabase:types": "supabase gen types --lang=typescript --project-id sxjleofipivdmluufxic > ./src/types/database-generated.ts",
+		"supabase:types": "supabase gen types typescript --remote sxjleofipivdmluufxic --schema public > ./src/types/database-generated.ts",
 		"postinstall": "simple-git-hooks"
 	},
 	"dependencies": {
