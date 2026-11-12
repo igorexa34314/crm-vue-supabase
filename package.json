@@ -19,7 +19,7 @@
 		"lint": "eslint . --cache",
 		"lint:fix": "eslint . --fix --cache",
 		"format": "prettier --write --cache src/",
-		"supabase:types": "supabase gen types --lang=typescript --project-id sxjleofipivdmluufxic > ./src/types/database-generated.ts",
+		"supabase:types": "supabase gen types typescript --remote sxjleofipivdmluufxic --schema public > ./src/types/database-generated.ts",
 		"postinstall": "simple-git-hooks"
 	},
 	"dependencies": {
@@ -69,7 +69,7 @@
 		"prettier": "^3.9.10",
 		"sass-embedded": "^1.108.1",
 		"simple-git-hooks": "^2.14.0",
-		"supabase": "^2.122.1",
+		"supabase": "^3.1.0",
 		"type-fest": "^5.10.0",
 		"typescript": "^6.0.3",
 		"unocss": "^66.12.0",

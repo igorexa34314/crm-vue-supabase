@@ -45,3 +45,5 @@ coverage
 
 # Linters and formatters
 .eslintcache
+
+.temp
