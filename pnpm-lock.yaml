@@ -243,8 +243,8 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4
       '@types/node':
-        specifier: ^24.19.2
-        version: 24.19.2
+        specifier: ^26.6.6
+        version: 26.6.6
       '@types/randomcolor':
         specifier: ^0.5.9
         version: 0.5.9
@@ -319,7 +319,7 @@ importers:
         version: 2.1.0(postcss@8.5.32)(rolldown@1.2.18)(vite@8.3.7)
       vite:
         specifier: ^8.3.7
-        version: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+        version: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
       vite-bundle-analyzer:
         specifier: ^1.3.9
         version: 1.3.9
@@ -1292,8 +1292,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@24.19.2':
-    resolution: {integrity: sha512-93d49wCWJkCyN87MxLpNN6KXPCwFw7bVUg79mGUV1OS40JGWwVCr8n61DXCSqz7CV6/VfPkb7xec7uP2M+QHWQ==}
+  '@types/node@26.6.6':
+    resolution: {integrity: sha512-MzQj+8Kx3XI40OmUAE6Qoh58ZMNstNNMwn2nfd3qWsfe7nDNSqJNzes4njhz6AHwrSHOffSLwXU6yb474Q4aog==}
 
   '@types/randomcolor@0.5.9':
     resolution: {integrity: sha512-k58cfpkK15AKn1m+oRd9nh5BnuiowhbyvBBdAzcddtARMr3xRzP0VlFaAKovSG6N6Knx08EicjPlOMzDejerrQ==}
@@ -2882,8 +2882,8 @@ packages:
   unconfig@7.5.0:
     resolution: {integrity: sha512-oi8Qy2JV4D3UQ0PsopR28CzdQ3S/5A1zwsUwp/rosSbfhJ5z7b90bIyTwi/F7hCLD4SGcZVjDzd4XoUQcEanvA==}
 
-  undici-types@7.24.6:
-    resolution: {integrity: sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==}
+  undici-types@8.9.0:
+    resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
   unhead@3.4.3:
     resolution: {integrity: sha512-0FZI/qCCyIey14CKlGMFpiQumWSatlthJy7Xvro7H3nmi/V2owkcCXG03k0GXDc2/TV1K6bvrbAwhzTRe5Nhdw==}
@@ -3284,7 +3284,7 @@ snapshots:
       cac: 7.1.0
       devframe: 1.3.2(@devframes/agentic@1.3.2)(cac@7.1.0)(srvx@1.0.8)
     optionalDependencies:
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
 
   '@devframes/plugin-messages@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(devframe@1.3.2)(vite@8.3.7)':
     dependencies:
@@ -3293,7 +3293,7 @@ snapshots:
       cac: 7.1.0
       devframe: 1.3.2(@devframes/agentic@1.3.2)(cac@7.1.0)(srvx@1.0.8)
     optionalDependencies:
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
 
   '@devframes/plugin-terminals@1.3.2(@devframes/hub-ui@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(@devframes/json-render@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(devframe@1.3.2))(devframe@1.3.2))(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(devframe@1.3.2)(vite@8.3.7)':
     dependencies:
@@ -3302,7 +3302,7 @@ snapshots:
       devframe: 1.3.2(@devframes/agentic@1.3.2)(cac@7.1.0)(srvx@1.0.8)
       zigpty: 0.2.1
     optionalDependencies:
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@devframes/hub'
       - '@devframes/hub-ui'
@@ -3319,7 +3319,7 @@ snapshots:
     optionalDependencies:
       '@devframes/hub': 1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2)
       '@devframes/hub-ui': 1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(@devframes/json-render@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(devframe@1.3.2))(devframe@1.3.2)
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
 
   '@dual-bundle/import-meta-resolve@4.2.1': {}
 
@@ -3510,7 +3510,7 @@ snapshots:
       unplugin: 2.3.11
       vue: 3.5.45(typescript@6.0.3)
     optionalDependencies:
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
       vue-i18n: 11.4.18(vue@3.5.45(typescript@6.0.3))
     transitivePeerDependencies:
       - rollup
@@ -3726,7 +3726,7 @@ snapshots:
       '@devframes/hub-ui': 1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(@devframes/json-render@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(devframe@1.3.2))(devframe@1.3.2)
       '@devframes/vite': 1.3.2(@devframes/hub-ui@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(@devframes/json-render@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(devframe@1.3.2))(devframe@1.3.2))(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(devframe@1.3.2)(vite@8.3.7)
       '@vitejs/devtools-kit': 0.8.2(@devframes/agentic@1.3.2)(cac@7.1.0)(crossws@0.4.17(srvx@1.0.8))(srvx@1.0.8)(vite@8.3.7)
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - cac
       - crossws
@@ -3866,9 +3866,9 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/node@24.19.2':
+  '@types/node@26.6.6':
     dependencies:
-      undici-types: 7.24.6
+      undici-types: 8.9.0
 
   '@types/randomcolor@0.5.9': {}
 
@@ -3976,7 +3976,7 @@ snapshots:
       lightningcss: 1.33.0
       oxc-parser: 0.153.0
       rolldown: 1.2.18
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@oxc-project/types'
@@ -3994,7 +3994,7 @@ snapshots:
       unplugin: 3.7.0(rolldown@1.2.18)(vite@8.3.7)
       vue: 3.5.45(typescript@6.0.3)
     optionalDependencies:
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@oxc-project/types'
@@ -4186,7 +4186,7 @@ snapshots:
       pathe: 2.0.3
       tinyglobby: 0.2.17
       unplugin-utils: 0.3.2
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@devframes/agentic'
       - cac
@@ -4200,7 +4200,7 @@ snapshots:
       local-pkg: 2.0.0
       nostics: 1.3.0
       package-manager-detector: 1.9.0
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@devframes/agentic'
       - cac
@@ -4226,7 +4226,7 @@ snapshots:
       nostics: 1.3.0
       obug: 3.0.0
       pathe: 2.0.3
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@devframes/plugin-inspect--assets'
       - '@devframes/plugin-messages--assets'
@@ -4238,7 +4238,7 @@ snapshots:
   '@vitejs/plugin-vue@6.0.10(vite@8.3.7)(vue@3.5.45(typescript@6.0.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
       vue: 3.5.45(typescript@6.0.3)
 
   '@volar/language-core@2.4.30':
@@ -5630,14 +5630,14 @@ snapshots:
       quansync: 1.0.0
       unconfig-core: 7.5.0
 
-  undici-types@7.24.6: {}
+  undici-types@8.9.0: {}
 
   unhead@3.4.3(rolldown@1.2.18)(vite@8.3.7):
     dependencies:
       hookable: 6.1.2
       unplugin: 3.7.0(rolldown@1.2.18)(vite@8.3.7)
     optionalDependencies:
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@rsbuild/core'
@@ -5691,7 +5691,7 @@ snapshots:
       pathe: 2.0.3
       tinyglobby: 0.2.17
       unplugin: 3.7.0(rolldown@1.2.18)(vite@8.3.7)
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@rsbuild/core'
@@ -5724,7 +5724,7 @@ snapshots:
       webpack-virtual-modules: 0.6.2
     optionalDependencies:
       rolldown: 1.2.18
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
 
   upath@2.0.1: {}
 
@@ -5746,7 +5746,7 @@ snapshots:
       '@vitejs/devtools-kit': 0.8.2(@devframes/agentic@1.3.2)(cac@7.1.0)(crossws@0.4.17(srvx@1.0.8))(srvx@1.0.8)(vite@8.3.7)
       '@vue/devtools-agent': 9.0.0-rc.3(crossws@0.4.17(srvx@1.0.8))(srvx@1.0.8)
       '@vue/devtools-kit': 9.0.0-rc.3
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@devframes/agentic'
       - cac
@@ -5759,13 +5759,13 @@ snapshots:
       '@vuetify/loader-shared': 2.1.2(vue@3.5.45(typescript@6.0.3))(vuetify@4.3.3)
       debug: 4.4.3(supports-color@8.1.1)
       upath: 2.0.1
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
       vue: 3.5.45(typescript@6.0.3)
       vuetify: 4.3.3(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vite-plugin-vuetify@2.1.3)(vue-i18n@11.4.18(vue@3.5.45(typescript@6.0.3)))(vue@3.5.45(typescript@6.0.3))
     transitivePeerDependencies:
       - supports-color
 
-  vite@8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1):
+  vite@8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -5773,7 +5773,7 @@ snapshots:
       rolldown: 1.2.18
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 24.19.2
+      '@types/node': 26.6.6
       '@vitejs/devtools': 0.8.2(crossws@0.4.17(srvx@1.0.8))(srvx@1.0.8)(vite@8.3.7)
       fsevents: 2.3.3
       jiti: 2.7.0
@@ -5842,7 +5842,7 @@ snapshots:
       '@pinia/colada': 1.4.9(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.45(typescript@6.0.3)))(vue@3.5.45(typescript@6.0.3))
       '@vue/compiler-sfc': 3.5.45
       pinia: 4.1.0(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.45(typescript@6.0.3))
-      vite: 8.3.7(@types/node@24.19.2)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
+      vite: 8.3.7(@types/node@26.6.6)(@vitejs/devtools@0.8.2)(jiti@2.7.0)(sass-embedded@1.108.1)(sass@1.108.1)(yaml@2.9.1)
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@rsbuild/core'
