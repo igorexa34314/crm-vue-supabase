@@ -1,1 +1,4 @@
-pnpm-*
+# pnpm
+/unhead-vue
+/vite-devtools-kit
+# pnpm end
