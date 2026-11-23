@@ -233,9 +233,9 @@ importers:
       '@pinia/colada-devtools':
         specifier: ^2.1.0
         version: 2.1.0(@devframes/hub-ui@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(@devframes/json-render@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(devframe@1.3.2))(devframe@1.3.2))(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(@devframes/vite@1.3.2(@devframes/hub-ui@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(@devframes/json-render@1.3.2(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(devframe@1.3.2))(devframe@1.3.2))(@devframes/hub@1.3.2(@devframes/agentic@1.3.2)(crossws@0.4.17(srvx@1.0.8))(devframe@1.3.2))(devframe@1.3.2)(vite@8.3.7))(@vitejs/devtools-kit@0.8.2(@devframes/agentic@1.3.2)(cac@7.1.0)(crossws@0.4.17(srvx@1.0.8))(srvx@1.0.8)(vite@8.3.7))(cac@7.1.0)(crossws@0.4.17(srvx@1.0.8))(srvx@1.0.8)(vite@8.3.7)
-      '@tsconfig/node24':
-        specifier: ^24.0.5
-        version: 24.0.5
+      '@tsconfig/node26':
+        specifier: ^26.0.0
+        version: 26.0.2
       '@types/cloudflare-turnstile':
         specifier: ^0.2.2
         version: 0.2.2
@@ -1277,8 +1277,8 @@ packages:
       '@opentelemetry/api':
         optional: true
 
-  '@tsconfig/node24@24.0.5':
-    resolution: {integrity: sha512-DWC54fGPuhZgg3Ighg4Y/A/bA3ZdB5hnzAuv/MkQ/X85sVsBsMQxu8t7khutdYeiNksBbFdDyeqv1HSW2Zl8aA==}
+  '@tsconfig/node26@26.0.2':
+    resolution: {integrity: sha512-RIBSoNGQxUQ8r4hSrEzS6TrUneoKaCuX6BjL4zF3wqttGq2w06zCea4d8P1gRvM/HZyDT1FQJ8trZSyy/63oMg==}
 
   '@types/cloudflare-turnstile@0.2.2':
     resolution: {integrity: sha512-3Yf7b1Glci+V2bFWwWBbZkRgTuegp7RDgNTOG4U0UNPB9RV4AWvwqg2/qqLff8G+SwKFNXoXvTkqaRBZrAFdKA==}
@@ -3863,7 +3863,7 @@ snapshots:
       '@supabase/realtime-js': 2.119.0
       '@supabase/storage-js': 2.119.0
 
-  '@tsconfig/node24@24.0.5': {}
+  '@tsconfig/node26@26.0.2': {}
 
   '@types/cloudflare-turnstile@0.2.2': {}
 
